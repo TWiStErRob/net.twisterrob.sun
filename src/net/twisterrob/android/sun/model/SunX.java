@@ -1,7 +1,9 @@
-package net.twisterrob.android.sun;
+package net.twisterrob.android.sun.model;
 import java.util.Calendar;
 
 import static java.lang.Math.*;
+
+import net.twisterrob.android.sun.DeclinationXAccurate;
 
 /**
  * http://www.pveducation.org/pvcdrom/properties-of-sunlight/elevation-angle

@@ -4,7 +4,7 @@ import java.util.*;
 
 import android.location.LocationListener;
 
-public class Todos {
+public class WidgetUpdateList {
 	private final Set<Integer> TODO = new HashSet<Integer>();
 
 	public synchronized void remove(int... ids) {

@@ -14,7 +14,7 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 	 * Needs to be static because random instances are created for separate onReceive calls.
 	 */
 	private static final SunAngleWidgetUpdater UPDATER = new SunAngleWidgetUpdater();
-	private static final Todos TODOs = new Todos();
+	private static final WidgetUpdateList TODOs = new WidgetUpdateList();
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {

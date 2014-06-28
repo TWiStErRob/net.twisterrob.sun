@@ -14,20 +14,30 @@ public final class R {
         public static final int widget_margin=0x7f050000;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int day=0x7f020000;
+        public static final int descript=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int night=0x7f020003;
+        public static final int sunrise=0x7f020004;
+        public static final int sunset=0x7f020005;
+        public static final int twilight_astronomical=0x7f020006;
+        public static final int twilight_civil=0x7f020007;
+        public static final int twilight_nautical=0x7f020008;
     }
     public static final class id {
-        public static final int angle=0x7f080002;
-        public static final int angleFraction=0x7f080003;
+        public static final int angle=0x7f080004;
+        public static final int angleFraction=0x7f080005;
+        public static final int angle_aligner=0x7f080002;
+        public static final int angle_background=0x7f080003;
         public static final int angle_container=0x7f080001;
         public static final int layoutRoot=0x7f080000;
-        public static final int state=0x7f080004;
-        public static final int threshold=0x7f080007;
-        public static final int thresholdRelation=0x7f08000a;
-        public static final int threshold_container=0x7f080006;
-        public static final int timeThresholdFrom=0x7f080008;
-        public static final int timeThresholdTo=0x7f080009;
-        public static final int timeUpdated=0x7f080005;
+        public static final int state=0x7f08000c;
+        public static final int threshold=0x7f080008;
+        public static final int thresholdRelation=0x7f08000b;
+        public static final int threshold_container=0x7f080007;
+        public static final int timeThresholdFrom=0x7f080009;
+        public static final int timeThresholdTo=0x7f08000a;
+        public static final int timeUpdated=0x7f080006;
     }
     public static final class layout {
         public static final int sun_angle_widget=0x7f030000;

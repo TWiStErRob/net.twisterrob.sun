@@ -1,4 +1,4 @@
-package net.twisterrob.android.sun;
+package net.twisterrob.android.sun.model;
 
 import java.util.Calendar;
 
@@ -47,14 +47,14 @@ public class SunCalculator {
 		return result;
 	}
 
-	class SunAngle {
-		Calendar lastUpdate;
-		double current;
+	public static class SunAngle {
+		public Calendar lastUpdate;
+		public double current;
 
-		double angleThreshold;
-		Calendar start;
-		Calendar end;
-		LightState sunState;
+		public double angleThreshold;
+		public Calendar start;
+		public Calendar end;
+		public LightState sunState;
 
 		@Override
 		public String toString() {
@@ -63,7 +63,7 @@ public class SunCalculator {
 					+ " between\n" + getTime(start) + "\nand\n" + getTime(end) + "\n.";
 		}
 
-		private String getTime(Calendar time) {
+		private static String getTime(Calendar time) {
 			int hour = time.get(Calendar.HOUR_OF_DAY);
 			int minute = time.get(Calendar.MINUTE);
 			return hour + ":" + minute;

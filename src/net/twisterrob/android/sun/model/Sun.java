@@ -1,4 +1,4 @@
-package net.twisterrob.android.sun;
+package net.twisterrob.android.sun.model;
 import java.util.Calendar;
 
 public interface Sun {

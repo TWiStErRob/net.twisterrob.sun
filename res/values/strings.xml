@@ -14,13 +14,13 @@
 	<string name="treshold_relation_below">below</string>
 	<string name="light_state_twilight_nautical">nautical twilight</string>
 	<string name="light_state_twilight_civil">civil twilight</string>
-	<string name="light_state_twilight_astronomical">astronomical twilight</string>
+	<string name="light_state_twilight_astronomical">astro. twilight</string>
 	<string name="light_state_dusk_nautical">nautical dusk</string>
 	<string name="light_state_dusk_civil">civil dusk</string>
-	<string name="light_state_dusk_astronomical">astronomical dusk</string>
+	<string name="light_state_dusk_astronomical">astro. dusk</string>
 	<string name="light_state_dawn_nautical">nautical dawn</string>
 	<string name="light_state_dawn_civil">civil dawn</string>
-	<string name="light_state_dawn_astronomical">astronomical dawn</string>
+	<string name="light_state_dawn_astronomical">astro. dawn</string>
 	<string name="light_state_sunset">sunset</string>
 	<string name="light_state_sunrise">sunrise</string>
 	<string name="light_state_day">day-time</string>
