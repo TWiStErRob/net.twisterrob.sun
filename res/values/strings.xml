@@ -1,5 +1,29 @@
 <resources>
-
-    <string name="app_name">!Sun Position Widget</string>
-
+	<string name="app_name">!Sun Position Widget</string>
+	<string name="angle_min">0°</string>
+	<string name="angle_max">-99°</string>
+	<string name="angle_unkown">\???°</string>
+	<string name="demo_text_angle_fraction">.1234</string>
+	<string name="time_3_min">00:00:00</string>
+	<string name="time_3_max">99:99:99</string>
+	<string name="time_3_unknown">\??:??:??</string>
+	<string name="time_2_min">00:00</string>
+	<string name="time_2_max">99:99</string>
+	<string name="time_2_unknown">\??:??</string>
+	<string name="treshold_relation_above">above</string>
+	<string name="treshold_relation_below">below</string>
+	<string name="light_state_twilight_nautical">nautical twilight</string>
+	<string name="light_state_twilight_civil">civil twilight</string>
+	<string name="light_state_twilight_astronomical">astronomical twilight</string>
+	<string name="light_state_dusk_nautical">nautical dusk</string>
+	<string name="light_state_dusk_civil">civil dusk</string>
+	<string name="light_state_dusk_astronomical">astronomical dusk</string>
+	<string name="light_state_dawn_nautical">nautical dawn</string>
+	<string name="light_state_dawn_civil">civil dawn</string>
+	<string name="light_state_dawn_astronomical">astronomical dawn</string>
+	<string name="light_state_sunset">sunset</string>
+	<string name="light_state_sunrise">sunrise</string>
+	<string name="light_state_day">day-time</string>
+	<string name="light_state_night">night-time</string>
+	<string name="call_to_action_refresh">Tap to refresh</string>
 </resources>

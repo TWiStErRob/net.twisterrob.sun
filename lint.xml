@@ -3,4 +3,7 @@
     <issue id="HardcodedText">
         <ignore path="res/layout/sun_angle_widget.xml" />
     </issue>
+    <issue id="SpUsage">
+        <ignore path="res/values/resources.xml" />
+    </issue>
 </lint>

@@ -2,6 +2,8 @@ package net.twisterrob.android.sun;
 
 import java.util.Calendar;
 
+import android.util.Log;
+
 public class SunCalculator {
 	private final Sun sun;
 
@@ -23,14 +25,25 @@ public class SunCalculator {
 		for (int minute = 0; minute < 24 * 60 / every; ++minute) {
 			running.add(Calendar.MINUTE, every);
 			double altitude = sun.altitudeAngle(lat, lon, running);
+			Log.v("Calc", running.getTime().toString() + " -> " + altitude);
 			if (result.start == null && altitude > result.angleThreshold) {
 				result.start = (Calendar)running.clone();
 			}
 			if (result.start != null && result.end == null && altitude < result.angleThreshold) {
 				result.end = (Calendar)running.clone();
 			}
+			if (time.get(Calendar.DATE) != running.get(Calendar.DATE)) {
+				running.add(Calendar.DATE, -1);
+				if (result.start == null) {
+					result.start = (Calendar)running.clone();
+				}
+				if (result.end == null) {
+					result.end = (Calendar)running.clone();
+				}
+			}
 		}
 
+		result.sunState = LightState.from(result.current);
 		return result;
 	}
 
@@ -41,6 +54,7 @@ public class SunCalculator {
 		double angleThreshold;
 		Calendar start;
 		Calendar end;
+		LightState sunState;
 
 		@Override
 		public String toString() {
