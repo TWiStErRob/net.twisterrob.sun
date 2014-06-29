@@ -11,8 +11,8 @@ import android.location.*;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import net.twisterrob.android.sun.content.WidgetPreferences;
 import net.twisterrob.android.sun.model.*;
-import net.twisterrob.android.sun.model.SunCalculator.SunAngle;
 import net.twisterrob.android.sun.ui.*;
 
 public class SunAngleWidgetUpdater {
@@ -23,6 +23,12 @@ public class SunAngleWidgetUpdater {
 	private static final LightStateMap<Integer> BGs = new LightStateBackgroundIDs();
 	private static final LightStateMap<Integer> COLORs = new LightStateColorIDs();
 	private static final SunCalculator CALC = new SunCalculator(new SunX());
+	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<ThresholdRelation, Integer>(
+			ThresholdRelation.class);
+	static {
+		RELATIONS.put(ThresholdRelation.ABOVE, R.string.treshold_relation_above);
+		RELATIONS.put(ThresholdRelation.BELOW, R.string.treshold_relation_below);
+	}
 
 	private Context context;
 
@@ -51,13 +57,18 @@ public class SunAngleWidgetUpdater {
 	public boolean update(int appWidgetId, LocationListener fallback) {
 		Location location = getLocation(fallback);
 		Log.v("Sun", "update(" + appWidgetId + "," + location + ")");
-		SunAngle angle = null;
-		if (location != null) {
-			angle = CALC.find(50, location.getLatitude(), location.getLongitude(), Calendar.getInstance());
-		}
-		return updateViews(appWidgetId, angle);
-	}
 
+		SunAngle result = null;
+		if (location != null) {
+			SharedPreferences prefs = new WidgetPreferences(context, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
+			float angle = prefs.getFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, 0);
+			ThresholdRelation relation = ThresholdRelation.valueOf(prefs.getString(
+					SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name()));
+			result = CALC
+					.find(angle, relation, location.getLatitude(), location.getLongitude(), Calendar.getInstance());
+		}
+		return updateViews(appWidgetId, result);
+	}
 	private boolean updateViews(int appWidgetId, SunAngle angle) {
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.sun_angle_widget);
 		Resources res = context.getResources();
@@ -70,6 +81,7 @@ public class SunAngleWidgetUpdater {
 			views.setTextViewText(R.id.angleFraction, fraction.format(angle.current));
 			views.setTextViewText(R.id.timeUpdated, time3.format(angle.lastUpdate.getTime()));
 			views.setTextViewText(R.id.threshold, ((int)angle.angleThreshold) + "°");
+			views.setTextViewText(R.id.thresholdRelation, res.getText(RELATIONS.get(angle.thresholdRelation)));
 			views.setTextViewText(R.id.timeThresholdFrom, time2.format(angle.start.getTime()));
 			views.setTextViewText(R.id.timeThresholdTo, time2.format(angle.end.getTime()));
 		} else {
@@ -89,7 +101,8 @@ public class SunAngleWidgetUpdater {
 
 	protected PendingIntent createClickIntent(int appWidgetId) {
 		Intent intent = createUpdateIntent(appWidgetId);
-		return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		int reqCode = appWidgetId; // needs to be different for each widget
+		return PendingIntent.getBroadcast(context, reqCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	protected Intent createUpdateIntent(int... appWidgetIds) {

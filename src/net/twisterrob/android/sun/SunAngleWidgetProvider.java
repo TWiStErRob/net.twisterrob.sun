@@ -7,7 +7,15 @@ import android.location.*;
 import android.os.Bundle;
 import android.util.Log;
 
+import net.twisterrob.android.sun.model.ThresholdRelation;
+
 public class SunAngleWidgetProvider extends AppWidgetProvider implements LocationListener {
+	public static final String PREF_NAME = SunAngleWidgetProvider.class.getName();
+	/** String: {@link ThresholdRelation#name() ThresholdRelation constant name} */
+	public static final String PREF_THRESHOLD_RELATION = "relation";
+	/** double: angle in degrees */
+	public static final String PREF_THRESHOLD_ANGLE = "threshold";
+
 	/**
 	 * Needs to be static because random instances are created for separate onReceive calls.
 	 */

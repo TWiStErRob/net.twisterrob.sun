@@ -21,6 +21,13 @@
 				android:name="android.appwidget.provider"
 				android:resource="@xml/sun_angle_widget" />
 		</receiver>
+		<activity android:name="SunAngleWidgetConfiguration">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+<!-- 				<action android:name="android.intent.action.MAIN" /> -->
+<!-- 				<category android:name="android.intent.category.LAUNCHER" /> -->
+			</intent-filter>
+		</activity>
 	</application>
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>

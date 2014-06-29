@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/layoutRoot"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<ToggleButton
+		android:id="@+id/thresholdRelation"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:textOff="Below"
+		android:textOn="Above"
+		android:checked="true" />
+	<Button
+		android:id="@+id/btn_ok"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentRight="true"
+		android:text="Done" />
+	<net.twisterrob.android.sun.views.VerticalSeekBar
+		android:id="@+id/threshold"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_above="@id/btn_ok"
+		android:layout_alignParentLeft="true"
+		android:layout_below="@+id/thresholdRelation"
+		android:max="180" />
+	<TextView
+		android:id="@+id/angle"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@+id/thresholdRelation"
+		android:layout_toRightOf="@+id/thresholdRelation"
+		android:text="@string/angle_max" />
+</RelativeLayout>

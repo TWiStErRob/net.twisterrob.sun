@@ -6,6 +6,8 @@
 	android:initialLayout="@layout/sun_angle_widget"
 	android:resizeMode="none"
 	android:widgetCategory="home_screen|keyguard"
-	android:initialKeyguardLayout="@layout/sun_angle_widget">
+	android:initialKeyguardLayout="@layout/sun_angle_widget"
+	android:configure="net.twisterrob.android.sun.SunAngleWidgetConfiguration"
+	>
 <!-- 	android:previewImage="@drawable/preview" -->
 </appwidget-provider>
