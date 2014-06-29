@@ -16,7 +16,7 @@ import static android.appwidget.AppWidgetManager.*;
 import net.twisterrob.android.sun.content.WidgetPreferences;
 import net.twisterrob.android.sun.model.ThresholdRelation;
 import net.twisterrob.android.sun.ui.SunGradientShaderFactory;
-import net.twisterrob.android.sun.views.*;
+import net.twisterrob.android.sun.views.RingSectionDrawable;
 
 public class SunAngleWidgetConfiguration extends Activity {
 	private int appWidgetId;
@@ -65,46 +65,38 @@ public class SunAngleWidgetConfiguration extends Activity {
 		threshold.setProgress(toProgress(0));
 	}
 
-	private RingDrawable selection;
-	private RotatedDrawable selectionWrapper;
+	private RingSectionDrawable x;
 	private void updateImage() {
-		if (selection == null || selectionWrapper == null) {
+		if (x == null) {
 			resetImage();
 		}
-		float angle = toThreshold(threshold.getProgress()); // -90 -- 90
-		float levelPercent = (angle + 90) / 180;
-		switch (toRelation(relation.isChecked())) {
-			case ABOVE:
-				selection.setLevel((int)((1 - levelPercent) * 10000));
-				selectionWrapper.setAngle(180 + angle);
-				break;
-			case BELOW:
-				selection.setLevel((int)(levelPercent * 10000));
-				selectionWrapper.setAngle(-angle);
-				break;
-			default:
-				break;
-		}
+		updateRing(x, toThreshold(threshold.getProgress()), toRelation(relation.isChecked()));
 	}
-	protected void resetImage() {
-		final int height = 512;
-		final int width = 512;
 
+	/**
+	 * @param angle -90 .. 90
+	 */
+	protected void updateRing(RingSectionDrawable ring, float angle, ThresholdRelation relation) {
+		float sweep = 2 * (90 - angle);
+		if (relation == ThresholdRelation.BELOW) {
+			angle = 180 - angle;
+			sweep = 360 - sweep;
+		}
+		ring.setSection(angle, sweep);
+	}
+
+	protected void resetImage() {
+		final int radius = 256;
 		PaintDrawable sun = new PaintDrawable();
 		sun.setShape(new OvalShape());
 		sun.setShaderFactory(new SunGradientShaderFactory());
-		sun.setIntrinsicWidth(width);
-		sun.setIntrinsicHeight(height);
+		sun.setIntrinsicWidth(radius * 2);
+		sun.setIntrinsicHeight(radius * 2);
 
-		int ringRadius = 20;
-		selection = new RingDrawable(width / 2 - ringRadius * 2, ringRadius, 0, 0);
-		selection.setUseLevelForShape(true);
-		selection.setSize(width, height);
-		selection.setColor(Color.argb(96, 0, 255, 0));
-
-		selectionWrapper = new RotatedDrawable(selection);
-
-		LayerDrawable image = new LayerDrawable(new Drawable[]{sun, selectionWrapper});
+		x = new RingSectionDrawable(radius - 40, 20);
+		x.setSize(radius * 2, radius * 2);
+		x.setColor(Color.argb(0x66, 0x00, 0xFF, 0x00));
+		LayerDrawable image = new LayerDrawable(new Drawable[]{sun, x});
 		visualization.setImageDrawable(image);
 	}
 
