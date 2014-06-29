@@ -3,8 +3,6 @@ import java.util.Calendar;
 
 import static java.lang.Math.*;
 
-import net.twisterrob.android.sun.DeclinationXAccurate;
-
 /**
  * http://www.pveducation.org/pvcdrom/properties-of-sunlight/elevation-angle
  * http://www.pveducation.org/pvcdrom/properties-of-sunlight/solar-time

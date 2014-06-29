@@ -22,7 +22,7 @@ public class SunAngleWidgetUpdater {
 	private static final LightStateMap<Integer> CAPTIONs = new LightStateNameIDs();
 	private static final LightStateMap<Integer> BGs = new LightStateBackgroundIDs();
 	private static final LightStateMap<Integer> COLORs = new LightStateColorIDs();
-	private final SunCalculator calc = new SunCalculator(new SunX());
+	private static final SunCalculator CALC = new SunCalculator(new SunX());
 
 	private Context context;
 
@@ -41,12 +41,19 @@ public class SunAngleWidgetUpdater {
 		return location;
 	}
 
+	public void forceUpdateAll() {
+		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+		ComponentName component = new ComponentName(context, SunAngleWidgetProvider.class);
+		Intent intent = createUpdateIntent(appWidgetManager.getAppWidgetIds(component));
+		context.sendBroadcast(intent);
+	}
+
 	public boolean update(int appWidgetId, LocationListener fallback) {
 		Location location = getLocation(fallback);
 		Log.v("Sun", "update(" + appWidgetId + "," + location + ")");
 		SunAngle angle = null;
 		if (location != null) {
-			angle = calc.find(50, location.getLatitude(), location.getLongitude(), Calendar.getInstance());
+			angle = CALC.find(50, location.getLatitude(), location.getLongitude(), Calendar.getInstance());
 		}
 		return updateViews(appWidgetId, angle);
 	}
@@ -81,10 +88,15 @@ public class SunAngleWidgetUpdater {
 	}
 
 	protected PendingIntent createClickIntent(int appWidgetId) {
+		Intent intent = createUpdateIntent(appWidgetId);
+		return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+
+	protected Intent createUpdateIntent(int... appWidgetIds) {
 		Intent intent = new Intent(context, SunAngleWidgetProvider.class);
-		intent.setAction(SunAngleWidgetProvider.WIDGET_CLICKED);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-		return PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+		return intent;
 	}
 
 	private static DecimalFormat initFractionFormat() {

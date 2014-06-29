@@ -7,7 +7,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:padding="@dimen/widget_margin"
-	android:background="#88eeeebb">
+	android:background="#66ffffff">
 	<RelativeLayout
 		android:id="@+id/angle_container"
 		android:layout_width="wrap_content"
@@ -47,12 +47,16 @@
 			android:id="@+id/angleFraction"
 			android:layout_alignBottom="@id/angle_aligner"
 			android:layout_alignParentRight="true"
+			android:layout_marginRight="2dp"
 			android:text="@string/demo_text_angle_fraction" />
 		<TextView
 			style="@style/WidgetFont.Secondary.Small"
 			android:id="@+id/timeUpdated"
 			android:layout_alignTop="@id/angle_aligner"
 			android:layout_alignParentLeft="true"
+			android:layout_width="match_parent"
+			android:gravity="center_horizontal"
+			android:paddingTop="-4dp"
 			android:text="@string/time_3_min" />
 	</RelativeLayout>
 	<RelativeLayout
@@ -90,5 +94,7 @@
 		style="@style/WidgetFont.Extra"
 		android:id="@+id/state"
 		android:layout_above="@id/threshold_container"
+		android:layout_width="match_parent"
+		android:gravity="center_horizontal"
 		android:text="@string/light_state_twilight_astronomical" />
 </RelativeLayout>

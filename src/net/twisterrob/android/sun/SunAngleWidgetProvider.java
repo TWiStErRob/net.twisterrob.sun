@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class SunAngleWidgetProvider extends AppWidgetProvider implements LocationListener {
-	public static final String WIDGET_CLICKED = "net.twisterrob.sun.APPWIDGET_UPDATE";
-
 	/**
 	 * Needs to be static because random instances are created for separate onReceive calls.
 	 */
@@ -24,33 +22,20 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 
 	@Override
 	public void onEnabled(Context context) {
-		super.onEnabled(context);
 		Log.v("Sun", this + ".onEnabled");
+		super.onEnabled(context);
 	}
 
 	@Override
 	public void onDisabled(Context context) {
-		super.onDisabled(context);
 		Log.v("Sun", this + ".onDisabled");
+		super.onDisabled(context);
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.v("Sun", this + ".onReceive(" + intent + ")");
-
-		if (WIDGET_CLICKED.equals(intent.getAction())) {
-			try {
-				UPDATER.setContext(context);
-				int widgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
-				if (!UPDATER.update(widgetId, this)) {
-					TODOs.add(widgetId);
-				}
-			} catch (Exception ex) {
-				Log.e("Sun", this + ".onReceive", ex);
-			}
-		} else {
-			super.onReceive(context, intent);
-		}
+		super.onReceive(context, intent);
 	}
 
 	@Override
