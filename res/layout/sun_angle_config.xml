@@ -35,4 +35,13 @@
 		android:layout_alignBaseline="@+id/thresholdRelation"
 		android:layout_toRightOf="@+id/thresholdRelation"
 		android:text="@string/angle_max" />
+	<ImageView
+		android:id="@+id/visualization"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:layout_below="@+id/thresholdRelation"
+		android:layout_toRightOf="@+id/thresholdRelation"
+		android:src="@drawable/ic_launcher" />
 </RelativeLayout>

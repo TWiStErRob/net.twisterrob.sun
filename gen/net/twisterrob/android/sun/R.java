@@ -26,19 +26,20 @@ public final class R {
     }
     public static final class id {
         public static final int angle=0x7f080004;
-        public static final int angleFraction=0x7f080008;
-        public static final int angle_aligner=0x7f080006;
-        public static final int angle_background=0x7f080007;
-        public static final int angle_container=0x7f080005;
+        public static final int angleFraction=0x7f080009;
+        public static final int angle_aligner=0x7f080007;
+        public static final int angle_background=0x7f080008;
+        public static final int angle_container=0x7f080006;
         public static final int btn_ok=0x7f080002;
         public static final int layoutRoot=0x7f080000;
-        public static final int state=0x7f08000d;
+        public static final int state=0x7f08000e;
         public static final int threshold=0x7f080003;
         public static final int thresholdRelation=0x7f080001;
-        public static final int threshold_container=0x7f08000a;
-        public static final int timeThresholdFrom=0x7f08000b;
-        public static final int timeThresholdTo=0x7f08000c;
-        public static final int timeUpdated=0x7f080009;
+        public static final int threshold_container=0x7f08000b;
+        public static final int timeThresholdFrom=0x7f08000c;
+        public static final int timeThresholdTo=0x7f08000d;
+        public static final int timeUpdated=0x7f08000a;
+        public static final int visualization=0x7f080005;
     }
     public static final class layout {
         public static final int sun_angle_config=0x7f030000;
