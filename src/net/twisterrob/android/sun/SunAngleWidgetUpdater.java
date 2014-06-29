@@ -13,6 +13,8 @@ import android.widget.RemoteViews;
 
 import net.twisterrob.android.sun.content.WidgetPreferences;
 import net.twisterrob.android.sun.model.*;
+import net.twisterrob.android.sun.model.SunSearchResults.SunSearchParams;
+import net.twisterrob.android.sun.model.SunSearchResults.ThresholdRelation;
 import net.twisterrob.android.sun.ui.*;
 
 public class SunAngleWidgetUpdater {
@@ -58,32 +60,37 @@ public class SunAngleWidgetUpdater {
 		Location location = getLocation(fallback);
 		Log.v("Sun", "update(" + appWidgetId + "," + location + ")");
 
-		SunAngle result = null;
+		SunSearchResults result = null;
 		if (location != null) {
 			SharedPreferences prefs = new WidgetPreferences(context, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
-			float angle = prefs.getFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, 0);
-			ThresholdRelation relation = ThresholdRelation.valueOf(prefs.getString(
+			SunSearchParams params = new SunSearchParams();
+			params.latitude = location.getLatitude();
+			params.longitude = location.getLongitude();
+			params.thresholdAngle = prefs.getFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, 0);
+			params.thresholdRelation = ThresholdRelation.valueOf(prefs.getString(
 					SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name()));
-			result = CALC
-					.find(angle, relation, location.getLatitude(), location.getLongitude(), Calendar.getInstance());
+			params.time = Calendar.getInstance();
+			result = CALC.find(params);
 		}
 		return updateViews(appWidgetId, result);
 	}
-	private boolean updateViews(int appWidgetId, SunAngle angle) {
+	private boolean updateViews(int appWidgetId, SunSearchResults results) {
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.sun_angle_widget);
 		Resources res = context.getResources();
-		if (angle != null) {
-			views.setImageViewResource(R.id.angle_background, BGs.get(angle.sunState, angle.lastUpdate));
-			views.setTextViewText(R.id.state, res.getText(CAPTIONs.get(angle.sunState, angle.lastUpdate)));
-			views.setTextColor(R.id.angle, res.getColor(COLORs.get(angle.sunState, angle.lastUpdate)));
-			views.setTextColor(R.id.angleFraction, res.getColor(COLORs.get(angle.sunState, angle.lastUpdate)));
-			views.setTextViewText(R.id.angle, (angle.current < 0? "-" : "") + Math.abs((int)angle.current) + "°");
-			views.setTextViewText(R.id.angleFraction, fraction.format(angle.current));
-			views.setTextViewText(R.id.timeUpdated, time3.format(angle.lastUpdate.getTime()));
-			views.setTextViewText(R.id.threshold, ((int)angle.angleThreshold) + "°");
-			views.setTextViewText(R.id.thresholdRelation, res.getText(RELATIONS.get(angle.thresholdRelation)));
-			views.setTextViewText(R.id.timeThresholdFrom, time2.format(angle.start.getTime()));
-			views.setTextViewText(R.id.timeThresholdTo, time2.format(angle.end.getTime()));
+		if (results != null) {
+			LightState state = LightState.from(results.current.angle);
+			views.setImageViewResource(R.id.angle_background, BGs.get(state, results.current.time));
+			views.setTextViewText(R.id.state, res.getText(CAPTIONs.get(state, results.current.time)));
+			views.setTextColor(R.id.angle, res.getColor(COLORs.get(state, results.current.time)));
+			views.setTextColor(R.id.angleFraction, res.getColor(COLORs.get(state, results.current.time)));
+			String sign = results.current.angle < 0? "-" : "";
+			views.setTextViewText(R.id.angle, sign + Math.abs((int)results.current.angle) + "°");
+			views.setTextViewText(R.id.angleFraction, fraction.format(results.current));
+			views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
+			views.setTextViewText(R.id.threshold, ((int)results.params.thresholdAngle) + "°");
+			views.setTextViewText(R.id.thresholdRelation, res.getText(RELATIONS.get(results.params.thresholdRelation)));
+			views.setTextViewText(R.id.timeThresholdFrom, time2.format(results.threshold.start.getTime()));
+			views.setTextViewText(R.id.timeThresholdTo, time2.format(results.threshold.end.getTime()));
 		} else {
 			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_refresh));
 			views.setTextViewText(R.id.angle, res.getText(R.string.angle_unkown));
@@ -96,7 +103,7 @@ public class SunAngleWidgetUpdater {
 		views.setOnClickPendingIntent(R.id.layoutRoot, createClickIntent(appWidgetId));
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		appWidgetManager.updateAppWidget(appWidgetId, views);
-		return angle != null;
+		return results != null;
 	}
 
 	protected PendingIntent createClickIntent(int appWidgetId) {
