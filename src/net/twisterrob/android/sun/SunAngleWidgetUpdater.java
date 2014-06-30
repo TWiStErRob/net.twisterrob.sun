@@ -85,7 +85,7 @@ public class SunAngleWidgetUpdater {
 			views.setTextColor(R.id.angleFraction, res.getColor(COLORs.get(state, results.current.time)));
 			String sign = results.current.angle < 0? "-" : "";
 			views.setTextViewText(R.id.angle, sign + Math.abs((int)results.current.angle) + "°");
-			views.setTextViewText(R.id.angleFraction, fraction.format(results.current));
+			views.setTextViewText(R.id.angleFraction, fraction.format(results.current.angle));
 			views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
 			views.setTextViewText(R.id.threshold, ((int)results.params.thresholdAngle) + "°");
 			views.setTextViewText(R.id.thresholdRelation, res.getText(RELATIONS.get(results.params.thresholdRelation)));
