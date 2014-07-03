@@ -25,7 +25,7 @@ public final class R {
         public static final int twilight_nautical=0x7f020008;
     }
     public static final class id {
-        public static final int angle=0x7f080004;
+        public static final int angle=0x7f080003;
         public static final int angleFraction=0x7f080009;
         public static final int angle_aligner=0x7f080007;
         public static final int angle_background=0x7f080008;
@@ -33,7 +33,7 @@ public final class R {
         public static final int btn_ok=0x7f080002;
         public static final int layoutRoot=0x7f080000;
         public static final int state=0x7f08000e;
-        public static final int threshold=0x7f080003;
+        public static final int threshold=0x7f080004;
         public static final int thresholdRelation=0x7f080001;
         public static final int threshold_container=0x7f08000b;
         public static final int timeThresholdFrom=0x7f08000c;
@@ -65,14 +65,17 @@ public final class R {
         public static final int light_state_twilight_astronomical=0x7f07000f;
         public static final int light_state_twilight_civil=0x7f07000e;
         public static final int light_state_twilight_nautical=0x7f07000d;
+        public static final int message_selected_angle=0x7f07001d;
+        public static final int threshold_relation_above=0x7f07000b;
+        public static final int threshold_relation_below=0x7f07000c;
         public static final int time_2_max=0x7f070009;
         public static final int time_2_min=0x7f070008;
         public static final int time_2_unknown=0x7f07000a;
         public static final int time_3_max=0x7f070006;
         public static final int time_3_min=0x7f070005;
         public static final int time_3_unknown=0x7f070007;
-        public static final int treshold_relation_above=0x7f07000b;
-        public static final int treshold_relation_below=0x7f07000c;
+        public static final int warning_maximum=0x7f07001b;
+        public static final int warning_minimum=0x7f07001c;
     }
     public static final class style {
         /** 

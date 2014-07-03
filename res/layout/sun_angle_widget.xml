@@ -88,7 +88,7 @@
 			style="@style/WidgetFont.Secondary.Small"
 			android:id="@+id/thresholdRelation"
 			android:layout_below="@id/threshold"
-			android:text="@string/treshold_relation_above" />
+			android:text="@string/threshold_relation_above" />
 	</RelativeLayout>
 	<TextView
 		style="@style/WidgetFont.Extra"

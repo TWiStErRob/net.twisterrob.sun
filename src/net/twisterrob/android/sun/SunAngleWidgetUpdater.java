@@ -28,8 +28,8 @@ public class SunAngleWidgetUpdater {
 	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<ThresholdRelation, Integer>(
 			ThresholdRelation.class);
 	static {
-		RELATIONS.put(ThresholdRelation.ABOVE, R.string.treshold_relation_above);
-		RELATIONS.put(ThresholdRelation.BELOW, R.string.treshold_relation_below);
+		RELATIONS.put(ThresholdRelation.ABOVE, R.string.threshold_relation_above);
+		RELATIONS.put(ThresholdRelation.BELOW, R.string.threshold_relation_below);
 	}
 
 	private Context context;

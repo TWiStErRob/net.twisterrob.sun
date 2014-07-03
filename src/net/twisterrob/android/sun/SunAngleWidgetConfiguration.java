@@ -21,10 +21,12 @@ import net.twisterrob.android.sun.model.SunSearchResults.ThresholdRelation;
 import net.twisterrob.android.sun.views.SunThresholdDrawable;
 
 public class SunAngleWidgetConfiguration extends Activity {
+	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);
+	private static final int MINIMUM_COLOR = Color.argb(0xAA, 0x00, 0x88, 0xFF);
 	private int appWidgetId;
-	private TextView angle;
 	private CompoundButton relation;
-	private SeekBar threshold;
+	private TextView threshold;
+	private SeekBar angle;
 	private ImageView visualization;
 	private SunThresholdDrawable newSun;
 	private SunSearchResults lastResults;
@@ -39,19 +41,18 @@ public class SunAngleWidgetConfiguration extends Activity {
 		}
 
 		super.setContentView(R.layout.sun_angle_config);
-		angle = (TextView)findViewById(R.id.angle);
 		relation = (CompoundButton)findViewById(R.id.thresholdRelation);
+		threshold = (TextView)findViewById(R.id.threshold);
 		visualization = (ImageView)findViewById(R.id.visualization);
-		threshold = (SeekBar)findViewById(R.id.threshold);
+		angle = (SeekBar)findViewById(R.id.angle);
 		findViewById(R.id.btn_ok).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				confirm();
 			}
 		});
 
-		threshold.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+		angle.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				angle.setText(toThreshold(progress) + "°");
 				updateImage();
 			}
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -66,25 +67,43 @@ public class SunAngleWidgetConfiguration extends Activity {
 				updateImage();
 			}
 		});
-		threshold.setProgress(toProgress(0));
+		angle.setProgress(toProgress(0));
 	}
 
 	private void updateImage() {
 		if (newSun == null) {
 			resetImage();
 		}
-		ThresholdRelation rel = toRelation(relation.isChecked());
-		float angle = toThreshold(threshold.getProgress());
+		ThresholdRelation rel = getCurrentRelation();
+		float angle = getCurrentThresholdAngle();
 		newSun.setSelected(rel, angle);
-		newSun.setMinimumEdge(angle <= lastResults.minimum.angle);
-		newSun.setMaximumEdge(angle >= lastResults.maximum.angle);
+		boolean belowMin = angle <= lastResults.minimum.angle;
+		boolean aboveMax = angle >= lastResults.maximum.angle;
+		newSun.setMinimumEdge(belowMin);
+		newSun.setMaximumEdge(aboveMax);
+		threshold.setTextColor(Color.BLACK);
+		threshold.setText(getString(R.string.message_selected_angle, getRelString(rel), angle));
+		if (belowMin) {
+			threshold.setTextColor(MINIMUM_COLOR);
+			threshold.setText(getString(R.string.warning_minimum, lastResults.minimum.angle, angle));
+		}
+		if (aboveMax) {
+			threshold.setTextColor(MAXIMUM_COLOR);
+			threshold.setText(getString(R.string.warning_maximum, lastResults.maximum.angle, angle));
+		}
 	}
+
+	private CharSequence getRelString(ThresholdRelation rel) {
+		int id = rel == ThresholdRelation.ABOVE? R.string.threshold_relation_above : R.string.threshold_relation_below;
+		return getString(id);
+	}
+
 	protected void resetImage() {
 		newSun = new SunThresholdDrawable();
 		newSun.setRadius(256);
 		newSun.setSelectedVisuals(16, 20, Color.argb(0x66, 0x00, 0xFF, 0x00));
-		newSun.setMinimumVisuals(6, 10, Color.argb(0xAA, 0x00, 0x88, 0xFF));
-		newSun.setMaximumVisuals(6, 10, Color.argb(0xAA, 0xFF, 0x44, 0x22));
+		newSun.setMinimumVisuals(6, 10, MINIMUM_COLOR);
+		newSun.setMaximumVisuals(6, 10, MAXIMUM_COLOR);
 		newSun.setSelectedEdge(true);
 		visualization.setImageDrawable(newSun);
 		updateLocation();
@@ -126,8 +145,8 @@ public class SunAngleWidgetConfiguration extends Activity {
 	private void confirm() {
 		SharedPreferences prefs = new WidgetPreferences(this, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
 		SharedPreferences.Editor edit = prefs.edit();
-		edit.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, toRelation(relation.isChecked()).name());
-		edit.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, toThreshold(threshold.getProgress()));
+		edit.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, getCurrentRelation().name());
+		edit.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
 		edit.commit();
 		setResult(RESULT_OK, result());
 		finish();
@@ -148,5 +167,13 @@ public class SunAngleWidgetConfiguration extends Activity {
 	}
 	private static int toProgress(float threshold) {
 		return (int)(threshold + 90);
+	}
+
+	protected ThresholdRelation getCurrentRelation() {
+		return toRelation(relation.isChecked());
+	}
+
+	protected float getCurrentThresholdAngle() {
+		return toThreshold(angle.getProgress());
 	}
 }
