@@ -29,7 +29,7 @@ public enum LightState {
 	 * and the thresholds are more important then others. */
 
 	/** Sunset and Sunrise */
-	HORIZON_TRANSITION(0, 1, true),
+	HORIZON_TRANSITION(-0.25, 1, false),
 	/** Civil dawn and Civil dusk */
 	CIVIL_THRESHOLD(-6, 0.5, true),
 	/** Nautical dawn and Nautical dusk */

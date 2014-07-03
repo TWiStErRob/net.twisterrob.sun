@@ -5,8 +5,6 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.content.*;
 import android.graphics.Color;
-import android.graphics.drawable.*;
-import android.graphics.drawable.shapes.OvalShape;
 import android.location.*;
 import android.os.Bundle;
 import android.view.*;
@@ -20,8 +18,7 @@ import net.twisterrob.android.sun.content.WidgetPreferences;
 import net.twisterrob.android.sun.model.*;
 import net.twisterrob.android.sun.model.SunSearchResults.SunSearchParams;
 import net.twisterrob.android.sun.model.SunSearchResults.ThresholdRelation;
-import net.twisterrob.android.sun.ui.SunGradientShaderFactory;
-import net.twisterrob.android.sun.views.RingSectionDrawable;
+import net.twisterrob.android.sun.views.SunThresholdDrawable;
 
 public class SunAngleWidgetConfiguration extends Activity {
 	private int appWidgetId;
@@ -29,6 +26,8 @@ public class SunAngleWidgetConfiguration extends Activity {
 	private CompoundButton relation;
 	private SeekBar threshold;
 	private ImageView visualization;
+	private SunThresholdDrawable newSun;
+	private SunSearchResults lastResults;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,51 +69,26 @@ public class SunAngleWidgetConfiguration extends Activity {
 		threshold.setProgress(toProgress(0));
 	}
 
-	private RingSectionDrawable selectedRing;
-	private RingSectionDrawable minRing;
-	private RingSectionDrawable maxRing;
 	private void updateImage() {
-		if (selectedRing == null) {
+		if (newSun == null) {
 			resetImage();
 		}
-		updateRing(selectedRing, toRelation(relation.isChecked()), toThreshold(threshold.getProgress()));
+		ThresholdRelation rel = toRelation(relation.isChecked());
+		float angle = toThreshold(threshold.getProgress());
+		newSun.setSelected(rel, angle);
+		newSun.setMinimumEdge(angle <= lastResults.minimum.angle);
+		newSun.setMaximumEdge(angle >= lastResults.maximum.angle);
 	}
-
-	/**
-	 * @param angle -90 .. 90
-	 */
-	protected void updateRing(RingSectionDrawable ring, ThresholdRelation relation, float angle) {
-		float sweep = 2 * (90 - angle);
-		if (relation == ThresholdRelation.BELOW) {
-			angle = 180 - angle;
-			sweep = 360 - sweep;
-		}
-		ring.setSection(angle, sweep);
-	}
-
 	protected void resetImage() {
-		final int radius = 256;
-		PaintDrawable sun = new PaintDrawable();
-		sun.setShape(new OvalShape());
-		sun.setShaderFactory(new SunGradientShaderFactory());
-		sun.setIntrinsicWidth(radius * 2);
-		sun.setIntrinsicHeight(radius * 2);
-
-		selectedRing = new RingSectionDrawable(radius - 40, 20);
-		selectedRing.setSize(radius * 2, radius * 2);
-		selectedRing.setColor(Color.argb(0x66, 0x00, 0xFF, 0x00));
-		minRing = new RingSectionDrawable(radius - 60, 20);
-		minRing.setSize(radius * 2, radius * 2);
-		minRing.setColor(Color.argb(0x66, 0xFF, 0x00, 0x00));
-		maxRing = new RingSectionDrawable(radius - 60, 20);
-		maxRing.setSize(radius * 2, radius * 2);
-		maxRing.setColor(Color.argb(0x66, 0xFF, 0x00, 0x00));
-
-		LayerDrawable image = new LayerDrawable(new Drawable[]{sun, selectedRing, minRing, maxRing});
-		visualization.setImageDrawable(image);
+		newSun = new SunThresholdDrawable();
+		newSun.setRadius(256);
+		newSun.setSelectedVisuals(16, 20, Color.argb(0x66, 0x00, 0xFF, 0x00));
+		newSun.setMinimumVisuals(6, 10, Color.argb(0xAA, 0x00, 0x88, 0xFF));
+		newSun.setMaximumVisuals(6, 10, Color.argb(0xAA, 0xFF, 0x44, 0x22));
+		newSun.setSelectedEdge(true);
+		visualization.setImageDrawable(newSun);
 		updateLocation();
 	}
-
 	private void updateLocation() {
 		LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		String provider = lm.getBestProvider(new Criteria(), true);
@@ -141,11 +115,12 @@ public class SunAngleWidgetConfiguration extends Activity {
 			}, null);
 		}
 	}
-	protected void update(Location location) {
-		SunSearchResults results = new SunCalculator(new SunX()).find(new SunSearchParams(location.getLatitude(),
-				location.getLongitude(), Calendar.getInstance()));
-		updateRing(minRing, ThresholdRelation.BELOW, (float)results.minimum.angle);
-		updateRing(maxRing, ThresholdRelation.ABOVE, (float)results.maximum.angle);
+
+	protected void update(Location loc) {
+		SunSearchParams params = new SunSearchParams(loc.getLatitude(), loc.getLongitude(), Calendar.getInstance());
+		lastResults = new SunCalculator(new SunX()).find(params);
+		newSun.setMinMax((float)lastResults.minimum.angle, (float)lastResults.maximum.angle);
+		updateImage();
 	}
 
 	private void confirm() {

@@ -6,6 +6,7 @@ import android.content.*;
 import android.location.*;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import net.twisterrob.android.sun.model.SunSearchResults.ThresholdRelation;
 
@@ -49,13 +50,9 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 	@Override
 	public void onUpdate(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		Log.v("Sun", this + ".onUpdate(" + Arrays.toString(appWidgetIds) + ")");
-		try {
-			TODOs.add(appWidgetIds);
-			UPDATER.setContext(context);
-			updateAll();
-		} catch (Exception ex) {
-			Log.e("Sun", this + ".onUpdate", ex);
-		}
+		TODOs.add(appWidgetIds);
+		UPDATER.setContext(context);
+		updateAll();
 	}
 
 	@Override
@@ -69,6 +66,7 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 			TODOs.catchup(UPDATER, this);
 		} catch (Exception ex) {
 			Log.e("Sun", this + ".updateAll", ex);
+			Toast.makeText(UPDATER.getContext(), ex.toString(), Toast.LENGTH_LONG).show();
 		}
 	}
 
