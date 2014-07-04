@@ -71,16 +71,14 @@
 			android:id="@+id/timeThresholdFrom"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentTop="true"
-			android:layout_marginLeft="4dp"
-			android:layout_marginRight="4dp"
+			android:layout_marginRight="2dp"
 			android:text="@string/time_2_min" />
 		<TextView
 			style="@style/WidgetFont.Primary.Small"
 			android:id="@+id/timeThresholdTo"
 			android:layout_alignParentRight="true"
 			android:layout_below="@id/timeThresholdFrom"
-			android:layout_marginLeft="4dp"
-			android:layout_marginRight="4dp"
+			android:layout_marginRight="2dp"
 			android:layout_marginTop="-4dp"
 			android:text="@string/time_2_max" />
 		<TextView
@@ -88,7 +86,8 @@
 			android:id="@+id/threshold"
 			android:layout_alignParentLeft="true"
 			android:layout_alignParentTop="true"
-			android:layout_marginBottom="-6dp"
+			android:layout_marginBottom="-4dp"
+			android:layout_marginTop="4dp"
 			android:layout_toLeftOf="@id/timeThresholdFrom"
 			android:gravity="center_horizontal"
 			android:text="@string/angle_max" />
