@@ -1,5 +1,6 @@
 package net.twisterrob.android.sun.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
@@ -10,13 +11,11 @@ public class VerticalSeekBar extends SeekBar {
 	public VerticalSeekBar(Context context) {
 		super(context);
 	}
-
-	public VerticalSeekBar(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
-
 	public VerticalSeekBar(Context context, AttributeSet attrs) {
 		super(context, attrs);
+	}
+	public VerticalSeekBar(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
 	}
 
 	@Override
@@ -37,6 +36,7 @@ public class VerticalSeekBar extends SeekBar {
 		super.onDraw(c);
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (!isEnabled()) {
@@ -48,11 +48,16 @@ public class VerticalSeekBar extends SeekBar {
 			case MotionEvent.ACTION_MOVE:
 			case MotionEvent.ACTION_UP:
 				setProgress(getMax() - (int)(getMax() * event.getY() / getHeight()));
-				onSizeChanged(getWidth(), getHeight(), 0, 0);
 				break;
 			default:
 				break;
 		}
 		return true;
+	}
+
+	@Override
+	public synchronized void setProgress(int progress) {
+		super.setProgress(progress);
+		onSizeChanged(getWidth(), getHeight(), 0, 0);
 	}
 }

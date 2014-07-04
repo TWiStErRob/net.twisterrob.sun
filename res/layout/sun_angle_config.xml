@@ -29,6 +29,14 @@
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentTop="true"
 		android:max="180" />
+	<Spinner
+		android:id="@+id/preset"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:layout_toRightOf="@id/angle"
+		android:entries="@array/angle_preset" />
 	<TextView
 		android:id="@+id/threshold"
 		android:layout_width="wrap_content"
@@ -42,7 +50,7 @@
 		android:layout_height="wrap_content"
 		android:layout_above="@id/threshold"
 		android:layout_alignParentRight="true"
-		android:layout_alignParentTop="true"
+		android:layout_below="@id/preset"
 		android:layout_margin="8dp"
 		android:layout_toRightOf="@id/angle"
 		android:src="@drawable/ic_launcher" />

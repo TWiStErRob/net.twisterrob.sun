@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import static android.appwidget.AppWidgetManager.*;
@@ -28,8 +29,10 @@ public class SunAngleWidgetConfiguration extends Activity {
 	private TextView threshold;
 	private SeekBar angle;
 	private ImageView visualization;
+	private Spinner preset;
 	private SunThresholdDrawable newSun;
 	private SunSearchResults lastResults;
+	private ResourceArray mapping = new ResourceArray(ResourceArray.Type.Int, R.array.angle_preset_values);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,9 @@ public class SunAngleWidgetConfiguration extends Activity {
 		threshold = (TextView)findViewById(R.id.threshold);
 		visualization = (ImageView)findViewById(R.id.visualization);
 		angle = (SeekBar)findViewById(R.id.angle);
+		preset = ((Spinner)findViewById(R.id.preset));
+		mapping.initialize(getResources());
+
 		findViewById(R.id.btn_ok).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				confirm();
@@ -53,6 +59,7 @@ public class SunAngleWidgetConfiguration extends Activity {
 
 		angle.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				setPresetByAngle(toThreshold(progress));
 				updateImage();
 			}
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -62,12 +69,27 @@ public class SunAngleWidgetConfiguration extends Activity {
 				// ignore
 			}
 		});
+
 		relation.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				updateImage();
 			}
 		});
-		angle.setProgress(toProgress(0));
+
+		preset.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
+				int presetAngleValue = mapping.getValue(position);
+				angle.setProgress(toProgress(presetAngleValue));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> list) {
+				// NOP
+			}
+		});
+
+		preset.setSelection(0);
 	}
 
 	private void updateImage() {
@@ -175,5 +197,14 @@ public class SunAngleWidgetConfiguration extends Activity {
 
 	protected float getCurrentThresholdAngle() {
 		return toThreshold(angle.getProgress());
+	}
+
+	protected void setPresetByAngle(float angle) {
+		int temp = Math.round(angle);
+		int position = mapping.getPosition(temp);
+		if (position == -1) {
+			position = mapping.last();
+		}
+		preset.setSelection(position);
 	}
 }
