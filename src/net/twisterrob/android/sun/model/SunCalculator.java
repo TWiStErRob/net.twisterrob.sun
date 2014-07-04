@@ -60,36 +60,25 @@ public class SunCalculator {
 		return result;
 	}
 
-	private Range find(double lat, double lon, Calendar start, Calendar stop, ThresholdRelation relation,
+	private Range find(double lat, double lon, Calendar start, Calendar end, ThresholdRelation relation,
 			double threshold) {
-		final int every = 1;
 		Range result = new Range();
-		if (relation != null) {
-			Calendar running = (Calendar)start.clone();
-			while (running.before(stop)) {
-				double angle = sun.altitudeAngle(lat, lon, running);
-				switch (relation) {
-					case ABOVE:
-						if (result.start == null && angle >= threshold) {
-							result.start = (Calendar)running.clone();
-						}
-						if (result.start != null && result.end == null && angle <= threshold) {
-							result.end = (Calendar)running.clone();
-						}
-						break;
-					case BELOW:
-						if (result.start == null && angle <= threshold) {
-							result.start = (Calendar)running.clone();
-						}
-						if (result.start != null && result.end == null && angle >= threshold) {
-							result.end = (Calendar)running.clone();
-						}
-						break;
-					default:
-						throw new UnsupportedOperationException("Enum value: " + relation);
-				}
-				running.add(Calendar.MINUTE, every);
+		final int every = 1;
+		final Calendar running = (Calendar)start.clone();
+		while (start.compareTo(running) <= 0 && running.compareTo(end) <= 0) {
+			double angle = sun.altitudeAngle(lat, lon, running);
+			if (result.start == null && angle >= threshold) {
+				result.start = (Calendar)running.clone();
 			}
+			if (result.start != null && result.end == null && angle <= threshold) {
+				result.end = (Calendar)running.clone();
+			}
+			running.add(Calendar.MINUTE, every);
+		}
+		if (relation == ThresholdRelation.BELOW) {
+			Calendar temp = result.end;
+			result.end = result.start;
+			result.start = temp;
 		}
 		return result;
 	}
