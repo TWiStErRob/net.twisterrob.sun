@@ -14,14 +14,15 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true">
-		<!-- This element exists solely for alignment, because the ImageView needs something to align to -->
 		<TextView
 			style="@style/WidgetFont.Primary.Big"
 			android:id="@+id/angle_aligner"
 			android:layout_alignParentLeft="true"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentTop="true"
-			android:text="@string/angle_max" />
+			android:text="@string/angle_max">
+			<!-- This element exists solely for alignment, because the ImageView needs something to align to -->
+		</TextView>
 		<ImageView
 			android:id="@+id/angle_background"
 			android:layout_width="wrap_content"
@@ -59,50 +60,47 @@
 			android:paddingTop="-4dp"
 			android:text="@string/time_3_min" />
 	</RelativeLayout>
-	<RelativeLayout
-		android:id="@+id/threshold_container"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+	<TextView
+		style="@style/WidgetFont.Primary.Small"
+		android:id="@+id/timeThresholdTo"
 		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true">
-		<TextView
-			style="@style/WidgetFont.Primary.Small"
-			android:id="@+id/timeThresholdFrom"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentTop="true"
-			android:layout_marginLeft="4dp"
-			android:layout_marginRight="4dp"
-			android:text="@string/time_2_min" />
-		<TextView
-			style="@style/WidgetFont.Primary.Small"
-			android:id="@+id/timeThresholdTo"
-			android:layout_alignParentRight="true"
-			android:layout_below="@id/timeThresholdFrom"
-			android:layout_marginLeft="4dp"
-			android:layout_marginRight="4dp"
-			android:text="@string/time_2_max" />
-		<TextView
-			style="@style/WidgetFont.Secondary.Big"
-			android:id="@+id/threshold"
-			android:layout_alignParentLeft="true"
-			android:layout_centerVertical="true"
-			android:layout_toLeftOf="@id/timeThresholdFrom"
-			android:gravity="center_horizontal"
-			android:text="@string/angle_max" />
-		<TextView
-			style="@style/WidgetFont.Secondary.Small"
-			android:id="@+id/thresholdRelation"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@id/threshold"
-			android:layout_toLeftOf="@id/timeThresholdTo"
-			android:gravity="center_horizontal"
-			android:text="@string/threshold_relation_above" />
-	</RelativeLayout>
+		android:layout_alignParentRight="true"
+		android:layout_marginLeft="4dp"
+		android:layout_marginRight="4dp"
+		android:layout_marginTop="-4dp"
+		android:text="@string/time_2_max" />
+	<TextView
+		style="@style/WidgetFont.Primary.Small"
+		android:id="@+id/timeThresholdFrom"
+		android:layout_above="@id/timeThresholdTo"
+		android:layout_alignParentRight="true"
+		android:layout_marginLeft="4dp"
+		android:layout_marginRight="4dp"
+		android:text="@string/time_2_min" />
+	<TextView
+		style="@style/WidgetFont.Secondary.Big"
+		android:id="@+id/threshold"
+		android:layout_above="@id/thresholdRelation"
+		android:layout_alignParentLeft="true"
+		android:layout_marginBottom="-6dp"
+		android:layout_toLeftOf="@id/timeThresholdFrom"
+		android:gravity="center_horizontal"
+		android:text="@string/angle_max" />
+	<TextView
+		style="@style/WidgetFont.Secondary.Small"
+		android:id="@+id/thresholdRelation"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_toLeftOf="@id/timeThresholdTo"
+		android:gravity="center_horizontal"
+		android:text="@string/threshold_relation_above" />
 	<TextView
 		style="@style/WidgetFont.Extra"
 		android:id="@+id/state"
-		android:layout_above="@id/threshold_container"
-		android:layout_width="match_parent"
-		android:gravity="center_horizontal"
+		android:layout_above="@id/threshold"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentRight="true"
+		android:layout_below="@id/angle_container"
+		android:gravity="center_horizontal|center_vertical"
 		android:text="@string/light_state_twilight_astronomical" />
 </RelativeLayout>
