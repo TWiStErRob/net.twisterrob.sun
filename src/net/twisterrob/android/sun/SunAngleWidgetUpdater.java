@@ -94,8 +94,8 @@ public class SunAngleWidgetUpdater {
 			views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
 			views.setTextViewText(R.id.threshold, ((int)results.params.thresholdAngle) + "°");
 			views.setTextViewText(R.id.thresholdRelation, res.getText(RELATIONS.get(results.params.thresholdRelation)));
-			views.setTextViewText(R.id.timeThresholdFrom, time2.format(results.threshold.start.getTime()));
-			views.setTextViewText(R.id.timeThresholdTo, time2.format(results.threshold.end.getTime()));
+			views.setTextViewText(R.id.timeThresholdFrom, getTime2(results.threshold.start));
+			views.setTextViewText(R.id.timeThresholdTo, getTime2(results.threshold.end));
 		} else {
 			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_refresh));
 			views.setTextViewText(R.id.angle, res.getText(R.string.angle_unkown));
@@ -105,15 +105,24 @@ public class SunAngleWidgetUpdater {
 			views.setTextViewText(R.id.timeThresholdFrom, res.getText(R.string.time_2_unknown));
 			views.setTextViewText(R.id.timeThresholdTo, res.getText(R.string.time_2_unknown));
 		}
-		views.setOnClickPendingIntent(R.id.layoutRoot, createClickIntent(appWidgetId));
+		views.setOnClickPendingIntent(R.id.threshold_container, createOpenIntent(appWidgetId));
+		views.setOnClickPendingIntent(R.id.angle_container, createRefreshIntent(appWidgetId));
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 	}
 
-	protected PendingIntent createClickIntent(int appWidgetId) {
+	private static String getTime2(Calendar cal) {
+		return cal == null? "--:--" : time2.format(cal.getTime());
+	}
+
+	protected PendingIntent createOpenIntent(int appWidgetId) {
+		Intent configIntent = new Intent(context, SunAngleWidgetConfiguration.class);
+		configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		return PendingIntent.getActivity(context, appWidgetId, configIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+	protected PendingIntent createRefreshIntent(int appWidgetId) {
 		Intent intent = createUpdateIntent(context, appWidgetId);
-		int reqCode = appWidgetId; // needs to be different for each widget
-		return PendingIntent.getBroadcast(context, reqCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		return PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
 	protected static Intent createUpdateIntent(Context context, int... appWidgetIds) {

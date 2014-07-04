@@ -37,11 +37,12 @@ public final class R {
         public static final int btn_ok=0x7f090002;
         public static final int layoutRoot=0x7f090000;
         public static final int preset=0x7f090004;
-        public static final int state=0x7f09000e;
+        public static final int state=0x7f09000f;
         public static final int threshold=0x7f090005;
         public static final int thresholdRelation=0x7f090001;
+        public static final int threshold_container=0x7f09000c;
         public static final int timeThresholdFrom=0x7f09000d;
-        public static final int timeThresholdTo=0x7f09000c;
+        public static final int timeThresholdTo=0x7f09000e;
         public static final int timeUpdated=0x7f09000b;
         public static final int visualization=0x7f090006;
     }

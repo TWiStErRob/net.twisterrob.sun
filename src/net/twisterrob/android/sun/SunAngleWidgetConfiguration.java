@@ -7,6 +7,7 @@ import android.content.*;
 import android.graphics.Color;
 import android.location.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -24,7 +25,6 @@ import net.twisterrob.android.sun.views.SunThresholdDrawable;
 public class SunAngleWidgetConfiguration extends Activity {
 	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);
 	private static final int MINIMUM_COLOR = Color.argb(0xAA, 0x00, 0x88, 0xFF);
-	private int appWidgetId;
 	private CompoundButton relation;
 	private TextView threshold;
 	private SeekBar angle;
@@ -33,15 +33,13 @@ public class SunAngleWidgetConfiguration extends Activity {
 	private SunThresholdDrawable newSun;
 	private SunSearchResults lastResults;
 	private ResourceArray mapping = new ResourceArray(ResourceArray.Type.Int, R.array.angle_preset_values);
+	private SharedPreferences prefs;
+	private Intent result;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		appWidgetId = getIntent().getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
-		setResult(RESULT_CANCELED, result());
-		if (appWidgetId == INVALID_APPWIDGET_ID) {
-			//finish();
-		}
+		initAppWidget();
 
 		super.setContentView(R.layout.sun_angle_config);
 		relation = (CompoundButton)findViewById(R.id.thresholdRelation);
@@ -79,8 +77,11 @@ public class SunAngleWidgetConfiguration extends Activity {
 		preset.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
-				int presetAngleValue = mapping.getValue(position);
-				angle.setProgress(toProgress(presetAngleValue));
+				if (position != mapping.last()) {
+					int presetAngleValue = mapping.getValue(position);
+					Log.d("Config", "Preset for pos: " + position + " = " + presetAngleValue);
+					angle.setProgress(toProgress(presetAngleValue));
+				}
 			}
 
 			@Override
@@ -88,8 +89,24 @@ public class SunAngleWidgetConfiguration extends Activity {
 				// NOP
 			}
 		});
+		String relVal = prefs.getString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name());
+		float angleVal = prefs.getFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, 0);
+		Log.d("Config", "Existing values: " + relVal + " " + angleVal);
+		relation.setChecked(toChecked(ThresholdRelation.valueOf(relVal)));
+		angle.setProgress(toProgress(angleVal));
+	}
+	private void initAppWidget() {
+		int appWidgetId = getIntent().getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
+		Log.d("Config", "Editing widget: " + appWidgetId);
+		result = new Intent();
+		result.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
+		setResult(RESULT_CANCELED, result);
 
-		preset.setSelection(0);
+		if (appWidgetId == INVALID_APPWIDGET_ID) {
+			Log.i("Config", "Invalid widget ID, closing");
+			//finish();
+		}
+		prefs = new WidgetPreferences(this, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
 	}
 
 	private void updateImage() {
@@ -165,24 +182,20 @@ public class SunAngleWidgetConfiguration extends Activity {
 	}
 
 	private void confirm() {
-		SharedPreferences prefs = new WidgetPreferences(this, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
 		SharedPreferences.Editor edit = prefs.edit();
 		edit.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, getCurrentRelation().name());
 		edit.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
 		edit.commit();
 		SunAngleWidgetUpdater.forceUpdateAll(getApplicationContext());
-		setResult(RESULT_OK, result());
+		setResult(RESULT_OK, result);
 		finish();
-	}
-
-	private Intent result() {
-		Intent result = new Intent();
-		result.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
-		return result;
 	}
 
 	private static ThresholdRelation toRelation(boolean checked) {
 		return checked? ThresholdRelation.ABOVE : ThresholdRelation.BELOW;
+	}
+	private static boolean toChecked(ThresholdRelation rel) {
+		return rel == ThresholdRelation.ABOVE;
 	}
 
 	private static float toThreshold(int progress) {
@@ -201,6 +214,7 @@ public class SunAngleWidgetConfiguration extends Activity {
 	}
 
 	protected void setPresetByAngle(float angle) {
+		Log.d("Config", "Syncing preset for angle: " + angle);
 		int temp = Math.round(angle);
 		int position = mapping.getPosition(temp);
 		if (position == -1) {
