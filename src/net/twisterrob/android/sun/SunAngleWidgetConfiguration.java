@@ -170,6 +170,7 @@ public class SunAngleWidgetConfiguration extends Activity {
 		edit.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, getCurrentRelation().name());
 		edit.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
 		edit.commit();
+		SunAngleWidgetUpdater.forceUpdateAll(getApplicationContext());
 		setResult(RESULT_OK, result());
 		finish();
 	}

@@ -52,10 +52,10 @@ public class SunAngleWidgetUpdater {
 		return location;
 	}
 
-	public void forceUpdateAll() {
+	public static void forceUpdateAll(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		ComponentName component = new ComponentName(context, SunAngleWidgetProvider.class);
-		Intent intent = createUpdateIntent(appWidgetManager.getAppWidgetIds(component));
+		Intent intent = createUpdateIntent(context, appWidgetManager.getAppWidgetIds(component));
 		context.sendBroadcast(intent);
 	}
 
@@ -110,12 +110,12 @@ public class SunAngleWidgetUpdater {
 	}
 
 	protected PendingIntent createClickIntent(int appWidgetId) {
-		Intent intent = createUpdateIntent(appWidgetId);
+		Intent intent = createUpdateIntent(context, appWidgetId);
 		int reqCode = appWidgetId; // needs to be different for each widget
 		return PendingIntent.getBroadcast(context, reqCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 
-	protected Intent createUpdateIntent(int... appWidgetIds) {
+	protected static Intent createUpdateIntent(Context context, int... appWidgetIds) {
 		Intent intent = new Intent(context, SunAngleWidgetProvider.class);
 		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
