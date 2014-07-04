@@ -75,9 +75,11 @@ public class SunAngleWidgetUpdater {
 			params.time = Calendar.getInstance();
 			result = CALC.find(params);
 		}
-		return updateViews(appWidgetId, result);
+		updateViews(appWidgetId, result);
+		return result != null;
 	}
-	private boolean updateViews(int appWidgetId, SunSearchResults results) {
+
+	private void updateViews(int appWidgetId, SunSearchResults results) {
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.sun_angle_widget);
 		Resources res = context.getResources();
 		if (results != null) {
@@ -106,7 +108,6 @@ public class SunAngleWidgetUpdater {
 		views.setOnClickPendingIntent(R.id.layoutRoot, createClickIntent(appWidgetId));
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		appWidgetManager.updateAppWidget(appWidgetId, views);
-		return results != null;
 	}
 
 	protected PendingIntent createClickIntent(int appWidgetId) {
