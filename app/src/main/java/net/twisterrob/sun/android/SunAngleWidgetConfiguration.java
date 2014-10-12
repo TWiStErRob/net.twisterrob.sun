@@ -19,9 +19,10 @@ import static android.appwidget.AppWidgetManager.*;
 
 import net.twisterrob.android.content.pref.WidgetPreferences;
 import net.twisterrob.android.content.res.ResourceArray;
+import net.twisterrob.sun.algo.*;
+import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.view.SunThresholdDrawable;
-import net.twisterrob.sun.model.*;
-import net.twisterrob.sun.model.SunSearchResults.*;
+import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 
 public class SunAngleWidgetConfiguration extends Activity {
 	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);
@@ -177,7 +178,7 @@ public class SunAngleWidgetConfiguration extends Activity {
 
 	protected void update(Location loc) {
 		SunSearchParams params = new SunSearchParams(loc.getLatitude(), loc.getLongitude(), Calendar.getInstance());
-		lastResults = new SunCalculator(new SunX()).find(params);
+		lastResults = new SunCalculator(new PhotovoltaicSun()).find(params);
 		newSun.setMinMax((float)lastResults.minimum.angle, (float)lastResults.maximum.angle);
 		updateImage();
 	}

@@ -1,13 +1,15 @@
-package net.twisterrob.sun.model;
+package net.twisterrob.sun.pveducation;
 
 import java.util.Calendar;
 
 import static java.lang.Math.*;
 
+import net.twisterrob.sun.SeasonFormula;
+
 /**
  * http://www.pveducation.org/pvcdrom/properties-of-sunlight/declination-angle
  */
-public class DeclinationXAccurate {
+public class AccuratePhotovoltaicFormula implements SeasonFormula {
 	/**
 	 * The Earth is tilted by 23.45° and the declination angle varies plus or minus this amount.
 	 */
@@ -19,10 +21,8 @@ public class DeclinationXAccurate {
 	 * If the Earth were not tilted on its axis of rotation, the declination would always be 0°.
 	 * However, the Earth is tilted by 23.45° and the declination angle varies plus or minus this amount.
 	 * Only at the spring and fall equinoxes is the declination angle equal to 0°.
-	 *
-	 * @return
 	 */
-	public static double declination(Calendar time) {
+	public double declination(Calendar time) {
 		double B = toRadians(B(time));
 		return toDegrees(asin(sin(toRadians(EARTH_TILT)) * sin(B)));
 	}

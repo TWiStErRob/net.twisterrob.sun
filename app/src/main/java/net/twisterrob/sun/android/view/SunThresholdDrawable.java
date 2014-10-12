@@ -6,8 +6,8 @@ import android.graphics.Paint.*;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable.ShaderFactory;
 
+import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.ui.SunGradientShaderFactory;
-import net.twisterrob.sun.model.SunSearchResults.ThresholdRelation;
 
 public class SunThresholdDrawable extends Drawable {
 	private SunConstantState s;

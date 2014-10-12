@@ -1,8 +1,9 @@
-package net.twisterrob.sun.model;
+package net.twisterrob.sun.algo;
 
 import java.util.Calendar;
 
-import net.twisterrob.sun.model.SunSearchResults.*;
+import net.twisterrob.sun.Sun;
+import net.twisterrob.sun.algo.SunSearchResults.*;
 
 public class SunCalculator {
 	private final Sun sun;

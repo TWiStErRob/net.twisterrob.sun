@@ -1,15 +1,27 @@
-package net.twisterrob.sun.model;
+package net.twisterrob.sun.pveducation;
 
 import java.util.Calendar;
 
 import static java.lang.Math.*;
+
+import net.twisterrob.sun.*;
 
 /**
  * http://www.pveducation.org/pvcdrom/properties-of-sunlight/elevation-angle
  * http://www.pveducation.org/pvcdrom/properties-of-sunlight/solar-time
  * http://www.pveducation.org/pvcdrom/properties-of-sunlight/azimuth-angle
  */
-public class SunX implements Sun {
+public class PhotovoltaicSun implements Sun {
+	private final SeasonFormula formula;
+
+	public PhotovoltaicSun() {
+		this(new AccuratePhotovoltaicFormula());
+	}
+
+	public PhotovoltaicSun(SeasonFormula formula) {
+		this.formula = formula;
+	}
+
 	/**
 	 * The elevation angle (used interchangeably with altitude angle) is
 	 * the angular height of the sun in the sky measured from the horizontal.
@@ -84,7 +96,7 @@ public class SunX implements Sun {
 	}
 
 	public double declination(double lat, double lon, Calendar time) {
-		return DeclinationXAccurate.declination(time);
+		return formula.declination(time);
 	}
 
 	/**
@@ -143,7 +155,7 @@ public class SunX implements Sun {
 	}
 
 	public static void main(String[] args) {
-		Sun sun = new SunX();
+		Sun sun = new PhotovoltaicSun();
 		Calendar now = Calendar.getInstance();
 		for (int d = 1; d <= 365; ++d) {
 			now.set(Calendar.DAY_OF_YEAR, d);

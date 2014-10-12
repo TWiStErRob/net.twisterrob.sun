@@ -9,3 +9,9 @@ buildscript {
 		classpath 'net.twisterrob.gradle:plugin:0.3-SNAPSHOT'
 	}
 }
+
+subprojects {
+	repositories {
+		jcenter()
+	}
+}

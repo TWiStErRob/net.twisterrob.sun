@@ -12,9 +12,11 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import net.twisterrob.android.content.pref.WidgetPreferences;
+import net.twisterrob.sun.algo.*;
+import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.ui.*;
 import net.twisterrob.sun.model.*;
-import net.twisterrob.sun.model.SunSearchResults.*;
+import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 
 public class SunAngleWidgetUpdater {
 	private static final DecimalFormat fraction = initFractionFormat();
@@ -23,7 +25,7 @@ public class SunAngleWidgetUpdater {
 	private static final LightStateMap<Integer> CAPTIONs = new LightStateNameIDs();
 	private static final LightStateMap<Integer> BGs = new LightStateBackgroundIDs();
 	private static final LightStateMap<Integer> COLORs = new LightStateColorIDs();
-	private static final SunCalculator CALC = new SunCalculator(new SunX());
+	private static final SunCalculator CALC = new SunCalculator(new PhotovoltaicSun());
 	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<>(ThresholdRelation.class);
 	static {
 		RELATIONS.put(ThresholdRelation.ABOVE, R.string.threshold_relation_above);

@@ -6,10 +6,11 @@ import android.appwidget.*;
 import android.content.*;
 import android.location.*;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import net.twisterrob.sun.model.SunSearchResults.ThresholdRelation;
+import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 
 public class SunAngleWidgetProvider extends AppWidgetProvider implements LocationListener {
 	public static final String PREF_NAME = SunAngleWidgetProvider.class.getName();
@@ -43,7 +44,7 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 	}
 
 	@Override
-	public void onReceive(Context context, Intent intent) {
+	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
 		Log.v("Sun", this + ".onReceive(" + intent + ")");
 		super.onReceive(context, intent);
 	}

@@ -1,4 +1,4 @@
-package net.twisterrob.sun.model;
+package net.twisterrob.sun.algo;
 
 import java.util.Calendar;
 
@@ -52,6 +52,7 @@ public class SunSearchResults {
 		}
 
 		@Override
+		@SuppressWarnings("CloneDoesntDeclareCloneNotSupportedException")
 		public SunSearchParams clone() {
 			try {
 				return (SunSearchParams)super.clone();
