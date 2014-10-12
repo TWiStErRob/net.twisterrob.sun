@@ -1,14 +1,13 @@
-package net.twisterrob.android.sun.views;
+package net.twisterrob.sun.android.views;
 
 import android.content.res.Resources;
 import android.graphics.*;
-import android.graphics.Paint.Join;
-import android.graphics.Paint.Style;
-import android.graphics.drawable.*;
+import android.graphics.Paint.*;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable.ShaderFactory;
 
-import net.twisterrob.android.sun.model.SunSearchResults.ThresholdRelation;
-import net.twisterrob.android.sun.ui.SunGradientShaderFactory;
+import net.twisterrob.sun.android.model.SunSearchResults.ThresholdRelation;
+import net.twisterrob.sun.android.ui.SunGradientShaderFactory;
 
 public class SunThresholdDrawable extends Drawable {
 	private SunConstantState s;
@@ -191,10 +190,10 @@ public class SunThresholdDrawable extends Drawable {
 			}
 
 			public void draw(Canvas canvas) {
-				float g/* ap */= gap;
-				float t/* hickness */= paint.getStrokeWidth() / 2;
-				float d/* iameter */= radius * 2;
-				float c/* orrection */= g + t; // half of the thickness is outside drawing bounds
+				float g/* ap */ = gap;
+				float t/* hickness */ = paint.getStrokeWidth() / 2;
+				float d/* iameter */ = radius * 2;
+				float c/* orrection */ = g + t; // half of the thickness is outside drawing bounds
 				tempBounds.set(c, c, d - c, d - c);
 				canvas.drawArc(tempBounds, angle, sweep, edges, paint);
 			}

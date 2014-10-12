@@ -1,4 +1,4 @@
-package net.twisterrob.android.sun;
+package net.twisterrob.sun.android;
 
 import java.util.Calendar;
 
@@ -8,19 +8,19 @@ import android.graphics.Color;
 import android.location.*;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.*;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+
 import static android.appwidget.AppWidgetManager.*;
 
-import net.twisterrob.android.sun.content.WidgetPreferences;
-import net.twisterrob.android.sun.model.*;
-import net.twisterrob.android.sun.model.SunSearchResults.SunSearchParams;
-import net.twisterrob.android.sun.model.SunSearchResults.ThresholdRelation;
-import net.twisterrob.android.sun.views.SunThresholdDrawable;
+import net.twisterrob.sun.android.content.WidgetPreferences;
+import net.twisterrob.sun.android.model.*;
+import net.twisterrob.sun.android.model.SunSearchResults.*;
+import net.twisterrob.sun.android.views.SunThresholdDrawable;
 
 public class SunAngleWidgetConfiguration extends Activity {
 	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);

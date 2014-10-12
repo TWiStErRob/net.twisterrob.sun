@@ -1,7 +1,8 @@
-package net.twisterrob.android.sun.ui;
-import net.twisterrob.android.sun.model.LightStateMap;
+package net.twisterrob.sun.android.ui;
 
-import static net.twisterrob.android.sun.model.LightState.*;
+import net.twisterrob.sun.android.model.LightStateMap;
+
+import static net.twisterrob.sun.android.model.LightState.*;
 
 public class LightStateColorIDs extends LightStateMap<Integer> {
 	public LightStateColorIDs() {
@@ -17,6 +18,5 @@ public class LightStateColorIDs extends LightStateMap<Integer> {
 
 		put(ASTRONOMICAL_TWILIGHT, android.R.color.white);
 		put(ASTRONOMICAL_THRESHOLD, android.R.color.white);
-
 	}
 }

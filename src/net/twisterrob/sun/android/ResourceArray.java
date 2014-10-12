@@ -1,4 +1,4 @@
-package net.twisterrob.android.sun;
+package net.twisterrob.sun.android;
 
 import android.content.res.Resources;
 
@@ -70,5 +70,4 @@ public class ResourceArray {
 		Int,
 		String
 	}
-
 }

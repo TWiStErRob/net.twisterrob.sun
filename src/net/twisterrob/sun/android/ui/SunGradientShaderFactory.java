@@ -1,4 +1,4 @@
-package net.twisterrob.android.sun.ui;
+package net.twisterrob.sun.android.ui;
 
 import android.graphics.*;
 import android.graphics.drawable.ShapeDrawable;

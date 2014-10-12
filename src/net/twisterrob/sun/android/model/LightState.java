@@ -1,4 +1,4 @@
-package net.twisterrob.android.sun.model;
+package net.twisterrob.sun.android.model;
 
 /**
  * <table>
@@ -21,7 +21,7 @@ package net.twisterrob.android.sun.model;
  * <tr><td>around<td><td>-18</td><td>astronomical dusk</td></tr>
  * <tr><td>below<td><td>-18</td><td>night</td></tr>
  * </table>
- * 
+ *
  * @see <a href="http://en.wikipedia.org/wiki/Twilight#Definitions">Twilight on Wikipedia</a>
  */
 public enum LightState {
@@ -59,7 +59,7 @@ public enum LightState {
 		}
 	}
 	public static LightState from(double sunAngle) {
-		for (LightState value: values()) {
+		for (LightState value : values()) {
 			if (value.matches(sunAngle)) {
 				return value;
 			}

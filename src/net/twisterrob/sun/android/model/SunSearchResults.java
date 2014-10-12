@@ -1,4 +1,4 @@
-package net.twisterrob.android.sun.model;
+package net.twisterrob.sun.android.model;
 
 import java.util.Calendar;
 
@@ -37,7 +37,8 @@ public class SunSearchResults {
 		public double thresholdAngle;
 		public ThresholdRelation thresholdRelation;
 
-		public SunSearchParams() {}
+		public SunSearchParams() {
+		}
 		public SunSearchParams(double latitude, double longitude, Calendar time) {
 			this(latitude, longitude, time, null, 0);
 		}
@@ -64,22 +65,26 @@ public class SunSearchResults {
 		public Calendar time;
 		public double angle;
 
-		public Moment() {}
+		public Moment() {
+		}
 		public Moment(Calendar time, double angle) {
 			this.time = time;
 			this.angle = angle;
 		}
 	}
+
 	public static class Range {
 		public Calendar start;
 		public Calendar end;
 
-		public Range() {}
+		public Range() {
+		}
 		public Range(Calendar start, Calendar end) {
 			this.start = start;
 			this.end = end;
 		}
 	}
+
 	public enum ThresholdRelation {
 		ABOVE,
 		BELOW

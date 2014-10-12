@@ -1,10 +1,10 @@
-package net.twisterrob.android.sun.model;
+package net.twisterrob.sun.android.model;
 
 import java.util.*;
 
 public class LightStateMap<T> {
-	private final Map<LightState, T> MORNING_STATE_IDs = new EnumMap<LightState, T>(LightState.class);
-	private final Map<LightState, T> EVENING_STATE_IDs = new EnumMap<LightState, T>(LightState.class);
+	private final Map<LightState, T> MORNING_STATE_IDs = new EnumMap<>(LightState.class);
+	private final Map<LightState, T> EVENING_STATE_IDs = new EnumMap<>(LightState.class);
 
 	public void put(LightState state, T value) {
 		putMorning(state, value);

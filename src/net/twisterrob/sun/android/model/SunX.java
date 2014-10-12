@@ -1,4 +1,5 @@
-package net.twisterrob.android.sun.model;
+package net.twisterrob.sun.android.model;
+
 import java.util.Calendar;
 
 import static java.lang.Math.*;
@@ -34,7 +35,7 @@ public class SunX implements Sun {
 	 * At the equinoxes, the sun rises directly east and sets directly west regardless of the latitude,
 	 * thus making the azimuth angles 90° at sunrise and 270° at sunset.
 	 * In general however, the azimuth angle varies with the latitude and time of year.
-	 * 
+	 *
 	 * The azimuth angle is like a compass direction with North = 0° and South = 180°.
 	 * Other authors use a variety of slightly different definitions (i.e., angles of ± 180° and South = 0°).
 	 */
@@ -57,25 +58,25 @@ public class SunX implements Sun {
 	}
 
 	/**
-	* Local Solar Time (LST)
-	* 
-	* Twelve noon local solar time (LST) is defined as when the sun is highest in the sky.
-	* 
-	* The Local Solar Time (LST) can be found by using the previous two corrections to adjust the local time (LT).
-	* @return hours
-	*/
+	 * Local Solar Time (LST)
+	 *
+	 * Twelve noon local solar time (LST) is defined as when the sun is highest in the sky.
+	 *
+	 * The Local Solar Time (LST) can be found by using the previous two corrections to adjust the local time (LT).
+	 * @return hours
+	 */
 	public double solarTime(double lat, double lon, Calendar time) {
 		return clockTime(lat, lon, time) + TC(lat, lon, time) / 60;
 	}
 
 	/**
 	 * Hour Angle (HRA)
-	 * 
+	 *
 	 * The Hour Angle converts the local solar time (LST) into the number of degrees which the sun moves across the sky.
 	 * By definition, the Hour Angle is 0° at solar noon. Since the Earth rotates 15° per hour,
 	 * each hour away from solar noon corresponds to an angular motion of the sun in the sky of 15°.
 	 * In the morning the hour angle is negative, in the afternoon the hour angle is positive.
-	 * 
+	 *
 	 * @return degrees
 	 */
 	public double hourAngle(double lat, double lon, Calendar time) {
@@ -88,7 +89,7 @@ public class SunX implements Sun {
 
 	/**
 	 * Equation of Time (EoT)
-	 * 
+	 *
 	 * The equation of time (EoT) (in minutes) is an empirical equation that
 	 * corrects for the eccentricity of the Earth's orbit and the Earth's axial tilt.
 	 * @return minutes
@@ -105,14 +106,14 @@ public class SunX implements Sun {
 	private static final int EARTH_ROTATION_ONE_DEGREE = 24 * 60 / 360;
 
 	/**
-	* Time Correction Factor (TC)
-	* 
-	* The net Time Correction Factor (in minutes) accounts for the variation of the Local Solar Time (LST)
-	* within a given time zone due to the longitude variations within the time zone and also incorporates the EoT.
-	* 
-	* The factor of 4 minutes comes from the fact that the Earth rotates 1° every 4 minutes.
-	* @return minutes
-	*/
+	 * Time Correction Factor (TC)
+	 *
+	 * The net Time Correction Factor (in minutes) accounts for the variation of the Local Solar Time (LST)
+	 * within a given time zone due to the longitude variations within the time zone and also incorporates the EoT.
+	 *
+	 * The factor of 4 minutes comes from the fact that the Earth rotates 1° every 4 minutes.
+	 * @return minutes
+	 */
 	private double TC(double lat, double lon, Calendar time) {
 		return EARTH_ROTATION_ONE_DEGREE * (lon - LSTM(time)) + equationOfTime(lat, lon, time);
 	}
@@ -124,7 +125,7 @@ public class SunX implements Sun {
 
 	/**
 	 * Local Standard Time Meridian (LSTM)
-	 * 
+	 *
 	 * The Local Standard Time Meridian (LSTM) is a reference meridian used for a particular time zone
 	 * and is similar to the Prime Meridian, which is used for Greenwich Mean Time.
 	 * @return degrees
@@ -149,5 +150,4 @@ public class SunX implements Sun {
 			System.out.printf("%1$tF\t%2$d\t%3$.3f\n", now, d, sun.equationOfTime(0, 0, now));
 		}
 	}
-
 }

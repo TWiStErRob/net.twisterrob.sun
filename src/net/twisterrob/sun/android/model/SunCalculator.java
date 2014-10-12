@@ -1,11 +1,8 @@
-package net.twisterrob.android.sun.model;
+package net.twisterrob.sun.android.model;
 
 import java.util.Calendar;
 
-import net.twisterrob.android.sun.model.SunSearchResults.Moment;
-import net.twisterrob.android.sun.model.SunSearchResults.Range;
-import net.twisterrob.android.sun.model.SunSearchResults.SunSearchParams;
-import net.twisterrob.android.sun.model.SunSearchResults.ThresholdRelation;
+import net.twisterrob.sun.android.model.SunSearchResults.*;
 
 public class SunCalculator {
 	private final Sun sun;
@@ -21,7 +18,8 @@ public class SunCalculator {
 
 		result.threshold = find(p.latitude, p.longitude, startOfDay(p.time), endOfDay(p.time), p.thresholdRelation,
 				p.thresholdAngle);
-		result.horizon = find(p.latitude, p.longitude, startOfDay(p.time), endOfDay(p.time), ThresholdRelation.ABOVE, 0);
+		result.horizon =
+				find(p.latitude, p.longitude, startOfDay(p.time), endOfDay(p.time), ThresholdRelation.ABOVE, 0);
 
 		updateMinMax(result.minimum = new Moment(), result.maximum = new Moment(), //
 				p.latitude, p.longitude, startOfDay(p.time), endOfDay(p.time));

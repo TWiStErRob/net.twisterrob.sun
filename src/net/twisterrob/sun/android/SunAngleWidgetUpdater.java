@@ -1,4 +1,4 @@
-package net.twisterrob.android.sun;
+package net.twisterrob.sun.android;
 
 import java.text.*;
 import java.util.*;
@@ -11,11 +11,10 @@ import android.location.*;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import net.twisterrob.android.sun.content.WidgetPreferences;
-import net.twisterrob.android.sun.model.*;
-import net.twisterrob.android.sun.model.SunSearchResults.SunSearchParams;
-import net.twisterrob.android.sun.model.SunSearchResults.ThresholdRelation;
-import net.twisterrob.android.sun.ui.*;
+import net.twisterrob.sun.android.content.WidgetPreferences;
+import net.twisterrob.sun.android.model.*;
+import net.twisterrob.sun.android.model.SunSearchResults.*;
+import net.twisterrob.sun.android.ui.*;
 
 public class SunAngleWidgetUpdater {
 	private static final DecimalFormat fraction = initFractionFormat();
@@ -25,8 +24,7 @@ public class SunAngleWidgetUpdater {
 	private static final LightStateMap<Integer> BGs = new LightStateBackgroundIDs();
 	private static final LightStateMap<Integer> COLORs = new LightStateColorIDs();
 	private static final SunCalculator CALC = new SunCalculator(new SunX());
-	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<ThresholdRelation, Integer>(
-			ThresholdRelation.class);
+	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<>(ThresholdRelation.class);
 	static {
 		RELATIONS.put(ThresholdRelation.ABOVE, R.string.threshold_relation_above);
 		RELATIONS.put(ThresholdRelation.BELOW, R.string.threshold_relation_below);

@@ -1,11 +1,11 @@
-package net.twisterrob.android.sun;
+package net.twisterrob.sun.android;
 
 import java.util.*;
 
 import android.location.LocationListener;
 
 public class WidgetUpdateList {
-	private final Set<Integer> toBeUpdated = new HashSet<Integer>();
+	private final Set<Integer> toBeUpdated = new HashSet<>();
 
 	public synchronized void remove(int... ids) {
 		for (int i = 0; i < ids.length; i++) {
@@ -20,7 +20,7 @@ public class WidgetUpdateList {
 	}
 
 	public synchronized void catchup(SunAngleWidgetUpdater updater, LocationListener fallback) {
-		for (Iterator<Integer> current = toBeUpdated.iterator(); current.hasNext();) {
+		for (Iterator<Integer> current = toBeUpdated.iterator(); current.hasNext(); ) {
 			Integer appWidgetId = current.next();
 			if (updater.update(appWidgetId, fallback)) {
 				current.remove();

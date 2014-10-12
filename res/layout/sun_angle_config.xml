@@ -3,16 +3,18 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/layoutRoot"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	>
 	<ToggleButton
 		android:id="@+id/thresholdRelation"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentLeft="true"
-		android:checked="true"
+		android:textOn="Above"
 		android:textOff="Below"
-		android:textOn="Above" />
+		android:checked="true"
+		/>
 	<Button
 		android:id="@+id/btn_ok"
 		android:layout_width="wrap_content"
@@ -20,15 +22,17 @@
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
 		android:layout_toRightOf="@id/thresholdRelation"
-		android:text="Done" />
-	<net.twisterrob.android.sun.views.VerticalSeekBar
+		android:text="Done"
+		/>
+	<net.twisterrob.sun.android.views.VerticalSeekBar
 		android:id="@+id/angle"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_above="@id/btn_ok"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentTop="true"
-		android:max="180" />
+		android:max="180"
+		/>
 	<Spinner
 		android:id="@+id/preset"
 		android:layout_width="wrap_content"
@@ -36,22 +40,25 @@
 		android:layout_alignParentRight="true"
 		android:layout_alignParentTop="true"
 		android:layout_toRightOf="@id/angle"
-		android:entries="@array/angle_preset" />
+		android:entries="@array/angle_preset"
+		/>
 	<TextView
 		android:id="@+id/threshold"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_above="@+id/btn_ok"
 		android:layout_toRightOf="@id/angle"
-		android:text="@string/message_selected_angle" />
+		android:text="@string/message_selected_angle"
+		/>
 	<ImageView
 		android:id="@+id/visualization"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_margin="8dp"
 		android:layout_above="@id/threshold"
 		android:layout_alignParentRight="true"
 		android:layout_below="@id/preset"
-		android:layout_margin="8dp"
 		android:layout_toRightOf="@id/angle"
-		android:src="@drawable/ic_launcher" />
+		android:src="@drawable/ic_launcher"
+		/>
 </RelativeLayout>

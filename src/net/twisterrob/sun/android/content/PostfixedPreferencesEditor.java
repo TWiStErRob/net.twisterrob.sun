@@ -1,9 +1,9 @@
-package net.twisterrob.android.sun.content;
+package net.twisterrob.sun.android.content;
 
 import java.util.Set;
 
 import android.annotation.TargetApi;
-import android.content.*;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 

@@ -1,4 +1,4 @@
-package net.twisterrob.android.sun.views;
+package net.twisterrob.sun.android.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
