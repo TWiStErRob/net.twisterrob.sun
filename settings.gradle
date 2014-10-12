@@ -1,1 +1,3 @@
 rootProject.name = 'Sun'
+
+include ':app'

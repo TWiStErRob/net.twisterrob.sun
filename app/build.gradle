@@ -1,0 +1,16 @@
+apply plugin: 'com.android.application'
+apply plugin: 'net.twisterrob.android-app'
+
+dependencies {
+	//compile 'com.android.support:support-v4:19.1.0'
+	//compile 'com.android.support:appcompat-v7:19.1.0'
+}
+
+android { // http://tools.android.com/tech-docs/new-build-system/user-guide
+	defaultConfig {
+		applicationId 'net.twisterrob.sun'
+		version {
+			minor 1
+		}
+	}
+}

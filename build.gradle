@@ -9,30 +9,3 @@ buildscript {
 		classpath 'net.twisterrob.gradle:plugin:0.3-SNAPSHOT'
 	}
 }
-
-apply plugin: 'com.android.application'
-apply plugin: 'net.twisterrob.android-app'
-apply plugin: 'net.twisterrob.android-eclipse'
-
-dependencies {
-	//compile 'com.android.support:support-v4:19.1.0'
-	//compile 'com.android.support:appcompat-v7:19.1.0'
-}
-
-android { // http://tools.android.com/tech-docs/new-build-system/user-guide
-	defaultConfig {
-		applicationId 'net.twisterrob.sun'
-	}
-
-	sourceSets {
-		main {
-			manifest.srcFile 'AndroidManifest.xml'
-			java.srcDirs = [ 'src' ]
-			resources.srcDirs = [ 'src' ]
-			aidl.srcDirs = [ 'src' ]
-			renderscript.srcDirs = [ 'src' ]
-			res.srcDirs = [ 'res' ]
-			assets.srcDirs = [ 'assets' ]
-		}
-	}
-}

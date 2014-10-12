@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
 	<issue id="HardcodedText">
-		<ignore path="res/layout/sun_angle_widget.xml" />
+		<ignore path="src/main/res/layout/sun_angle_widget.xml" />
 	</issue>
 	<issue id="SpUsage">
-		<ignore path="res/values/resources.xml" />
+		<ignore path="src/main/res/values/resources.xml" />
 	</issue>
 </lint>
