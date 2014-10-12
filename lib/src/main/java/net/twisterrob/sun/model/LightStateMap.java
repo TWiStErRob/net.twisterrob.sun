@@ -1,4 +1,4 @@
-package net.twisterrob.sun.android.model;
+package net.twisterrob.sun.model;
 
 import java.util.*;
 

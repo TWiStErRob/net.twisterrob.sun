@@ -17,10 +17,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import static android.appwidget.AppWidgetManager.*;
 
-import net.twisterrob.sun.android.content.WidgetPreferences;
-import net.twisterrob.sun.android.model.*;
-import net.twisterrob.sun.android.model.SunSearchResults.*;
-import net.twisterrob.sun.android.views.SunThresholdDrawable;
+import net.twisterrob.android.content.pref.WidgetPreferences;
+import net.twisterrob.android.content.res.ResourceArray;
+import net.twisterrob.sun.android.view.SunThresholdDrawable;
+import net.twisterrob.sun.model.*;
+import net.twisterrob.sun.model.SunSearchResults.*;
 
 public class SunAngleWidgetConfiguration extends Activity {
 	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);

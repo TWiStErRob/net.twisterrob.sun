@@ -11,10 +11,10 @@ import android.location.*;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import net.twisterrob.sun.android.content.WidgetPreferences;
-import net.twisterrob.sun.android.model.*;
-import net.twisterrob.sun.android.model.SunSearchResults.*;
+import net.twisterrob.android.content.pref.WidgetPreferences;
 import net.twisterrob.sun.android.ui.*;
+import net.twisterrob.sun.model.*;
+import net.twisterrob.sun.model.SunSearchResults.*;
 
 public class SunAngleWidgetUpdater {
 	private static final DecimalFormat fraction = initFractionFormat();

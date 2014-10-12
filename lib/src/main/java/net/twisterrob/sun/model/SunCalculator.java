@@ -1,8 +1,8 @@
-package net.twisterrob.sun.android.model;
+package net.twisterrob.sun.model;
 
 import java.util.Calendar;
 
-import net.twisterrob.sun.android.model.SunSearchResults.*;
+import net.twisterrob.sun.model.SunSearchResults.*;
 
 public class SunCalculator {
 	private final Sun sun;

@@ -1,8 +1,8 @@
 package net.twisterrob.sun.android.ui;
 
-import net.twisterrob.sun.android.model.LightStateMap;
+import net.twisterrob.sun.model.LightStateMap;
 
-import static net.twisterrob.sun.android.model.LightState.*;
+import static net.twisterrob.sun.model.LightState.*;
 
 public class LightStateColorIDs extends LightStateMap<Integer> {
 	public LightStateColorIDs() {

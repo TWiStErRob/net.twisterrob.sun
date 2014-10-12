@@ -24,7 +24,7 @@
 		android:layout_toRightOf="@id/thresholdRelation"
 		android:text="Done"
 		/>
-	<net.twisterrob.sun.android.views.VerticalSeekBar
+	<net.twisterrob.android.view.VerticalSeekBar
 		android:id="@+id/angle"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

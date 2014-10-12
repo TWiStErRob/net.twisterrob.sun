@@ -1,4 +1,4 @@
-package net.twisterrob.sun.android.views;
+package net.twisterrob.sun.android.view;
 
 import android.content.res.Resources;
 import android.graphics.*;
@@ -6,8 +6,8 @@ import android.graphics.Paint.*;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable.ShaderFactory;
 
-import net.twisterrob.sun.android.model.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.ui.SunGradientShaderFactory;
+import net.twisterrob.sun.model.SunSearchResults.ThresholdRelation;
 
 public class SunThresholdDrawable extends Drawable {
 	private SunConstantState s;

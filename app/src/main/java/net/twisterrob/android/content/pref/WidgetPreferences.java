@@ -1,4 +1,4 @@
-package net.twisterrob.sun.android.content;
+package net.twisterrob.android.content.pref;
 
 import android.content.Context;
 

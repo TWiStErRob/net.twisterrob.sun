@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import net.twisterrob.sun.android.model.SunSearchResults.ThresholdRelation;
+import net.twisterrob.sun.model.SunSearchResults.ThresholdRelation;
 
 public class SunAngleWidgetProvider extends AppWidgetProvider implements LocationListener {
 	public static final String PREF_NAME = SunAngleWidgetProvider.class.getName();

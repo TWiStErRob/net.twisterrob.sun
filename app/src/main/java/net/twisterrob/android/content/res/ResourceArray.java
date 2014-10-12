@@ -1,4 +1,4 @@
-package net.twisterrob.sun.android;
+package net.twisterrob.android.content.res;
 
 import android.content.res.Resources;
 
