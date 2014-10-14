@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-	<issue id="HardcodedText">
-		<ignore path="src/main/res/layout/sun_angle_widget.xml" />
+	<issue id="IconLocation" severity="ignore" />
+	<issue id="UnusedResources">
+		<ignore path="**/descript.ion" />
 	</issue>
-	<issue id="SpUsage">
-		<ignore path="src/main/res/values/resources.xml" />
+	<issue id="SelectableText">
+		<ignore path="**/res/layout*/widget_*.xml" />
 	</issue>
 </lint>

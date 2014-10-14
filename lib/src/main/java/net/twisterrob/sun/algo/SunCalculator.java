@@ -46,14 +46,14 @@ public class SunCalculator {
 			running.add(Calendar.MINUTE, every);
 		}
 	}
-	private static Calendar startOfDay(Calendar time) {
+	public static Calendar startOfDay(Calendar time) {
 		Calendar result = (Calendar)time.clone();
 		result.set(Calendar.HOUR_OF_DAY, 0);
 		result.set(Calendar.MINUTE, 0);
 		result.set(Calendar.SECOND, 0);
 		return result;
 	}
-	private static Calendar endOfDay(Calendar time) {
+	public static Calendar endOfDay(Calendar time) {
 		Calendar result = startOfDay(time);
 		result.add(Calendar.DATE, 1);
 		return result;

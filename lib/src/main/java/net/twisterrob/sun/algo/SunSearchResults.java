@@ -30,6 +30,21 @@ public class SunSearchResults {
 		return hour + ":" + minute;
 	}
 
+	public static SunSearchResults unknown() {
+		Calendar now = Calendar.getInstance();
+		SunSearchParams params = new SunSearchParams(Double.NaN, Double.NaN, now);
+		SunSearchResults results = new SunSearchResults(params);
+		Calendar startOfDay = SunCalculator.startOfDay(now);
+		Calendar endOfDay = SunCalculator.endOfDay(now);
+		Range wholeDay = new Range(startOfDay, endOfDay);
+		results.threshold = wholeDay;
+		results.horizon = wholeDay;
+		results.minimum = new Moment(startOfDay, -90);
+		results.maximum = new Moment(endOfDay, +90);
+		results.current = new Moment(now, 0);
+		return results;
+	}
+
 	public static class SunSearchParams implements Cloneable {
 		public Calendar time;
 		public double latitude;

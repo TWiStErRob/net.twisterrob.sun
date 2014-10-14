@@ -43,7 +43,7 @@ public class SunAngleWidgetConfiguration extends Activity {
 		super.onCreate(savedInstanceState);
 		initAppWidget();
 
-		super.setContentView(R.layout.sun_angle_config);
+		super.setContentView(R.layout.activity_config);
 		relation = (CompoundButton)findViewById(R.id.thresholdRelation);
 		threshold = (TextView)findViewById(R.id.threshold);
 		visualization = (ImageView)findViewById(R.id.visualization);
@@ -120,8 +120,8 @@ public class SunAngleWidgetConfiguration extends Activity {
 		newSun.setSelected(rel, angle);
 		boolean belowMin = angle <= lastResults.minimum.angle;
 		boolean aboveMax = angle >= lastResults.maximum.angle;
-		newSun.setMinimumEdge(belowMin);
-		newSun.setMaximumEdge(aboveMax);
+		newSun.setMinimumEdge(rel == ThresholdRelation.ABOVE && !belowMin);
+		newSun.setMaximumEdge(rel == ThresholdRelation.BELOW && !aboveMax);
 		threshold.setTextColor(Color.BLACK);
 		threshold.setText(getString(R.string.message_selected_angle, getRelString(rel), angle));
 		if (belowMin) {
@@ -156,6 +156,7 @@ public class SunAngleWidgetConfiguration extends Activity {
 		if (location != null) {
 			update(location);
 		} else {
+			update(null);
 			lm.requestSingleUpdate(provider, new LocationListener() {
 				public void onStatusChanged(String provider, int status, Bundle extras) {
 					// ignore
@@ -177,9 +178,16 @@ public class SunAngleWidgetConfiguration extends Activity {
 	}
 
 	protected void update(Location loc) {
-		SunSearchParams params = new SunSearchParams(loc.getLatitude(), loc.getLongitude(), Calendar.getInstance());
-		lastResults = new SunCalculator(new PhotovoltaicSun()).find(params);
-		newSun.setMinMax((float)lastResults.minimum.angle, (float)lastResults.maximum.angle);
+		SunSearchResults results = null;
+		if (loc != null) {
+			SunSearchParams params = new SunSearchParams(loc.getLatitude(), loc.getLongitude(), Calendar.getInstance());
+			results = new SunCalculator(new PhotovoltaicSun()).find(params);
+		}
+		if (results == null) {
+			results = SunSearchResults.unknown();
+		}
+		newSun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
+		this.lastResults = results;
 		updateImage();
 	}
 
@@ -187,7 +195,7 @@ public class SunAngleWidgetConfiguration extends Activity {
 		SharedPreferences.Editor edit = prefs.edit();
 		edit.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, getCurrentRelation().name());
 		edit.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
-		edit.commit();
+		edit.apply();
 		SunAngleWidgetUpdater.forceUpdateAll(getApplicationContext());
 		setResult(RESULT_OK, result);
 		finish();

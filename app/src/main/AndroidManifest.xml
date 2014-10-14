@@ -1,5 +1,6 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	package="net.twisterrob.sun.android">
 
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -12,20 +13,20 @@
 		android:label="@string/app_name"
 		android:icon="@drawable/ic_launcher"
 		android:allowBackup="true"
-		android:theme="@style/AppTheme">
+		android:supportsRtl="true"
+		android:theme="@style/AppTheme"
+		tools:ignore="UnusedAttribute">
 		<receiver android:name=".SunAngleWidgetProvider">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
 			<meta-data
 				android:name="android.appwidget.provider"
-				android:resource="@xml/sun_angle_widget" />
+				android:resource="@xml/widget_sun_angle_and_threshold" />
 		</receiver>
 		<activity android:name=".SunAngleWidgetConfiguration">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 	</application>

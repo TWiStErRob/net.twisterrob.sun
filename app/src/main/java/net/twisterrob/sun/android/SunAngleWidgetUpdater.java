@@ -9,7 +9,7 @@ import android.content.*;
 import android.content.res.Resources;
 import android.location.*;
 import android.util.Log;
-import android.widget.RemoteViews;
+import android.widget.*;
 
 import net.twisterrob.android.content.pref.WidgetPreferences;
 import net.twisterrob.sun.algo.*;
@@ -80,7 +80,7 @@ public class SunAngleWidgetUpdater {
 	}
 
 	private void updateViews(int appWidgetId, SunSearchResults results) {
-		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.sun_angle_widget);
+		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1);
 		Resources res = context.getResources();
 		if (results != null) {
 			LightState state = LightState.from(results.current.angle);
@@ -98,12 +98,13 @@ public class SunAngleWidgetUpdater {
 			views.setTextViewText(R.id.timeThresholdTo, getTime2(results.threshold.end));
 		} else {
 			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_refresh));
-			views.setTextViewText(R.id.angle, res.getText(R.string.angle_unkown));
+			views.setTextViewText(R.id.angle, res.getText(R.string.angle_unknown));
 			views.setTextViewText(R.id.angleFraction, "");
 			views.setTextViewText(R.id.timeUpdated, time3.format(Calendar.getInstance().getTime()));
-			views.setTextViewText(R.id.threshold, res.getText(R.string.angle_unkown));
+			views.setTextViewText(R.id.threshold, res.getText(R.string.angle_unknown));
 			views.setTextViewText(R.id.timeThresholdFrom, res.getText(R.string.time_2_unknown));
 			views.setTextViewText(R.id.timeThresholdTo, res.getText(R.string.time_2_unknown));
+			Toast.makeText(getContext(), "Please enable GPS and get device location once.", Toast.LENGTH_SHORT).show();
 		}
 		views.setOnClickPendingIntent(R.id.threshold_container, createOpenIntent(appWidgetId));
 		views.setOnClickPendingIntent(R.id.angle_container, createRefreshIntent(appWidgetId));
@@ -111,8 +112,8 @@ public class SunAngleWidgetUpdater {
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 	}
 
-	private static String getTime2(Calendar cal) {
-		return cal == null? "--:--" : time2.format(cal.getTime());
+	private String getTime2(Calendar cal) {
+		return cal == null? getContext().getString(R.string.time_2_none) : time2.format(cal.getTime());
 	}
 
 	protected PendingIntent createOpenIntent(int appWidgetId) {

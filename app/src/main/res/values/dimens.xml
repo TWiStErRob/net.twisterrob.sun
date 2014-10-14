@@ -1,3 +1,5 @@
 <resources>
 	<dimen name="widget_margin">8dp</dimen>
+	<dimen name="margin">4dp</dimen>
+	<dimen name="margin2">8dp</dimen>
 </resources>
