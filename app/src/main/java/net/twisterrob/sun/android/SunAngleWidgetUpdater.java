@@ -74,6 +74,8 @@ public class SunAngleWidgetUpdater {
 					SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name()));
 			params.time = Calendar.getInstance();
 			result = CALC.find(params);
+			result.current.angle = prefs.getFloat(SunAngleWidgetProvider.PREF_MOCK_ANGLE, (float)result.current.angle);
+			prefs.edit().remove(SunAngleWidgetProvider.PREF_MOCK_ANGLE).apply();
 		}
 		updateViews(appWidgetId, result);
 		return result != null;
@@ -104,9 +106,11 @@ public class SunAngleWidgetUpdater {
 			views.setTextViewText(R.id.threshold, res.getText(R.string.angle_unknown));
 			views.setTextViewText(R.id.timeThresholdFrom, res.getText(R.string.time_2_unknown));
 			views.setTextViewText(R.id.timeThresholdTo, res.getText(R.string.time_2_unknown));
-			Toast.makeText(getContext(), "Please enable GPS and get device location once.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getContext(), R.string.call_to_action_location, Toast.LENGTH_SHORT).show();
 		}
+		//randomizeAngle(appWidgetId);
 		views.setOnClickPendingIntent(R.id.threshold_container, createOpenIntent(appWidgetId));
+		views.setOnClickPendingIntent(R.id.state, createRefreshIntent(appWidgetId));
 		views.setOnClickPendingIntent(R.id.angle_container, createRefreshIntent(appWidgetId));
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -121,9 +125,15 @@ public class SunAngleWidgetUpdater {
 		configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		return PendingIntent.getActivity(context, appWidgetId, configIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
+
 	protected PendingIntent createRefreshIntent(int appWidgetId) {
 		Intent intent = createUpdateIntent(context, appWidgetId);
 		return PendingIntent.getBroadcast(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+
+	protected void randomizeAngle(int appWidgetId) {
+		SharedPreferences prefs = new WidgetPreferences(context, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
+		prefs.edit().putFloat(SunAngleWidgetProvider.PREF_MOCK_ANGLE, (float)(Math.random() * 180 - 90)).apply();
 	}
 
 	protected static Intent createUpdateIntent(Context context, int... appWidgetIds) {

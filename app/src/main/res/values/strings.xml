@@ -1,5 +1,5 @@
 <resources>
-	<string name="app_name">!Sun Position Widget</string>
+	<string name="app_name">Sun Position</string>
 	<string name="angle_placeholder">-99°</string>
 	<string name="angle_unknown">±??°</string>
 	<string name="demo_text_angle_fraction">.1234</string>
@@ -24,6 +24,7 @@
 	<string name="light_state_day">day-time</string>
 	<string name="light_state_night">night-time</string>
 	<string name="call_to_action_refresh">Tap to refresh</string>
+	<string name="call_to_action_location">Please keep GPS enabled for sun position</string>
 	<string name="warning_maximum">The sun will not go above %1$.1f° in the foreseeable future, setting %2$.1f° will always yield the same results.</string>
 	<string name="warning_minimum">The sun will not go below %1$.1f° in the foreseeable future, setting %2$.1f° will always yield the same results.</string>
 	<string name="message_selected_angle">The widget will show the start and end time of period where the sun is %1$s %2$.1f°.</string>

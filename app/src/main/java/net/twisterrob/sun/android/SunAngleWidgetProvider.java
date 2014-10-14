@@ -13,11 +13,13 @@ import android.widget.Toast;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 
 public class SunAngleWidgetProvider extends AppWidgetProvider implements LocationListener {
-	public static final String PREF_NAME = SunAngleWidgetProvider.class.getName();
+	public static final String PREF_NAME = "SunAngleWidget";
 	/** String: {@link ThresholdRelation#name() ThresholdRelation constant name} */
 	public static final String PREF_THRESHOLD_RELATION = "relation";
 	/** double: angle in degrees */
 	public static final String PREF_THRESHOLD_ANGLE = "threshold";
+	/** double: angle in degrees */
+	public static final String PREF_MOCK_ANGLE = "mockAngle";
 
 	/**
 	 * Needs to be static because random instances are created for separate onReceive calls.
