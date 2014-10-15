@@ -2,9 +2,11 @@ package net.twisterrob.sun.android;
 
 import java.util.Arrays;
 
+import android.annotation.TargetApi;
 import android.appwidget.*;
 import android.content.*;
 import android.location.*;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -47,7 +49,7 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 
 	@Override
 	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
-		Log.v("Sun", this + ".onReceive(" + intent + ")");
+		Log.v("Sun", this + ".onReceive(" + intent + " (" + intent.getExtras() + "))");
 		super.onReceive(context, intent);
 	}
 
@@ -59,9 +61,17 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 		updateAll();
 	}
 
+	@TargetApi(VERSION_CODES.JELLY_BEAN)
+	@Override
+	public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId,
+			Bundle newOptions) {
+		Log.v("Sun", this + ".onAppWidgetOptionsChanged(" + appWidgetId + ", " + newOptions + ")");
+		super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+	}
+
 	@Override
 	public void onLocationChanged(Location location) {
-		Log.v("Sun", this + ".onLocationChanged");
+		Log.v("Sun", this + ".onLocationChanged(" + location + " (" + location.getExtras() + "))");
 		updateAll();
 	}
 

@@ -6,6 +6,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:padding="@dimen/widget_margin"
+	tools:showIn="@layout/widget_1x1_container"
 	>
 	<RelativeLayout
 		android:id="@+id/angle_container"
