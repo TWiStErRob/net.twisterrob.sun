@@ -13,7 +13,7 @@ public class AccuratePhotovoltaicFormula implements SeasonFormula {
 	/**
 	 * The Earth is tilted by 23.45° and the declination angle varies plus or minus this amount.
 	 */
-	protected static final double EARTH_TILT = 23.45;
+	private static final double EARTH_TILT = 23.45;
 
 	/**
 	 * The declination angle, denoted by δ, varies seasonally due to the tilt of the Earth on its axis of rotation

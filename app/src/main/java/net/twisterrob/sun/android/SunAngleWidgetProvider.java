@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import net.twisterrob.android.content.pref.WidgetPreferences;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 
 public class SunAngleWidgetProvider extends AppWidgetProvider implements LocationListener {
@@ -33,6 +34,9 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		Log.v("Sun", this + ".onDeleted(" + Arrays.toString(appWidgetIds) + ")");
 		TODOs.remove(appWidgetIds);
+		for (int appWidgetId : appWidgetIds) {
+			new WidgetPreferences(context, PREF_NAME, appWidgetId).edit().clear().apply();
+		}
 	}
 
 	@Override

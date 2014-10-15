@@ -78,6 +78,7 @@ public class SunCalculator {
 			Calendar temp = result.end;
 			result.end = result.start;
 			result.start = temp;
+			result.end.add(Calendar.DATE, 1);
 		}
 		return result;
 	}

@@ -36,14 +36,17 @@ public class SunAngleWidgetConfiguration extends Activity {
 	private SunSearchResults lastResults;
 	private ResourceArray mapping = new ResourceArray(ResourceArray.Type.Int, R.array.angle_preset_values);
 	private SharedPreferences prefs;
+	private int appWidgetId;
 	private Intent result;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		initAppWidget();
+		if (!initAppWidget()) {
+			return;
+		}
 
-		super.setContentView(R.layout.activity_config);
+		setContentView(R.layout.activity_config);
 		relation = (CompoundButton)findViewById(R.id.thresholdRelation);
 		threshold = (TextView)findViewById(R.id.threshold);
 		visualization = (ImageView)findViewById(R.id.visualization);
@@ -97,8 +100,8 @@ public class SunAngleWidgetConfiguration extends Activity {
 		relation.setChecked(toChecked(ThresholdRelation.valueOf(relVal)));
 		angle.setProgress(toProgress(angleVal));
 	}
-	private void initAppWidget() {
-		int appWidgetId = getIntent().getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
+	private boolean initAppWidget() {
+		appWidgetId = getIntent().getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
 		Log.d("Config", "Editing widget: " + appWidgetId);
 		result = new Intent();
 		result.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
@@ -106,9 +109,13 @@ public class SunAngleWidgetConfiguration extends Activity {
 
 		if (appWidgetId == INVALID_APPWIDGET_ID) {
 			Log.i("Config", "Invalid widget ID, closing");
-			//finish();
+			if (!BuildConfig.DEBUG) {
+				finish();
+				return false;
+			}
 		}
 		prefs = new WidgetPreferences(this, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
+		return true;
 	}
 
 	private void updateImage() {
@@ -196,7 +203,7 @@ public class SunAngleWidgetConfiguration extends Activity {
 		edit.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, getCurrentRelation().name());
 		edit.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
 		edit.apply();
-		SunAngleWidgetUpdater.forceUpdateAll(getApplicationContext());
+		SunAngleWidgetUpdater.forceUpdateAll(getApplicationContext(), appWidgetId);
 		setResult(RESULT_OK, result);
 		finish();
 	}

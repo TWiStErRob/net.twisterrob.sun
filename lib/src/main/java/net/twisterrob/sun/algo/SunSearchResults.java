@@ -20,14 +20,18 @@ public class SunSearchResults {
 	public String toString() {
 		return getTime(current.time) + " at " + ((int)(current.angle * 1000) / 1000d)
 				+ "°" //
-				+ "\n" + params.thresholdRelation + " " + params.thresholdAngle + " between\n"
-				+ getTime(threshold.start) + "\nand\n" + getTime(threshold.end) + "\n.";
+				+ ", " + params.thresholdRelation + " " + params.thresholdAngle + " between "
+				+ getTime(threshold.start) + " and " + getTime(threshold.end) + ".";
 	}
 
 	private static String getTime(Calendar time) {
 		int hour = time.get(Calendar.HOUR_OF_DAY);
 		int minute = time.get(Calendar.MINUTE);
-		return hour + ":" + minute;
+		return getTimePart(hour) + ":" + getTimePart(minute);
+	}
+
+	private static String getTimePart(int part) {
+		return part > 9? String.valueOf(part) : "0" + part;
 	}
 
 	public static SunSearchResults unknown() {

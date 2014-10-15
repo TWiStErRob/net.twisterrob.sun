@@ -30,7 +30,7 @@ public abstract class SeasonFormulaTest {
 
 	protected SeasonFormula formula;
 
-	protected double allowedTitleDeltaDegrees = 1;
+	protected double allowedTiltDeltaDegrees = 1;
 
 	@Test
 	public void testDeclinationEquinox() {
@@ -40,8 +40,8 @@ public abstract class SeasonFormulaTest {
 		double springDeclination = formula.declination(springEquinox);
 		double autumnDeclination = formula.declination(autumnEquinox);
 
-		assertEquals(0, springDeclination, allowedTitleDeltaDegrees);
-		assertEquals(0, autumnDeclination, allowedTitleDeltaDegrees);
+		assertEquals(0, springDeclination, allowedTiltDeltaDegrees);
+		assertEquals(0, autumnDeclination, allowedTiltDeltaDegrees);
 	}
 
 	@Test
@@ -52,8 +52,8 @@ public abstract class SeasonFormulaTest {
 		double summerDeclination = formula.declination(summerSolstice);
 		double winterDeclination = formula.declination(winterSolstice);
 
-		assertEquals(EARTH_TILT, summerDeclination, allowedTitleDeltaDegrees);
-		assertEquals(-EARTH_TILT, winterDeclination, allowedTitleDeltaDegrees);
+		assertEquals(EARTH_TILT, summerDeclination, allowedTiltDeltaDegrees);
+		assertEquals(-EARTH_TILT, winterDeclination, allowedTiltDeltaDegrees);
 	}
 
 	@Test
@@ -64,8 +64,8 @@ public abstract class SeasonFormulaTest {
 		double mayDeclination = formula.declination(mayMidway);
 		double novemberDeclination = formula.declination(novemberMidway);
 
-		assertEquals(EARTH_TILT_MIDWAY, mayDeclination, allowedTitleDeltaDegrees);
-		assertEquals(-EARTH_TILT_MIDWAY, novemberDeclination, allowedTitleDeltaDegrees);
+		assertEquals(EARTH_TILT_MIDWAY, mayDeclination, allowedTiltDeltaDegrees);
+		assertEquals(-EARTH_TILT_MIDWAY, novemberDeclination, allowedTiltDeltaDegrees);
 	}
 
 	@Test
@@ -76,8 +76,8 @@ public abstract class SeasonFormulaTest {
 		double augustDeclination = formula.declination(augustMidway);
 		double februaryDeclination = formula.declination(februaryMidway);
 
-		assertEquals(EARTH_TILT_MIDWAY, augustDeclination, allowedTitleDeltaDegrees);
-		assertEquals(-EARTH_TILT_MIDWAY, februaryDeclination, allowedTitleDeltaDegrees);
+		assertEquals(EARTH_TILT_MIDWAY, augustDeclination, allowedTiltDeltaDegrees);
+		assertEquals(-EARTH_TILT_MIDWAY, februaryDeclination, allowedTiltDeltaDegrees);
 	}
 
 	protected static Calendar date(int month, int day) {

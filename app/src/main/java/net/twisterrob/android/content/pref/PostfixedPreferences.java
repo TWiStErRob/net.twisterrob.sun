@@ -2,7 +2,7 @@ package net.twisterrob.android.content.pref;
 
 import java.util.*;
 
-import android.annotation.*;
+import android.annotation.TargetApi;
 import android.content.*;
 import android.os.Build;
 
@@ -15,9 +15,8 @@ public class PostfixedPreferences implements SharedPreferences {
 		this.postFix = postFix;
 	}
 
-	@SuppressLint("CommitPrefEdits")
 	public Editor edit() {
-		return new PostfixedPreferencesEditor(prefs.edit(), postFix);
+		return new PostfixedPreferencesEditor(prefs, postFix);
 	}
 
 	public Map<String, ?> getAll() {
