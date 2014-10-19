@@ -7,13 +7,27 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
 	>
-	<include
-		layout="@layout/widget_1x1"
-		android:layout_width="84dp"
-		android:layout_height="105dp"
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		android:layout_margin="16dp"
-		/>
+		android:orientation="horizontal"
+		>
+		<include
+			layout="@layout/widget_1x1"
+			android:layout_width="84dp"
+			android:layout_height="105dp"
+			android:layout_gravity="center"
+			android:layout_margin="16dp"
+			/>
+		<include
+			layout="@layout/widget_1x1_invalid"
+			android:layout_width="84dp"
+			android:layout_height="105dp"
+			android:layout_gravity="center"
+			android:layout_margin="16dp"
+			/>
+	</LinearLayout>
 
 	<GridLayout
 		android:layout_width="fill_parent"

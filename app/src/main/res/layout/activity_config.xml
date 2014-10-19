@@ -5,6 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:layout_margin="@dimen/margin2"
+	tools:ignore="RtlHardcoded"
 	>
 	<Button
 		android:id="@+id/btn_ok"
@@ -25,7 +26,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_above="@id/btn_ok"
-		android:layout_alignParentEnd="true"
 		android:layout_alignParentRight="true"
 		android:textOn="@string/threshold_relation_above"
 		android:textOff="@string/threshold_relation_below"
@@ -37,7 +37,6 @@
 		android:layout_height="wrap_content"
 		android:layout_above="@id/btn_ok"
 		android:layout_toLeftOf="@id/thresholdRelation"
-		android:layout_toStartOf="@id/thresholdRelation"
 		android:entries="@array/angle_preset"
 		/>
 	<net.twisterrob.android.view.VerticalSeekBar
@@ -45,7 +44,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="fill_parent"
 		android:layout_alignBottom="@id/visualization"
-		android:layout_alignParentEnd="true"
 		android:layout_alignParentRight="true"
 		android:layout_alignTop="@id/visualization"
 		android:max="180"
@@ -59,10 +57,8 @@
 		android:layout_margin="@dimen/margin"
 		android:layout_above="@id/preset"
 		android:layout_alignParentLeft="true"
-		android:layout_alignParentStart="true"
 		android:layout_below="@id/threshold"
 		android:layout_toLeftOf="@id/angle"
-		android:layout_toStartOf="@id/angle"
 		android:src="@drawable/ic_launcher"
 		android:contentDescription="@string/cd_selected_angle"
 		/>
