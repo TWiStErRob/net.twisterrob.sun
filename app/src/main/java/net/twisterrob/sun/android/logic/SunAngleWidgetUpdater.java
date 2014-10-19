@@ -1,4 +1,4 @@
-package net.twisterrob.sun.android;
+package net.twisterrob.sun.android.logic;
 
 import java.text.*;
 import java.util.*;
@@ -7,13 +7,19 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.content.res.Resources;
+import android.graphics.*;
 import android.location.*;
+import android.text.SpannableString;
+import android.text.style.*;
 import android.util.Log;
-import android.widget.*;
+import android.widget.RemoteViews;
+
+import static android.text.Spanned.*;
 
 import net.twisterrob.android.content.pref.WidgetPreferences;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
+import net.twisterrob.sun.android.*;
 import net.twisterrob.sun.android.ui.*;
 import net.twisterrob.sun.model.*;
 import net.twisterrob.sun.pveducation.PhotovoltaicSun;
@@ -28,8 +34,8 @@ public class SunAngleWidgetUpdater {
 	private static final SunCalculator CALC = new SunCalculator(new PhotovoltaicSun());
 	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<>(ThresholdRelation.class);
 	static {
-		RELATIONS.put(ThresholdRelation.ABOVE, R.string.threshold_relation_above);
-		RELATIONS.put(ThresholdRelation.BELOW, R.string.threshold_relation_below);
+		RELATIONS.put(ThresholdRelation.ABOVE, R.string.threshold_above);
+		RELATIONS.put(ThresholdRelation.BELOW, R.string.threshold_below);
 	}
 
 	private Context context;
@@ -56,10 +62,10 @@ public class SunAngleWidgetUpdater {
 	public static void forceUpdateAll(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		ComponentName component = new ComponentName(context, SunAngleWidgetProvider.class);
-		forceUpdateAll(context, appWidgetManager.getAppWidgetIds(component));
+		forceUpdate(context, appWidgetManager.getAppWidgetIds(component));
 	}
 
-	public static void forceUpdateAll(Context context, int... appWidgetIds) {
+	public static void forceUpdate(Context context, int... appWidgetIds) {
 		Intent intent = createUpdateIntent(context, appWidgetIds);
 		context.sendBroadcast(intent);
 	}
@@ -79,49 +85,84 @@ public class SunAngleWidgetUpdater {
 					SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name()));
 			params.time = Calendar.getInstance();
 			result = CALC.find(params);
-			result.current.angle = prefs.getFloat(SunAngleWidgetProvider.PREF_MOCK_ANGLE, (float)result.current.angle);
-			prefs.edit().remove(SunAngleWidgetProvider.PREF_MOCK_ANGLE).apply();
+			float mockValue = prefs.getFloat(SunAngleWidgetProvider.PREF_MOCK_ANGLE, Float.NaN);
+			if (!Float.isNaN(mockValue)) {
+				result.current.angle = mockValue;
+			}
 		}
-		updateViews(appWidgetId, result);
+		RemoteViews views = createUpdateViews(appWidgetId, result);
+		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+		appWidgetManager.updateAppWidget(appWidgetId, views);
 		return result != null;
 	}
 
-	private void updateViews(int appWidgetId, SunSearchResults results) {
-		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1);
+	private RemoteViews createUpdateViews(int appWidgetId, SunSearchResults results) {
 		Resources res = context.getResources();
+		RemoteViews views;
 		if (results != null) {
+			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1);
 			LightState state = LightState.from(results.current.angle);
 			views.setImageViewResource(R.id.angle_background, BGs.get(state, results.current.time));
 			views.setTextViewText(R.id.state, res.getText(CAPTIONs.get(state, results.current.time)));
 			views.setTextColor(R.id.angle, res.getColor(COLORs.get(state, results.current.time)));
 			views.setTextColor(R.id.angleFraction, res.getColor(COLORs.get(state, results.current.time)));
-			String sign = results.current.angle < 0? "-" : "";
-			views.setTextViewText(R.id.angle, sign + Math.abs((int)results.current.angle) + "°");
+			String sign = results.current.angle < 0? "-" : ""; // because I want to display ±0
+			views.setTextViewText(R.id.angle, sign + Math.abs((int)results.current.angle));
 			views.setTextViewText(R.id.angleFraction, fraction.format(results.current.angle));
 			views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
-			views.setTextViewText(R.id.threshold, ((int)results.params.thresholdAngle) + "°");
-			views.setTextViewText(R.id.thresholdRelation, res.getText(RELATIONS.get(results.params.thresholdRelation)));
-			views.setTextViewText(R.id.timeThresholdFrom, getTime2(results.threshold.start));
-			views.setTextViewText(R.id.timeThresholdTo, getTime2(results.threshold.end));
+			views.setTextViewText(R.id.threshold, formatThreshold(results));
+			views.setTextViewText(R.id.timeThresholdFrom, formatThresholdTime(results, results.threshold.start));
+			views.setTextViewText(R.id.timeThresholdTo, formatThresholdTime(results, results.threshold.end));
+			views.setOnClickPendingIntent(R.id.threshold_container, createOpenIntent(appWidgetId));
+			views.setOnClickPendingIntent(R.id.state, createRefreshIntent(appWidgetId));
+			views.setOnClickPendingIntent(R.id.angle_container, createRefreshIntent(appWidgetId));
 		} else {
-			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_refresh));
-			views.setTextViewText(R.id.angle, res.getText(R.string.angle_unknown));
-			views.setTextViewText(R.id.angleFraction, "");
+			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1_invalid);
 			views.setTextViewText(R.id.timeUpdated, time3.format(Calendar.getInstance().getTime()));
-			views.setTextViewText(R.id.threshold, "");
-			views.setTextViewText(R.id.timeThresholdFrom, res.getText(R.string.time_2_unknown));
-			views.setTextViewText(R.id.timeThresholdTo, res.getText(R.string.time_2_unknown));
-			Toast.makeText(getContext(), R.string.call_to_action_location, Toast.LENGTH_SHORT).show();
+			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_location));
+			views.setOnClickPendingIntent(R.id.threshold, createOpenIntent(appWidgetId));
+			views.setOnClickPendingIntent(R.id.state, createRefreshIntent(appWidgetId));
 		}
-		views.setOnClickPendingIntent(R.id.threshold_container, createOpenIntent(appWidgetId));
-		views.setOnClickPendingIntent(R.id.state, createRefreshIntent(appWidgetId));
-		views.setOnClickPendingIntent(R.id.angle_container, createRefreshIntent(appWidgetId));
-		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-		appWidgetManager.updateAppWidget(appWidgetId, views);
+		return views;
 	}
 
-	private String getTime2(Calendar cal) {
-		return cal == null? getContext().getString(R.string.time_2_none) : time2.format(cal.getTime());
+	private CharSequence formatThresholdTime(SunSearchResults results, Calendar time) {
+		CharSequence result;
+		if (time == null) {
+			result = getContext().getString(R.string.time_2_none);
+		} else {
+			result = time2.format(time.getTime());
+			Calendar justBefore = (Calendar)time.clone();
+			justBefore.add(Calendar.MINUTE, -30); // TODO configure?
+			if (results.current.time.after(justBefore) && results.current.time.before(time)) {
+				result = bold(color(result, Color.RED));
+			}
+		}
+		return result;
+	}
+
+	private CharSequence formatThreshold(SunSearchResults results) {
+		Calendar start = results.threshold.start;
+		Calendar end = results.threshold.end;
+		Calendar now = results.current.time;
+		Integer thresholdResource = RELATIONS.get(results.params.thresholdRelation);
+		CharSequence threshold = context.getString(thresholdResource, (int)results.params.thresholdAngle);
+		if (now.after(start) && now.before(end)) {
+			threshold = bold(threshold);
+		}
+		return threshold;
+	}
+
+	private CharSequence bold(CharSequence string) {
+		SpannableString boldString = new SpannableString(string);
+		boldString.setSpan(new StyleSpan(Typeface.BOLD), 0, boldString.length(), SPAN_INCLUSIVE_EXCLUSIVE);
+		return boldString;
+	}
+
+	private CharSequence color(CharSequence string, int color) {
+		SpannableString colorString = new SpannableString(string);
+		colorString.setSpan(new ForegroundColorSpan(color), 0, colorString.length(), SPAN_INCLUSIVE_EXCLUSIVE);
+		return colorString;
 	}
 
 	protected PendingIntent createOpenIntent(int appWidgetId) {

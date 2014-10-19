@@ -1,5 +1,10 @@
 <resources>
-	<dimen name="widget_margin">8dp</dimen>
+	<!-- Widgets should not generally extend to screen edges and should not visually be flush with other widgets,
+	 so you should add margins on all sides around your widget frame. -->
+	<dimen name="widget_margin">4dp</dimen>
 	<dimen name="margin">4dp</dimen>
 	<dimen name="margin2">8dp</dimen>
+	<dimen name="widget_text">12dp</dimen>
+	<dimen name="widget_text_small">10dp</dimen>
+	<dimen name="widget_text_big">36dp</dimen>
 </resources>

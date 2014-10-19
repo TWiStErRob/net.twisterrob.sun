@@ -1,3 +1,4 @@
 <resources>
+	<!-- As of Android 4.0, app widgets are automatically given padding between the widget frame and the app widget's bounding box to provide better alignment with other widgets and icons on the user's home screen. -->
 	<dimen name="widget_margin">0dp</dimen>
 </resources>

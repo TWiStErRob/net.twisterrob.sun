@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import net.twisterrob.android.content.pref.WidgetPreferences;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
+import net.twisterrob.sun.android.logic.*;
 
 public class SunAngleWidgetProvider extends AppWidgetProvider implements LocationListener {
 	public static final String PREF_NAME = "SunAngleWidget";

@@ -1,4 +1,4 @@
-package net.twisterrob.sun.android;
+package net.twisterrob.sun.android.logic;
 
 import java.util.*;
 
@@ -8,14 +8,14 @@ public class WidgetUpdateList {
 	private final Set<Integer> toBeUpdated = new HashSet<>();
 
 	public synchronized void remove(int... ids) {
-		for (int i = 0; i < ids.length; i++) {
-			toBeUpdated.remove(ids[i]);
+		for (int id : ids) {
+			toBeUpdated.remove(id);
 		}
 	}
 
 	public synchronized void add(int... ids) {
-		for (int i = 0; i < ids.length; i++) {
-			toBeUpdated.add(ids[i]);
+		for (int id : ids) {
+			toBeUpdated.add(id);
 		}
 	}
 

@@ -3,11 +3,12 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	package="net.twisterrob.sun.android">
 
+	<uses-feature android:name="android.software.app_widgets" android:required="true" />
+
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.INTERNET" />
-
-	<uses-sdk android:minSdkVersion="9" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 	<application
 		android:label="@string/app_name"
@@ -20,13 +21,29 @@
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
-			<meta-data
-				android:name="android.appwidget.provider"
-				android:resource="@xml/widget_sun_angle_and_threshold" />
+			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_sun" />
 		</receiver>
 		<activity android:name=".SunAngleWidgetConfiguration">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name=".WidgetMockerActivity"
+			android:label="Sun Position Mocker"
+			android:enabled="@bool/in_test">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name=".WidgetPreviewActivity"
+			android:label="Sun Position Preview"
+			android:enabled="@bool/in_test">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 	</application>

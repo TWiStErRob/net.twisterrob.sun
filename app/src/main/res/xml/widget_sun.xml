@@ -1,15 +1,14 @@
 <appwidget-provider
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
+	android:minWidth="62dp"
+	android:minHeight="62dp"
 	android:configure="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
-	android:initialKeyguardLayout="@layout/widget_1x1"
-	android:initialLayout="@layout/widget_1x1"
-	android:minHeight="105dp"
-	android:minWidth="84dp"
+	android:initialKeyguardLayout="@layout/widget_1x1_invalid"
+	android:initialLayout="@layout/widget_1x1_invalid"
 	android:previewImage="@drawable/widget_1x1_preview"
 	android:resizeMode="none"
 	android:updatePeriodMillis="1800000"
 	android:widgetCategory="home_screen|keyguard"
-	tools:ignore="UnusedAttribute">
-	<!-- TODO android:previewImage="@drawable/preview" -->
-</appwidget-provider>
+	tools:ignore="UnusedAttribute"
+	/>

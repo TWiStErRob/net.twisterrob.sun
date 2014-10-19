@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- widget cell on Samsung Galaxy S4: 84dp x 105dp -->
+<merge
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	>
+	<FrameLayout
+		android:id="@+id/widget"
+		android:layout_width="72dp"
+		android:layout_height="86dp"
+		android:layout_gravity="center"
+		android:background="#f00"
+		/>
+</merge>

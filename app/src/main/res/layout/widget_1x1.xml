@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- widget cell on Samsung Galaxy S4: 84dp x 105dp -->
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
@@ -8,6 +7,62 @@
 	android:padding="@dimen/widget_margin"
 	tools:showIn="@layout/widget_1x1_container"
 	>
+	<LinearLayout
+		android:id="@+id/threshold_container"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:padding="3dp"
+		android:layout_alignParentBottom="true"
+		android:orientation="vertical"
+		android:background="@color/widget_highlight"
+		>
+		<TextView
+			android:id="@+id/threshold"
+			style="@style/WidgetFont.Secondary.Small"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			tools:text="@string/threshold_placeholder"
+			/>
+		<LinearLayout
+			android:id="@+id/timeThreshold"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:orientation="horizontal"
+			>
+			<TextView
+				android:id="@+id/timeThresholdFrom"
+				style="@style/WidgetFont.Primary.Small"
+				tools:text="@string/time_2_placeholder"
+				/>
+			<TextView
+				android:id="@+id/timeThresholdBetween"
+				style="@style/WidgetFont.Primary.Small"
+				android:text="-"
+				tools:ignore="HardcodedText"
+				/>
+			<TextView
+				android:id="@+id/timeThresholdTo"
+				style="@style/WidgetFont.Primary.Small"
+				tools:text="@string/time_2_placeholder"
+				/>
+		</LinearLayout>
+	</LinearLayout>
+	<ImageView
+		android:id="@+id/angle_background"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/threshold_container"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentStart="true"
+		android:layout_alignParentTop="true"
+		android:src="@color/widget_highlight"
+		android:scaleType="centerCrop"
+		tools:ignore="ContentDescription"
+		tools:src="@drawable/day"
+		/>
 	<RelativeLayout
 		android:id="@+id/angle_container"
 		android:layout_width="wrap_content"
@@ -15,132 +70,60 @@
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
 		>
-		<ImageView
-			android:id="@+id/angle_background"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignBottom="@id/angle"
-			android:layout_alignParentEnd="true"
-			android:layout_alignParentLeft="true"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentStart="true"
-			android:layout_alignParentTop="true"
-			android:src="@color/widget_highlight"
-			android:scaleType="fitXY"
-			tools:ignore="ContentDescription"
-			tools:src="@drawable/day"
-			/>
 		<TextView
 			android:id="@id/angle"
 			style="@style/WidgetFont.Primary.Big"
-			android:layout_marginTop="6dp"
-			android:layout_alignParentTop="true"
-			android:layout_centerHorizontal="true"
 			android:text="@string/angle_unknown"
-			tools:text="@string/angle_placeholder"
 			/>
 		<TextView
 			android:id="@+id/angleFraction"
-			style="@style/WidgetFont.Extra"
+			style="@style/WidgetFont.Primary.Small"
 			android:layout_height="wrap_content"
-			android:layout_marginRight="2dp"
+			android:layout_marginLeft="-3dp"
 			android:layout_alignBaseline="@id/angle"
-			android:layout_alignParentEnd="true"
-			android:layout_alignParentRight="true"
-			android:layout_marginEnd="2dp"
+			android:layout_marginStart="-3dp"
+			android:layout_toEndOf="@id/angle"
+			android:layout_toRightOf="@id/angle"
+			android:ellipsize="none"
+			android:singleLine="true"
 			tools:text="@string/demo_text_angle_fraction"
 			/>
 		<TextView
-			android:id="@+id/timeUpdated"
-			style="@style/WidgetFont.Secondary.Small"
-			android:layout_alignParentTop="true"
-			android:layout_centerHorizontal="true"
-			tools:text="@string/time_3_placeholder"
+			android:id="@+id/angleSign"
+			style="@style/WidgetFont.Primary.Big"
+			android:layout_toEndOf="@id/angle"
+			android:layout_toRightOf="@id/angle"
+			android:text="°"
+			tools:ignore="HardcodedText"
 			/>
 	</RelativeLayout>
 	<RelativeLayout
-		android:id="@+id/threshold_container"
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true"
-		android:background="@color/widget_highlight"
+		android:layout_above="@id/threshold_container"
+		android:layout_below="@id/angle_container"
 		>
-		<LinearLayout
-			android:id="@+id/timeThreshold"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginRight="2dp"
-			android:layout_marginBottom="2dp"
+		<TextView
+			android:id="@+id/timeUpdated"
+			style="@style/WidgetFont.Secondary.Small"
+			android:layout_marginRight="1dp"
+			android:layout_marginBottom="1dp"
+			android:layout_alignParentBottom="true"
 			android:layout_alignParentEnd="true"
 			android:layout_alignParentRight="true"
-			android:layout_marginEnd="2dp"
-			android:orientation="vertical"
-			>
-			<TextView
-				android:id="@+id/timeThresholdFrom"
-				style="@style/WidgetFont.Primary.Small"
-				android:layout_gravity="center_horizontal"
-				tools:text="@string/time_2_placeholder"
-				/>
-			<TextView
-				android:id="@+id/timeThresholdTo"
-				style="@style/WidgetFont.Primary.Small"
-				android:layout_gravity="center_horizontal"
-				tools:text="@string/time_2_placeholder"
-				/>
-		</LinearLayout>
-		<TextView
-			android:id="@+id/thresholdRelation"
-			style="@style/WidgetFont.Secondary.Small"
-			android:layout_height="wrap_content"
-			android:layout_alignParentLeft="true"
-			android:layout_alignParentStart="true"
-			android:layout_alignParentTop="true"
-			android:layout_toLeftOf="@id/timeThreshold"
-			android:layout_toStartOf="@id/timeThreshold"
-			android:gravity="center_horizontal"
-			android:includeFontPadding="true"
-			tools:text="@string/threshold_relation_above"
+			android:layout_marginEnd="1dp"
+			tools:text="@string/time_3_placeholder"
 			/>
 		<TextView
-			android:id="@+id/threshold"
-			style="@style/WidgetFont.Secondary.Big"
-			android:layout_alignBottom="@id/timeThreshold"
-			android:layout_alignParentLeft="true"
-			android:layout_alignParentStart="true"
-			android:layout_below="@id/thresholdRelation"
-			android:layout_toLeftOf="@id/timeThreshold"
-			android:layout_toStartOf="@id/timeThreshold"
+			android:id="@+id/state"
+			style="@style/WidgetFont.Primary.Small"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_marginBottom="-2dp"
+			android:layout_above="@id/timeUpdated"
 			android:gravity="center"
-			tools:text="@string/angle_placeholder"
+			android:includeFontPadding="true"
+			tools:text="@string/light_state_twilight_astronomical"
 			/>
 	</RelativeLayout>
-	<ImageView
-		android:id="@+id/dividerBottom"
-		android:layout_width="fill_parent"
-		android:layout_height="1px"
-		android:layout_above="@id/threshold_container"
-		tools:ignore="ContentDescription"
-		/>
-	<ImageView
-		android:id="@+id/dividerTop"
-		android:layout_width="fill_parent"
-		android:layout_height="1px"
-		android:layout_below="@id/angle_container"
-		android:background="@color/widget_highlight"
-		tools:ignore="ContentDescription"
-		/>
-	<TextView
-		android:id="@+id/state"
-		style="@style/WidgetFont.Extra"
-		android:layout_width="fill_parent"
-		android:layout_height="0dp"
-		android:layout_above="@id/dividerBottom"
-		android:layout_below="@id/dividerTop"
-		android:background="@color/widget_highlight"
-		android:gravity="center_horizontal|center_vertical"
-		android:includeFontPadding="true"
-		tools:text="@string/light_state_twilight_astronomical"
-		/>
 </RelativeLayout>

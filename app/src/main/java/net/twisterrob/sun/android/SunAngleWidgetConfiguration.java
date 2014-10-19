@@ -21,6 +21,7 @@ import net.twisterrob.android.content.pref.WidgetPreferences;
 import net.twisterrob.android.content.res.ResourceArray;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
+import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
 import net.twisterrob.sun.android.view.SunThresholdDrawable;
 import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 
@@ -203,7 +204,7 @@ public class SunAngleWidgetConfiguration extends Activity {
 		edit.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, getCurrentRelation().name());
 		edit.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
 		edit.apply();
-		SunAngleWidgetUpdater.forceUpdateAll(getApplicationContext(), appWidgetId);
+		SunAngleWidgetUpdater.forceUpdate(getApplicationContext(), appWidgetId);
 		setResult(RESULT_OK, result);
 		finish();
 	}
