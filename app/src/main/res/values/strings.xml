@@ -1,10 +1,8 @@
 <resources>
 	<string name="app_name">Sun Position</string>
-	<string name="angle_placeholder">-99°</string>
-	<string name="angle_unknown">±??</string>
+	<string name="angle_placeholder">-99</string>
 	<string name="angle_placeholder_fraction">.9999</string>
 	<string name="time_2_placeholder">99:99</string>
-	<string name="time_2_unknown">\??:??</string>
 	<!-- ‒ is figure dash (as wide as a digit), not hypen-minus -->
 	<string name="time_2_none">‒‒:‒‒</string>
 	<string name="time_3_placeholder">99:99:99</string>

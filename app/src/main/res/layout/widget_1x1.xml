@@ -25,7 +25,6 @@
 			tools:text="@string/threshold_placeholder"
 			/>
 		<LinearLayout
-			android:id="@+id/timeThreshold"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
@@ -37,7 +36,6 @@
 				tools:text="@string/time_2_placeholder"
 				/>
 			<TextView
-				android:id="@+id/timeThresholdBetween"
 				style="@style/WidgetFont.Primary.Small"
 				android:text="-"
 				tools:ignore="HardcodedText"
@@ -72,7 +70,7 @@
 		<TextView
 			android:id="@id/angle"
 			style="@style/WidgetFont.Primary.Big"
-			android:text="@string/angle_unknown"
+			tools:text="@string/angle_placeholder"
 			/>
 		<TextView
 			android:id="@+id/angleFraction"

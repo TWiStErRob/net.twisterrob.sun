@@ -104,8 +104,11 @@ public class SunAngleWidgetUpdater {
 			LightState state = LightState.from(results.current.angle);
 			views.setImageViewResource(R.id.angle_background, BGs.get(state, results.current.time));
 			views.setTextViewText(R.id.state, res.getText(CAPTIONs.get(state, results.current.time)));
-			views.setTextColor(R.id.angle, res.getColor(COLORs.get(state, results.current.time)));
-			views.setTextColor(R.id.angleFraction, res.getColor(COLORs.get(state, results.current.time)));
+			int textColor = res.getColor(COLORs.get(state, results.current.time));
+			views.setTextColor(R.id.angle, textColor);
+			views.setTextColor(R.id.angleFraction, textColor);
+			views.setTextColor(R.id.angleSign, textColor);
+			views.setTextColor(R.id.state, textColor);
 			String sign = results.current.angle < 0? "-" : ""; // because I want to display ±0
 			views.setTextViewText(R.id.angle, sign + Math.abs((int)results.current.angle));
 			views.setTextViewText(R.id.angleFraction, fraction.format(results.current.angle));

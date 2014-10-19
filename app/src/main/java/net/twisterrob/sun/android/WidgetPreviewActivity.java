@@ -18,6 +18,8 @@ import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 
+import static android.appwidget.AppWidgetManager.*;
+
 public class WidgetPreviewActivity extends Activity {
 	private AppWidgetManager manager;
 	private AppWidgetHost host;
@@ -60,12 +62,13 @@ public class WidgetPreviewActivity extends Activity {
 	@Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 			case RESULT_FIRST_USER:
-				int appWidgetId =
-						data.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-				if (resultCode == RESULT_OK) {
-					resetView(appWidgetId);
-				} else {
-					host.deleteAppWidgetId(appWidgetId);
+				if (data != null) {
+					int appWidgetId = data.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
+					if (resultCode == RESULT_OK) {
+						resetView(appWidgetId);
+					} else {
+						host.deleteAppWidgetId(appWidgetId);
+					}
 				}
 				return;
 		}
