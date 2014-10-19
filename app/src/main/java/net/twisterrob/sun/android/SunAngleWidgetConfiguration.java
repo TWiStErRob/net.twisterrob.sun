@@ -2,7 +2,6 @@ package net.twisterrob.sun.android;
 
 import java.util.Calendar;
 
-import android.app.Activity;
 import android.content.*;
 import android.graphics.Color;
 import android.location.*;
@@ -17,54 +16,50 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import static android.appwidget.AppWidgetManager.*;
 
-import net.twisterrob.android.content.pref.WidgetPreferences;
+import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.android.content.res.ResourceArray;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
-import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
 import net.twisterrob.sun.android.view.SunThresholdDrawable;
 import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 
-public class SunAngleWidgetConfiguration extends Activity {
+public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);
 	private static final int MINIMUM_COLOR = Color.argb(0xAA, 0x00, 0x88, 0xFF);
 	private CompoundButton relation;
 	private TextView threshold;
 	private SeekBar angle;
-	private ImageView visualization;
 	private Spinner preset;
-	private SunThresholdDrawable newSun;
+	private SunThresholdDrawable sun;
 	private SunSearchResults lastResults;
 	private ResourceArray mapping = new ResourceArray(ResourceArray.Type.Int, R.array.angle_preset_values);
-	private SharedPreferences prefs;
-	private int appWidgetId;
-	private Intent result;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (!initAppWidget()) {
-			return;
+	@Override protected void onCreate(Bundle savedInstanceState) {
+		if (BuildConfig.DEBUG) {
+			if (!getIntent().hasExtra(EXTRA_APPWIDGET_ID)) {
+				getIntent().putExtra(EXTRA_APPWIDGET_ID, 183);
+			}
 		}
+		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_config);
-		relation = (CompoundButton)findViewById(R.id.thresholdRelation);
 		threshold = (TextView)findViewById(R.id.threshold);
-		visualization = (ImageView)findViewById(R.id.visualization);
-		angle = (SeekBar)findViewById(R.id.angle);
-		preset = ((Spinner)findViewById(R.id.preset));
 		mapping.initialize(getResources());
+
+		sun = createSun();
+		((ImageView)findViewById(R.id.visualization)).setImageDrawable(sun);
 
 		findViewById(R.id.btn_ok).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				confirm();
+				finishCommit();
 			}
 		});
 
+		angle = (SeekBar)findViewById(R.id.angle);
 		angle.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				setPresetByAngle(toThreshold(progress));
-				updateImage();
+				updateImage(lastResults);
 			}
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				// ignore
@@ -74,15 +69,16 @@ public class SunAngleWidgetConfiguration extends Activity {
 			}
 		});
 
+		relation = (CompoundButton)findViewById(R.id.thresholdRelation);
 		relation.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				updateImage();
+				updateImage(lastResults);
 			}
 		});
 
+		preset = ((Spinner)findViewById(R.id.preset));
 		preset.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
+			@Override public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
 				if (position != mapping.last()) {
 					int presetAngleValue = mapping.getValue(position);
 					Log.d("Config", "Preset for pos: " + position + " = " + presetAngleValue);
@@ -90,55 +86,42 @@ public class SunAngleWidgetConfiguration extends Activity {
 				}
 			}
 
-			@Override
-			public void onNothingSelected(AdapterView<?> list) {
-				// NOP
+			@Override public void onNothingSelected(AdapterView<?> list) {
+				// ignore
 			}
 		});
+	}
+
+	@Override protected void onStart() {
+		updateLocation();
+		super.onStart();
+	}
+	@Override protected void onPreferencesLoad(SharedPreferences prefs) {
 		String relVal = prefs.getString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name());
 		float angleVal = prefs.getFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, 0);
 		Log.d("Config", "Existing values: " + relVal + " " + angleVal);
 		relation.setChecked(toChecked(ThresholdRelation.valueOf(relVal)));
 		angle.setProgress(toProgress(angleVal));
 	}
-	private boolean initAppWidget() {
-		appWidgetId = getIntent().getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
-		Log.d("Config", "Editing widget: " + appWidgetId);
-		result = new Intent();
-		result.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
-		setResult(RESULT_CANCELED, result);
 
-		if (appWidgetId == INVALID_APPWIDGET_ID) {
-			Log.i("Config", "Invalid widget ID, closing");
-			if (!BuildConfig.DEBUG) {
-				finish();
-				return false;
-			}
-		}
-		prefs = new WidgetPreferences(this, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
-		return true;
-	}
-
-	private void updateImage() {
-		if (newSun == null) {
-			resetImage();
-		}
+	private void updateImage(SunSearchResults results) {
 		ThresholdRelation rel = getCurrentRelation();
 		float angle = getCurrentThresholdAngle();
-		newSun.setSelected(rel, angle);
-		boolean belowMin = angle <= lastResults.minimum.angle;
-		boolean aboveMax = angle >= lastResults.maximum.angle;
-		newSun.setMinimumEdge(rel == ThresholdRelation.ABOVE && !belowMin);
-		newSun.setMaximumEdge(rel == ThresholdRelation.BELOW && !aboveMax);
+		sun.setSelected(rel, angle);
+		boolean belowMin = angle <= results.minimum.angle;
+		boolean aboveMax = angle >= results.maximum.angle;
+		sun.setMinimumEdge(rel == ThresholdRelation.ABOVE && !belowMin);
+		sun.setMaximumEdge(rel == ThresholdRelation.BELOW && !aboveMax);
+		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
 		threshold.setTextColor(Color.BLACK);
 		threshold.setText(getString(R.string.message_selected_angle, getRelString(rel), angle));
 		if (belowMin) {
 			threshold.setTextColor(MINIMUM_COLOR);
-			threshold.setText(getString(R.string.warning_minimum, lastResults.minimum.angle, angle));
+			threshold.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
 		}
 		if (aboveMax) {
 			threshold.setTextColor(MAXIMUM_COLOR);
-			threshold.setText(getString(R.string.warning_maximum, lastResults.maximum.angle, angle));
+			threshold.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
 		}
 	}
 
@@ -147,15 +130,14 @@ public class SunAngleWidgetConfiguration extends Activity {
 		return getString(id);
 	}
 
-	protected void resetImage() {
-		newSun = new SunThresholdDrawable();
-		newSun.setRadius(256);
-		newSun.setSelectedVisuals(16, 20, Color.argb(0x66, 0x00, 0xFF, 0x00));
-		newSun.setMinimumVisuals(6, 10, MINIMUM_COLOR);
-		newSun.setMaximumVisuals(6, 10, MAXIMUM_COLOR);
-		newSun.setSelectedEdge(true);
-		visualization.setImageDrawable(newSun);
-		updateLocation();
+	protected SunThresholdDrawable createSun() {
+		sun = new SunThresholdDrawable();
+		sun.setRadius(256);
+		sun.setSelectedVisuals(16, 20, Color.argb(0x66, 0x00, 0xFF, 0x00));
+		sun.setMinimumVisuals(6, 10, MINIMUM_COLOR);
+		sun.setMaximumVisuals(6, 10, MAXIMUM_COLOR);
+		sun.setSelectedEdge(true);
+		return sun;
 	}
 	private void updateLocation() {
 		LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -194,19 +176,13 @@ public class SunAngleWidgetConfiguration extends Activity {
 		if (results == null) {
 			results = SunSearchResults.unknown();
 		}
-		newSun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
+		updateImage(results);
 		this.lastResults = results;
-		updateImage();
 	}
 
-	private void confirm() {
-		SharedPreferences.Editor edit = prefs.edit();
+	@Override protected void onPreferencesSave(SharedPreferences.Editor edit) {
 		edit.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, getCurrentRelation().name());
 		edit.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
-		edit.apply();
-		SunAngleWidgetUpdater.forceUpdate(getApplicationContext(), appWidgetId);
-		setResult(RESULT_OK, result);
-		finish();
 	}
 
 	private static ThresholdRelation toRelation(boolean checked) {

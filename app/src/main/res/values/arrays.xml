@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string-array name="angle_preset">
-		<item>Sunrise/Sunset</item>
-		<item>Civil dawn/dusk</item>
-		<item>Nautical dawn/dusk</item>
-		<item>Astronomical dawn/dusk</item>
-		<item>UV-B benefits (max. 30 min/day)</item>
+		<item>0° Sunrise/Sunset</item>
+		<item>-6° Civil dawn/dusk</item>
+		<item>-12° Nautical dawn/dusk</item>
+		<item>-18° Astronomical dawn/dusk</item>
+		<item>50° UV-B benefits (max. 30 min/day)</item>
 		<item>Custom&#8230; (use slider)</item>
 	</string-array>
 
