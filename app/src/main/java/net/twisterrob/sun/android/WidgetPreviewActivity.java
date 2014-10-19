@@ -9,8 +9,10 @@ import android.app.Activity;
 import android.appwidget.*;
 import android.content.*;
 import android.graphics.*;
+import android.net.Uri;
 import android.os.Build.*;
-import android.os.*;
+import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -45,11 +47,13 @@ public class WidgetPreviewActivity extends Activity {
 
 	@TargetApi(VERSION_CODES.JELLY_BEAN)
 	private void bindWidget(int appWidgetId, ComponentName provider) {
-		if (!manager.bindAppWidgetIdIfAllowed(appWidgetId, provider)) {
-			Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
-			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider);
-			startActivityForResult(intent, RESULT_FIRST_USER);
+		if (VERSION_CODES.JELLY_BEAN <= VERSION.SDK_INT) {
+			if (!manager.bindAppWidgetIdIfAllowed(appWidgetId, provider)) {
+				Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
+				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider);
+				startActivityForResult(intent, RESULT_FIRST_USER);
+			}
 		}
 	}
 
@@ -89,19 +93,31 @@ public class WidgetPreviewActivity extends Activity {
 
 	@SuppressLint("SdCardPath")
 	public static void screenshot(View view) {
+		Context context = view.getContext();
 		Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
 		view.draw(new Canvas(bitmap));
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ROOT).format(new Date());
 		try {
-			File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-			storageDir.mkdirs();
+			File storageDir = context.getCacheDir();
+			if (!storageDir.mkdirs() && !storageDir.isDirectory()) {
+				throw new IOException("Cannot create directory: " + storageDir
+						+ " (exists: " + storageDir.exists() + ", dir: " + storageDir.isDirectory() + ")");
+			}
 			File file = File.createTempFile(timeStamp, ".png", storageDir);
 			@SuppressWarnings("resource")
 			OutputStream stream = new FileOutputStream(file);
 			bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
 			stream.close();
-			String sdCardRoot = Environment.getExternalStorageDirectory().toString();
-			Log.i("SCREENSHOT", "adb pull " + file.toString().replace(sdCardRoot, "/sdcard"));
+
+			Uri contentUri = FileProvider.getUriForFile(context, context.getString(R.string.app_package), file);
+
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			//intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			intent.setData(contentUri);
+			intent.setType("image/png");
+			intent.putExtra(Intent.EXTRA_STREAM, contentUri);
+			context.startActivity(intent);
 		} catch (IOException e) {
 			Log.e("SCREENSHOT", "Cannot save screenshot of " + view, e);
 		}
