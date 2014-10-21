@@ -9,9 +9,8 @@ import android.widget.*;
 
 import static android.view.inputmethod.EditorInfo.*;
 
-import net.twisterrob.android.content.pref.WidgetPreferences;
-
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
+
 public class WidgetMockerActivity extends ListActivity {
 	private static final String TAG = "asdf";
 
@@ -74,15 +73,11 @@ public class WidgetMockerActivity extends ListActivity {
 	}
 
 	private float getCurrentAngle(int appWidgetID) {
-		return new WidgetPreferences(this, PREF_NAME, appWidgetID)
-				.getFloat(PREF_MOCK_ANGLE, Float.NaN);
+		return SunAngleWidgetProvider.getPreferences(this, appWidgetID).getFloat(PREF_MOCK_ANGLE, Float.NaN);
 	}
 
 	private void setCurrentAngle(int appWidgetId, float result) {
-		new WidgetPreferences(this, PREF_NAME, appWidgetId)
-				.edit()
-				.putFloat(PREF_MOCK_ANGLE, result)
-				.apply();
+		SunAngleWidgetProvider.getPreferences(this, appWidgetId).edit().putFloat(PREF_MOCK_ANGLE, result).apply();
 	}
 
 	private class WidgetAdapter extends BaseAdapter {

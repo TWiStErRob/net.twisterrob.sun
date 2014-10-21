@@ -17,7 +17,6 @@ import android.widget.RemoteViews;
 
 import static android.text.Spanned.*;
 
-import net.twisterrob.android.content.pref.WidgetPreferences;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.*;
@@ -78,7 +77,7 @@ public class SunAngleWidgetUpdater {
 		Log.v("Sun", "update(" + appWidgetId + "," + location + ")");
 
 		SunSearchResults result = null;
-		SharedPreferences prefs = new WidgetPreferences(context, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
+		SharedPreferences prefs = SunAngleWidgetProvider.getPreferences(context, appWidgetId);
 		if (location != null) {
 			SunSearchParams params = new SunSearchParams();
 			params.latitude = location.getLatitude();

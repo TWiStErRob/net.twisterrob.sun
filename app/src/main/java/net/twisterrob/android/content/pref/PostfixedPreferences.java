@@ -1,62 +1,24 @@
 package net.twisterrob.android.content.pref;
 
-import java.util.*;
+import android.content.Context;
 
-import android.annotation.TargetApi;
-import android.content.*;
-import android.os.Build;
-
-public class PostfixedPreferences implements SharedPreferences {
-	private final SharedPreferences prefs;
+public class PostfixedPreferences extends FixedPreferences {
 	private final String postFix;
 
 	public PostfixedPreferences(Context context, String name, String postFix) {
-		this.prefs = context.getApplicationContext().getSharedPreferences(name, Context.MODE_PRIVATE);
+		super(context, name);
 		this.postFix = postFix;
 	}
 
-	public Editor edit() {
-		return new PostfixedPreferencesEditor(prefs, postFix);
+	@Override protected String composeKey(String key) {
+		return key + postFix;
 	}
 
-	public Map<String, ?> getAll() {
-		return prefs.getAll(); // TODO postfix
+	@Override protected String decomposeKey(String key) {
+		return key.substring(0, key.length() - postFix.length());
 	}
 
-	public String getString(String key, String defValue) {
-		return prefs.getString(key + postFix, defValue);
-	}
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public Set<String> getStringSet(String key, Set<String> defValues) {
-		return prefs.getStringSet(key + postFix, defValues);
-	}
-
-	public int getInt(String key, int defValue) {
-		return prefs.getInt(key + postFix, defValue);
-	}
-
-	public long getLong(String key, long defValue) {
-		return prefs.getLong(key + postFix, defValue);
-	}
-
-	public float getFloat(String key, float defValue) {
-		return prefs.getFloat(key + postFix, defValue);
-	}
-
-	public boolean getBoolean(String key, boolean defValue) {
-		return prefs.getBoolean(key + postFix, defValue);
-	}
-
-	public boolean contains(String key) {
-		return prefs.contains(key + postFix);
-	}
-
-	public void registerOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener) {
-		prefs.registerOnSharedPreferenceChangeListener(listener);  // TODO postfix
-	}
-
-	public void unregisterOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener) {
-		prefs.unregisterOnSharedPreferenceChangeListener(listener);  // TODO postfix
+	@Override protected boolean isComposed(String key) {
+		return key.endsWith(postFix);
 	}
 }

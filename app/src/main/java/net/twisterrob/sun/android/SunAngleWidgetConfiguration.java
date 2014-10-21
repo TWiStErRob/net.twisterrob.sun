@@ -18,7 +18,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import static android.appwidget.AppWidgetManager.*;
 
 import net.twisterrob.android.app.WidgetConfigurationActivity;
-import net.twisterrob.android.content.res.*;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.view.SunThresholdDrawable;
@@ -35,7 +34,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private Spinner preset;
 	private SunThresholdDrawable sun;
 	private SunSearchResults lastResults;
-	private ResourceArray<Integer> mapping;
+	private int[] mapping;
 	private MenuItem menuShowPartOfDay;
 	private MenuItem menuShowLastUpdateTime;
 
@@ -49,7 +48,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 
 		setContentView(R.layout.activity_config);
 		threshold = (TextView)findViewById(R.id.threshold);
-		mapping = new IntArray(getResources(), R.array.angle_preset_values);
+		mapping = getResources().getIntArray(R.array.angle_preset_values);
 
 		sun = createSun();
 		((ImageView)findViewById(R.id.visualization)).setImageDrawable(sun);
@@ -84,8 +83,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		preset = ((Spinner)findViewById(R.id.preset));
 		preset.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
-				if (position != mapping.last()) {
-					int presetAngleValue = mapping.getValue(position);
+				if (position != mapping.length - 1) {
+					int presetAngleValue = mapping[position];
 					Log.d("Config", "Preset for pos: " + position + " = " + presetAngleValue);
 					angle.setProgress(toProgress(presetAngleValue));
 				}
@@ -100,6 +99,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	@Override protected void onStart() {
 		updateLocation();
 		super.onStart();
+	}
+
+	@Override protected SharedPreferences onPreferencesOpen(int appWidgetId) {
+		return SunAngleWidgetProvider.getPreferences(this, appWidgetId);
 	}
 
 	@Override protected void onPreferencesLoad(SharedPreferences prefs) {
@@ -247,11 +250,19 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 
 	protected void setPresetByAngle(float angle) {
 		Log.d("Config", "Syncing preset for angle: " + angle);
-		int temp = Math.round(angle);
-		int position = mapping.getPosition(temp);
-		if (position == ResourceArray.NOT_FOUND) {
-			position = mapping.last();
+		int position = find(mapping, Math.round(angle));
+		if (position == -1) {
+			position = mapping.length - 1;
 		}
 		preset.setSelection(position);
+	}
+
+	private static int find(int[] array, int value) {
+		for (int i = 0; i < array.length; ++i) {
+			if (array[i] == value) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }

@@ -10,10 +10,7 @@ import android.util.Log;
 
 import static android.appwidget.AppWidgetManager.*;
 
-import net.twisterrob.android.content.pref.WidgetPreferences;
-import net.twisterrob.sun.android.SunAngleWidgetProvider;
-
-public class WidgetConfigurationActivity extends ActionBarActivity {
+public abstract class WidgetConfigurationActivity extends ActionBarActivity {
 	private SharedPreferences prefs;
 	private int appWidgetId;
 	private Intent result;
@@ -33,7 +30,7 @@ public class WidgetConfigurationActivity extends ActionBarActivity {
 			// should return here, but it depends on the child class from here
 		}
 
-		prefs = new WidgetPreferences(this, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
+		prefs = onPreferencesOpen(appWidgetId);
 	}
 
 	@Override protected void onPostCreate(Bundle savedInstanceState) {
@@ -47,7 +44,7 @@ public class WidgetConfigurationActivity extends ActionBarActivity {
 	protected void finishCommit() {
 		SharedPreferences.Editor edit = prefs.edit();
 		onPreferencesSave(edit);
-		edit.commit(); // make sure preferences are saved before updating the widget
+		edit.apply(); // make sure preferences are saved before updating the widget
 		setResult(RESULT_OK, result);
 		finish();
 		forceUpdate();
@@ -64,11 +61,11 @@ public class WidgetConfigurationActivity extends ActionBarActivity {
 		sendBroadcast(intent);
 	}
 
-	protected void onPreferencesLoad(SharedPreferences prefs) {
-	}
+	protected abstract SharedPreferences onPreferencesOpen(int appWidgetId);
 
-	protected void onPreferencesSave(Editor prefs) {
-	}
+	protected abstract void onPreferencesLoad(SharedPreferences prefs);
+
+	protected abstract void onPreferencesSave(Editor prefs);
 
 	protected final SharedPreferences getWidgetPreferences() {
 		return prefs;

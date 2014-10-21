@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import net.twisterrob.android.content.pref.WidgetPreferences;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.logic.*;
 
@@ -50,7 +49,7 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 		Log.v("Sun", this + ".onDeleted(" + Arrays.toString(appWidgetIds) + ")");
 		TODOs.remove(appWidgetIds);
 		for (int appWidgetId : appWidgetIds) {
-			new WidgetPreferences(context, PREF_NAME, appWidgetId).edit().clear().apply();
+			getPreferences(context, appWidgetId).edit().clear().apply();
 		}
 	}
 
@@ -111,4 +110,8 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 	public void onStatusChanged(String provider, int status, Bundle extras) { /* NOP */}
 	public void onProviderDisabled(String provider) { /* NOP */}
 	public void onProviderEnabled(String provider) { /* NOP */}
+
+	public static SharedPreferences getPreferences(Context context, int appWidgetId) {
+		return context.getSharedPreferences(PREF_NAME + "-" + appWidgetId, Context.MODE_PRIVATE);
+	}
 }
