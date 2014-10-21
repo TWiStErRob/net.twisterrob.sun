@@ -2,12 +2,13 @@ package net.twisterrob.sun.android;
 
 import java.util.Calendar;
 
+import android.app.AlertDialog;
 import android.content.*;
 import android.graphics.Color;
 import android.location.*;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -17,11 +18,13 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import static android.appwidget.AppWidgetManager.*;
 
 import net.twisterrob.android.app.WidgetConfigurationActivity;
-import net.twisterrob.android.content.res.ResourceArray;
+import net.twisterrob.android.content.res.*;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.view.SunThresholdDrawable;
 import net.twisterrob.sun.pveducation.PhotovoltaicSun;
+
+import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
 
 public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);
@@ -32,7 +35,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private Spinner preset;
 	private SunThresholdDrawable sun;
 	private SunSearchResults lastResults;
-	private ResourceArray mapping = new ResourceArray(ResourceArray.Type.Int, R.array.angle_preset_values);
+	private ResourceArray<Integer> mapping;
+	private MenuItem menuShowPartOfDay;
+	private MenuItem menuShowLastUpdateTime;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		if (BuildConfig.DEBUG) {
@@ -44,7 +49,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 
 		setContentView(R.layout.activity_config);
 		threshold = (TextView)findViewById(R.id.threshold);
-		mapping.initialize(getResources());
+		mapping = new IntArray(getResources(), R.array.angle_preset_values);
 
 		sun = createSun();
 		((ImageView)findViewById(R.id.visualization)).setImageDrawable(sun);
@@ -96,14 +101,45 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		updateLocation();
 		super.onStart();
 	}
+
 	@Override protected void onPreferencesLoad(SharedPreferences prefs) {
-		String relVal = prefs.getString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name());
-		float angleVal = prefs.getFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, 0);
-		Log.d("Config", "Existing values: " + relVal + " " + angleVal);
-		relation.setChecked(toChecked(ThresholdRelation.valueOf(relVal)));
-		angle.setProgress(toProgress(angleVal));
+		String rel = prefs.getString(PREF_THRESHOLD_RELATION, DEFAULT_THRESHOLD_RELATION.name());
+		relation.setChecked(toChecked(ThresholdRelation.valueOf(rel)));
+		angle.setProgress(toProgress(prefs.getFloat(PREF_THRESHOLD_ANGLE, DEFAULT_THRESHOLD_ANGLE)));
 	}
 
+	@Override public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		getMenuInflater().inflate(R.menu.config, menu);
+		SharedPreferences prefs = getWidgetPreferences();
+
+		menuShowPartOfDay = menu.findItem(R.id.action_show_partOfDay);
+		menuShowPartOfDay.setChecked(prefs.getBoolean(PREF_SHOW_PART_OF_DAY, DEFAULT_SHOW_PART_OF_DAY));
+
+		menuShowLastUpdateTime = menu.findItem(R.id.action_show_lastUpdateTime);
+		menuShowLastUpdateTime.setChecked(prefs.getBoolean(PREF_SHOW_UPDATE_TIME, DEFAULT_SHOW_UPDATE_TIME));
+
+		return true;
+	}
+
+	@Override public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_show_lastUpdateTime:
+			case R.id.action_show_partOfDay:
+				item.setChecked(!item.isChecked());
+				return true;
+			case R.id.action_help:
+				new AlertDialog.Builder(this)
+						.setTitle(getTitle())
+						.setMessage(getText(R.string.config_help))
+						.setPositiveButton(android.R.string.ok, null)
+						.create()
+						.show()
+				;
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 	private void updateImage(SunSearchResults results) {
 		ThresholdRelation rel = getCurrentRelation();
 		float angle = getCurrentThresholdAngle();
@@ -114,7 +150,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		sun.setMaximumEdge(rel == ThresholdRelation.BELOW && !aboveMax);
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
 		threshold.setTextColor(Color.BLACK);
-		threshold.setText(getString(R.string.message_selected_angle, getRelString(rel), angle));
+		threshold.setText(getString(R.string.message_selected_angle, getRelString(rel), angle, results.current.angle));
 		if (belowMin) {
 			threshold.setTextColor(MINIMUM_COLOR);
 			threshold.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
@@ -181,8 +217,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	}
 
 	@Override protected void onPreferencesSave(SharedPreferences.Editor edit) {
-		edit.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, getCurrentRelation().name());
-		edit.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
+		edit.putString(PREF_THRESHOLD_RELATION, getCurrentRelation().name());
+		edit.putFloat(PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
+		edit.putBoolean(PREF_SHOW_UPDATE_TIME, menuShowLastUpdateTime.isChecked());
+		edit.putBoolean(PREF_SHOW_PART_OF_DAY, menuShowPartOfDay.isChecked());
 	}
 
 	private static ThresholdRelation toRelation(boolean checked) {
@@ -211,7 +249,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		Log.d("Config", "Syncing preset for angle: " + angle);
 		int temp = Math.round(angle);
 		int position = mapping.getPosition(temp);
-		if (position == -1) {
+		if (position == ResourceArray.NOT_FOUND) {
 			position = mapping.last();
 		}
 		preset.setSelection(position);

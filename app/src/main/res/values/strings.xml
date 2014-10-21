@@ -29,7 +29,24 @@
 	<string name="call_to_action_settings">Change Settings</string>
 	<string name="warning_maximum">The sun will not go above %1$.1f° in the foreseeable future, setting %2$.1f° will always yield the same results.</string>
 	<string name="warning_minimum">The sun will not go below %1$.1f° in the foreseeable future, setting %2$.1f° will always yield the same results.</string>
-	<string name="message_selected_angle">The widget will show the start and end time of period where the sun is %1$s %2$.1f°.</string>
+	<string name="message_selected_angle">The widget will show the current angle and the time range when the sun is %1$s %2$.0f°.</string>
 	<string name="cd_selected_angle">Visualization of selected angle threshold</string>
 	<string name="config_done">Done</string>
+	<string name="config_title">Sun Position Widget</string>
+	<string name="config_help">
+		<big><b>What\'s that degree (°)?</b></big>
+		\n<i>Altitude angle</i>.
+		The widget shows the current position of the sun which is the angle between the horizon and the sun.
+
+		\n\n<big><b>Threshold</b></big>
+		\n<i>You can set a threshold for the sun\'s position.</i>
+		The threshold will show the time range when the sun\'s altitude angle is above/below the threshold.
+		The time range will be <b>bold</b> when the sun is in the right position.
+		The start/end time of the range will be <font color="red">red</font> up to 30 minutes before the sun enters/leaves the specified range.
+		\n<b>For example</b>: if the threshold is above 0° this is good for a soft alert before sunrise/sunset.
+
+		\n\n<big><b>Hide parts of the widget</b></big>
+		\n<i>Open the options menu to do so.</i>
+		You can show/hide the part of the day and last update time displays in case your phone\'s current launcher doesn\'t give enough space for the widget.
+	</string>
 </resources>

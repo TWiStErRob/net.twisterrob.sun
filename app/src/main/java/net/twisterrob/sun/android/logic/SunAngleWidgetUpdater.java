@@ -12,6 +12,7 @@ import android.location.*;
 import android.text.SpannableString;
 import android.text.style.*;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import static android.text.Spanned.*;
@@ -23,6 +24,8 @@ import net.twisterrob.sun.android.*;
 import net.twisterrob.sun.android.ui.*;
 import net.twisterrob.sun.model.*;
 import net.twisterrob.sun.pveducation.PhotovoltaicSun;
+
+import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
 
 public class SunAngleWidgetUpdater {
 	private static final DecimalFormat fraction = initFractionFormat();
@@ -75,56 +78,68 @@ public class SunAngleWidgetUpdater {
 		Log.v("Sun", "update(" + appWidgetId + "," + location + ")");
 
 		SunSearchResults result = null;
+		SharedPreferences prefs = new WidgetPreferences(context, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
 		if (location != null) {
-			SharedPreferences prefs = new WidgetPreferences(context, SunAngleWidgetProvider.PREF_NAME, appWidgetId);
 			SunSearchParams params = new SunSearchParams();
 			params.latitude = location.getLatitude();
 			params.longitude = location.getLongitude();
-			params.thresholdAngle = prefs.getFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, 0);
-			params.thresholdRelation = ThresholdRelation.valueOf(prefs.getString(
-					SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name()));
+			params.thresholdAngle = prefs.getFloat(PREF_THRESHOLD_ANGLE, DEFAULT_THRESHOLD_ANGLE);
+			String thresholdRelation = prefs.getString(PREF_THRESHOLD_RELATION, DEFAULT_THRESHOLD_RELATION.name());
+			params.thresholdRelation = ThresholdRelation.valueOf(thresholdRelation);
 			params.time = Calendar.getInstance();
 			result = CALC.find(params);
-			float mockValue = prefs.getFloat(SunAngleWidgetProvider.PREF_MOCK_ANGLE, Float.NaN);
-			if (!Float.isNaN(mockValue)) {
-				result.current.angle = mockValue;
+			if (prefs.contains(PREF_MOCK_ANGLE)) {
+				result.current.angle = prefs.getFloat(PREF_MOCK_ANGLE, DEFAULT_MOCK_ANGLE);
 			}
 		}
-		RemoteViews views = createUpdateViews(appWidgetId, result);
+		RemoteViews views = createUpdateViews(appWidgetId, result, prefs);
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 		return result != null;
 	}
 
-	private RemoteViews createUpdateViews(int appWidgetId, SunSearchResults results) {
+	private RemoteViews createUpdateViews(int appWidgetId, SunSearchResults results, SharedPreferences prefs) {
 		Resources res = context.getResources();
 		RemoteViews views;
-		if (results != null) {
+		if (results == null) {
+			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1_invalid);
+			views.setTextViewText(R.id.timeUpdated, time3.format(Calendar.getInstance().getTime()));
+			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_location));
+			views.setOnClickPendingIntent(R.id.state, createRefreshIntent(appWidgetId));
+			views.setOnClickPendingIntent(R.id.threshold, createOpenIntent(appWidgetId));
+		} else {
 			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1);
 			LightState state = LightState.from(results.current.angle);
-			views.setImageViewResource(R.id.angle_background, BGs.get(state, results.current.time));
-			views.setTextViewText(R.id.state, res.getText(CAPTIONs.get(state, results.current.time)));
 			int textColor = res.getColor(COLORs.get(state, results.current.time));
+
+			views.setImageViewResource(R.id.angle_background, BGs.get(state, results.current.time));
 			views.setTextColor(R.id.angle, textColor);
 			views.setTextColor(R.id.angleFraction, textColor);
 			views.setTextColor(R.id.angleSign, textColor);
-			views.setTextColor(R.id.state, textColor);
 			String sign = results.current.angle < 0? "-" : ""; // because I want to display ±0
 			views.setTextViewText(R.id.angle, sign + Math.abs((int)results.current.angle));
 			views.setTextViewText(R.id.angleFraction, fraction.format(results.current.angle));
-			views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
+			views.setOnClickPendingIntent(R.id.angle_background, createRefreshIntent(appWidgetId));
+
+			if (prefs.getBoolean(PREF_SHOW_PART_OF_DAY, DEFAULT_SHOW_PART_OF_DAY)) {
+				views.setViewVisibility(R.id.state, View.VISIBLE);
+				views.setTextViewText(R.id.state, res.getText(CAPTIONs.get(state, results.current.time)));
+				views.setTextColor(R.id.state, textColor);
+			} else {
+				views.setViewVisibility(R.id.state, View.GONE);
+			}
+
+			if (prefs.getBoolean(PREF_SHOW_UPDATE_TIME, DEFAULT_SHOW_UPDATE_TIME)) {
+				views.setViewVisibility(R.id.timeUpdated, View.VISIBLE);
+				views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
+			} else {
+				views.setViewVisibility(R.id.timeUpdated, View.GONE);
+			}
+
 			views.setTextViewText(R.id.threshold, formatThreshold(results));
 			views.setTextViewText(R.id.timeThresholdFrom, formatThresholdTime(results, results.threshold.start));
 			views.setTextViewText(R.id.timeThresholdTo, formatThresholdTime(results, results.threshold.end));
 			views.setOnClickPendingIntent(R.id.threshold_container, createOpenIntent(appWidgetId));
-			views.setOnClickPendingIntent(R.id.state, createRefreshIntent(appWidgetId));
-			views.setOnClickPendingIntent(R.id.angle_container, createRefreshIntent(appWidgetId));
-		} else {
-			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1_invalid);
-			views.setTextViewText(R.id.timeUpdated, time3.format(Calendar.getInstance().getTime()));
-			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_location));
-			views.setOnClickPendingIntent(R.id.threshold, createOpenIntent(appWidgetId));
-			views.setOnClickPendingIntent(R.id.state, createRefreshIntent(appWidgetId));
 		}
 		return views;
 	}

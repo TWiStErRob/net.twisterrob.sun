@@ -6,6 +6,7 @@
 	android:layout_height="match_parent"
 	android:layout_margin="@dimen/margin2"
 	tools:ignore="RtlHardcoded"
+	tools:context=".SunAngleWidgetConfiguration"
 	>
 	<Button
 		android:id="@+id/btn_ok"
@@ -19,7 +20,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
-		android:text="@string/message_selected_angle"
+		tools:text="@string/message_selected_angle"
 		/>
 	<ToggleButton
 		android:id="@+id/thresholdRelation"
@@ -38,6 +39,7 @@
 		android:layout_above="@id/btn_ok"
 		android:layout_toLeftOf="@id/thresholdRelation"
 		android:entries="@array/angle_preset"
+		tools:spinnerMode="dialog"
 		/>
 	<net.twisterrob.android.view.VerticalSeekBar
 		android:id="@+id/angle"

@@ -14,6 +14,7 @@
 		android:allowBackup="true"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme"
+		tools:theme="@style/ToolsTheme"
 		tools:ignore="UnusedAttribute">
 		<receiver android:name=".SunAngleWidgetProvider">
 			<intent-filter>
@@ -21,7 +22,10 @@
 			</intent-filter>
 			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_sun" />
 		</receiver>
-		<activity android:name=".SunAngleWidgetConfiguration">
+		<activity
+			android:name=".SunAngleWidgetConfiguration"
+			android:label="@string/config_title"
+			>
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 			</intent-filter>
