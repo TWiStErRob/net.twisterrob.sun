@@ -1,16 +1,16 @@
 package net.twisterrob.android.app;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.appwidget.*;
 import android.content.*;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
 import static android.appwidget.AppWidgetManager.*;
 
-public abstract class WidgetConfigurationActivity extends ActionBarActivity {
+public abstract class WidgetConfigurationActivity extends Activity {
 	private SharedPreferences prefs;
 	private int appWidgetId;
 	private Intent result;
@@ -38,6 +38,12 @@ public abstract class WidgetConfigurationActivity extends ActionBarActivity {
 		if (savedInstanceState == null) {
 			onPreferencesLoad(prefs);
 		}
+	}
+
+	@Override public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		openOptionsMenu();
+		closeOptionsMenu();
 	}
 
 	@SuppressLint("CommitPrefEdits")

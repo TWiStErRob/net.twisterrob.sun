@@ -117,10 +117,12 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		SharedPreferences prefs = getWidgetPreferences();
 
 		menuShowPartOfDay = menu.findItem(R.id.action_show_partOfDay);
-		menuShowPartOfDay.setChecked(prefs.getBoolean(PREF_SHOW_PART_OF_DAY, DEFAULT_SHOW_PART_OF_DAY));
+		updateCheckableOption(menuShowPartOfDay,
+				prefs.getBoolean(PREF_SHOW_PART_OF_DAY, DEFAULT_SHOW_PART_OF_DAY));
 
 		menuShowLastUpdateTime = menu.findItem(R.id.action_show_lastUpdateTime);
-		menuShowLastUpdateTime.setChecked(prefs.getBoolean(PREF_SHOW_UPDATE_TIME, DEFAULT_SHOW_UPDATE_TIME));
+		updateCheckableOption(menuShowLastUpdateTime,
+				prefs.getBoolean(PREF_SHOW_UPDATE_TIME, DEFAULT_SHOW_UPDATE_TIME));
 
 		return true;
 	}
@@ -129,7 +131,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		switch (item.getItemId()) {
 			case R.id.action_show_lastUpdateTime:
 			case R.id.action_show_partOfDay:
-				item.setChecked(!item.isChecked());
+				updateCheckableOption(item, !item.isChecked());
 				return true;
 			case R.id.action_help:
 				new AlertDialog.Builder(this)
@@ -143,6 +145,15 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	private void updateCheckableOption(MenuItem item, boolean checkedState) {
+		item.setChecked(checkedState);
+		item.setIcon(checkedState
+						? android.R.drawable.checkbox_on_background
+						: android.R.drawable.checkbox_off_background
+		);
+	}
+
 	private void updateImage(SunSearchResults results) {
 		ThresholdRelation rel = getCurrentRelation();
 		float angle = getCurrentThresholdAngle();
@@ -178,6 +189,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		sun.setSelectedEdge(true);
 		return sun;
 	}
+
 	private void updateLocation() {
 		LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		String provider = lm.getBestProvider(new Criteria(), true);

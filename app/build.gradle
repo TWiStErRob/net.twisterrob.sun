@@ -3,7 +3,8 @@ apply plugin: 'net.twisterrob.android-app'
 
 dependencies {
 	compile project(':lib')
-	compile 'com.android.support:appcompat-v7:21.0.0'
+	compile 'com.android.support:support-annotations:21.0.0'
+	compile 'com.android.support:support-v4:21.0.0'
 }
 
 android { // http://tools.android.com/tech-docs/new-build-system/user-guide

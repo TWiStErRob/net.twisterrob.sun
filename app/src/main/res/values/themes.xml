@@ -1,8 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-	<style name="AppTheme" parent="Theme.AppCompat.Light" />
-
-	<!-- Something is screwed up in the Android Support plugin in IDEA 14 EAP with API 21
-	     so fall back to have UI decor (i.e. ActionBar) in Preview. tools:parent on Theme.AppTheme doesn't help -->
-	<style name="ToolsTheme" parent="android:Theme.Holo.Light.DarkActionBar" tools:ignore="NewApi" />
+	<style name="AppTheme" parent="android:Theme.Light" />
 </resources>
