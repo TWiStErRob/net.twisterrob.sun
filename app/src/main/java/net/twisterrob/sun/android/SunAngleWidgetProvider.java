@@ -29,6 +29,10 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 	 * default: {@value #DEFAULT_MOCK_ANGLE} */
 	public static final String PREF_MOCK_ANGLE = "mockAngle";
 	public static final float DEFAULT_MOCK_ANGLE = Float.NaN;
+	/** long: {@link System#currentTimeMillis()},
+	 * default: {@value #DEFAULT_MOCK_ANGLE} */
+	public static final String PREF_MOCK_TIME = "mockTime";
+	public static final long DEFAULT_MOCK_TIME = 520597560L * 1000;
 	/** boolean: true=show,
 	 * default: {@value #DEFAULT_SHOW_UPDATE_TIME} */
 	public static final String PREF_SHOW_UPDATE_TIME = "showLastUpdateTime";

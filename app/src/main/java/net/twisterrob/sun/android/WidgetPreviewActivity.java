@@ -20,6 +20,8 @@ import android.view.ViewGroup.LayoutParams;
 
 import static android.appwidget.AppWidgetManager.*;
 
+import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
+
 public class WidgetPreviewActivity extends Activity {
 	private AppWidgetManager manager;
 	private AppWidgetHost host;
@@ -44,6 +46,15 @@ public class WidgetPreviewActivity extends Activity {
 		host = new AppWidgetHost(getApplicationContext(), 0);
 		host.deleteHost(); // clean up leftovers, if any
 		appWidgetId = host.allocateAppWidgetId();
+		SunAngleWidgetProvider
+				.getPreferences(this, appWidgetId)
+				.edit()
+				.putLong(SunAngleWidgetProvider.PREF_MOCK_TIME, SunAngleWidgetProvider.DEFAULT_MOCK_TIME)
+				.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name())
+				.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, 0)
+				.putBoolean(SunAngleWidgetProvider.PREF_SHOW_UPDATE_TIME, true)
+				.putBoolean(SunAngleWidgetProvider.PREF_SHOW_PART_OF_DAY, true)
+				.apply();
 		bindWidget(appWidgetId, new ComponentName(getApplicationContext(), SunAngleWidgetProvider.class));
 	}
 

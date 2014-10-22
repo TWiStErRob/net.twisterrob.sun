@@ -58,7 +58,7 @@
 		android:src="@color/widget_highlight"
 		android:scaleType="centerCrop"
 		tools:ignore="ContentDescription"
-		tools:src="@drawable/day"
+		tools:src="@drawable/bg_day"
 		/>
 	<RelativeLayout
 		android:id="@+id/angle_container"

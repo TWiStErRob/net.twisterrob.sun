@@ -35,6 +35,7 @@
 		android:layout_height="fill_parent"
 		android:layout_above="@id/threshold"
 		android:layout_below="@id/timeUpdated"
+		android:background="@drawable/bg_invalid"
 		android:text="@string/call_to_action_refresh"
 		android:gravity="center"
 		tools:text="@string/call_to_action_refresh"

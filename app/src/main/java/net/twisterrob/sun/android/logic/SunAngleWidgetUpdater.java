@@ -88,6 +88,9 @@ public class SunAngleWidgetUpdater {
 			String thresholdRelation = prefs.getString(PREF_THRESHOLD_RELATION, DEFAULT_THRESHOLD_RELATION.name());
 			params.thresholdRelation = ThresholdRelation.valueOf(thresholdRelation);
 			params.time = Calendar.getInstance();
+			if (prefs.contains(PREF_MOCK_TIME)) {
+				params.time.setTimeInMillis(prefs.getLong(PREF_MOCK_TIME, DEFAULT_MOCK_TIME));
+			}
 			result = CALC.find(params);
 			if (prefs.contains(PREF_MOCK_ANGLE)) {
 				result.current.angle = prefs.getFloat(PREF_MOCK_ANGLE, DEFAULT_MOCK_ANGLE);
