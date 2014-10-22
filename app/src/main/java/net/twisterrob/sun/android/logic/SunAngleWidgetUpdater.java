@@ -7,7 +7,7 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.content.res.Resources;
-import android.graphics.*;
+import android.graphics.Typeface;
 import android.location.*;
 import android.text.SpannableString;
 import android.text.style.*;
@@ -30,9 +30,11 @@ public class SunAngleWidgetUpdater {
 	private static final DecimalFormat fraction = initFractionFormat();
 	private static final DateFormat time2 = new SimpleDateFormat("HH:mm", Locale.getDefault());
 	private static final DateFormat time3 = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-	private static final LightStateMap<Integer> CAPTIONs = new LightStateNameIDs();
-	private static final LightStateMap<Integer> BGs = new LightStateBackgroundIDs();
-	private static final LightStateMap<Integer> COLORs = new LightStateColorIDs();
+	private static final LightStateMap<Integer> STATE_LABELs = new StateNameIDs();
+	private static final LightStateMap<Integer> BGs = new BackgroundIDs();
+	private static final LightStateMap<Integer> ANGLE_COLORs = new AngleColorIDs();
+	private static final LightStateMap<Integer> STATE_COLORs = new StateColorIDs();
+	private static final LightStateMap<Integer> UPDATE_COLORs = new UpdateColorIDs();
 	private static final SunCalculator CALC = new SunCalculator(new PhotovoltaicSun());
 	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<>(ThresholdRelation.class);
 	static {
@@ -109,12 +111,13 @@ public class SunAngleWidgetUpdater {
 		} else {
 			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1);
 			LightState state = LightState.from(results.current.angle);
-			int textColor = res.getColor(COLORs.get(state, results.current.time));
 
 			views.setImageViewResource(R.id.angle_background, BGs.get(state, results.current.time));
-			views.setTextColor(R.id.angle, textColor);
-			views.setTextColor(R.id.angleFraction, textColor);
-			views.setTextColor(R.id.angleSign, textColor);
+
+			int angleColor = res.getColor(ANGLE_COLORs.get(state, results.current.time));
+			views.setTextColor(R.id.angle, angleColor);
+			views.setTextColor(R.id.angleFraction, angleColor);
+			views.setTextColor(R.id.angleSign, angleColor);
 			String sign = results.current.angle < 0? "-" : ""; // because I want to display ±0
 			views.setTextViewText(R.id.angle, sign + Math.abs((int)results.current.angle));
 			views.setTextViewText(R.id.angleFraction, fraction.format(results.current.angle));
@@ -122,8 +125,9 @@ public class SunAngleWidgetUpdater {
 
 			if (prefs.getBoolean(PREF_SHOW_PART_OF_DAY, DEFAULT_SHOW_PART_OF_DAY)) {
 				views.setViewVisibility(R.id.state, View.VISIBLE);
-				views.setTextViewText(R.id.state, res.getText(CAPTIONs.get(state, results.current.time)));
-				views.setTextColor(R.id.state, textColor);
+				CharSequence stateText = res.getText(STATE_LABELs.get(state, results.current.time));
+				views.setTextViewText(R.id.state, state == LightState.INVALID? bold(stateText) : stateText);
+				views.setTextColor(R.id.state, res.getColor(STATE_COLORs.get(state, results.current.time)));
 			} else {
 				views.setViewVisibility(R.id.state, View.GONE);
 			}
@@ -131,6 +135,7 @@ public class SunAngleWidgetUpdater {
 			if (prefs.getBoolean(PREF_SHOW_UPDATE_TIME, DEFAULT_SHOW_UPDATE_TIME)) {
 				views.setViewVisibility(R.id.timeUpdated, View.VISIBLE);
 				views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
+				views.setTextColor(R.id.timeUpdated, res.getColor(UPDATE_COLORs.get(state, results.current.time)));
 			} else {
 				views.setViewVisibility(R.id.timeUpdated, View.GONE);
 			}
@@ -152,7 +157,7 @@ public class SunAngleWidgetUpdater {
 			Calendar justBefore = (Calendar)time.clone();
 			justBefore.add(Calendar.MINUTE, -30); // TODO configure?
 			if (results.current.time.after(justBefore) && results.current.time.before(time)) {
-				result = bold(color(result, Color.RED));
+				result = bold(color(result, getContext().getResources().getColor(R.color.coming_soon)));
 			}
 		}
 		return result;

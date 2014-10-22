@@ -5,4 +5,7 @@
 	<color name="secondary">#ccc</color>
 	<color name="secondary_shadow">#000</color>
 	<color name="widget_highlight">#6000</color>
+
+	<color name="coming_soon">#0ff</color>
+	<color name="invalid">#f66</color>
 </resources>

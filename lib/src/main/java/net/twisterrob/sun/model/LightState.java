@@ -26,7 +26,7 @@ package net.twisterrob.sun.model;
  */
 public enum LightState {
 	/* The order if the constants is important in matching, the ranges overlap around thresholds,
-	 * and the thresholds are more important then others. */
+	 * and the thresholds are more important than others. */
 
 	/** Sunset and Sunrise */
 	HORIZON_TRANSITION(-0.25, 1, false),
@@ -43,9 +43,11 @@ public enum LightState {
 	/** Astronomical twilight */
 	ASTRONOMICAL_TWILIGHT(-18, -12, false),
 	/** Night-time */
-	NIGHT(Double.NEGATIVE_INFINITY, -18, false),
+	NIGHT(-90, -18, false),
 	/** Day-time */
-	DAY(0, Double.POSITIVE_INFINITY, false);
+	DAY(0, 90, false),
+	/** Anything else */
+	INVALID(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, false);
 
 	private final double min, max;
 
@@ -64,7 +66,7 @@ public enum LightState {
 				return value;
 			}
 		}
-		return DAY;
+		return INVALID;
 	}
 
 	private boolean matches(double sunAngle) {

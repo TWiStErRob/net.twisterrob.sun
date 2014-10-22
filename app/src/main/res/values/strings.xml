@@ -24,6 +24,7 @@
 	<string name="light_state_sunrise">sunrise</string>
 	<string name="light_state_day">day-time</string>
 	<string name="light_state_night">night-time</string>
+	<string name="light_state_invalid">invalid</string>
 	<string name="call_to_action_refresh">Tap to refresh</string>
 	<string name="call_to_action_location">No location available</string>
 	<string name="call_to_action_settings">Change Settings</string>
@@ -45,7 +46,7 @@
 		\n<i>You can set a threshold for the sun\'s position.</i>
 		The threshold will show the time range when the sun\'s altitude angle is above/below the threshold.
 		The time range will be <b>bold</b> when the sun is in the right position.
-		The start/end time of the range will be <font color="red">red</font> up to 30 minutes before the sun enters/leaves the specified range.
+		The start/end time of the range will be <font color="cyan">blue</font> up to 30 minutes before the sun enters/leaves the specified range.
 		\n<b>For example</b>: if the threshold is above 0° this is good for a soft alert before sunrise/sunset.
 
 		\n\n<big><b>Hide parts of the widget</b></big>

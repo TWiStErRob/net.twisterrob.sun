@@ -5,8 +5,8 @@ import net.twisterrob.sun.model.LightStateMap;
 
 import static net.twisterrob.sun.model.LightState.*;
 
-public class LightStateNameIDs extends LightStateMap<Integer> {
-	public LightStateNameIDs() {
+public class StateNameIDs extends LightStateMap<Integer> {
+	public StateNameIDs() {
 		put(DAY, R.string.light_state_day);
 		put(NIGHT, R.string.light_state_night);
 		put(CIVIL_TWILIGHT, R.string.light_state_twilight_civil);
@@ -23,5 +23,7 @@ public class LightStateNameIDs extends LightStateMap<Integer> {
 		putEvening(CIVIL_THRESHOLD, R.string.light_state_dusk_civil);
 		putEvening(NAUTICAL_THRESHOLD, R.string.light_state_dusk_nautical);
 		putEvening(ASTRONOMICAL_THRESHOLD, R.string.light_state_dusk_astronomical);
+
+		put(INVALID, R.string.light_state_invalid);
 	}
 }
