@@ -1,10 +1,10 @@
 package net.twisterrob.android.app;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.*;
 import android.content.*;
 import android.content.SharedPreferences.Editor;
+import android.os.Build.*;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -42,11 +42,13 @@ public abstract class WidgetConfigurationActivity extends Activity {
 
 	@Override public void onAttachedToWindow() {
 		super.onAttachedToWindow();
-		openOptionsMenu();
-		closeOptionsMenu();
+		if (VERSION.SDK_INT < VERSION_CODES.HONEYCOMB) {
+			// open and close the options menu to call onCreateOptionsMenu
+			openOptionsMenu();
+			closeOptionsMenu();
+		}
 	}
 
-	@SuppressLint("CommitPrefEdits")
 	protected void finishCommit() {
 		SharedPreferences.Editor edit = prefs.edit();
 		onPreferencesSave(edit);

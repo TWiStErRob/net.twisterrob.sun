@@ -37,6 +37,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private int[] mapping;
 	private MenuItem menuShowPartOfDay;
 	private MenuItem menuShowLastUpdateTime;
+	private LocationUpdater locationUpdater;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		if (BuildConfig.DEBUG) {
@@ -94,13 +95,19 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				// ignore
 			}
 		});
+
+		locationUpdater = new LocationUpdater();
 	}
 
 	@Override protected void onStart() {
-		updateLocation();
 		super.onStart();
+		locationUpdater.single();
 	}
 
+	@Override protected void onStop() {
+		locationUpdater.cancel();
+		super.onStop();
+	}
 	@Override protected SharedPreferences onPreferencesOpen(int appWidgetId) {
 		return SunAngleWidgetProvider.getPreferences(this, appWidgetId);
 	}
@@ -190,34 +197,6 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return sun;
 	}
 
-	private void updateLocation() {
-		LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-		String provider = lm.getBestProvider(new Criteria(), true);
-		Location location = lm.getLastKnownLocation(provider);
-		if (location != null) {
-			update(location);
-		} else {
-			update(null);
-			lm.requestSingleUpdate(provider, new LocationListener() {
-				public void onStatusChanged(String provider, int status, Bundle extras) {
-					// ignore
-				}
-
-				public void onProviderEnabled(String provider) {
-					// ignore
-				}
-
-				public void onProviderDisabled(String provider) {
-					// ignore
-				}
-
-				public void onLocationChanged(Location location) {
-					update(location);
-				}
-			}, null);
-		}
-	}
-
 	protected void update(Location loc) {
 		SunSearchResults results = null;
 		if (loc != null) {
@@ -276,5 +255,54 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 		}
 		return -1;
+	}
+
+	private final class LocationUpdater implements LocationListener {
+		private final LocationManager lm;
+		private String provider;
+
+		public LocationUpdater() {
+			lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+			findBestProvider();
+		}
+
+		public void findBestProvider() {
+			provider = lm.getBestProvider(new Criteria(), true);
+		}
+
+		public void single() {
+			cancel();
+			Location location = lm.getLastKnownLocation(provider);
+			if (location != null) {
+				update(location);
+			} else {
+				update(null);
+				lm.requestSingleUpdate(provider, this, getMainLooper());
+			}
+		}
+
+		public void cancel() {
+			lm.removeUpdates(this);
+		}
+
+		public void update(Location location) {
+			SunAngleWidgetConfiguration.this.update(location);
+		}
+
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			// ignore
+		}
+
+		public void onProviderEnabled(String provider) {
+			// ignore
+		}
+
+		public void onProviderDisabled(String provider) {
+			// ignore
+		}
+
+		public void onLocationChanged(Location location) {
+			update(location);
+		}
 	}
 }

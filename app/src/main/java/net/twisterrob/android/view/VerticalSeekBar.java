@@ -3,6 +3,7 @@ package net.twisterrob.android.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.SeekBar;
@@ -19,8 +20,8 @@ public class VerticalSeekBar extends SeekBar {
 	}
 
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		super.onSizeChanged(h, w, oldh, oldw);
+	protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+		super.onSizeChanged(height, width, oldHeight, oldWidth);
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class VerticalSeekBar extends SeekBar {
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public boolean onTouchEvent(@NonNull MotionEvent event) {
 		if (!isEnabled()) {
 			return false;
 		}
