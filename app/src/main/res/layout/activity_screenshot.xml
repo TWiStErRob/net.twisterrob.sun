@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	tools:ignore="HardcodedText"
 	tools:context=".WidgetPreviewActivity"
 	>
 	<FrameLayout
 		android:id="@+id/widget"
-		android:layout_width="72dp"
-		android:layout_height="86dp"
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
 		android:layout_gravity="center"
-		android:background="#f00"
+		android:layout_weight="1"
 		/>
-</merge>
+	<TableLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="@dimen/margin"
+		android:stretchColumns="1"
+		>
+		<TableRow>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical|end"
+				android:text="Width:"
+				/>
+			<SeekBar
+				android:id="@+id/width"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:max="88"
+				android:progress="10"
+				/>
+			<TextView
+				android:id="@+id/widthDisplay"
+				android:layout_gravity="center_vertical|start"
+				android:text="72dp"
+				/>
+		</TableRow>
+		<TableRow>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical|end"
+				android:text="Height:"
+				/>
+			<SeekBar
+				android:id="@+id/height"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:max="88"
+				android:progress="24"
+				/>
+			<TextView
+				android:id="@+id/heightDisplay"
+				android:layout_gravity="center_vertical|start"
+				android:text="86dp"
+				/>
+		</TableRow>
+	</TableLayout>
+</LinearLayout>

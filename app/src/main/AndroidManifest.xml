@@ -30,16 +30,7 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".WidgetMockerActivity"
-			android:label="Sun Position Mocker"
-			android:enabled="@bool/in_test">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		<activity
-			android:name=".WidgetPreviewActivity"
+			android:name=".WidgetScreenshotActivity"
 			android:label="Sun Position Preview"
 			android:enabled="@bool/in_test">
 			<intent-filter>

@@ -64,9 +64,7 @@ public class SunAngleWidgetUpdater {
 	}
 
 	public static void forceUpdateAll(Context context) {
-		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-		ComponentName component = new ComponentName(context, SunAngleWidgetProvider.class);
-		forceUpdate(context, appWidgetManager.getAppWidgetIds(component));
+		forceUpdate(context, SunAngleWidgetProvider.getAppWidgetIds(context));
 	}
 
 	public static void forceUpdate(Context context, int... appWidgetIds) {

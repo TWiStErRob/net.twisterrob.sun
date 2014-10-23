@@ -13,34 +13,70 @@ import android.net.Uri;
 import android.os.Build.*;
 import android.os.Bundle;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
+import android.util.*;
 import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.*;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import static android.appwidget.AppWidgetManager.*;
 
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 
-public class WidgetPreviewActivity extends Activity {
+public class WidgetScreenshotActivity extends Activity {
 	private AppWidgetManager manager;
 	private AppWidgetHost host;
 	private ViewGroup layout;
+	private SeekBar widthBar;
+	private TextView widthDisplay;
+	private SeekBar heightBar;
+	private TextView heightDisplay;
 	private int appWidgetId;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_screenshot);
 
+		widthDisplay = (TextView)findViewById(R.id.widthDisplay);
+		widthBar = (SeekBar)findViewById(R.id.width);
+		widthBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			@Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				updateSizeDisplay(widthDisplay, progress);
+				updateSize();
+			}
+			@Override public void onStartTrackingTouch(SeekBar seekBar) {
+
+			}
+			@Override public void onStopTrackingTouch(SeekBar seekBar) {
+
+			}
+		});
+		updateSizeDisplay(widthDisplay, widthBar.getProgress());
+
+		heightDisplay = (TextView)findViewById(R.id.heightDisplay);
+		heightBar = (SeekBar)findViewById(R.id.height);
+		heightBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			@Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				updateSizeDisplay(heightDisplay, progress);
+				updateSize();
+			}
+			@Override public void onStartTrackingTouch(SeekBar seekBar) {
+
+			}
+			@Override public void onStopTrackingTouch(SeekBar seekBar) {
+
+			}
+		});
+		updateSizeDisplay(heightDisplay, heightBar.getProgress());
+
 		layout = (ViewGroup)findViewById(R.id.widget);
-		((View)layout.getParent()).setOnClickListener(new OnClickListener() {
+		layout.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
 				ViewGroup hostView = (ViewGroup)layout.getChildAt(0);
 				View widgetView = hostView.getChildAt(0);
 				screenshot(widgetView);
 			}
 		});
-		addWidgetPadding(layout);
 
 		manager = AppWidgetManager.getInstance(getApplicationContext());
 		host = new AppWidgetHost(getApplicationContext(), 0);
@@ -56,6 +92,15 @@ public class WidgetPreviewActivity extends Activity {
 				.putBoolean(SunAngleWidgetProvider.PREF_SHOW_PART_OF_DAY, true)
 				.apply();
 		bindWidget(appWidgetId, new ComponentName(getApplicationContext(), SunAngleWidgetProvider.class));
+	}
+
+	private void updateSizeDisplay(TextView sizeDisplay, int progress) {
+		progress = mapProgress(progress);
+		sizeDisplay.setText(String.format(Locale.ROOT, "%ddp / %.0fpx", progress, dipToPix(progress)));
+	}
+
+	private int mapProgress(int progress) {
+		return progress + 62;
 	}
 
 	@TargetApi(VERSION_CODES.JELLY_BEAN)
@@ -91,18 +136,28 @@ public class WidgetPreviewActivity extends Activity {
 		AppWidgetHostView hostView = host.createView(getApplicationContext(), appWidgetId, info);
 		layout.removeAllViews();
 		layout.addView(hostView);
+		updateSize();
 	}
 
 	@TargetApi(VERSION_CODES.JELLY_BEAN)
-	private void addWidgetPadding(ViewGroup layout) {
-		LayoutParams layoutParams = layout.getLayoutParams();
+	private void updateSize() {
+		View view = layout.getChildAt(0);
+		FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams)view.getLayoutParams();
+		layoutParams.width = (int)dipToPix(mapProgress(widthBar.getProgress()));
+		layoutParams.height = (int)dipToPix(mapProgress(heightBar.getProgress()));
+		layoutParams.gravity = Gravity.CENTER;
 		if (VERSION_CODES.JELLY_BEAN <= VERSION.SDK_INT) {
+			// padding is automatically added by AppWidgetHostView, so let's increase the size with the padding
 			Rect padding =
 					AppWidgetHostView.getDefaultPaddingForWidget(getApplicationContext(), getComponentName(), null);
 			layoutParams.width += padding.left + padding.right;
 			layoutParams.height += padding.top + padding.bottom;
 		}
-		layout.setLayoutParams(layoutParams);
+		view.setLayoutParams(layoutParams);
+	}
+
+	private float dipToPix(int value) {
+		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
 	}
 
 	@SuppressLint("SdCardPath")

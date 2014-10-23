@@ -2,10 +2,14 @@ package net.twisterrob.sun.android;
 
 import java.util.Calendar;
 
-import android.app.AlertDialog;
+import android.annotation.TargetApi;
+import android.app.*;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.*;
 import android.graphics.Color;
 import android.location.*;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -13,9 +17,11 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import static android.appwidget.AppWidgetManager.*;
+import static android.view.ViewGroup.LayoutParams.*;
 
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.sun.algo.*;
@@ -109,7 +115,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		super.onStop();
 	}
 	@Override protected SharedPreferences onPreferencesOpen(int appWidgetId) {
-		return SunAngleWidgetProvider.getPreferences(this, appWidgetId);
+		return SunAngleWidgetProvider.getPreferences(getApplicationContext(), appWidgetId);
 	}
 
 	@Override protected void onPreferencesLoad(SharedPreferences prefs) {
@@ -149,8 +155,120 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 						.show()
 				;
 				return true;
+			case R.id.action_mock_date: {
+				final Calendar time = currentMockDateTime();
+				DatePickerDialog dialog = new DatePickerDialog(this, new OnDateSetListener() {
+					@Override public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+						time.set(Calendar.YEAR, year);
+						time.set(Calendar.MONTH, monthOfYear);
+						time.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+						getWidgetPreferences().edit().putLong(PREF_MOCK_TIME, time.getTimeInMillis()).apply();
+					}
+				}, time.get(Calendar.YEAR), time.get(Calendar.MONTH), time.get(Calendar.DAY_OF_MONTH));
+				// dialog.setOnCancelListener(): the callback is not called on S4 4.4.2
+				dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getText(android.R.string.cancel),
+						new DialogInterface.OnClickListener() {
+							@Override public void onClick(DialogInterface dialog, int which) {
+								getWidgetPreferences().edit().remove(PREF_MOCK_TIME).apply();
+							}
+						});
+				dialog.show();
+				return true;
+			}
+			case R.id.action_mock_time: {
+				final Calendar time = currentMockDateTime();
+				TimePickerDialog dialog = new TimePickerDialog(this, new OnTimeSetListener() {
+					@Override public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+						time.set(Calendar.HOUR_OF_DAY, hourOfDay);
+						time.set(Calendar.MINUTE, minute);
+						getWidgetPreferences().edit().putLong(PREF_MOCK_TIME, time.getTimeInMillis()).apply();
+					}
+				}, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), true);
+				dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getText(android.R.string.cancel),
+						new DialogInterface.OnClickListener() {
+							@Override public void onClick(DialogInterface dialog, int which) {
+								getWidgetPreferences().edit().remove(PREF_MOCK_TIME).apply();
+							}
+						});
+				dialog.show();
+				return true;
+			}
+			case R.id.action_mock_angle: {
+				final NumberPicker picker = createAnglePicker(getWidgetPreferences().getFloat(PREF_MOCK_ANGLE, 0));
+				new AlertDialog.Builder(this)
+						.setTitle("Edit Angle")
+						.setView(picker)
+						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+							@TargetApi(VERSION_CODES.HONEYCOMB)
+							public void onClick(DialogInterface dialog, int id) {
+								float value = Float.parseFloat(picker.getDisplayedValues()[picker.getValue()]);
+								getWidgetPreferences().edit().putFloat(PREF_MOCK_ANGLE, value).apply();
+							}
+						})
+						.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+							@Override public void onClick(DialogInterface dialog, int which) {
+								getWidgetPreferences().edit().remove(PREF_MOCK_ANGLE).apply();
+							}
+						})
+						.create()
+						.show();
+				return true;
+			}
+			case R.id.action_mock_fill: {
+				int[] appWidgetIds = SunAngleWidgetProvider.getAppWidgetIds(this);
+				float[] presets = {90, -90, 0, -3, -9, -15, -6, -12, -18, 180};
+				for (int i = 0; i < appWidgetIds.length && i < presets.length; ++i) {
+					int appWidgetId = appWidgetIds[i];
+					onPreferencesOpen(appWidgetId)
+							.edit()
+							.putFloat(PREF_MOCK_ANGLE, presets[i])
+							.remove(PREF_MOCK_TIME)
+							.apply();
+				}
+				return true;
+			}
+			case R.id.action_mock_clearAll: {
+				int[] appWidgetIds = SunAngleWidgetProvider.getAppWidgetIds(this);
+				float[] presets = {90, -90, 0, -3, -9, -15, -6, -12, -18, 180};
+				for (int i = 0; i < appWidgetIds.length && i < presets.length; ++i) {
+					int appWidgetId = appWidgetIds[i];
+					onPreferencesOpen(appWidgetId)
+							.edit()
+							.remove(PREF_MOCK_ANGLE)
+							.remove(PREF_MOCK_TIME)
+							.apply();
+				}
+				return true;
+			}
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@TargetApi(VERSION_CODES.HONEYCOMB)
+	private NumberPicker createAnglePicker(float value) {
+		final NumberPicker picker = new NumberPicker(this);
+		picker.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT, Gravity.CENTER_HORIZONTAL));
+		float step = 5;
+		int min = (int)(-90 - step);
+		int max = (int)(90 + step);
+		String[] values = new String[(int)((max - min) / step) + 1];
+		for (int i = 0; i < values.length; i++) {
+			values[i] = String.valueOf(i * step + min);
+		}
+		picker.setMinValue(0);
+		picker.setMaxValue(values.length - 1);
+		picker.setDisplayedValues(values);
+		picker.setValue((int)((value - min) / step));
+		return picker;
+	}
+
+	private Calendar currentMockDateTime() {
+		long initialTime = getWidgetPreferences().getLong(PREF_MOCK_TIME, DEFAULT_MOCK_TIME);
+		final Calendar time = Calendar.getInstance();
+		time.setTimeInMillis(initialTime);
+		time.set(Calendar.SECOND, 0);
+		time.set(Calendar.MILLISECOND, 0);
+		return time;
 	}
 
 	private void updateCheckableOption(MenuItem item, boolean checkedState) {

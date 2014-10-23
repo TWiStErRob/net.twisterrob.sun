@@ -116,6 +116,13 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 	public void onProviderEnabled(String provider) { /* NOP */}
 
 	public static SharedPreferences getPreferences(Context context, int appWidgetId) {
-		return context.getSharedPreferences(PREF_NAME + "-" + appWidgetId, Context.MODE_PRIVATE);
+		return context.getApplicationContext()
+		              .getSharedPreferences(PREF_NAME + "-" + appWidgetId, Context.MODE_PRIVATE);
+	}
+
+	public static int[] getAppWidgetIds(Context context) {
+		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
+		ComponentName component = new ComponentName(context.getApplicationContext(), SunAngleWidgetProvider.class);
+		return appWidgetManager.getAppWidgetIds(component);
 	}
 }

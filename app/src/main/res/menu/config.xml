@@ -6,6 +6,49 @@
 	tools:ignore="UnusedAttribute"
 	>
 	<item
+		android:title="Mock"
+		android:icon="@android:drawable/ic_menu_more"
+		android:showAsAction="ifRoom"
+		android:visible="@bool/in_test"
+		tools:ignore="HardcodedText"
+		>
+		<menu>
+			<item
+				android:id="@+id/action_mock_date"
+				android:title="Date"
+				android:icon="@android:drawable/ic_menu_month"
+				tools:visible="true"
+				/>
+			<item
+				android:id="@+id/action_mock_time"
+				android:title="Time"
+				android:icon="@android:drawable/ic_menu_recent_history"
+				/>
+			<item
+				android:id="@+id/action_mock_angle"
+				android:title="Angle"
+				android:icon="@android:drawable/ic_menu_rotate"
+				/>
+			<item
+				android:title="Global"
+				android:icon="@android:drawable/ic_menu_manage"
+				>
+				<menu>
+					<item
+						android:id="@+id/action_mock_fill"
+						android:title="Pre-fill widgets"
+						android:icon="@android:drawable/ic_menu_agenda"
+						/>
+					<item
+						android:id="@+id/action_mock_clearAll"
+						android:title="Clear all"
+						android:icon="@android:drawable/ic_menu_close_clear_cancel"
+						/>
+				</menu>
+			</item>
+		</menu>
+	</item>
+	<item
 		android:id="@+id/action_help"
 		android:title="@string/config_info"
 		android:icon="@android:drawable/ic_menu_help"
