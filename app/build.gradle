@@ -10,8 +10,5 @@ dependencies {
 android { // http://tools.android.com/tech-docs/new-build-system/user-guide
 	defaultConfig {
 		applicationId 'net.twisterrob.sun'
-		version {
-			minor 1
-		}
 	}
 }
