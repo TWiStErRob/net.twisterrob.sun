@@ -12,11 +12,13 @@ import android.graphics.*;
 import android.net.Uri;
 import android.os.Build.*;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.util.*;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import static android.appwidget.AppWidgetManager.*;
@@ -51,7 +53,6 @@ public class WidgetScreenshotActivity extends Activity {
 
 			}
 		});
-		updateSizeDisplay(widthDisplay, widthBar.getProgress());
 
 		heightDisplay = (TextView)findViewById(R.id.heightDisplay);
 		heightBar = (SeekBar)findViewById(R.id.height);
@@ -67,7 +68,22 @@ public class WidgetScreenshotActivity extends Activity {
 
 			}
 		});
-		updateSizeDisplay(heightDisplay, heightBar.getProgress());
+
+		Spinner presets = (Spinner)findViewById(R.id.preset);
+		presets.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String[] presets = getResources().getStringArray(R.array.widget_size_preset_values);
+				String[] preset = presets[position].split("x");
+				float width = Float.parseFloat(preset[0]);
+				float height = Float.parseFloat(preset[1]);
+				widthBar.setProgress(unMapProgress((int)width));
+				heightBar.setProgress(unMapProgress((int)height));
+			}
+			@Override public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+		presets.setSelection(0);
 
 		layout = (ViewGroup)findViewById(R.id.widget);
 		layout.setOnClickListener(new OnClickListener() {
@@ -101,6 +117,9 @@ public class WidgetScreenshotActivity extends Activity {
 
 	private int mapProgress(int progress) {
 		return progress + 62;
+	}
+	private int unMapProgress(int value) {
+		return value - 62;
 	}
 
 	@TargetApi(VERSION_CODES.JELLY_BEAN)
@@ -141,6 +160,9 @@ public class WidgetScreenshotActivity extends Activity {
 
 	@TargetApi(VERSION_CODES.JELLY_BEAN)
 	private void updateSize() {
+		if (layout == null || layout.getChildCount() != 1) {
+			return;
+		}
 		View view = layout.getChildAt(0);
 		FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams)view.getLayoutParams();
 		layoutParams.width = (int)dipToPix(mapProgress(widthBar.getProgress()));
@@ -190,6 +212,19 @@ public class WidgetScreenshotActivity extends Activity {
 		} catch (IOException e) {
 			Log.e("SCREENSHOT", "Cannot save screenshot of " + view, e);
 		}
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, @NonNull KeyEvent event) {
+		switch (keyCode) {
+			case KeyEvent.KEYCODE_MENU:
+				Intent intent = new Intent(ACTION_APPWIDGET_CONFIGURE);
+				intent.setComponent(new ComponentName(getApplicationContext(), SunAngleWidgetConfiguration.class));
+				intent.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
+				startActivity(intent);
+				return true;
+		}
+		return super.onKeyUp(keyCode, event);
 	}
 
 	@Override protected void onStart() {

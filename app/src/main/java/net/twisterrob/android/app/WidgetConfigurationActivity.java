@@ -65,7 +65,7 @@ public abstract class WidgetConfigurationActivity extends Activity {
 		Intent intent = new Intent();
 		intent.setComponent(info.provider);
 		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {appWidgetId});
 		sendBroadcast(intent);
 	}
 

@@ -40,7 +40,6 @@
 		android:layout_above="@id/btn_ok"
 		android:layout_toLeftOf="@id/thresholdRelation"
 		android:entries="@array/angle_preset"
-		tools:spinnerMode="dialog"
 		/>
 	<net.twisterrob.android.view.VerticalSeekBar
 		android:id="@+id/angle"

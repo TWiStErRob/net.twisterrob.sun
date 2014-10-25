@@ -1,6 +1,7 @@
 <resources>
 	<!-- Widgets should not generally extend to screen edges and should not visually be flush with other widgets,
-	 so you should add margins on all sides around your widget frame. -->
+	     so you should add margins on all sides around your widget frame.
+	     Android's suggested value is 8dp, but 4dp gives more space and still looks OK. -->
 	<dimen name="widget_margin">4dp</dimen>
 	<dimen name="margin">4dp</dimen>
 	<dimen name="margin2">8dp</dimen>

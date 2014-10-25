@@ -5,15 +5,17 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:padding="@dimen/widget_margin"
-	android:background="@color/widget_highlight"
 	tools:showIn="@layout/widget_1x1_designer"
-	tools:ignore="Overdraw"
 	>
 	<TextView
 		android:id="@+id/timeUpdated"
 		style="@style/WidgetFont.Secondary.Small"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
+		android:background="@color/widget_highlight"
+		android:gravity="center"
 		tools:text="@string/time_3_placeholder"
 		/>
 
@@ -23,6 +25,7 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
+		android:background="@color/widget_highlight"
 		android:text="@string/call_to_action_settings"
 		android:gravity="center"
 		android:minLines="2"

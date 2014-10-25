@@ -30,22 +30,15 @@
 				android:icon="@android:drawable/ic_menu_rotate"
 				/>
 			<item
-				android:title="Global"
-				android:icon="@android:drawable/ic_menu_manage"
-				>
-				<menu>
-					<item
-						android:id="@+id/action_mock_fill"
-						android:title="Pre-fill widgets"
-						android:icon="@android:drawable/ic_menu_agenda"
-						/>
-					<item
-						android:id="@+id/action_mock_clearAll"
-						android:title="Clear all"
-						android:icon="@android:drawable/ic_menu_close_clear_cancel"
-						/>
-				</menu>
-			</item>
+				android:id="@+id/action_mock_fill"
+				android:title="Global > Pre-fill widgets"
+				android:icon="@android:drawable/ic_menu_agenda"
+				/>
+			<item
+				android:id="@+id/action_mock_clearAll"
+				android:title="Global > Clear all"
+				android:icon="@android:drawable/ic_menu_close_clear_cancel"
+				/>
 		</menu>
 	</item>
 	<item

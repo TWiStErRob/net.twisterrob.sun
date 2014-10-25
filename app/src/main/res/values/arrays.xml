@@ -17,4 +17,28 @@
 		<item>50</item>
 		<item>0</item>
 	</integer-array>
+
+	<string-array name="widget_size_preset">
+		<item>Nice Preview</item>
+		<item>Galaxy S4</item>
+		<item>Galaxy S3</item>
+		<item>Galaxy S2 (No margins)</item>
+		<item>Galaxy S2 (4 dp)</item>
+		<item>Galaxy S2 (8 dp)</item>
+		<item>Nexus 10</item>
+		<item>Nexus 7 (portrait)</item>
+		<item>Nexus 7 (landscape)</item>
+	</string-array>
+
+	<string-array name="widget_size_preset_values">
+		<item>72x86</item>
+		<item>84x105</item>
+		<item>80x100</item>
+		<item>80x100</item>
+		<item>72x92</item>
+		<item>64x84</item>
+		<item>72x72</item>
+		<item>79.624x79.624</item>
+		<item>71.362x71.362</item>
+	</string-array>
 </resources>
