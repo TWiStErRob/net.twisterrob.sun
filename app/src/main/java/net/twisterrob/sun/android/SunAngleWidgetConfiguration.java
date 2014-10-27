@@ -7,11 +7,15 @@ import android.app.*;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.*;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.*;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.StringRes;
+import android.text.*;
+import android.text.style.*;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -139,23 +143,17 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return true;
 	}
 
-	@Override public boolean onPrepareOptionsMenu(Menu menu) {
-		updateMenu(lastResults);
-		return super.onPrepareOptionsMenu(menu);
-	}
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_show_lastUpdateTime:
 			case R.id.action_show_partOfDay:
 				updateCheckableOption(item, !item.isChecked());
 				return true;
-			case R.id.action_location_settings:
-				openLocationSettings();
-				return true;
 			case R.id.action_help:
 				new AlertDialog.Builder(this)
+						.setIcon(R.drawable.ic_launcher)
 						.setTitle(getTitle())
-						.setMessage(getText(R.string.config_help))
+						.setMessage(getHelpText(R.string.config_help))
 						.setPositiveButton(android.R.string.ok, null)
 						.create()
 						.show()
@@ -250,6 +248,38 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Get a string/text resource and process annotations.
+	 *
+	 * inspiration from android.text.Html#startImage and end of StringBlock#applyStyles
+	 * possibilities are limitless, for example: getKey() is "string" and text.replace(...)
+	 */
+	private CharSequence getHelpText(@StringRes int annotatedTextID) {
+		Resources res = getResources();
+
+		SpannableStringBuilder text = new SpannableStringBuilder(res.getText(annotatedTextID));
+		Annotation[] annotations = text.getSpans(0, text.length(), Annotation.class);
+		for (Annotation annot : annotations) {
+			final String key = annot.getKey();
+			final String value = annot.getValue();
+			Object span = null;
+			if ("drawable".equals(key)) { // <annotation drawable="drawable_name">&#xFFFC;</annotation>
+				int drawableID = res.getIdentifier(value, "drawable", getPackageName());
+				span = new ImageSpan(this, drawableID);
+			} else if ("color".equals(key)) {
+				int colorID = res.getIdentifier(value, "color", getPackageName());
+				span = new ForegroundColorSpan(res.getColor(colorID));
+			} else if ("bgcolor".equals(key)) {
+				int colorID = res.getIdentifier(value, "color", getPackageName());
+				span = new BackgroundColorSpan(res.getColor(colorID));
+			}
+			if (span != null) {
+				text.setSpan(span, text.getSpanStart(annot), text.getSpanEnd(annot), text.getSpanFlags(annot));
+			}
+		}
+		return text;
+	}
+
 	@TargetApi(VERSION_CODES.HONEYCOMB)
 	private NumberPicker createAnglePicker(float value) {
 		final NumberPicker picker = new NumberPicker(this);
@@ -314,7 +344,6 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				}
 			});
 		}
-		updateMenu(results);
 	}
 
 	private void openLocationSettings() {
@@ -352,12 +381,6 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 		updateUI(results);
 		this.lastResults = results;
-	}
-
-	private void updateMenu(SunSearchResults results) {
-		if (menu != null) {
-			menu.findItem(R.id.action_location_settings).setVisible(!results.params.hasLocation());
-		}
 	}
 
 	@Override protected void onPreferencesSave(SharedPreferences.Editor edit) {
