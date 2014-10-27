@@ -7,7 +7,7 @@ dependencies {
 	compile 'com.android.support:support-v4:21.0.0'
 }
 
-android { // http://tools.android.com/tech-docs/new-build-system/user-guide
+android {
 	defaultConfig {
 		applicationId 'net.twisterrob.sun'
 	}

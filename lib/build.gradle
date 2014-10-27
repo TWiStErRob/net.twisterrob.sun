@@ -1,5 +1,9 @@
 apply plugin: 'net.twisterrob.java'
 
+repositories {
+	jcenter()
+}
+
 dependencies {
 	testCompile 'junit:junit:4.11'
 }
