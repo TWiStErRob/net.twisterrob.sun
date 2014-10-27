@@ -1,6 +1,6 @@
 package net.twisterrob.sun.android;
 
-import java.util.Calendar;
+import java.util.*;
 
 import android.annotation.TargetApi;
 import android.app.*;
@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.location.*;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -26,6 +27,7 @@ import static android.view.ViewGroup.LayoutParams.*;
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
+import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
 import net.twisterrob.sun.android.view.SunThresholdDrawable;
 import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 
@@ -35,14 +37,13 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);
 	private static final int MINIMUM_COLOR = Color.argb(0xAA, 0x00, 0x88, 0xFF);
 	private CompoundButton relation;
-	private TextView threshold;
+	private TextView message;
 	private SeekBar angle;
 	private Spinner preset;
 	private SunThresholdDrawable sun;
-	private SunSearchResults lastResults;
+	private SunSearchResults lastResults = SunSearchResults.unknown();
 	private int[] mapping;
-	private MenuItem menuShowPartOfDay;
-	private MenuItem menuShowLastUpdateTime;
+	private Menu menu;
 	private LocationUpdater locationUpdater;
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_config);
-		threshold = (TextView)findViewById(R.id.threshold);
+		message = (TextView)findViewById(R.id.message);
 		mapping = getResources().getIntArray(R.array.angle_preset_values);
 
 		sun = createSun();
@@ -70,7 +71,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		angle.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				setPresetByAngle(toThreshold(progress));
-				updateImage(lastResults);
+				updateUI(lastResults);
 			}
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				// ignore
@@ -83,7 +84,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		relation = (CompoundButton)findViewById(R.id.thresholdRelation);
 		relation.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				updateImage(lastResults);
+				updateUI(lastResults);
 			}
 		});
 
@@ -105,14 +106,14 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		locationUpdater = new LocationUpdater();
 	}
 
-	@Override protected void onStart() {
-		super.onStart();
+	@Override protected void onResume() {
+		super.onResume();
 		locationUpdater.single();
 	}
 
-	@Override protected void onStop() {
+	@Override protected void onDestroy() {
 		locationUpdater.cancel();
-		super.onStop();
+		super.onDestroy();
 	}
 	@Override protected SharedPreferences onPreferencesOpen(int appWidgetId) {
 		return SunAngleWidgetProvider.getPreferences(getApplicationContext(), appWidgetId);
@@ -129,22 +130,27 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		getMenuInflater().inflate(R.menu.config, menu);
 		SharedPreferences prefs = getWidgetPreferences();
 
-		menuShowPartOfDay = menu.findItem(R.id.action_show_partOfDay);
-		updateCheckableOption(menuShowPartOfDay,
+		updateCheckableOption(menu.findItem(R.id.action_show_partOfDay),
 				prefs.getBoolean(PREF_SHOW_PART_OF_DAY, DEFAULT_SHOW_PART_OF_DAY));
-
-		menuShowLastUpdateTime = menu.findItem(R.id.action_show_lastUpdateTime);
-		updateCheckableOption(menuShowLastUpdateTime,
+		updateCheckableOption(menu.findItem(R.id.action_show_lastUpdateTime),
 				prefs.getBoolean(PREF_SHOW_UPDATE_TIME, DEFAULT_SHOW_UPDATE_TIME));
 
+		this.menu = menu;
 		return true;
 	}
 
+	@Override public boolean onPrepareOptionsMenu(Menu menu) {
+		updateMenu(lastResults);
+		return super.onPrepareOptionsMenu(menu);
+	}
 	@Override public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_show_lastUpdateTime:
 			case R.id.action_show_partOfDay:
 				updateCheckableOption(item, !item.isChecked());
+				return true;
+			case R.id.action_location_settings:
+				openLocationSettings();
 				return true;
 			case R.id.action_help:
 				new AlertDialog.Builder(this)
@@ -279,7 +285,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		);
 	}
 
-	private void updateImage(SunSearchResults results) {
+	private void updateUI(SunSearchResults results) {
 		ThresholdRelation rel = getCurrentRelation();
 		float angle = getCurrentThresholdAngle();
 		sun.setSelected(rel, angle);
@@ -288,15 +294,35 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		sun.setMinimumEdge(rel == ThresholdRelation.ABOVE && !belowMin);
 		sun.setMaximumEdge(rel == ThresholdRelation.BELOW && !aboveMax);
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
-		threshold.setTextColor(Color.BLACK);
-		threshold.setText(getString(R.string.message_selected_angle, getRelString(rel), angle, results.current.angle));
+		message.setTextColor(Color.BLACK);
+		message.setOnClickListener(null);
+		message.setText(getString(R.string.message_selected_angle, getRelString(rel), angle, results.current.angle));
 		if (belowMin) {
-			threshold.setTextColor(MINIMUM_COLOR);
-			threshold.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
+			message.setTextColor(MINIMUM_COLOR);
+			message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
 		}
 		if (aboveMax) {
-			threshold.setTextColor(MAXIMUM_COLOR);
-			threshold.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
+			message.setTextColor(MAXIMUM_COLOR);
+			message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
+		}
+		if (!results.params.hasLocation()) {
+			message.setTextColor(getResources().getColor(R.color.invalid));
+			message.setText(R.string.warning_no_location);
+			message.setOnClickListener(new OnClickListener() {
+				@Override public void onClick(View v) {
+					openLocationSettings();
+				}
+			});
+		}
+		updateMenu(results);
+	}
+
+	private void openLocationSettings() {
+		Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		if (intent.resolveActivity(getPackageManager()) != null) {
+			startActivity(intent);
+		} else {
+			Toast.makeText(this, R.string.warning_no_location_settings, Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -324,15 +350,21 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		if (results == null) {
 			results = SunSearchResults.unknown();
 		}
-		updateImage(results);
+		updateUI(results);
 		this.lastResults = results;
+	}
+
+	private void updateMenu(SunSearchResults results) {
+		if (menu != null) {
+			menu.findItem(R.id.action_location_settings).setVisible(!results.params.hasLocation());
+		}
 	}
 
 	@Override protected void onPreferencesSave(SharedPreferences.Editor edit) {
 		edit.putString(PREF_THRESHOLD_RELATION, getCurrentRelation().name());
 		edit.putFloat(PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
-		edit.putBoolean(PREF_SHOW_UPDATE_TIME, menuShowLastUpdateTime.isChecked());
-		edit.putBoolean(PREF_SHOW_PART_OF_DAY, menuShowPartOfDay.isChecked());
+		edit.putBoolean(PREF_SHOW_UPDATE_TIME, menu.findItem(R.id.action_show_lastUpdateTime).isChecked());
+		edit.putBoolean(PREF_SHOW_PART_OF_DAY, menu.findItem(R.id.action_show_partOfDay).isChecked());
 	}
 
 	private static ThresholdRelation toRelation(boolean checked) {
@@ -376,51 +408,29 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	}
 
 	private final class LocationUpdater implements LocationListener {
-		private final LocationManager lm;
-		private String provider;
-
-		public LocationUpdater() {
-			lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-			findBestProvider();
-		}
-
-		public void findBestProvider() {
-			provider = lm.getBestProvider(new Criteria(), true);
-		}
+		private final SunAngleWidgetUpdater updater = new SunAngleWidgetUpdater(SunAngleWidgetConfiguration.this);
 
 		public void single() {
-			cancel();
-			Location location = lm.getLastKnownLocation(provider);
-			if (location != null) {
-				update(location);
-			} else {
-				update(null);
-				lm.requestSingleUpdate(provider, this, getMainLooper());
-			}
+			Location location = updater.getLocation(this);
+			update(location);
 		}
 
 		public void cancel() {
-			lm.removeUpdates(this);
+			updater.clearLocation(this);
 		}
 
-		public void update(Location location) {
-			SunAngleWidgetConfiguration.this.update(location);
-		}
-
-		public void onStatusChanged(String provider, int status, Bundle extras) {
-			// ignore
-		}
-
-		public void onProviderEnabled(String provider) {
-			// ignore
-		}
-
-		public void onProviderDisabled(String provider) {
-			// ignore
-		}
-
+		public void onStatusChanged(String provider, int status, Bundle extras) { /* NOP */}
+		public void onProviderDisabled(String provider) { /* NOP */}
+		public void onProviderEnabled(String provider) { /* NOP */}
 		public void onLocationChanged(Location location) {
+			Log.v("Sun", this + ".onLocationChanged(" + location + ")");
+			cancel();
 			update(location);
+		}
+
+		@Override
+		public String toString() {
+			return String.format(Locale.ROOT, "LocationUpdater(%08x)[%d]", this.hashCode(), getAppWidgetId());
 		}
 	}
 }

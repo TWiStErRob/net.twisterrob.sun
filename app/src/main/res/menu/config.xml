@@ -48,6 +48,12 @@
 		android:showAsAction="ifRoom"
 		/>
 	<item
+		android:id="@+id/action_location_settings"
+		android:title="@string/config_location_settings"
+		android:icon="@android:drawable/ic_menu_mylocation"
+		android:showAsAction="ifRoom"
+		/>
+	<item
 		android:id="@+id/action_show_partOfDay"
 		android:title="@string/pref_showPartOfDay_title"
 		android:icon="@android:drawable/ic_menu_gallery"

@@ -1,6 +1,6 @@
 package net.twisterrob.sun.android;
 
-import java.util.Arrays;
+import java.util.*;
 
 import android.annotation.TargetApi;
 import android.appwidget.*;
@@ -76,7 +76,7 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 	}
 
 	@Override
-	public void onUpdate(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		Log.v("Sun", this + ".onUpdate(" + Arrays.toString(appWidgetIds) + ")");
 		TODOs.add(appWidgetIds);
 		UPDATER.setContext(context);
@@ -93,7 +93,8 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 
 	@Override
 	public void onLocationChanged(Location location) {
-		Log.v("Sun", this + ".onLocationChanged(" + location + " (" + location.getExtras() + "))");
+		Log.v("Sun", this + ".onLocationChanged(" + location + ")");
+		UPDATER.clearLocation(this);
 		updateAll();
 	}
 
@@ -108,7 +109,7 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 
 	@Override
 	public String toString() {
-		return String.format("%08x", this.hashCode());
+		return String.format(Locale.ROOT, "%08x", this.hashCode());
 	}
 
 	public void onStatusChanged(String provider, int status, Bundle extras) { /* NOP */}

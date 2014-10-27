@@ -42,6 +42,14 @@ public class SunAngleWidgetUpdater {
 		RELATIONS.put(ThresholdRelation.BELOW, R.string.threshold_below);
 	}
 
+	public SunAngleWidgetUpdater() {
+		// no context (yet)
+	}
+
+	public SunAngleWidgetUpdater(Context context) {
+		setContext(context);
+	}
+
 	private Context context;
 
 	public Context getContext() {
@@ -52,13 +60,30 @@ public class SunAngleWidgetUpdater {
 		this.context = context;
 	}
 
-	private Location getLocation(LocationListener fallback) {
+	public void clearLocation(LocationListener fallback) {
 		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-		String provider = lm.getBestProvider(new Criteria(), true);
-		Location location = lm.getLastKnownLocation(provider);
+		lm.removeUpdates(fallback);
+	}
+
+	// TODO https://developer.android.com/training/location/retrieve-current.html#GetLocation
+	public Location getLocation(LocationListener fallback) {
+		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+		Location location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 		if (location == null) {
-			Log.v("Sun", "update deferred for " + provider);
-			lm.requestSingleUpdate(provider, fallback, null);
+			Criteria criteria = new Criteria();
+			criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+			criteria.setPowerRequirement(Criteria.POWER_LOW);
+			String provider = lm.getBestProvider(criteria, true);
+			if (provider != null) {
+				location = lm.getLastKnownLocation(provider);
+				if (location == null) {
+					Log.v("Sun", "No location, request update on " + provider + " for " + fallback);
+					lm.requestSingleUpdate(provider, fallback, null);
+				}
+			} else {
+				Log.v("Sun", "No provider enabled wait for update");
+				lm.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, fallback, null);
+			}
 		}
 		return location;
 	}

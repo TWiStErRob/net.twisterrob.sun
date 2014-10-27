@@ -28,6 +28,8 @@
 	<string name="call_to_action_refresh">Tap to refresh</string>
 	<string name="call_to_action_location">No location available</string>
 	<string name="call_to_action_settings">Change Settings</string>
+	<string name="warning_no_location"><b>The widget needs to know where you are</b>. Please adjust your Location Settings by tapping here.</string>
+	<string name="warning_no_location_settings">Can\'t start Location Settings, sorry.</string>
 	<string name="warning_maximum">The sun will not go above %1$.1f° in the foreseeable future, setting %2$.1f° will always yield the same results.</string>
 	<string name="warning_minimum">The sun will not go below %1$.1f° in the foreseeable future, setting %2$.1f° will always yield the same results.</string>
 	<string name="message_selected_angle">The widget will show the current angle and the time range when the sun is %1$s %2$.0f°.</string>
@@ -35,6 +37,7 @@
 	<string name="config_done">Done</string>
 	<string name="config_title">Sun Position Widget</string>
 	<string name="config_info">Info</string>
+	<string name="config_location_settings">Location Settings</string>
 	<string name="pref_showPartOfDay_title">Show Part of Day</string>
 	<string name="pref_showLastUpdateTime_title">Show Last Update</string>
 	<string name="config_help">

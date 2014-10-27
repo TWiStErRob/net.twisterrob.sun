@@ -79,6 +79,9 @@ public class SunSearchResults {
 				throw new InternalError();
 			}
 		}
+		public boolean hasLocation() {
+			return !Double.isNaN(latitude) && !Double.isNaN(longitude);
+		}
 	}
 
 	public static class Moment {
