@@ -31,9 +31,9 @@
 		</activity>
 		<activity
 			android:name=".WidgetScreenshotActivity"
-			android:label="Sun Position Preview"
+			android:label="Sun Position Widget Preview"
 			android:enabled="@bool/in_test">
-			<intent-filter>
+			<intent-filter android:label="Sun Preview">
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
