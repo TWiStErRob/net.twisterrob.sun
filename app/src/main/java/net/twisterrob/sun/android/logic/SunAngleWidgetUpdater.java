@@ -147,7 +147,7 @@ public class SunAngleWidgetUpdater {
 			String sign = results.current.angle < 0? "-" : ""; // because I want to display ±0
 			views.setTextViewText(R.id.angle, sign + Math.abs((int)results.current.angle));
 			views.setTextViewText(R.id.angleFraction, fraction.format(results.current.angle));
-			views.setOnClickPendingIntent(R.id.angle_background, createRefreshIntent(appWidgetId));
+			views.setOnClickPendingIntent(R.id.root, createRefreshIntent(appWidgetId));
 
 			if (prefs.getBoolean(PREF_SHOW_PART_OF_DAY, DEFAULT_SHOW_PART_OF_DAY)) {
 				views.setViewVisibility(R.id.state, View.VISIBLE);

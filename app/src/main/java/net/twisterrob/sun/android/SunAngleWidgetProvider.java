@@ -16,6 +16,8 @@ import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.logic.*;
 
 public class SunAngleWidgetProvider extends AppWidgetProvider implements LocationListener {
+	private static final String TAG = "Sun";
+
 	public static final String PREF_NAME = "SunAngleWidget";
 	/** String: {@link ThresholdRelation#name() ThresholdRelation constant name},
 	 * default: {@link ThresholdRelation#ABOVE ABOVE} */
@@ -50,7 +52,7 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
-		Log.v("Sun", this + ".onDeleted(" + Arrays.toString(appWidgetIds) + ")");
+		Log.v(TAG, this + ".onDeleted(" + Arrays.toString(appWidgetIds) + ")");
 		TODOs.remove(appWidgetIds);
 		for (int appWidgetId : appWidgetIds) {
 			getPreferences(context, appWidgetId).edit().clear().apply();
@@ -59,25 +61,26 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 
 	@Override
 	public void onEnabled(Context context) {
-		Log.v("Sun", this + ".onEnabled");
+		Log.v(TAG, this + ".onEnabled");
 		super.onEnabled(context);
 	}
 
 	@Override
 	public void onDisabled(Context context) {
-		Log.v("Sun", this + ".onDisabled");
+		Log.v(TAG, this + ".onDisabled");
 		super.onDisabled(context);
 	}
 
 	@Override
 	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
-		Log.v("Sun", this + ".onReceive(" + intent + " (" + intent.getExtras() + "))");
-		super.onReceive(context, intent);
+		intent.getStringExtra(null); // force unparcel
+		Log.v(TAG, this + ".onReceive(" + intent + " (" + intent.getExtras() + "))");
+		super.onReceive(context, intent); // delegate to other on*()
 	}
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		Log.v("Sun", this + ".onUpdate(" + Arrays.toString(appWidgetIds) + ")");
+		Log.v(TAG, this + ".onUpdate(" + Arrays.toString(appWidgetIds) + ")");
 		TODOs.add(appWidgetIds);
 		UPDATER.setContext(context);
 		updateAll();
@@ -87,13 +90,14 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 	@Override
 	public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId,
 			Bundle newOptions) {
-		Log.v("Sun", this + ".onAppWidgetOptionsChanged(" + appWidgetId + ", " + newOptions + ")");
+		newOptions.get(null); // force unparcel
+		Log.v(TAG, this + ".onAppWidgetOptionsChanged(" + appWidgetId + ", " + newOptions.toString() + ")");
 		super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
 	}
 
 	@Override
 	public void onLocationChanged(Location location) {
-		Log.v("Sun", this + ".onLocationChanged(" + location + ")");
+		Log.v(TAG, this + ".onLocationChanged(" + location + ")");
 		UPDATER.clearLocation(this);
 		updateAll();
 	}
@@ -102,7 +106,7 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 		try {
 			TODOs.catchup(UPDATER, this);
 		} catch (Exception ex) {
-			Log.e("Sun", this + ".updateAll", ex);
+			Log.e(TAG, this + ".updateAll", ex);
 			Toast.makeText(UPDATER.getContext(), ex.toString(), Toast.LENGTH_LONG).show();
 		}
 	}
