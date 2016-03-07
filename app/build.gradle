@@ -3,8 +3,9 @@ apply plugin: 'net.twisterrob.android-app'
 
 dependencies {
 	compile project(':lib')
-	compile 'com.android.support:support-annotations:21.0.3'
-	compile 'com.android.support:support-v4:21.0.3'
+	def supportVersion = '23.2.0'
+	compile "com.android.support:support-annotations:${supportVersion}"
+	compile "com.android.support:support-v4:${supportVersion}"
 }
 
 android {

@@ -12,3 +12,5 @@
 /project.properties
 /libs-aars
 /.settings
+/.idea
+/gradled.bat
