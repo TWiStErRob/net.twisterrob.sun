@@ -2,6 +2,7 @@
 <lint>
 	<issue id="UnusedResources">
 		<ignore path="**/descript.ion" />
+		<ignore path="build/generated/res/resValues/*/values/generated.xml" />
 	</issue>
 	<issue id="SelectableText">
 		<ignore path="**/res/layout*/widget_*.xml" />

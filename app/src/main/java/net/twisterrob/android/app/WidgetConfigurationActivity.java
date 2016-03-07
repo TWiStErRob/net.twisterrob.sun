@@ -19,7 +19,9 @@ public abstract class WidgetConfigurationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
-		Log.d("WidgetConfiguration", "Editing widget: " + appWidgetId);
+		if (Log.isLoggable("WidgetConfiguration", Log.DEBUG)) {
+			Log.d("WidgetConfiguration", "Editing widget: " + appWidgetId);
+		}
 		result = new Intent();
 		result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		setResult(RESULT_CANCELED, result);

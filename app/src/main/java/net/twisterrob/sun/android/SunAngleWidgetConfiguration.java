@@ -14,6 +14,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.text.*;
 import android.text.style.*;
 import android.util.Log;
@@ -97,7 +98,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			@Override public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
 				if (position != mapping.length - 1) {
 					int presetAngleValue = mapping[position];
-					Log.d("Config", "Preset for pos: " + position + " = " + presetAngleValue);
+					if (Log.isLoggable("Config", Log.DEBUG)) {
+						Log.d("Config", "Preset for pos: " + position + " = " + presetAngleValue);
+					}
 					angle.setProgress(toProgress(presetAngleValue));
 				}
 			}
@@ -268,10 +271,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				span = new ImageSpan(this, drawableID);
 			} else if ("color".equals(key)) {
 				int colorID = res.getIdentifier(value, "color", getPackageName());
-				span = new ForegroundColorSpan(res.getColor(colorID));
+				span = new ForegroundColorSpan(ContextCompat.getColor(this, colorID));
 			} else if ("bgcolor".equals(key)) {
 				int colorID = res.getIdentifier(value, "color", getPackageName());
-				span = new BackgroundColorSpan(res.getColor(colorID));
+				span = new BackgroundColorSpan(ContextCompat.getColor(this, colorID));
 			}
 			if (span != null) {
 				text.setSpan(span, text.getSpanStart(annot), text.getSpanEnd(annot), text.getSpanFlags(annot));
@@ -310,8 +313,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private void updateCheckableOption(MenuItem item, boolean checkedState) {
 		item.setChecked(checkedState);
 		item.setIcon(checkedState
-						? android.R.drawable.checkbox_on_background
-						: android.R.drawable.checkbox_off_background
+				? android.R.drawable.checkbox_on_background
+				: android.R.drawable.checkbox_off_background
 		);
 	}
 
@@ -326,7 +329,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
 		message.setTextColor(Color.BLACK);
 		message.setOnClickListener(null);
-		message.setText(getString(R.string.message_selected_angle, getRelString(rel), angle, results.current.angle));
+		message.setText(getString(R.string.message_selected_angle, getRelString(rel), angle));
 		if (belowMin) {
 			message.setTextColor(MINIMUM_COLOR);
 			message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
@@ -336,7 +339,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
 		}
 		if (!results.params.hasLocation()) {
-			message.setTextColor(getResources().getColor(R.color.invalid));
+			message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
 			message.setText(R.string.warning_no_location);
 			message.setOnClickListener(new OnClickListener() {
 				@Override public void onClick(View v) {
@@ -413,7 +416,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	}
 
 	protected void setPresetByAngle(float angle) {
-		Log.d("Config", "Syncing preset for angle: " + angle);
+		if (Log.isLoggable("Config", Log.DEBUG)) {
+			Log.d("Config", "Syncing preset for angle: " + angle);
+		}
 		int position = find(mapping, Math.round(angle));
 		if (position == -1) {
 			position = mapping.length - 1;
@@ -446,7 +451,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		public void onProviderDisabled(String provider) { /* NOP */}
 		public void onProviderEnabled(String provider) { /* NOP */}
 		public void onLocationChanged(Location location) {
-			Log.v("Sun", this + ".onLocationChanged(" + location + ")");
+			if (Log.isLoggable("Sun", Log.VERBOSE)) {
+				Log.v("Sun", this + ".onLocationChanged(" + location + ")");
+			}
 			cancel();
 			update(location);
 		}

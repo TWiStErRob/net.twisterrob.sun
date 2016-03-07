@@ -1,21 +1,18 @@
 package net.twisterrob.sun.android;
 
-import java.util.*;
+import java.util.Locale;
 
-import android.annotation.TargetApi;
-import android.appwidget.*;
+import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.location.*;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.logic.*;
 
-public class SunAngleWidgetProvider extends AppWidgetProvider implements LocationListener {
+public class SunAngleWidgetProvider extends LoggingAppWidgetProvider implements LocationListener {
 	private static final String TAG = "Sun";
 
 	public static final String PREF_NAME = "SunAngleWidget";
@@ -52,7 +49,7 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
-		Log.v(TAG, this + ".onDeleted(" + Arrays.toString(appWidgetIds) + ")");
+		super.onDeleted(context, appWidgetIds);
 		TODOs.remove(appWidgetIds);
 		for (int appWidgetId : appWidgetIds) {
 			getPreferences(context, appWidgetId).edit().clear().apply();
@@ -60,44 +57,18 @@ public class SunAngleWidgetProvider extends AppWidgetProvider implements Locatio
 	}
 
 	@Override
-	public void onEnabled(Context context) {
-		Log.v(TAG, this + ".onEnabled");
-		super.onEnabled(context);
-	}
-
-	@Override
-	public void onDisabled(Context context) {
-		Log.v(TAG, this + ".onDisabled");
-		super.onDisabled(context);
-	}
-
-	@Override
-	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
-		intent.getStringExtra(null); // force unparcel
-		Log.v(TAG, this + ".onReceive(" + intent + " (" + intent.getExtras() + "))");
-		super.onReceive(context, intent); // delegate to other on*()
-	}
-
-	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-		Log.v(TAG, this + ".onUpdate(" + Arrays.toString(appWidgetIds) + ")");
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		TODOs.add(appWidgetIds);
 		UPDATER.setContext(context);
 		updateAll();
 	}
 
-	@TargetApi(VERSION_CODES.JELLY_BEAN)
-	@Override
-	public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId,
-			Bundle newOptions) {
-		newOptions.get(null); // force unparcel
-		Log.v(TAG, this + ".onAppWidgetOptionsChanged(" + appWidgetId + ", " + newOptions.toString() + ")");
-		super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
-	}
-
 	@Override
 	public void onLocationChanged(Location location) {
-		Log.v(TAG, this + ".onLocationChanged(" + location + ")");
+		if (Log.isLoggable(TAG, Log.VERBOSE)) {
+			Log.v(TAG, this + ".onLocationChanged(" + location + ")");
+		}
 		UPDATER.clearLocation(this);
 		updateAll();
 	}

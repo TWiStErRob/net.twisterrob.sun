@@ -83,6 +83,7 @@
 			android:ellipsize="none"
 			android:singleLine="true"
 			tools:text="@string/angle_placeholder_fraction"
+			tools:ignore="NegativeMargin"
 			/>
 		<TextView
 			android:id="@+id/angleSign"
@@ -118,6 +119,7 @@
 			android:layout_above="@id/timeUpdated"
 			android:gravity="center"
 			android:includeFontPadding="true"
+			tools:ignore="NegativeMargin"
 			tools:text="@string/light_state_twilight_astronomical"
 			/>
 	</RelativeLayout>

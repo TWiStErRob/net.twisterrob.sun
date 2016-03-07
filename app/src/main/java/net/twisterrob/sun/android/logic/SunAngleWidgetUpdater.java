@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import static android.support.v4.content.ContextCompat.*;
 import static android.text.Spanned.*;
 
 import net.twisterrob.sun.algo.*;
@@ -37,6 +38,7 @@ public class SunAngleWidgetUpdater {
 	private static final LightStateMap<Integer> UPDATE_COLORs = new UpdateColorIDs();
 	private static final SunCalculator CALC = new SunCalculator(new PhotovoltaicSun());
 	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<>(ThresholdRelation.class);
+
 	static {
 		RELATIONS.put(ThresholdRelation.ABOVE, R.string.threshold_above);
 		RELATIONS.put(ThresholdRelation.BELOW, R.string.threshold_below);
@@ -77,11 +79,15 @@ public class SunAngleWidgetUpdater {
 			if (provider != null) {
 				location = lm.getLastKnownLocation(provider);
 				if (location == null) {
-					Log.v("Sun", "No location, request update on " + provider + " for " + fallback);
+					if (Log.isLoggable("Sun", Log.VERBOSE)) {
+						Log.v("Sun", "No location, request update on " + provider + " for " + fallback);
+					}
 					lm.requestSingleUpdate(provider, fallback, null);
 				}
 			} else {
-				Log.v("Sun", "No provider enabled wait for update");
+				if (Log.isLoggable("Sun", Log.VERBOSE)) {
+					Log.v("Sun", "No provider enabled wait for update");
+				}
 				lm.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, fallback, null);
 			}
 		}
@@ -99,7 +105,9 @@ public class SunAngleWidgetUpdater {
 
 	public boolean update(int appWidgetId, LocationListener fallback) {
 		Location location = getLocation(fallback);
-		Log.v("Sun", "update(" + appWidgetId + "," + location + ")");
+		if (Log.isLoggable("Sun", Log.VERBOSE)) {
+			Log.v("Sun", "update(" + appWidgetId + "," + location + ")");
+		}
 
 		SunSearchResults result = null;
 		SharedPreferences prefs = SunAngleWidgetProvider.getPreferences(context, appWidgetId);
@@ -140,7 +148,7 @@ public class SunAngleWidgetUpdater {
 
 			views.setImageViewResource(R.id.angle_background, BGs.get(state, results.current.time));
 
-			int angleColor = res.getColor(ANGLE_COLORs.get(state, results.current.time));
+			int angleColor = getColor(context, ANGLE_COLORs.get(state, results.current.time));
 			views.setTextColor(R.id.angle, angleColor);
 			views.setTextColor(R.id.angleFraction, angleColor);
 			views.setTextColor(R.id.angleSign, angleColor);
@@ -153,7 +161,7 @@ public class SunAngleWidgetUpdater {
 				views.setViewVisibility(R.id.state, View.VISIBLE);
 				CharSequence stateText = res.getText(STATE_LABELs.get(state, results.current.time));
 				views.setTextViewText(R.id.state, state == LightState.INVALID? bold(stateText) : stateText);
-				views.setTextColor(R.id.state, res.getColor(STATE_COLORs.get(state, results.current.time)));
+				views.setTextColor(R.id.state, getColor(context, STATE_COLORs.get(state, results.current.time)));
 			} else {
 				views.setViewVisibility(R.id.state, View.GONE);
 			}
@@ -161,7 +169,7 @@ public class SunAngleWidgetUpdater {
 			if (prefs.getBoolean(PREF_SHOW_UPDATE_TIME, DEFAULT_SHOW_UPDATE_TIME)) {
 				views.setViewVisibility(R.id.timeUpdated, View.VISIBLE);
 				views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
-				views.setTextColor(R.id.timeUpdated, res.getColor(UPDATE_COLORs.get(state, results.current.time)));
+				views.setTextColor(R.id.timeUpdated, getColor(context, UPDATE_COLORs.get(state, results.current.time)));
 			} else {
 				views.setViewVisibility(R.id.timeUpdated, View.GONE);
 			}
@@ -183,7 +191,7 @@ public class SunAngleWidgetUpdater {
 			Calendar justBefore = (Calendar)time.clone();
 			justBefore.add(Calendar.MINUTE, -30); // TODO configure?
 			if (results.current.time.after(justBefore) && results.current.time.before(time)) {
-				result = bold(color(result, getContext().getResources().getColor(R.color.coming_soon)));
+				result = bold(color(result, getColor(context, R.color.coming_soon)));
 			}
 		}
 		return result;
