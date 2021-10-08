@@ -1,16 +1,17 @@
-/bin
+# IDEA
+*.iml
+*.ipr
+*.iws
+/.idea/
+!/.idea/icon.png
+
+# Gradle
+/.gradle/
+build/
+
+# Android
+/project.properties
+
+# Other
 /temp
-/.gradle
-/build
-/gen
-/project.properties
-/.classpath
-/.project
-/*.iml
-/*.ipr
-/*.iws
-/project.properties
-/libs-aars
-/.settings
-/.idea
-/gradled.bat
+gradled.bat
