@@ -1,7 +1,7 @@
 apply plugin: 'net.twisterrob.java'
 
 repositories {
-	jcenter()
+	mavenCentral()
 }
 
 dependencies {

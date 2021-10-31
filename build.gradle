@@ -1,12 +1,15 @@
 buildscript {
 	repositories {
-		jcenter()
-		maven { url 'http://localhost/maven' }
+		google()
+		mavenCentral()
+		maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
 	}
 
 	dependencies {
+		classpath 'com.android.tools.build:gradle:4.2.2'
 		//configurations.classpath.resolutionStrategy.cacheChangingModulesFor 0, 'seconds' // -SNAPSHOT
-		classpath 'net.twisterrob.gradle:plugin:0.6.0.0'
+		classpath 'net.twisterrob.gradle:plugin:0.12.publish-SNAPSHOT'
+		// classpath 'net.twisterrob.gradle:twister-convention-plugins:0.12.publish-SNAPSHOT'
 	}
 }
 
