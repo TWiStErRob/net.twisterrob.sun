@@ -204,6 +204,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				final NumberPicker picker = createAnglePicker(getWidgetPreferences().getFloat(PREF_MOCK_ANGLE, 0));
 				new AlertDialog.Builder(this)
 						.setTitle("Edit Angle")
+						//noinspection NewApi, this case won't work in <11, but it's debug only.
 						.setView(picker)
 						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 							@TargetApi(VERSION_CODES.HONEYCOMB)

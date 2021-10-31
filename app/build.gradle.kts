@@ -9,7 +9,7 @@ dependencies {
 }
 
 android {
-	compileSdkVersion(21)
+	compileSdkVersion(23)
 	defaultConfig {
 		applicationId = "net.twisterrob.sun"
 		minSdkVersion(10)
