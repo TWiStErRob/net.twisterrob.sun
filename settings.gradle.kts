@@ -13,14 +13,15 @@ pluginManagement {
 		eachPlugin {
 			// REPORT requested.version is null when using plugins {} block just above on Gradle 6.9.1.
 			when (requested.id.id) {
-				"com.android.application" -> {
-					useModule("com.android.tools.build:gradle:4.2.2")
-				}
 				"net.twisterrob.root",
+				"net.twisterrob.vcs",
 				"net.twisterrob.java",
+				"net.twisterrob.java-library",
+				"net.twisterrob.kotlin",
+				"net.twisterrob.android-app",
 				"net.twisterrob.android-lib",
-				"net.twisterrob.android-app" -> {
-	   				useModule("net.twisterrob.gradle:twister-convention-plugins:0.12")
+				"net.twisterrob.android-test" -> {
+	   				useModule("net.twisterrob.gradle:twister-convention-plugins:${requested.version}")
 				}
 			}
 		}
