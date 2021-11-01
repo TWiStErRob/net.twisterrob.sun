@@ -11,8 +11,9 @@ jobs:
   build:
     name: 🔨 Build & Verify
     runs-on: ubuntu-latest
-    # A local build took 20 seconds, CI takes 3 minutes with setup. Give it a bit of a buffer and constrain.
-    timeout-minutes: 5
+    # A local build took 20 seconds, CI takes 3 minutes with setup.
+    # Because it's cloud, give it a bit of a buffer and constrain.
+    timeout-minutes: 10
     steps:
       - name: Set up JDK 1.8.
         uses: actions/setup-java@v1
