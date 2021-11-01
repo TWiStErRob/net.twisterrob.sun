@@ -7,7 +7,7 @@ pluginManagement {
 	repositories {
 		google()
 		mavenCentral()
-		maven { name = "Sonatype SNAPSHOTs"; setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
+		//maven { name = "Sonatype SNAPSHOTs s01"; setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
 	}
 	resolutionStrategy {
 		eachPlugin {
@@ -19,8 +19,7 @@ pluginManagement {
 				"net.twisterrob.java",
 				"net.twisterrob.android-lib",
 				"net.twisterrob.android-app" -> {
-	   				// useModule("net.twisterrob.gradle:twister-convention-plugins:${requested.version}")
-					useModule("net.twisterrob.gradle:plugin:${requested.version}")
+	   				useModule("net.twisterrob.gradle:twister-convention-plugins:${requested.version}")
 				}
 			}
 		}
