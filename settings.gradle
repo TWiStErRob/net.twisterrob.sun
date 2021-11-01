@@ -1,4 +1,0 @@
-rootProject.name = 'Sun'
-
-include ':app'
-include ':lib'
