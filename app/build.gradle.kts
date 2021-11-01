@@ -9,6 +9,7 @@ dependencies {
 }
 
 android {
+	// When changing this, update CI too (platforms;android-xx).
 	compileSdkVersion(23)
 	defaultConfig {
 		applicationId = "net.twisterrob.sun"
