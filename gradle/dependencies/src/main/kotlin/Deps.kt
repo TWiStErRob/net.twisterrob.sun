@@ -1,7 +1,7 @@
 object Deps {
 
 	object Android {
-		const val compileSdkVersion = 23
+		const val compileSdkVersion = 29
 
 		/**
 		 * When changing this, update CI too (platforms;android-xx).

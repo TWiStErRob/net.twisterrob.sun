@@ -1,5 +1,6 @@
 plugins {
 	id("project-module-android-library")
+	id("app.cash.paparazzi") version "0.8.0"
 }
 
 dependencies {
