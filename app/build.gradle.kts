@@ -1,5 +1,10 @@
 plugins {
 	id("net.twisterrob.android-app")
+	id("app.cash.paparazzi") version "0.9.0-SNAPSHOT"
+}
+
+repositories {
+	mavenLocal()
 }
 
 dependencies {
@@ -10,7 +15,7 @@ dependencies {
 
 android {
 	// When changing this, update CI too (platforms;android-xx).
-	compileSdkVersion(23)
+	compileSdkVersion(29)
 	defaultConfig {
 		applicationId = "net.twisterrob.sun"
 		minSdkVersion(10)
