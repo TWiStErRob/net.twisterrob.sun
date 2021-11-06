@@ -1,7 +1,12 @@
 rootProject.name = "Sun"
 
 include(":app")
+include(":app:widget")
+include(":app:states")
 include(":lib")
+
+includeBuild("gradle/dependencies")
+includeBuild("gradle/plugins")
 
 pluginManagement {
 	repositories {

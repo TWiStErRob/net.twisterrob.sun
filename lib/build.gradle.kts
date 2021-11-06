@@ -1,5 +1,6 @@
 plugins {
 	id("net.twisterrob.java")
+	id("project-dependencies")
 }
 
 repositories {
@@ -7,5 +8,5 @@ repositories {
 }
 
 dependencies {
-	testImplementation("junit:junit:4.13.2")
+	testImplementation(Deps.Test.junit4)
 }
