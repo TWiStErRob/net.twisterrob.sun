@@ -12,7 +12,7 @@ dependencies {
 android {
 	defaultConfig {
 		applicationId = "net.twisterrob.sun"
-		targetSdkVersion(19) // TODEL ExpiredTargetSdkVersion when updating
+		targetSdkVersion(Deps.Android.targetSdkVersion)
 	}
 	lintOptions {
 		disable("ExpiredTargetSdkVersion")

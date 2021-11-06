@@ -1,6 +1,17 @@
 object Deps {
 
 	object Android {
+		const val compileSdkVersion = 23
+
+		/**
+		 * When changing this, update CI too (platforms;android-xx).
+		 */
+		const val minSdkVersion = 11
+
+		/**
+		 * TODEL ExpiredTargetSdkVersion when updating
+		 */
+		const val targetSdkVersion = 19
 
 		const val plugin = "com.android.tools.build:gradle:4.2.0"
 	}

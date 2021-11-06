@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
 	implementation(Deps.Android.plugin)
+	implementation("project-dependencies:dependencies:SNAPSHOT")
 }
 
 gradlePlugin {

@@ -6,10 +6,9 @@ import org.gradle.kotlin.dsl.configure
 
 internal fun Project.commonAndroidConfig() {
 	extensions.configure<BaseExtension> {
-		// When changing this, update CI too (platforms;android-xx).
-		compileSdkVersion(23)
+		compileSdkVersion(Deps.Android.compileSdkVersion)
 		defaultConfig.apply {
-			minSdkVersion(10)
+			minSdkVersion(Deps.Android.minSdkVersion)
 		}
 	}
 }
