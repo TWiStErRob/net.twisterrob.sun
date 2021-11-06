@@ -448,6 +448,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			updater.clearLocation(this);
 		}
 
+		@SuppressWarnings("deprecation")
 		public void onStatusChanged(String provider, int status, Bundle extras) { /* NOP */}
 		public void onProviderDisabled(String provider) { /* NOP */}
 		public void onProviderEnabled(String provider) { /* NOP */}

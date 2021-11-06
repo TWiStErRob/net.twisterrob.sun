@@ -87,6 +87,7 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider implements 
 		return String.format(Locale.ROOT, "%08x", this.hashCode());
 	}
 
+	@SuppressWarnings("deprecation")
 	public void onStatusChanged(String provider, int status, Bundle extras) { /* NOP */}
 	public void onProviderDisabled(String provider) { /* NOP */}
 	public void onProviderEnabled(String provider) { /* NOP */}
