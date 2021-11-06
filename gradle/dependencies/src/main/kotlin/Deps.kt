@@ -10,6 +10,7 @@ object Deps {
 
 		/**
 		 * TODEL ExpiredTargetSdkVersion when updating
+		 * TOFIX MissingPermission when updating
 		 */
 		const val targetSdkVersion = 19
 

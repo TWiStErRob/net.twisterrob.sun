@@ -3,6 +3,7 @@ package net.twisterrob.sun.android.logic;
 import java.text.*;
 import java.util.*;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
@@ -68,6 +69,7 @@ public class SunAngleWidgetUpdater {
 		lm.removeUpdates(fallback);
 	}
 
+	@SuppressLint("MissingPermission") // targetSdkVersion is <23
 	// TODO https://developer.android.com/training/location/retrieve-current.html#GetLocation
 	public Location getLocation(LocationListener fallback) {
 		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
