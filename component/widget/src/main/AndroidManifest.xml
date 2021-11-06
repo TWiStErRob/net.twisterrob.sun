@@ -1,6 +1,7 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	package="net.twisterrob.sun.android.widget">
+	package="net.twisterrob.sun.android.widget"
+	>
 
 	<uses-feature android:name="android.software.app_widgets" android:required="false" />
 
