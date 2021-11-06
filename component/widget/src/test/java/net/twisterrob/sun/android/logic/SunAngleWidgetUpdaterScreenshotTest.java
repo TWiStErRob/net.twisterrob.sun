@@ -3,7 +3,6 @@ package net.twisterrob.sun.android.logic;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,17 +10,11 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Location;
-import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -44,8 +37,6 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 	@Rule
 	public PaparazziCoat paparazzi = new PaparazziCoat();
 
-	private @NonNull Context context;
-
 	public SunAngleWidgetUpdaterScreenshotTest(Preset preset) {
 		this.preset = preset;
 	}
@@ -65,14 +56,9 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 		);
 	}
 
-	@Before
-	public void setUp() {
-		context = addLocationServiceSupport(paparazzi.getContext(), createMockLocationManager());
-	}
-
 	@Test
 	public void test() {
-		SunAngleWidgetUpdater updater = new SunAngleWidgetUpdater(context);
+		SunAngleWidgetUpdater updater = new SunAngleWidgetUpdater(paparazzi.getContext());
 		SunSearchResults results = new SunSearchResults(
 				new SunSearchParams(
 						Double.NaN,
@@ -88,7 +74,7 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 				new Range(Calendar.getInstance(), Calendar.getInstance())
 		);
 		RemoteViews remoteViews = updater.createUpdateViews(0, results, mockPrefs(true, true));
-		snapshotWithSize(remoteViews.apply(context, null), preset);
+		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), preset);
 	}
 
 	private void snapshotWithSize(@NonNull View view, Preset preset) {
@@ -100,22 +86,6 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 		when(prefs.getBoolean(eq(PREF_SHOW_PART_OF_DAY), anyBoolean())).thenReturn(showPartOfDay);
 		when(prefs.getBoolean(eq(PREF_SHOW_UPDATE_TIME), anyBoolean())).thenReturn(showUpdateTime);
 		return prefs;
-	}
-
-	private static @NonNull Context addLocationServiceSupport(
-			@NonNull Context wrappedContext,
-			@NonNull LocationManager locationManager
-	) {
-		Context context = spy(wrappedContext);
-		doReturn(locationManager).when(context).getSystemService(Context.LOCATION_SERVICE);
-		return context;
-	}
-
-	private static @NonNull LocationManager createMockLocationManager() {
-		LocationManager locationManager = mock(LocationManager.class);
-		when(locationManager.getLastKnownLocation(anyString()))
-				.thenReturn(new Location("hacked-mock-location-provider"));
-		return locationManager;
 	}
 
 	private static class Preset {
