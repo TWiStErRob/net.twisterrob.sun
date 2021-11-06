@@ -1,11 +1,11 @@
 rootProject.name = "Sun"
 
 include(":app")
-include(":app:widget")
-include(":app:states")
-include(":app:configuration")
-include(":app:preview")
-include(":lib")
+include(":feature:configuration")
+include(":feature:preview")
+include(":component:widget")
+include(":component:states")
+include(":component:lib")
 
 includeBuild("gradle/dependencies")
 includeBuild("gradle/plugins")

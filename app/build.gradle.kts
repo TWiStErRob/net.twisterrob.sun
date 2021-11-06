@@ -4,9 +4,9 @@ plugins {
 }
 
 dependencies {
-	implementation(project(":app:configuration"))
-	implementation(project(":app:widget"))
-	debugImplementation(project(":app:preview"))
+	implementation(project(":feature:configuration"))
+	implementation(project(":component:widget"))
+	debugImplementation(project(":feature:preview"))
 }
 
 android {

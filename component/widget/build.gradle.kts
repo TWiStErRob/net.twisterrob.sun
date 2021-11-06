@@ -1,16 +1,10 @@
 plugins {
 	id("project-module-android-library")
-	id("project-dependencies")
 }
 
 dependencies {
-	implementation(project(":app:widget"))
+	api(project(":component:lib"))
+	implementation(project(":component:states"))
 	implementation(Deps.AndroidX.annotations)
 	implementation(Deps.AndroidX.v4)
-}
-
-android {
-	buildFeatures {
-		buildConfig = true
-	}
 }
