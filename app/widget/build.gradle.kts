@@ -3,7 +3,8 @@ plugins {
 }
 
 dependencies {
-	implementation(project(":lib"))
+	api(project(":lib"))
+	implementation(project(":app:states"))
 	implementation(Deps.AndroidX.annotations)
 	implementation(Deps.AndroidX.v4)
 }

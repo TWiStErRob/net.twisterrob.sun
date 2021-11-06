@@ -4,10 +4,9 @@ plugins {
 }
 
 dependencies {
+	implementation(project(":app:configuration"))
 	implementation(project(":app:widget"))
-	implementation(project(":lib"))
-	implementation(Deps.AndroidX.annotations)
-	implementation(Deps.AndroidX.v4)
+	debugImplementation(project(":app:preview"))
 }
 
 android {

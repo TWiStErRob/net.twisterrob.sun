@@ -1,12 +1,8 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	package="net.twisterrob.sun.android">
-
-	<uses-feature android:name="android.software.app_widgets" android:required="false" />
-
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	package="net.twisterrob.sun.android"
+	>
 
 	<application
 		android:label="@string/app_name"
@@ -14,37 +10,9 @@
 		android:allowBackup="true"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme"
-		tools:ignore="UnusedAttribute">
-		<receiver android:name=".SunAngleWidgetProvider">
-			<intent-filter>
-				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-			</intent-filter>
-			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_sun" />
-		</receiver>
-		<activity
-			android:name=".SunAngleWidgetConfiguration"
-			android:label="@string/config_title"
-			>
-			<intent-filter>
-				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-			</intent-filter>
-		</activity>
-		<activity
-			android:name=".WidgetScreenshotActivity"
-			android:label="Sun Position Widget Preview"
-			android:enabled="@bool/in_test">
-			<intent-filter android:label="Sun Preview">
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
-		<provider
-			android:name="android.support.v4.content.FileProvider"
-			android:authorities="@string/app_package"
-			android:enabled="@bool/in_test"
-			android:exported="false"
-			android:grantUriPermissions="true">
-			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/paths_screenshot" />
-		</provider>
+		tools:ignore="UnusedAttribute"
+		>
+
 	</application>
+
 </manifest>

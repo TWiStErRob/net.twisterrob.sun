@@ -1,0 +1,19 @@
+<resources>
+
+	<string name="angle_placeholder">-99</string>
+	<string name="angle_placeholder_fraction">.9999</string>
+
+	<string name="time_2_placeholder">99:99</string>
+	<!-- ‒ is figure dash (as wide as a digit), not hypen-minus -->
+	<string name="time_2_none">‒‒:‒‒</string>
+	<string name="time_3_placeholder">99:99:99</string>
+
+	<string name="threshold_placeholder">above -99°</string>
+	<string name="threshold_above">above %1$s°</string>
+	<string name="threshold_below">below %1$s°</string>
+
+	<string name="call_to_action_refresh">Tap to refresh</string>
+	<string name="call_to_action_location">No location available</string>
+	<string name="call_to_action_settings">Change Settings</string>
+
+</resources>

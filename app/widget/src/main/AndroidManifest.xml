@@ -1,1 +1,21 @@
-<manifest package="net.twisterrob.sun.android.widget" />
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="net.twisterrob.sun.android.widget">
+
+	<uses-feature android:name="android.software.app_widgets" android:required="false" />
+
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+	<application>
+
+		<receiver android:name="net.twisterrob.sun.android.SunAngleWidgetProvider">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_sun" />
+		</receiver>
+
+	</application>
+
+</manifest>

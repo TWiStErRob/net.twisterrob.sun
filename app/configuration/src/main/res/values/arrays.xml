@@ -1,0 +1,21 @@
+<resources>
+
+	<string-array name="angle_preset">
+		<item>0° Sunrise/Sunset</item>
+		<item>-6° Civil dawn/dusk</item>
+		<item>-12° Nautical dawn/dusk</item>
+		<item>-18° Astronomical dawn/dusk</item>
+		<item>50° UV-B benefits (max. 30 min/day)</item>
+		<item>Custom&#8230; (use slider)</item>
+	</string-array>
+
+	<integer-array name="angle_preset_values">
+		<item>0</item>
+		<item>-6</item>
+		<item>-12</item>
+		<item>-18</item>
+		<item>50</item>
+		<item>0</item>
+	</integer-array>
+
+</resources>

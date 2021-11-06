@@ -1,0 +1,7 @@
+<lint>
+
+	<issue id="SelectableText">
+		<ignore path="**/res/layout*/widget_*.xml" />
+	</issue>
+
+</lint>

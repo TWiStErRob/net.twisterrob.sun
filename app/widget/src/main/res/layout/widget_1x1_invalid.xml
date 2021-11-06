@@ -1,0 +1,45 @@
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="@dimen/widget_margin"
+	tools:showIn="@layout/widget_1x1_designer"
+	>
+	<TextView
+		android:id="@+id/timeUpdated"
+		style="@style/WidgetFont.Secondary.Small"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:background="@color/widget_highlight"
+		android:gravity="center"
+		tools:text="@string/time_3_placeholder"
+		/>
+
+	<TextView
+		android:id="@+id/threshold"
+		style="@style/WidgetFont.Secondary.Small"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:background="@color/widget_highlight"
+		android:text="@string/call_to_action_settings"
+		android:gravity="center"
+		android:minLines="2"
+		/>
+
+	<TextView
+		android:id="@+id/state"
+		style="@style/WidgetFont.Primary"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_above="@id/threshold"
+		android:layout_below="@id/timeUpdated"
+		android:background="@drawable/bg_invalid"
+		android:text="@string/call_to_action_refresh"
+		android:gravity="center"
+		tools:text="@string/call_to_action_refresh"
+		/>
+</RelativeLayout>

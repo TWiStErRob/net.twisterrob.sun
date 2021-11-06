@@ -1,0 +1,11 @@
+<resources>
+
+	<color name="primary">#fff</color>
+	<color name="primary_shadow">#000</color>
+	<color name="secondary">#ccc</color>
+	<color name="secondary_shadow">#000</color>
+	<color name="widget_highlight">#6000</color>
+
+	<color name="coming_soon">#0ff</color>
+
+</resources>
