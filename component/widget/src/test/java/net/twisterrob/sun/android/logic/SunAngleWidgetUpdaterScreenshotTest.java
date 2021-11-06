@@ -37,7 +37,7 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 	@Rule
 	public PaparazziCoat paparazzi = new PaparazziCoat();
 
-	public SunAngleWidgetUpdaterScreenshotTest(Preset preset) {
+	public SunAngleWidgetUpdaterScreenshotTest(@NonNull Preset preset) {
 		this.preset = preset;
 	}
 
@@ -74,10 +74,10 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 				new Range(Calendar.getInstance(), Calendar.getInstance())
 		);
 		RemoteViews remoteViews = updater.createUpdateViews(0, results, mockPrefs(true, true));
-		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), preset);
+		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null));
 	}
 
-	private void snapshotWithSize(@NonNull View view, Preset preset) {
+	private void snapshotWithSize(@NonNull View view) {
 		paparazzi.snapshotWithSize(view, preset.width, preset.height);
 	}
 
