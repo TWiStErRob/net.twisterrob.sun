@@ -2,17 +2,20 @@ package net.twisterrob.sun.algo;
 
 import java.util.Calendar;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import net.twisterrob.sun.Sun;
 import net.twisterrob.sun.algo.SunSearchResults.*;
 
 public class SunCalculator {
-	private final Sun sun;
+	private final @NonNull Sun sun;
 
-	public SunCalculator(Sun sun) {
+	public SunCalculator(@NonNull Sun sun) {
 		this.sun = sun;
 	}
 
-	public SunSearchResults find(SunSearchParams p) {
+	public @NonNull SunSearchResults find(@NonNull SunSearchParams p) {
 		p = p.clone();
 		SunSearchResults result = new SunSearchResults(p);
 		result.current = new Moment(p.time, sun.altitudeAngle(p.latitude, p.longitude, p.time));
@@ -27,7 +30,7 @@ public class SunCalculator {
 		return result;
 	}
 
-	private void updateMinMax(Moment min, Moment max, double lat, double lon, Calendar start, Calendar stop) {
+	private void updateMinMax(@NonNull Moment min, @NonNull Moment max, double lat, double lon, @NonNull Calendar start, @NonNull Calendar stop) {
 		final int every = 1;
 		Calendar running = (Calendar)start.clone();
 
@@ -46,21 +49,27 @@ public class SunCalculator {
 			running.add(Calendar.MINUTE, every);
 		}
 	}
-	public static Calendar startOfDay(Calendar time) {
+	public static @NonNull Calendar startOfDay(@NonNull Calendar time) {
 		Calendar result = (Calendar)time.clone();
 		result.set(Calendar.HOUR_OF_DAY, 0);
 		result.set(Calendar.MINUTE, 0);
 		result.set(Calendar.SECOND, 0);
 		return result;
 	}
-	public static Calendar endOfDay(Calendar time) {
+	public static @NonNull Calendar endOfDay(@NonNull Calendar time) {
 		Calendar result = startOfDay(time);
 		result.add(Calendar.DATE, 1);
 		return result;
 	}
 
-	private Range find(double lat, double lon, Calendar start, Calendar end, ThresholdRelation relation,
-			double threshold) {
+	private @NonNull Range find(
+			double lat,
+			double lon,
+			@NonNull Calendar start,
+			@NonNull Calendar end,
+			@Nullable ThresholdRelation relation,
+			double threshold
+	) {
 		Range result = new Range();
 		final int every = 1;
 		final Calendar running = (Calendar)start.clone();
@@ -79,7 +88,7 @@ public class SunCalculator {
 			result.end = result.start;
 			result.start = temp;
 			result.end.add(Calendar.DATE, 1);
-		}
+		} // TODO else is wrong, null and ABOVE, default elsewhere.
 		return result;
 	}
 }

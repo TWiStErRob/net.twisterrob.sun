@@ -2,22 +2,40 @@ package net.twisterrob.sun.algo;
 
 import java.util.Calendar;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 public class SunSearchResults {
-	public SunSearchParams params;
+	public @NonNull SunSearchParams params;
 
-	public Moment current;
-	public Moment minimum;
-	public Moment maximum;
+	public @NonNull Moment current;
+	public @NonNull Moment minimum;
+	public @NonNull Moment maximum;
 
-	public Range threshold;
-	public Range horizon;
+	public @NonNull Range threshold;
+	public @NonNull Range horizon;
 
-	public SunSearchResults(SunSearchParams params) {
+	public SunSearchResults(
+			@NonNull SunSearchParams params,
+			@NonNull Moment current,
+			@NonNull Moment minimum,
+			@NonNull Moment maximum,
+			@NonNull Range threshold,
+			@NonNull Range horizon
+	) {
+		this.params = params;
+		this.current = current;
+		this.minimum = minimum;
+		this.maximum = maximum;
+		this.threshold = threshold;
+		this.horizon = horizon;
+	}
+	public SunSearchResults(@NonNull SunSearchParams params) {
 		this.params = params;
 	}
 
 	@Override
-	public String toString() {
+	public @NonNull String toString() {
 		return getTime(current.time) + " at " + ((int)(current.angle * 1000) / 1000d)
 				+ "°" //
 				+ ", " + params.thresholdRelation + " " + params.thresholdAngle + " between "
@@ -50,19 +68,28 @@ public class SunSearchResults {
 	}
 
 	public static class SunSearchParams implements Cloneable {
-		public Calendar time;
+		public @NonNull Calendar time;
 		public double latitude;
 		public double longitude;
 		public double thresholdAngle;
-		public ThresholdRelation thresholdRelation;
+		public @Nullable ThresholdRelation thresholdRelation;
 
 		public SunSearchParams() {
 		}
-		public SunSearchParams(double latitude, double longitude, Calendar time) {
+		public SunSearchParams(
+				double latitude,
+				double longitude,
+				@NonNull Calendar time
+		) {
 			this(latitude, longitude, time, null, 0);
 		}
-		public SunSearchParams(double latitude, double longitude, Calendar time, ThresholdRelation relation,
-				double threshold) {
+		public SunSearchParams(
+				double latitude,
+				double longitude,
+				@NonNull Calendar time,
+				@Nullable ThresholdRelation relation,
+				double threshold
+		) {
 			this.latitude = latitude;
 			this.longitude = longitude;
 			this.time = time;
