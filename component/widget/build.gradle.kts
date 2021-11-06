@@ -8,4 +8,8 @@ dependencies {
 	implementation(project(":component:states"))
 	implementation(Deps.AndroidX.annotations)
 	implementation(Deps.AndroidX.v4)
+
+	testImplementation(Deps.Test.junit4)
+	testImplementation(Deps.Test.mockito)
+	testImplementation(project(":feature:configuration"))
 }
