@@ -14,6 +14,7 @@ pluginManagement {
 	repositories {
 		google()
 		mavenCentral()
+		gradlePluginPortal()
 		//maven { name = "Sonatype SNAPSHOTs s01"; setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
 	}
 	resolutionStrategy {
@@ -32,5 +33,16 @@ pluginManagement {
 				}
 			}
 		}
+	}
+}
+
+plugins {
+	id("com.gradle.enterprise") version "3.7.1"
+}
+
+gradleEnterprise {
+	buildScan {
+		termsOfServiceUrl = "https://gradle.com/terms-of-service"
+		termsOfServiceAgree = "yes"
 	}
 }
