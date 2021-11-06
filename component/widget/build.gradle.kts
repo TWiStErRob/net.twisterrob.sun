@@ -11,5 +11,6 @@ dependencies {
 
 	testImplementation(Deps.Test.junit4)
 	testImplementation(Deps.Test.mockito)
+	testImplementation(Deps.Test.paramInjector)
 	testImplementation(project(":feature:configuration"))
 }

@@ -1,13 +1,11 @@
 package net.twisterrob.sun.android.logic;
 
-import java.util.Arrays;
 import java.util.Calendar;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
@@ -19,6 +17,9 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.google.testing.junit.testparameterinjector.TestParameter;
+import com.google.testing.junit.testparameterinjector.TestParameterInjector;
+
 import net.twisterrob.sun.algo.SunSearchResults;
 import net.twisterrob.sun.algo.SunSearchResults.Moment;
 import net.twisterrob.sun.algo.SunSearchResults.Range;
@@ -29,55 +30,107 @@ import net.twisterrob.sun.test.screenshots.PaparazziCoat;
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.PREF_SHOW_PART_OF_DAY;
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.PREF_SHOW_UPDATE_TIME;
 
-@RunWith(Parameterized.class)
+@RunWith(TestParameterInjector.class)
 public class SunAngleWidgetUpdaterScreenshotTest {
-
-	private final @NonNull Preset preset;
 
 	@Rule
 	public PaparazziCoat paparazzi = new PaparazziCoat();
 
-	public SunAngleWidgetUpdaterScreenshotTest(@NonNull Preset preset) {
-		this.preset = preset;
-	}
+	private @NonNull SunAngleWidgetUpdater sut;
 
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> parameters() {
-		return Arrays.asList(
-				new Object[]{new Preset("Nice Preview", 72, 86)},
-				new Object[]{new Preset("Galaxy S4", 84, 105)},
-				new Object[]{new Preset("Galaxy S3", 80, 100)},
-				new Object[]{new Preset("Galaxy S2 (No margins)", 80, 100)},
-				new Object[]{new Preset("Galaxy S2 (4 dp)", 72, 92)},
-				new Object[]{new Preset("Galaxy S2 (8 dp)", 64, 84)},
-				new Object[]{new Preset("Nexus 10", 72, 72)},
-				new Object[]{new Preset("Nexus 7 (portrait)", (int)79.624, (int)79.624)},
-				new Object[]{new Preset("Nexus 7 (landscape)", (int)71.362, (int)71.362)}
-		);
+	@Before
+	public void setUp() {
+		sut = new SunAngleWidgetUpdater(paparazzi.getContext());
 	}
 
 	@Test
-	public void test() {
-		SunAngleWidgetUpdater updater = new SunAngleWidgetUpdater(paparazzi.getContext());
-		SunSearchResults results = new SunSearchResults(
+	public void testLightStateOnDevice(
+			@TestParameter({"45", "0", "-3", "-6", "-9", "-12", "-15", "-18", "-21"}) float angle,
+			@TestParameter Preset preset
+	) {
+		SunSearchResults results = createResult(angle, createEmptyParams());
+
+		RemoteViews remoteViews = sut.createUpdateViews(0, results, mockPrefs(true, true));
+
+		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), preset);
+	}
+
+	@Test
+	public void testAngleFormatting(
+			@TestParameter({"0", "0.0000001", "-12.3456789", "+12.3456789", "0.123456789", "-0.123456789"}) float angle
+	) {
+		SunSearchResults results = createResult(angle, createEmptyParams());
+
+		RemoteViews remoteViews = sut.createUpdateViews(0, results, mockPrefs(true, true));
+
+		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), Preset.Nice_Preview);
+	}
+
+	@Test
+	public void testThreshold(
+			@TestParameter ThresholdRelation relation,
+			@TestParameter({"0", "-12.3456789", "+12.3456789"}) float threshold
+	) {
+		SunSearchResults results = createResult(
+				Double.NaN,
 				new SunSearchParams(
 						Double.NaN,
 						Double.NaN,
-						Calendar.getInstance(),
-						ThresholdRelation.ABOVE,
-						Double.NaN
-				),
-				new Moment(Calendar.getInstance(), 12.3456789),
-				new Moment(Calendar.getInstance(), -50),
-				new Moment(Calendar.getInstance(), +40),
-				new Range(Calendar.getInstance(), Calendar.getInstance()),
-				new Range(Calendar.getInstance(), Calendar.getInstance())
+						midnight(),
+						relation,
+						threshold
+				)
 		);
-		RemoteViews remoteViews = updater.createUpdateViews(0, results, mockPrefs(true, true));
-		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null));
+
+		RemoteViews remoteViews = sut.createUpdateViews(0, results, mockPrefs(true, true));
+
+		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), Preset.Nice_Preview);
 	}
 
-	private void snapshotWithSize(@NonNull View view) {
+	@Test
+	public void testVisibility(
+			@TestParameter boolean showPartOfDay,
+			@TestParameter boolean showUpdateTime,
+			@TestParameter Preset preset
+	) {
+		SunSearchResults results = createResult(Double.NaN, createEmptyParams());
+
+		RemoteViews remoteViews = sut.createUpdateViews(0, results, mockPrefs(showPartOfDay, showUpdateTime));
+
+		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), preset);
+	}
+
+	private static @NonNull SunSearchParams createEmptyParams() {
+		return new SunSearchParams(
+				Double.NaN,
+				Double.NaN,
+				midnight(),
+				ThresholdRelation.ABOVE,
+				Double.NaN
+		);
+	}
+
+	private static @NonNull SunSearchResults createResult(double angle, SunSearchParams params) {
+		return new SunSearchResults(
+				params,
+				new Moment(midnight(), angle),
+				new Moment(midnight(), Double.NaN),
+				new Moment(midnight(), Double.NaN),
+				new Range(midnight(), midnight()),
+				new Range(midnight(), midnight())
+		);
+	}
+
+	private static @NonNull Calendar midnight() {
+		Calendar instance = Calendar.getInstance();
+		instance.set(Calendar.HOUR_OF_DAY, 0);
+		instance.set(Calendar.MINUTE, 0);
+		instance.set(Calendar.SECOND, 0);
+		instance.set(Calendar.MILLISECOND, 0);
+		return instance;
+	}
+
+	private void snapshotWithSize(@NonNull View view, @NonNull Preset preset) {
 		paparazzi.snapshotWithSize(view, preset.width, preset.height);
 	}
 
@@ -88,20 +141,25 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 		return prefs;
 	}
 
-	private static class Preset {
-
+	enum Preset {
+		Nice_Preview("Nice Preview", 72, 86),
+		Galaxy_S4("Galaxy S4", 84, 105),
+		Galaxy_S3("Galaxy S3", 80, 100),
+		Galaxy_S2_no_margins("Galaxy S2 (No margins)", 80, 100),
+		Galaxy_S2_margin_4_dp("Galaxy S2 (4 dp)", 72, 92),
+		Galaxy_S2_margin_8_dp("Galaxy S2 (8 dp)", 64, 84),
+		Nexus_10("Nexus 10", 72, 72),
+		Nexus_7_portrait("Nexus 7 (portrait)", 79.624f, 79.624f),
+		Nexus_7_landscape("Nexus 7 (landscape)", 71.362f, 71.362f),
+		;
 		public final @NonNull String name;
 		public final float width;
 		public final float height;
 
-		public Preset(@NonNull String name, float width, float height) {
+		Preset(@NonNull String name, float width, float height) {
 			this.name = name;
 			this.width = width;
 			this.height = height;
-		}
-
-		@Override public @NonNull String toString() {
-			return String.format("%s (%f x %f)", name, width, height);
 		}
 	}
 }

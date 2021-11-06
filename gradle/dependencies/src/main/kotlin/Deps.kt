@@ -35,5 +35,6 @@ object Deps {
 	object Test {
 		const val junit4 = "junit:junit:4.13.2"
 		const val mockito = "org.mockito:mockito-core:4.0.0"
+		const val paramInjector = "com.google.testparameterinjector:test-parameter-injector:1.5"
 	}
 }
