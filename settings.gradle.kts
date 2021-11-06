@@ -12,7 +12,6 @@ includeBuild("gradle/plugins")
 
 pluginManagement {
 	repositories {
-		mavenLocal()
 		google()
 		mavenCentral()
 		//maven { name = "Sonatype SNAPSHOTs s01"; setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
