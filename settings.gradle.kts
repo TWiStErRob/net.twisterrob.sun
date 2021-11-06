@@ -1,12 +1,20 @@
 rootProject.name = "Sun"
 
 include(":app")
-include(":lib")
+include(":feature:configuration")
+include(":feature:preview")
+include(":component:widget")
+include(":component:states")
+include(":component:lib")
+
+includeBuild("gradle/dependencies")
+includeBuild("gradle/plugins")
 
 pluginManagement {
 	repositories {
 		google()
 		mavenCentral()
+		gradlePluginPortal()
 		//maven { name = "Sonatype SNAPSHOTs s01"; setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
 	}
 	resolutionStrategy {
@@ -25,5 +33,16 @@ pluginManagement {
 				}
 			}
 		}
+	}
+}
+
+plugins {
+	id("com.gradle.enterprise") version "3.7.1"
+}
+
+gradleEnterprise {
+	buildScan {
+		termsOfServiceUrl = "https://gradle.com/terms-of-service"
+		termsOfServiceAgree = "yes"
 	}
 }
