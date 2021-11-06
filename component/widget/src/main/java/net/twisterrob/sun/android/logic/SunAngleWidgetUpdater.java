@@ -136,7 +136,7 @@ public class SunAngleWidgetUpdater {
 		return result != null;
 	}
 
-	private RemoteViews createUpdateViews(int appWidgetId, SunSearchResults results, SharedPreferences prefs) {
+	RemoteViews createUpdateViews(int appWidgetId, SunSearchResults results, SharedPreferences prefs) {
 		Resources res = context.getResources();
 		RemoteViews views;
 		if (results == null) {
