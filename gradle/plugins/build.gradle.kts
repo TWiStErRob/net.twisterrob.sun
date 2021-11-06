@@ -7,10 +7,12 @@ plugins {
 repositories {
 	google()
 	mavenCentral()
+	gradlePluginPortal()
 }
 
 dependencies {
 	implementation(Deps.Android.plugin)
+	implementation(Deps.Android.cacheFix)
 	implementation("project-dependencies:dependencies:SNAPSHOT")
 }
 
