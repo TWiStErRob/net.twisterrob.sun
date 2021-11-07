@@ -6,6 +6,7 @@ plugins {
 dependencies {
 	api(project(":component:lib"))
 	implementation(project(":component:states"))
+	implementation(project(":component:theme"))
 	implementation(Deps.AndroidX.annotations)
 	implementation(Deps.AndroidX.v4)
 
