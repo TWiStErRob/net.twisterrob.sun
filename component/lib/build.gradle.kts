@@ -1,5 +1,5 @@
 plugins {
-	id("net.twisterrob.java")
+	id("net.twisterrob.java-library")
 	id("project-dependencies")
 }
 
