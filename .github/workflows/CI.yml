@@ -72,9 +72,9 @@ jobs:
   screenshot:
     name: 🛠️ Screenshot Tests
     runs-on: ubuntu-latest
-    # A local build took 20 seconds, CI takes 3 minutes with setup.
+    # A local incremental build took 5 minutes, CI takes 4 minutes to setup.
     # Because it's cloud, give it a bit of a buffer and constrain.
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - name: Set up JDK 11.
         uses: actions/setup-java@v1
