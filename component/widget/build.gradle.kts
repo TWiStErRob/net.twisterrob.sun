@@ -14,3 +14,8 @@ dependencies {
 	testImplementation(Deps.Test.paramInjector)
 	testImplementation(project(":feature:configuration"))
 }
+
+tasks.withType<Test>().configureEach {
+	// TODEL https://github.com/cashapp/paparazzi/issues/305
+	maxHeapSize = "1G"
+}
