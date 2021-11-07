@@ -130,13 +130,14 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 		return prefs;
 	}
 
+	/**
+	 * @see net.twisterrob.sun.android.preview.R.array.widget_size_preset
+	 */
+	@SuppressWarnings("JavadocReference")
 	enum Preset {
 		Nice_Preview("Nice Preview", 72, 86),
 		Galaxy_S4("Galaxy S4", 84, 105),
 		Galaxy_S3("Galaxy S3", 80, 100),
-		Galaxy_S2_no_margins("Galaxy S2 (No margins)", 80, 100),
-		Galaxy_S2_margin_4_dp("Galaxy S2 (4 dp)", 72, 92),
-		Galaxy_S2_margin_8_dp("Galaxy S2 (8 dp)", 64, 84),
 		Nexus_10("Nexus 10", 72, 72),
 		Nexus_7_portrait("Nexus 7 (portrait)", 79.624f, 79.624f),
 		Nexus_7_landscape("Nexus 7 (landscape)", 71.362f, 71.362f),
