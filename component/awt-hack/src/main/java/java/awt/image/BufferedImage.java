@@ -1,6 +1,8 @@
 package java.awt.image;
 
-public interface BufferedImage {
+public class BufferedImage {
 
-	BufferedImage getSubimage(int x, int y, int width, int height);
+	public BufferedImage getSubimage(int x, int y, int width, int height) {
+		return null;
+	}
 }
