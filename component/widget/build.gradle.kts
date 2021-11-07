@@ -13,6 +13,8 @@ dependencies {
 	testImplementation(Deps.Test.mockito)
 	testImplementation(Deps.Test.paramInjector)
 	testImplementation(project(":feature:configuration"))
+	// TODEL https://github.com/cashapp/paparazzi/pull/308
+	testImplementation(platform(Deps.Kotlin.bom))
 }
 
 tasks.withType<Test>().configureEach {
