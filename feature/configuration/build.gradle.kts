@@ -1,6 +1,7 @@
 plugins {
 	id("project-module-android-library")
 	id("project-dependencies")
+	id("project-feature-paparazzi")
 }
 
 dependencies {

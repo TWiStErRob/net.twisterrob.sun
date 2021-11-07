@@ -7,6 +7,7 @@ import org.junit.rules.ExternalResource;
 import org.mockito.Answers;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.withSettings;
 
 import android.app.ActivityThread;
 import android.app.Application;
@@ -53,7 +54,9 @@ public class AllowCreatingRemoteViewsHack extends ExternalResource {
 
 	@Override protected void before() throws Throwable {
 		backup = sCurrentActivityThread.get(null);
-		ActivityThread thread = mock(ActivityThread.class, Answers.CALLS_REAL_METHODS);
+		ActivityThread thread = mock(ActivityThread.class, withSettings()
+				.defaultAnswer(Answers.CALLS_REAL_METHODS)
+				.useConstructor());
 		mInitialApplication.set(thread, new Application() {
 			{
 				attachBaseContext(context.call());

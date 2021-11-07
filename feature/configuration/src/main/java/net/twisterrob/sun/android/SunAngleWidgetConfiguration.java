@@ -13,11 +13,14 @@ import android.location.*;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.text.*;
 import android.text.style.*;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -52,6 +55,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private int[] mapping;
 	private Menu menu;
 	private LocationUpdater locationUpdater;
+
+	@Override public void attachBaseContext(Context newBase) {
+		super.attachBaseContext(newBase);
+	}
 
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		if (BuildConfig.DEBUG) {
@@ -315,7 +322,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		);
 	}
 
-	private void updateUI(SunSearchResults results) {
+	void updateUI(SunSearchResults results) {
 		ThresholdRelation rel = getCurrentRelation();
 		float angle = getCurrentThresholdAngle();
 		sun.setSelected(rel, angle);
@@ -324,7 +331,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		sun.setMinimumEdge(rel == ThresholdRelation.ABOVE && !belowMin);
 		sun.setMaximumEdge(rel == ThresholdRelation.BELOW && !aboveMax);
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
-		message.setTextColor(Color.BLACK);
+		message.setTextColor(foregroundColor(this));
 		message.setOnClickListener(null);
 		message.setText(getString(R.string.message_selected_angle, getRelString(rel), angle));
 		if (belowMin) {
@@ -344,6 +351,12 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				}
 			});
 		}
+	}
+
+	private static @ColorInt int foregroundColor(@NonNull Context context) {
+		TypedValue typedValue = new TypedValue();
+		context.getTheme().resolveAttribute(android.R.attr.colorForeground, typedValue, true);
+		return typedValue.data;
 	}
 
 	private void openLocationSettings() {

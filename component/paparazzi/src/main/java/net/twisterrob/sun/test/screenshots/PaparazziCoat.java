@@ -43,6 +43,7 @@ public class PaparazziCoat implements TestRule {
 					}
 				}))
 				.around(new ActivityManagerSingletonHack())
+				.around(new ActivityTaskManagerSingletonHack())
 				.apply(base, description);
 	}
 
