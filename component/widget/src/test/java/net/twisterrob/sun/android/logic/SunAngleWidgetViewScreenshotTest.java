@@ -31,16 +31,16 @@ import static net.twisterrob.sun.android.SunAngleWidgetProvider.PREF_SHOW_PART_O
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.PREF_SHOW_UPDATE_TIME;
 
 @RunWith(TestParameterInjector.class)
-public class SunAngleWidgetUpdaterScreenshotTest {
+public class SunAngleWidgetViewScreenshotTest {
 
 	@Rule
 	public PaparazziCoat paparazzi = new PaparazziCoat();
 
-	private @NonNull SunAngleWidgetUpdater sut;
+	private @NonNull SunAngleWidgetView sut;
 
 	@Before
 	public void setUp() {
-		sut = new SunAngleWidgetUpdater(paparazzi.getContext());
+		sut = new SunAngleWidgetView();
 	}
 
 	@Test
@@ -49,8 +49,9 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 			@TestParameter Preset preset
 	) {
 		SunSearchResults results = createResult(angle, createEmptyParams());
+		SharedPreferences prefs = mockPrefs(true, true);
 
-		RemoteViews remoteViews = sut.createUpdateViews(0, results, mockPrefs(true, true));
+		RemoteViews remoteViews = sut.createUpdateViews(paparazzi.getContext(), 0, results, prefs);
 
 		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), preset);
 	}
@@ -59,7 +60,9 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 	public void testInvalid(
 			@TestParameter Preset preset
 	) {
-		RemoteViews remoteViews = sut.createUpdateViews(0, null, mockPrefs(true, true));
+		SharedPreferences prefs = mockPrefs(true, true);
+
+		RemoteViews remoteViews = sut.createUpdateViews(paparazzi.getContext(), 0, null, prefs);
 
 		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), preset);
 	}
@@ -79,8 +82,9 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 						angle
 				)
 		);
+		SharedPreferences prefs = mockPrefs(true, true);
 
-		RemoteViews remoteViews = sut.createUpdateViews(0, results, mockPrefs(true, true));
+		RemoteViews remoteViews = sut.createUpdateViews(paparazzi.getContext(), 0, results, prefs);
 
 		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), Preset.Nice_Preview);
 	}
@@ -92,8 +96,9 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 			@TestParameter Preset preset
 	) {
 		SunSearchResults results = createResult(Double.NaN, createEmptyParams());
+		SharedPreferences prefs = mockPrefs(showPartOfDay, showUpdateTime);
 
-		RemoteViews remoteViews = sut.createUpdateViews(0, results, mockPrefs(showPartOfDay, showUpdateTime));
+		RemoteViews remoteViews = sut.createUpdateViews(paparazzi.getContext(), 0, results, prefs);
 
 		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), preset);
 	}
