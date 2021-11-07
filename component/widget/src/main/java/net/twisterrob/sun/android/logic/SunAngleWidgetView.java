@@ -61,6 +61,12 @@ public class SunAngleWidgetView {
 		RELATIONS.put(ThresholdRelation.BELOW, R.string.threshold_below);
 	}
 
+	private final @NonNull TimeProvider times;
+
+	public SunAngleWidgetView(@NonNull TimeProvider times) {
+		this.times = times;
+	}
+
 	@NonNull RemoteViews createUpdateViews(
 			@NonNull Context context,
 			int appWidgetId,
@@ -71,7 +77,7 @@ public class SunAngleWidgetView {
 		RemoteViews views;
 		if (results == null) {
 			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1_invalid);
-			views.setTextViewText(R.id.timeUpdated, time3.format(Calendar.getInstance().getTime()));
+			views.setTextViewText(R.id.timeUpdated, time3.format(times.now().getTime()));
 			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_location));
 			views.setOnClickPendingIntent(R.id.state, createRefreshIntent(context, appWidgetId));
 			views.setOnClickPendingIntent(R.id.threshold, createOpenIntent(context, appWidgetId));

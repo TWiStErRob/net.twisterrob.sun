@@ -24,7 +24,7 @@ import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
 
 public class SunAngleWidgetUpdater {
-	private static final SunAngleWidgetView VIEW = new SunAngleWidgetView();
+	private static final SunAngleWidgetView VIEW = new SunAngleWidgetView(new TimeProvider());
 	private static final SunCalculator CALC = new SunCalculator(new PhotovoltaicSun());
 
 	public SunAngleWidgetUpdater() {
