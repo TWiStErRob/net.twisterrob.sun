@@ -44,3 +44,27 @@ jobs:
 
       - name: Build & Verify project.
         run: ./gradlew --no-daemon --no-build-cache --stacktrace assemble check
+
+      - name: Upload "Test Results HTMLs".
+        if: success() || failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test Results HTMLs
+          path: ${{ github.workspace }}/**/build/reports/tests/*/
+
+      - name: Upload "Lint Results HTMLs".
+        if: success() || failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Lint Results HTMLs
+          path: ${{ github.workspace }}/**/build/reports/lint-results*.html
+
+      - name: Publish Test Results
+        if: success() || failure()
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          check_name: 🔔 Test Results
+          comment_title: Test Results
+          report_individual_runs: true
+          test_changes_limit: 0
+          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
