@@ -13,8 +13,6 @@ dependencies {
 	testImplementation(Deps.Test.mockito)
 	testImplementation(Deps.Test.paramInjector)
 	testImplementation(project(":feature:configuration"))
-	// TODEL https://github.com/cashapp/paparazzi/issues/306
-	testCompileOnly(project(":component:awt-hack"))
 }
 
 tasks.withType<Test>().configureEach {
