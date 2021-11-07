@@ -10,6 +10,8 @@ import android.content.*;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.*;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.style.*;
 import android.util.Log;
@@ -137,7 +139,7 @@ public class SunAngleWidgetUpdater {
 		return result != null;
 	}
 
-	RemoteViews createUpdateViews(int appWidgetId, SunSearchResults results, SharedPreferences prefs) {
+	@NonNull RemoteViews createUpdateViews(int appWidgetId, @Nullable SunSearchResults results, @NonNull SharedPreferences prefs) {
 		Resources res = context.getResources();
 		RemoteViews views;
 		if (results == null) {
@@ -193,6 +195,7 @@ public class SunAngleWidgetUpdater {
 		} else {
 			result = time2.format(time.getTime());
 			Calendar justBefore = (Calendar)time.clone();
+			// https://github.com/TWiStErRob/net.twisterrob.sun/issues/17
 			justBefore.add(Calendar.MINUTE, -30); // TODO configure?
 			if (results.current.time.after(justBefore) && results.current.time.before(time)) {
 				result = bold(color(result, getColor(context, R.color.coming_soon)));

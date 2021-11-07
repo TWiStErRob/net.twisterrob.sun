@@ -56,6 +56,15 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 	}
 
 	@Test
+	public void testInvalid(
+			@TestParameter Preset preset
+	) {
+		RemoteViews remoteViews = sut.createUpdateViews(0, null, mockPrefs(true, true));
+
+		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), preset);
+	}
+
+	@Test
 	public void testThresholdAndAngle(
 			@TestParameter ThresholdRelation relation,
 			@TestParameter({"0", "-12.3456789", "+12.3456789"}) float angle
