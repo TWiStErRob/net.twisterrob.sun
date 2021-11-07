@@ -15,6 +15,8 @@ dependencies {
 	testImplementation(project(":feature:configuration"))
 	// TODEL https://github.com/cashapp/paparazzi/pull/308
 	testImplementation(platform(Deps.Kotlin.bom))
+	// TODEL https://github.com/cashapp/paparazzi/issues/306
+	testCompileOnly(project(":component:awt-hack"))
 }
 
 tasks.withType<Test>().configureEach {

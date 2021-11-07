@@ -6,6 +6,7 @@ include(":feature:preview")
 include(":component:widget")
 include(":component:states")
 include(":component:lib")
+include(":component:awt-hack")
 
 includeBuild("gradle/dependencies")
 includeBuild("gradle/plugins")
