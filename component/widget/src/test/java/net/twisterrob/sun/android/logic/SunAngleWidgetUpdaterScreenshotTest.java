@@ -56,29 +56,18 @@ public class SunAngleWidgetUpdaterScreenshotTest {
 	}
 
 	@Test
-	public void testAngleFormatting(
-			@TestParameter({"0", "0.0000001", "-12.3456789", "+12.3456789", "0.123456789", "-0.123456789"}) float angle
-	) {
-		SunSearchResults results = createResult(angle, createEmptyParams());
-
-		RemoteViews remoteViews = sut.createUpdateViews(0, results, mockPrefs(true, true));
-
-		snapshotWithSize(remoteViews.apply(paparazzi.getContext(), null), Preset.Nice_Preview);
-	}
-
-	@Test
-	public void testThreshold(
+	public void testThresholdAndAngle(
 			@TestParameter ThresholdRelation relation,
-			@TestParameter({"0", "-12.3456789", "+12.3456789"}) float threshold
+			@TestParameter({"0", "-12.3456789", "+12.3456789"}) float angle
 	) {
 		SunSearchResults results = createResult(
-				Double.NaN,
+				angle,
 				new SunSearchParams(
 						Double.NaN,
 						Double.NaN,
 						midnight(),
 						relation,
-						threshold
+						angle
 				)
 		);
 

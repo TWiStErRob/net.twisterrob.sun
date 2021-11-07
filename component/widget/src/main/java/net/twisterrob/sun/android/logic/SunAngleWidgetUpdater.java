@@ -22,6 +22,7 @@ import static android.text.Spanned.*;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.*;
+import net.twisterrob.sun.android.logic.SunAngleFormatter.Result;
 import net.twisterrob.sun.android.ui.*;
 import net.twisterrob.sun.android.widget.R;
 import net.twisterrob.sun.model.*;
@@ -30,7 +31,7 @@ import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
 
 public class SunAngleWidgetUpdater {
-	private static final DecimalFormat fraction = initFractionFormat();
+	private static final SunAngleFormatter fraction = new SunAngleFormatter();
 	private static final DateFormat time2 = new SimpleDateFormat("HH:mm", Locale.getDefault());
 	private static final DateFormat time3 = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 	private static final LightStateMap<Integer> STATE_LABELs = new StateNameIDs();
@@ -155,9 +156,9 @@ public class SunAngleWidgetUpdater {
 			views.setTextColor(R.id.angle, angleColor);
 			views.setTextColor(R.id.angleFraction, angleColor);
 			views.setTextColor(R.id.angleSign, angleColor);
-			String sign = results.current.angle < 0? "-" : ""; // because I want to display ±0
-			views.setTextViewText(R.id.angle, sign + Math.abs((int)results.current.angle));
-			views.setTextViewText(R.id.angleFraction, fraction.format(results.current.angle));
+			Result angle = fraction.format(results.current.angle);
+			views.setTextViewText(R.id.angle, angle.angle);
+			views.setTextViewText(R.id.angleFraction, angle.fraction);
 			views.setOnClickPendingIntent(R.id.root, createRefreshIntent(appWidgetId));
 
 			if (prefs.getBoolean(PREF_SHOW_PART_OF_DAY, DEFAULT_SHOW_PART_OF_DAY)) {
@@ -245,18 +246,5 @@ public class SunAngleWidgetUpdater {
 		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
 		return intent;
-	}
-
-	private static DecimalFormat initFractionFormat() {
-		DecimalFormat nf = (DecimalFormat)NumberFormat.getInstance();
-		nf.setNegativePrefix("");
-		nf.setNegativeSuffix("");
-		nf.setPositivePrefix("");
-		nf.setPositiveSuffix("");
-		nf.setMinimumIntegerDigits(0);
-		nf.setMaximumIntegerDigits(0);
-		nf.setMinimumFractionDigits(4);
-		nf.setMaximumFractionDigits(4);
-		return nf;
 	}
 }
