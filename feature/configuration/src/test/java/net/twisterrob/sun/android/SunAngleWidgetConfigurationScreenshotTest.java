@@ -28,6 +28,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.WindowManagerImpl;
 import android.widget.SeekBar;
@@ -61,38 +62,42 @@ public class SunAngleWidgetConfigurationScreenshotTest {
 		sut.onPostCreate(null, null);
 	}
 
+	private @NonNull View detachView() {
+		View view = sut.getWindow().getDecorView().findViewById(android.R.id.content);
+		((ViewGroup)view.getParent()).removeView(view);
+		return view;
+	}
+
 	@Test
 	public void testNoLocation() {
 		sut.updateUI(createResults(Double.NaN, Double.NaN));
 
-		paparazzi.snapshot(sut.getWindow().getDecorView());
+		paparazzi.snapshot(detachView());
 	}
 
 	@Test
 	public void testValidSettings() {
 		sut.updateUI(createResults(0, 0));
 
-		paparazzi.snapshot(sut.getWindow().getDecorView());
+		paparazzi.snapshot(detachView());
 	}
 
 	@Test
 	public void testTooHigh() {
-		View view = sut.getWindow().getDecorView();
-		((SeekBar)view.findViewById(R.id.angle)).setProgress(90 + 60);
+		((SeekBar)sut.findViewById(R.id.angle)).setProgress(90 + 60);
 
 		sut.updateUI(createResults(0, 0));
 
-		paparazzi.snapshot(view);
+		paparazzi.snapshot(detachView());
 	}
 
 	@Test
 	public void testTooLow() {
-		View view = sut.getWindow().getDecorView();
-		((SeekBar)view.findViewById(R.id.angle)).setProgress(90 - 60);
+		((SeekBar)sut.findViewById(R.id.angle)).setProgress(90 - 60);
 
 		sut.updateUI(createResults(0, 0));
 
-		paparazzi.snapshot(view);
+		paparazzi.snapshot(detachView());
 	}
 
 	private @NonNull SunSearchResults createResults(double latitude, double longitude) {
