@@ -104,7 +104,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run screenshot tests.
-        run: ./gradlew --no-daemon --no-build-cache --stacktrace :component:widget:verifyPaparazziDebug -Pnet.twisterrob.build.screenshot-tests=true
+        run: ./gradlew --no-daemon --no-build-cache --stacktrace verifyPaparazziDebug -Pnet.twisterrob.build.screenshot-tests=true
 
       - name: Upload "Screenshot Test Results".
         if: success() || failure()
