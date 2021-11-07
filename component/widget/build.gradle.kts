@@ -35,3 +35,7 @@ tasks.withType<Test>().configureEach {
 		}
 	}
 }
+
+tasks.named<Delete>("clean") {
+	delete(project.file("out/failures"))
+}
