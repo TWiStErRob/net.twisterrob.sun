@@ -174,8 +174,10 @@ public class SunAngleWidgetConfigurationScreenshotTest {
 	}
 
 	private static @NonNull Context overrideWindowService(@NonNull Context context) {
+		WindowManager original = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager wrapped = wrapAsWindowManagerImpl(original);
 		context = spy(context);
-		doReturn(wrapAsWindowManagerImpl(context)).when(context).getSystemService(Context.WINDOW_SERVICE);
+		doReturn(wrapped).when(context).getSystemService(Context.WINDOW_SERVICE);
 		doReturn(context).when(context).createDisplayContext(ArgumentMatchers.<Display>any());
 		return context;
 	}
@@ -189,8 +191,7 @@ public class SunAngleWidgetConfigurationScreenshotTest {
 	 * 	at android.app.Activity.attach(Activity.java:7750)
 	 * </pre>
 	 */
-	private static @NonNull WindowManager wrapAsWindowManagerImpl(@NonNull Context context) {
-		final WindowManager wrapped = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+	private static @NonNull WindowManager wrapAsWindowManagerImpl(final @NonNull WindowManager wrapped) {
 		return mock(WindowManagerImpl.class, new Answer<Object>() {
 			@Override public Object answer(InvocationOnMock invocation) throws Throwable {
 				if (invocation.getMethod().getDeclaringClass() == WindowManagerImpl.class) {
