@@ -169,6 +169,7 @@ public class SunAngleWidgetConfigurationScreenshotTest {
 				null /*ActivityConfigCallback activityConfigCallback*/,
 				null /*IBinder assistToken*/
 		);
+		activity.setTheme(context.getTheme());
 		activity.onCreate(savedInstanceState, null);
 	}
 

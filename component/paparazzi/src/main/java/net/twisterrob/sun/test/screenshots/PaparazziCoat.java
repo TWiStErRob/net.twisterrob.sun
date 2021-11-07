@@ -72,7 +72,7 @@ public class PaparazziCoat implements TestRule {
 		return new Paparazzi(
 				EnvironmentKt.detectEnvironment(),
 				DeviceConfig.Companion.getNEXUS_5(),
-				"android:Theme.Material.NoActionBar.Fullscreen",
+				"AppTheme.ScreenshotTest",
 				true,
 				0.0,
 				Boolean.parseBoolean(System.getProperty("paparazzi.test.verify"))
