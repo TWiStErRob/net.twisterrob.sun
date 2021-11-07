@@ -5,6 +5,7 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -26,11 +27,13 @@ import net.twisterrob.sun.algo.SunSearchResults.Range;
 import net.twisterrob.sun.algo.SunSearchResults.SunSearchParams;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.test.screenshots.PaparazziCoat;
+import net.twisterrob.sun.test.screenshots.ScreenshotTest;
 
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.PREF_SHOW_PART_OF_DAY;
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.PREF_SHOW_UPDATE_TIME;
 
 @RunWith(TestParameterInjector.class)
+@Category(ScreenshotTest.class)
 public class SunAngleWidgetViewScreenshotTest {
 
 	@Rule
