@@ -16,5 +16,5 @@ build/
 /temp
 gradled.bat
 
-component/widget/out/failures/delta-net.twisterrob.sun.*.png
-component/widget/out/failures/net.twisterrob.sun.*.png
+**/out/failures/delta-net.twisterrob.sun.*.png
+**/out/failures/net.twisterrob.sun.*.png
