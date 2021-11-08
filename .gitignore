@@ -16,5 +16,8 @@ build/
 /temp
 gradled.bat
 
+# verifyPaparazzi output
 **/out/failures/delta-net.twisterrob.sun.*.png
 **/out/failures/net.twisterrob.sun.*.png
+# recordPaparazzi output (see https://github.com/cashapp/paparazzi/pull/310)
+**/src/test/snapshots/
