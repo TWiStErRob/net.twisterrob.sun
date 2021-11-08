@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 
+import androidx.annotation.Px;
 import app.cash.paparazzi.DeviceConfig;
 import app.cash.paparazzi.EnvironmentKt;
 import app.cash.paparazzi.HtmlReportWriter;
@@ -64,7 +65,7 @@ public class PaparazziCoat implements TestRule {
 		snapshot(parent);
 	}
 
-	private float dipToPix(Resources resources, float value) {
+	private @Px float dipToPix(@NonNull Resources resources, float value) {
 		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.getDisplayMetrics());
 	}
 

@@ -30,13 +30,13 @@ import android.util.Singleton;
  */
 public class ActivityTaskManagerSingletonHack extends ExternalResource {
 
-	private static final Field iActivityTaskManagerSingleton;
+	private static final Field IActivityTaskManagerSingleton;
 
 	static {
 		try {
-			iActivityTaskManagerSingleton = ActivityTaskManager.class.getDeclaredField("IActivityTaskManagerSingleton");
-			iActivityTaskManagerSingleton.setAccessible(true);
-			clearFinal(iActivityTaskManagerSingleton);
+			IActivityTaskManagerSingleton = ActivityTaskManager.class.getDeclaredField("IActivityTaskManagerSingleton");
+			IActivityTaskManagerSingleton.setAccessible(true);
+			clearFinal(IActivityTaskManagerSingleton);
 		} catch (NoSuchFieldException e) {
 			throw new IllegalStateException(e);
 		} catch (IllegalAccessException e) {
@@ -47,8 +47,8 @@ public class ActivityTaskManagerSingletonHack extends ExternalResource {
 	private @Nullable Object backup;
 
 	@Override protected void before() throws Throwable {
-		backup = iActivityTaskManagerSingleton.get(null);
-		iActivityTaskManagerSingleton.set(null, new Singleton<IActivityTaskManager>() {
+		backup = IActivityTaskManagerSingleton.get(null);
+		IActivityTaskManagerSingleton.set(null, new Singleton<IActivityTaskManager>() {
 			@Override protected IActivityTaskManager create() {
 				return mock(IActivityTaskManager.class);
 			}
@@ -57,7 +57,7 @@ public class ActivityTaskManagerSingletonHack extends ExternalResource {
 
 	@Override protected void after() {
 		try {
-			iActivityTaskManagerSingleton.set(null, backup);
+			IActivityTaskManagerSingleton.set(null, backup);
 		} catch (IllegalAccessException e) {
 			throw new IllegalStateException("Cannot restore original state", e);
 		}

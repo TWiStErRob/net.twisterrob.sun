@@ -44,22 +44,23 @@ public class AllowCreatingRemoteViewsHack extends ExternalResource {
 		}
 	}
 
-	private final @NonNull Callable<Context> context;
+	private final @NonNull Callable<Context> contextProvider;
 
 	private @Nullable Object backup;
 
-	public AllowCreatingRemoteViewsHack(@NonNull Callable<Context> context) {
-		this.context = context;
+	public AllowCreatingRemoteViewsHack(@NonNull Callable<Context> contextProvider) {
+		this.contextProvider = contextProvider;
 	}
 
 	@Override protected void before() throws Throwable {
 		backup = sCurrentActivityThread.get(null);
+		// Default visible constructor, convoluted way to create instance of it.
 		ActivityThread thread = mock(ActivityThread.class, withSettings()
 				.defaultAnswer(Answers.CALLS_REAL_METHODS)
 				.useConstructor());
 		mInitialApplication.set(thread, new Application() {
 			{
-				attachBaseContext(context.call());
+				attachBaseContext(contextProvider.call());
 			}
 		});
 

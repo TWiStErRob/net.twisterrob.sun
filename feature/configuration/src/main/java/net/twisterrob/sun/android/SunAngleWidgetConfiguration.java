@@ -56,10 +56,6 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private Menu menu;
 	private LocationUpdater locationUpdater;
 
-	@Override public void attachBaseContext(Context newBase) {
-		super.attachBaseContext(newBase);
-	}
-
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		if (BuildConfig.DEBUG) {
 			if (!getIntent().hasExtra(EXTRA_APPWIDGET_ID)) {

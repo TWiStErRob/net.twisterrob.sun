@@ -25,13 +25,13 @@ import android.util.Singleton;
  */
 public class ActivityManagerSingletonHack extends ExternalResource {
 
-	private static final Field iActivityManagerSingleton;
+	private static final Field IActivityManagerSingleton;
 
 	static {
 		try {
-			iActivityManagerSingleton = ActivityManager.class.getDeclaredField("IActivityManagerSingleton");
-			iActivityManagerSingleton.setAccessible(true);
-			clearFinal(iActivityManagerSingleton);
+			IActivityManagerSingleton = ActivityManager.class.getDeclaredField("IActivityManagerSingleton");
+			IActivityManagerSingleton.setAccessible(true);
+			clearFinal(IActivityManagerSingleton);
 		} catch (NoSuchFieldException e) {
 			throw new IllegalStateException(e);
 		} catch (IllegalAccessException e) {
@@ -42,8 +42,8 @@ public class ActivityManagerSingletonHack extends ExternalResource {
 	private @Nullable Object backup;
 
 	@Override protected void before() throws Throwable {
-		backup = iActivityManagerSingleton.get(null);
-		iActivityManagerSingleton.set(null, new Singleton<IActivityManager>() {
+		backup = IActivityManagerSingleton.get(null);
+		IActivityManagerSingleton.set(null, new Singleton<IActivityManager>() {
 			@Override protected IActivityManager create() {
 				return mockActivityManager();
 			}
@@ -52,7 +52,7 @@ public class ActivityManagerSingletonHack extends ExternalResource {
 
 	@Override protected void after() {
 		try {
-			iActivityManagerSingleton.set(null, backup);
+			IActivityManagerSingleton.set(null, backup);
 		} catch (IllegalAccessException e) {
 			throw new IllegalStateException("Cannot restore original state", e);
 		}

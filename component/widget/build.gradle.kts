@@ -10,5 +10,5 @@ dependencies {
 	implementation(Deps.AndroidX.annotations)
 	implementation(Deps.AndroidX.v4)
 
-	testImplementation(project(":feature:configuration"))
+	testRuntimeOnly(project(":feature:configuration"))
 }
