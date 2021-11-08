@@ -5,7 +5,7 @@ concurrency:
   # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
   # On master, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
   # More info: https://stackoverflow.com/a/68422069/253468:
-  group: ${{ github.ref == 'refs/heads/master' && format('ci-master-{0}', github.sha) || format('ci-{0}', github.ref) }}
+  group: ${{ github.ref == 'refs/heads/master' && format('record-master-{0}', github.sha) || format('record-{0}', github.ref) }}
   cancel-in-progress: true
 jobs:
   record:
@@ -52,9 +52,13 @@ jobs:
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git status
           git add **/src/test/snapshots/images/*.png
+          git status
           git commit -m "Update screenshots"
+          git status
           git push
+          git status
  
       - name: Upload "Screenshot Record Results".
         if: success() || failure()
