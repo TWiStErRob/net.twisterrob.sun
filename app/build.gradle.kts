@@ -6,6 +6,7 @@ plugins {
 dependencies {
 	implementation(project(":feature:configuration"))
 	implementation(project(":component:widget"))
+	implementation(project(":component:theme"))
 	debugImplementation(project(":feature:preview"))
 }
 

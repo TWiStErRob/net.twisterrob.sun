@@ -9,7 +9,6 @@
 		android:icon="@drawable/ic_launcher"
 		android:allowBackup="true"
 		android:supportsRtl="true"
-		android:theme="@style/AppTheme"
 		tools:ignore="UnusedAttribute"
 		>
 
