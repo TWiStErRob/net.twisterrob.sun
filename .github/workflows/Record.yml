@@ -27,23 +27,17 @@ jobs:
           # Warning: Observed package id 'ndk;21.4.7075529' in inconsistent location '/usr/local/lib/android/sdk/ndk-bundle' (Expected '/usr/local/lib/android/sdk/ndk/21.4.7075529')
           echo sdkmanager --uninstall "ndk;21.4.7075529"
           sdkmanager --uninstall "ndk;21.4.7075529"
-
           # The following are already done by setup-android@v2 action:
           # sdkmanager --install "cmdline-tools;latest"
           # sdkmanager --install "tools"
           # sdkmanager --install "platform-tools"
-
           # Install Android API used to build the project.
           echo sdkmanager --install "platforms;android-23"
           sdkmanager --install "platforms;android-23"
-
       - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v2
-
-      - name: Checkout LFS files
-        run: |
-          git lfs install --local
-          git lfs pull
+        with:
+          lfs: true
 
       - name: Record Screenshots
         run: >
@@ -56,6 +50,8 @@ jobs:
 
       - name: Commit screenshots
         run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
           git add **/src/test/snapshots/images/*.png
           git commit -m "Update screenshots"
           git push
@@ -66,6 +62,7 @@ jobs:
         with:
           name: Screenshot Record Results
           path: |
+            ${{ github.workspace }}/**/src/test/snapshots/images/*.png
             ${{ github.workspace }}/**/build/reports/tests/*/
             ${{ github.workspace }}/**/build/reports/paparazzi/
             ${{ github.workspace }}/**/out/failures/delta-*.png
