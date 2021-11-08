@@ -43,7 +43,13 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build & Verify project.
-        run: ./gradlew --no-daemon --no-build-cache --stacktrace assemble check
+        run: >
+          ./gradlew
+          --no-daemon
+          --no-build-cache
+          --stacktrace
+          assemble
+          check
 
       - name: Upload "Unit Test Results".
         if: success() || failure()
@@ -106,7 +112,13 @@ jobs:
           lfs: true
 
       - name: Run screenshot tests.
-        run: ./gradlew --no-daemon --no-build-cache --stacktrace verifyPaparazziDebug -Pnet.twisterrob.build.screenshot-tests=true
+        run: >
+          ./gradlew
+          --no-daemon
+          --no-build-cache
+          --stacktrace
+          verifyPaparazziDebug
+          -Pnet.twisterrob.build.screenshot-tests=true
 
       - name: Upload "Screenshot Test Results".
         if: success() || failure()
