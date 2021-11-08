@@ -103,6 +103,11 @@ jobs:
       - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v2
 
+      - name: Checkout LFS files
+        run: |
+          git lfs install --local
+          git lfs pull
+
       - name: Run screenshot tests.
         run: ./gradlew --no-daemon --no-build-cache --stacktrace verifyPaparazziDebug -Pnet.twisterrob.build.screenshot-tests=true
 
