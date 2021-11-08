@@ -34,6 +34,7 @@ jobs:
           # Install Android API used to build the project.
           echo sdkmanager --install "platforms;android-23"
           sdkmanager --install "platforms;android-23"
+
       - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v2
         with:
@@ -50,7 +51,7 @@ jobs:
           --no-build-cache
           --stacktrace
           recordPaparazziDebug
-          -Pnet.twisterrob.build.screenshot-test=true
+          -Pnet.twisterrob.build.screenshot-tests=true
 
       - name: LS
         run: |
