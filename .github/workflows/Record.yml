@@ -39,21 +39,29 @@ jobs:
         with:
           lfs: true
 
+      - name: LS
+        run: |
+          ls -la feature/configuration/src/test/snapshots/images
+
       - name: Record Screenshots
         run: >
           ./gradlew
           --no-daemon
           --no-build-cache
           --stacktrace
-          recordPaparazzi
+          recordPaparazziDebug
           -Pnet.twisterrob.build.screenshot-test=true
+
+      - name: LS
+        run: |
+          ls -la feature/configuration/src/test/snapshots/images
 
       - name: Commit screenshots
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git status
-          git add **/src/test/snapshots/images/*.png
+          git add '**/src/test/snapshots/images/*.png'
           git status
           git commit -m "Update screenshots"
           git status
