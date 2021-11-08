@@ -6,7 +6,7 @@ object Deps {
 		/**
 		 * When changing this, update CI too (platforms;android-xx).
 		 */
-		const val minSdkVersion = 11
+		const val minSdkVersion = 14
 
 		/**
 		 * TODEL ExpiredTargetSdkVersion when updating
@@ -20,8 +20,8 @@ object Deps {
 
 	object AndroidX {
 
-		const val v4 = "com.android.support:support-v4:23.2.0"
-		const val annotations = "com.android.support:support-annotations:23.2.0"
+		const val v4 = "com.android.support:support-v4:28.0.0"
+		const val annotations = "com.android.support:support-annotations:28.0.0"
 	}
 
 	object Kotlin {
