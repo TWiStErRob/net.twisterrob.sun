@@ -2,9 +2,9 @@ package net.twisterrob.sun.test.screenshots;
 
 import java.awt.image.BufferedImage;
 
-import android.support.annotation.NonNull;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import app.cash.paparazzi.RenderExtension;
 import app.cash.paparazzi.Snapshot;
 

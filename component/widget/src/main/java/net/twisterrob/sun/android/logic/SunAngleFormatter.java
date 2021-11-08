@@ -3,7 +3,7 @@ package net.twisterrob.sun.android.logic;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 class SunAngleFormatter {
 

@@ -3,10 +3,11 @@ package net.twisterrob.android.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.SeekBar;
+
+import androidx.annotation.NonNull;
 
 public class VerticalSeekBar extends SeekBar {
 	public VerticalSeekBar(Context context) {

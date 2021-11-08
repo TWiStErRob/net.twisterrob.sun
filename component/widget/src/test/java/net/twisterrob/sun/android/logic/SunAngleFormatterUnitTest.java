@@ -9,7 +9,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import static org.junit.Assert.assertEquals;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import net.twisterrob.sun.android.logic.SunAngleFormatter.Result;
 

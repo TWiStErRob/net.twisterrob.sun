@@ -12,8 +12,6 @@ import android.graphics.*;
 import android.net.Uri;
 import android.os.Build.*;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.util.*;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -22,6 +20,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import static android.appwidget.AppWidgetManager.*;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.preview.R;

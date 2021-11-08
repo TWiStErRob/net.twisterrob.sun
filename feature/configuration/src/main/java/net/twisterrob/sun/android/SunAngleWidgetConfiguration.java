@@ -13,10 +13,6 @@ import android.location.*;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.text.*;
 import android.text.style.*;
 import android.util.Log;
@@ -31,6 +27,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import static android.appwidget.AppWidgetManager.*;
 import static android.view.ViewGroup.LayoutParams.*;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
 
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.sun.algo.*;

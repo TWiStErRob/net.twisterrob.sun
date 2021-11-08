@@ -14,12 +14,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.google.testing.junit.testparameterinjector.TestParameter;
 import com.google.testing.junit.testparameterinjector.TestParameterInjector;
+
+import androidx.annotation.NonNull;
 
 import net.twisterrob.sun.algo.SunSearchResults;
 import net.twisterrob.sun.algo.SunSearchResults.Moment;

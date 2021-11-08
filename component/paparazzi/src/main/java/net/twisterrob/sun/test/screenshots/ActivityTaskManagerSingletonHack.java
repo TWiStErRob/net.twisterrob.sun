@@ -9,8 +9,9 @@ import static org.mockito.Mockito.mock;
 
 import android.app.ActivityTaskManager;
 import android.app.IActivityTaskManager;
-import android.support.annotation.Nullable;
 import android.util.Singleton;
+
+import androidx.annotation.Nullable;
 
 /**
  * Fixes the following exception during Paparazzi screenshot tests.

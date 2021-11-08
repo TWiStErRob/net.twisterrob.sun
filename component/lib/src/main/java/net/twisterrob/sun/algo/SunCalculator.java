@@ -2,8 +2,8 @@ package net.twisterrob.sun.algo;
 
 import java.util.Calendar;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import net.twisterrob.sun.Sun;
 import net.twisterrob.sun.algo.SunSearchResults.*;
