@@ -32,6 +32,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
+import androidx.core.location.LocationListenerCompat;
 
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.sun.algo.*;
@@ -442,7 +443,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return -1;
 	}
 
-	private final class LocationUpdater implements LocationListener {
+	private final class LocationUpdater implements LocationListenerCompat {
 		private final SunAngleWidgetUpdater updater = new SunAngleWidgetUpdater(SunAngleWidgetConfiguration.this);
 
 		public void single() {
@@ -454,11 +455,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			updater.clearLocation(this);
 		}
 
-		@SuppressWarnings("deprecation")
-		public void onStatusChanged(String provider, int status, Bundle extras) { /* NOP */}
-		public void onProviderDisabled(String provider) { /* NOP */}
-		public void onProviderEnabled(String provider) { /* NOP */}
-		public void onLocationChanged(Location location) {
+		public void onLocationChanged(@NonNull Location location) {
 			if (Log.isLoggable("Sun", Log.VERBOSE)) {
 				Log.v("Sun", this + ".onLocationChanged(" + location + ")");
 			}
