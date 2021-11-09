@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.location.LocationListenerCompat;
 import androidx.core.location.LocationManagerCompat;
-import androidx.core.util.Consumer;
 
 import net.twisterrob.sun.algo.SunCalculator;
 import net.twisterrob.sun.algo.SunSearchResults;
@@ -58,6 +57,8 @@ public class SunAngleWidgetUpdater {
 		LocationManagerCompat.removeUpdates(lm, fallback);
 	}
 
+	@SuppressWarnings("deprecation") // Cannot use LocationManagerCompat.getCurrentLocation yet:
+	// tried, but it gets into infinite loop when there's no location and runs on a different thread.
 	@SuppressLint("MissingPermission") // targetSdkVersion is <23
 	// TODO https://developer.android.com/training/location/retrieve-current.html#GetLocation
 	public @Nullable Location getLocation(final @NonNull LocationListenerCompat fallback) {
@@ -74,27 +75,13 @@ public class SunAngleWidgetUpdater {
 					if (Log.isLoggable("Sun", Log.VERBOSE)) {
 						Log.v("Sun", "No location, request update on " + provider + " for " + fallback);
 					}
-					LocationManagerCompat.getCurrentLocation(
-							lm, provider, null, Executors.newSingleThreadExecutor(),
-							new Consumer<Location>() {
-								@Override public void accept(@Nullable Location location) {
-									fallback.onLocationChanged(location);
-								}
-							}
-					);
+					lm.requestSingleUpdate(provider, fallback, null);
 				}
 			} else {
 				if (Log.isLoggable("Sun", Log.VERBOSE)) {
 					Log.v("Sun", "No provider enabled wait for update");
 				}
-				LocationManagerCompat.getCurrentLocation(
-						lm, LocationManager.PASSIVE_PROVIDER, null, Executors.newSingleThreadExecutor(),
-						new Consumer<Location>() {
-							@Override public void accept(@Nullable Location location) {
-								fallback.onLocationChanged(location);
-							}
-						}
-				);
+				lm.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, fallback, null);
 			}
 		}
 		return location;
