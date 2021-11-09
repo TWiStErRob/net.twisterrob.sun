@@ -1,13 +1,14 @@
 package net.twisterrob.android.app;
 
-import android.appwidget.*;
-import android.content.*;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.Build.*;
 import android.os.Bundle;
 import android.util.Log;
 
-import static android.appwidget.AppWidgetManager.*;
+import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,15 +41,6 @@ public abstract class WidgetConfigurationActivity extends AppCompatActivity {
 		super.onPostCreate(savedInstanceState);
 		if (savedInstanceState == null) {
 			onPreferencesLoad(prefs);
-		}
-	}
-
-	@Override public void onAttachedToWindow() {
-		super.onAttachedToWindow();
-		if (VERSION.SDK_INT < VERSION_CODES.HONEYCOMB) {
-			// open and close the options menu to call onCreateOptionsMenu
-			openOptionsMenu();
-			closeOptionsMenu();
 		}
 	}
 
