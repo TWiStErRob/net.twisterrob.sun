@@ -66,7 +66,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_config);
-		message = (TextView)findViewById(R.id.message);
+		message = findViewById(R.id.message);
 		mapping = getResources().getIntArray(R.array.angle_preset_values);
 
 		sun = createSun();
@@ -78,7 +78,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 		});
 
-		angle = (SeekBar)findViewById(R.id.angle);
+		angle = findViewById(R.id.angle);
 		angle.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				setPresetByAngle(toThreshold(progress));
@@ -92,14 +92,14 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 		});
 
-		relation = (CompoundButton)findViewById(R.id.thresholdRelation);
+		relation = findViewById(R.id.thresholdRelation);
 		relation.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				updateUI(lastResults);
 			}
 		});
 
-		preset = ((Spinner)findViewById(R.id.preset));
+		preset = findViewById(R.id.preset);
 		preset.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
 				if (position != mapping.length - 1) {
