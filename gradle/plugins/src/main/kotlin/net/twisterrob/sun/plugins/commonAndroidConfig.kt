@@ -10,8 +10,11 @@ internal fun Project.commonAndroidConfig() {
 	apply(plugin = "org.gradle.android.cache-fix")
 	extensions.configure<BaseExtension> {
 		compileSdkVersion(Deps.Android.compileSdkVersion)
-		defaultConfig.apply {
+		defaultConfig {
 			minSdkVersion(Deps.Android.minSdkVersion)
+		}
+		lintOptions {
+			xmlReport = true
 		}
 	}
 }

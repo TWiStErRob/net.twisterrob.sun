@@ -34,6 +34,9 @@ pluginManagement {
 				"net.twisterrob.android-test" -> {
 	   				useModule("net.twisterrob.gradle:twister-convention-plugins:${requested.version}")
 				}
+				"net.twisterrob.quality" -> {
+					useModule("net.twisterrob.gradle:twister-quality:${requested.version}")
+				}
 			}
 		}
 	}
