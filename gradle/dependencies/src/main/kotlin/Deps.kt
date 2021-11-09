@@ -1,11 +1,12 @@
 object Deps {
 
 	object Android {
-		const val compileSdkVersion = 29
 
 		/**
 		 * When changing this, update CI too (platforms;android-xx).
 		 */
+		const val compileSdkVersion = 31
+
 		const val minSdkVersion = 14
 
 		/**
@@ -34,6 +35,7 @@ object Deps {
 	}
 
 	object Test {
+
 		const val paparazzi = "app.cash.paparazzi:paparazzi:0.8.0"
 		const val junit4 = "junit:junit:4.13.2"
 		const val mockito = "org.mockito:mockito-core:4.0.0"
