@@ -2,6 +2,7 @@ package net.twisterrob.sun.android;
 
 import java.util.*;
 
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
@@ -352,6 +353,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return typedValue.data;
 	}
 
+	@SuppressLint("QueryPermissionsNeeded") // https://developer.android.com/training/package-visibility/automatic
 	private void openLocationSettings() {
 		Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 		if (intent.resolveActivity(getPackageManager()) != null) {
