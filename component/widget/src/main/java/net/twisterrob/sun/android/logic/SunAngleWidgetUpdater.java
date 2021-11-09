@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.location.LocationListenerCompat;
 import androidx.core.location.LocationManagerCompat;
 import androidx.core.util.Consumer;
@@ -59,7 +60,7 @@ public class SunAngleWidgetUpdater {
 
 	@SuppressLint("MissingPermission") // targetSdkVersion is <23
 	// TODO https://developer.android.com/training/location/retrieve-current.html#GetLocation
-	public Location getLocation(final @NonNull LocationListenerCompat fallback) {
+	public @Nullable Location getLocation(final @NonNull LocationListenerCompat fallback) {
 		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 		Location location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 		if (location == null) {
@@ -76,7 +77,7 @@ public class SunAngleWidgetUpdater {
 					LocationManagerCompat.getCurrentLocation(
 							lm, provider, null, Executors.newSingleThreadExecutor(),
 							new Consumer<Location>() {
-								@Override public void accept(Location location) {
+								@Override public void accept(@Nullable Location location) {
 									fallback.onLocationChanged(location);
 								}
 							}
@@ -89,7 +90,7 @@ public class SunAngleWidgetUpdater {
 				LocationManagerCompat.getCurrentLocation(
 						lm, LocationManager.PASSIVE_PROVIDER, null, Executors.newSingleThreadExecutor(),
 						new Consumer<Location>() {
-							@Override public void accept(Location location) {
+							@Override public void accept(@Nullable Location location) {
 								fallback.onLocationChanged(location);
 							}
 						}

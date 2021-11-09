@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.location.LocationListenerCompat;
 
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
@@ -67,7 +68,7 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider implements 
 	}
 
 	@Override
-	public void onLocationChanged(@NonNull Location location) {
+	public void onLocationChanged(@Nullable Location location) {
 		if (Log.isLoggable(TAG, Log.VERBOSE)) {
 			Log.v(TAG, this + ".onLocationChanged(" + location + ")");
 		}

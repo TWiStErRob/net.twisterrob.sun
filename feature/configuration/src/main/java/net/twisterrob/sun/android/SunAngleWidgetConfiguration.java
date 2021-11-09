@@ -29,6 +29,7 @@ import static android.view.ViewGroup.LayoutParams.*;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.location.LocationListenerCompat;
@@ -378,7 +379,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return sun;
 	}
 
-	protected void update(Location loc) {
+	protected void update(@Nullable Location loc) {
 		SunSearchResults results = null;
 		if (loc != null) {
 			SunSearchParams params = new SunSearchParams(loc.getLatitude(), loc.getLongitude(), Calendar.getInstance());
