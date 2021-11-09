@@ -21,8 +21,8 @@ object Deps {
 
 	object AndroidX {
 
-		const val v4 = "androidx.legacy:legacy-support-v4:1.0.0"
-		const val annotations = "androidx.annotation:annotation:1.0.0"
+		const val v4 = "androidx.appcompat:appcompat:1.4.0-rc01"
+		const val annotations = "androidx.annotation:annotation:1.3.0"
 	}
 
 	object Kotlin {

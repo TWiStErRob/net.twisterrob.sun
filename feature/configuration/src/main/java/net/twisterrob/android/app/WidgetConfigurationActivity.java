@@ -1,6 +1,5 @@
 package net.twisterrob.android.app;
 
-import android.app.Activity;
 import android.appwidget.*;
 import android.content.*;
 import android.content.SharedPreferences.Editor;
@@ -10,7 +9,9 @@ import android.util.Log;
 
 import static android.appwidget.AppWidgetManager.*;
 
-public abstract class WidgetConfigurationActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public abstract class WidgetConfigurationActivity extends AppCompatActivity {
 	private SharedPreferences prefs;
 	private int appWidgetId;
 	private Intent result;
