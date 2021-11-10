@@ -4,7 +4,7 @@ import org.junit.*;
 
 import net.twisterrob.sun.test.SunTest;
 
-@Ignore
+@Ignore("Not implemented yet.")
 public class WikiSunTest extends SunTest {
 	@Before
 	public void setUpSun() {

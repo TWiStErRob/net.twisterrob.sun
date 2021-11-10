@@ -15,6 +15,8 @@ internal fun Project.commonAndroidConfig() {
 		}
 		lintOptions {
 			xmlReport = true
+			val projectSlug = project.path.substringAfter(':').replace(":", "+")
+			baseline(rootProject.file("config/lint/baseline/lint_baseline-${projectSlug}.xml"))
 		}
 	}
 }

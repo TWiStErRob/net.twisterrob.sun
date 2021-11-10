@@ -1,6 +1,5 @@
 package net.twisterrob.android.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
@@ -38,7 +37,6 @@ public class VerticalSeekBar extends AppCompatSeekBar {
 		super.onDraw(c);
 	}
 
-	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(@NonNull MotionEvent event) {
 		if (!isEnabled()) {

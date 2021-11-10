@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="5" by="lint 4.2.2" client="gradle" variant="all" version="4.2.2">
+
+    <issue
+        id="StaticFieldLeak"
+        message="Do not place Android context classes in static fields (static reference to `SunAngleWidgetUpdater` which has field `context` pointing to `Context`); this is a memory leak"
+        errorLine1=" private static final SunAngleWidgetUpdater UPDATER = new SunAngleWidgetUpdater();"
+        errorLine2="         ~~~~~~">
+        <location
+            file="src/main/java/net/twisterrob/sun/android/SunAngleWidgetProvider.java"
+            line="50"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ConstantLocale"
+        message="Assigning `Locale.getDefault()` to a final static field is suspicious; this code will not work correctly if the user changes locale while the app is running"
+        errorLine1=" private static final DateFormat time2 = new SimpleDateFormat(&quot;HH:mm&quot;, Locale.getDefault());"
+        errorLine2="                                                                       ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/net/twisterrob/sun/android/logic/SunAngleWidgetView.java"
+            line="52"
+            column="72"/>
+    </issue>
+
+    <issue
+        id="ConstantLocale"
+        message="Assigning `Locale.getDefault()` to a final static field is suspicious; this code will not work correctly if the user changes locale while the app is running"
+        errorLine1=" private static final DateFormat time3 = new SimpleDateFormat(&quot;HH:mm:ss&quot;, Locale.getDefault());"
+        errorLine2="                                                                          ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/net/twisterrob/sun/android/logic/SunAngleWidgetView.java"
+            line="53"
+            column="75"/>
+    </issue>
+
+</issues>

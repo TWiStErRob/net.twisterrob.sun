@@ -1,7 +1,6 @@
 package net.twisterrob.sun.android.logic;
 
 import java.util.Calendar;
-import java.util.concurrent.Executors;
 
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;

@@ -184,7 +184,6 @@ public class WidgetScreenshotActivity extends Activity {
 		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
 	}
 
-	@SuppressLint("SdCardPath")
 	public static void screenshot(View view) {
 		Context context = view.getContext();
 		Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
@@ -207,8 +206,7 @@ public class WidgetScreenshotActivity extends Activity {
 			Intent intent = new Intent(Intent.ACTION_SEND);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			//intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-			intent.setData(contentUri);
-			intent.setType("image/png");
+			intent.setDataAndType(contentUri, "image/png");
 			intent.putExtra(Intent.EXTRA_STREAM, contentUri);
 			context.startActivity(intent);
 		} catch (IOException e) {

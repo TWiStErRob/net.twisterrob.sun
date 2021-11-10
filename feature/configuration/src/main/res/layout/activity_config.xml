@@ -21,6 +21,7 @@
 		android:layout_alignParentTop="true"
 		android:textIsSelectable="true"
 		android:clickable="true"
+		android:focusable="true"
 		tools:text="@string/message_selected_angle"
 		/>
 	<ToggleButton
