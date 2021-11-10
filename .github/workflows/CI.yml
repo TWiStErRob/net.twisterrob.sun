@@ -50,6 +50,7 @@ jobs:
           --stacktrace
           assemble
           check
+          violationReportHtml
 
       - name: Upload "Unit Test Results".
         if: success() || failure()
@@ -63,7 +64,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Lint Results HTMLs
-          path: ${{ github.workspace }}/**/build/reports/lint-results*.html
+          path: |
+            ${{ github.workspace }}/**/build/reports/lint-results*.html
+            ${{ github.workspace }}/build/reports/violations.*
 
       - name: Publish Unit Test Results
         if: success() || failure()

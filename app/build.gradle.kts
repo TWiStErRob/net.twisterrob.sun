@@ -15,7 +15,4 @@ android {
 		applicationId = "net.twisterrob.sun"
 		targetSdkVersion(Deps.Android.targetSdkVersion)
 	}
-	lintOptions {
-		disable("ExpiredTargetSdkVersion")
-	}
 }
