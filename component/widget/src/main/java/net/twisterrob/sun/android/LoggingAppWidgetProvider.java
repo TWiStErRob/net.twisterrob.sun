@@ -1,14 +1,18 @@
 package net.twisterrob.sun.android;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Locale;
 
 import android.annotation.TargetApi;
-import android.appwidget.*;
-import android.content.*;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 public class LoggingAppWidgetProvider extends AppWidgetProvider {
 	private final String tag;

@@ -12,8 +12,6 @@ import android.graphics.*;
 import android.net.Uri;
 import android.os.Build.*;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.util.*;
 import android.view.*;
 import android.view.View.OnClickListener;
@@ -22,6 +20,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import static android.appwidget.AppWidgetManager.*;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.preview.R;
@@ -40,8 +41,8 @@ public class WidgetScreenshotActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_screenshot);
 
-		widthDisplay = (TextView)findViewById(R.id.widthDisplay);
-		widthBar = (SeekBar)findViewById(R.id.width);
+		widthDisplay = findViewById(R.id.widthDisplay);
+		widthBar = findViewById(R.id.width);
 		widthBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				updateSizeDisplay(widthDisplay, progress);
@@ -55,8 +56,8 @@ public class WidgetScreenshotActivity extends Activity {
 			}
 		});
 
-		heightDisplay = (TextView)findViewById(R.id.heightDisplay);
-		heightBar = (SeekBar)findViewById(R.id.height);
+		heightDisplay = findViewById(R.id.heightDisplay);
+		heightBar = findViewById(R.id.height);
 		heightBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				updateSizeDisplay(heightDisplay, progress);
@@ -70,7 +71,7 @@ public class WidgetScreenshotActivity extends Activity {
 			}
 		});
 
-		Spinner presets = (Spinner)findViewById(R.id.preset);
+		Spinner presets = findViewById(R.id.preset);
 		presets.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String[] presets = getResources().getStringArray(R.array.widget_size_preset_values);
@@ -86,7 +87,7 @@ public class WidgetScreenshotActivity extends Activity {
 		});
 		presets.setSelection(0);
 
-		layout = (ViewGroup)findViewById(R.id.widget);
+		layout = findViewById(R.id.widget);
 		layout.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
 				ViewGroup hostView = (ViewGroup)layout.getChildAt(0);

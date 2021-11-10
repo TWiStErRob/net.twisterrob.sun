@@ -1,6 +1,7 @@
 package net.twisterrob.sun.android.logic;
 
 import java.util.Calendar;
+import java.util.concurrent.Executors;
 
 import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
@@ -9,10 +10,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.location.LocationListenerCompat;
+import androidx.core.location.LocationManagerCompat;
 
 import net.twisterrob.sun.algo.SunCalculator;
 import net.twisterrob.sun.algo.SunSearchResults;
@@ -24,6 +29,7 @@ import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
 
 public class SunAngleWidgetUpdater {
+
 	private static final SunAngleWidgetView VIEW = new SunAngleWidgetView(new TimeProvider());
 	private static final SunCalculator CALC = new SunCalculator(new PhotovoltaicSun());
 
@@ -45,14 +51,17 @@ public class SunAngleWidgetUpdater {
 		this.context = context;
 	}
 
-	public void clearLocation(LocationListener fallback) {
+	@SuppressLint("MissingPermission") // targetSdkVersion is <23
+	public void clearLocation(LocationListenerCompat fallback) {
 		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-		lm.removeUpdates(fallback);
+		LocationManagerCompat.removeUpdates(lm, fallback);
 	}
 
+	@SuppressWarnings("deprecation") // Cannot use LocationManagerCompat.getCurrentLocation yet:
+	// tried, but it gets into infinite loop when there's no location and runs on a different thread.
 	@SuppressLint("MissingPermission") // targetSdkVersion is <23
 	// TODO https://developer.android.com/training/location/retrieve-current.html#GetLocation
-	public Location getLocation(LocationListener fallback) {
+	public @Nullable Location getLocation(final @NonNull LocationListenerCompat fallback) {
 		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 		Location location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 		if (location == null) {
@@ -87,7 +96,7 @@ public class SunAngleWidgetUpdater {
 		context.sendBroadcast(intent);
 	}
 
-	public boolean update(int appWidgetId, LocationListener fallback) {
+	public boolean update(int appWidgetId, @NonNull LocationListenerCompat fallback) {
 		Location location = getLocation(fallback);
 		if (Log.isLoggable("Sun", Log.VERBOSE)) {
 			Log.v("Sun", "update(" + appWidgetId + "," + location + ")");

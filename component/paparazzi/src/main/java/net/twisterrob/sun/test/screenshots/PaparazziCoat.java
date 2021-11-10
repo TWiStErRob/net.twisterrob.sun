@@ -12,13 +12,13 @@ import org.junit.runners.model.Statement;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Px;
 import app.cash.paparazzi.DeviceConfig;
 import app.cash.paparazzi.EnvironmentKt;

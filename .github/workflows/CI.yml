@@ -36,8 +36,8 @@ jobs:
           # sdkmanager --install "platform-tools"
 
           # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-23"
-          sdkmanager --install "platforms;android-23"
+          echo sdkmanager --install "platforms;android-31"
+          sdkmanager --install "platforms;android-31"
 
       - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v2

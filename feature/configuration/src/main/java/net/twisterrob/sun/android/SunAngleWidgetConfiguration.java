@@ -2,7 +2,7 @@ package net.twisterrob.sun.android;
 
 import java.util.*;
 
-import android.annotation.TargetApi;
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
@@ -10,13 +10,8 @@ import android.content.*;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.*;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.text.*;
 import android.text.style.*;
 import android.util.Log;
@@ -31,6 +26,13 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import static android.appwidget.AppWidgetManager.*;
 import static android.view.ViewGroup.LayoutParams.*;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.location.LocationListenerCompat;
 
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.sun.algo.*;
@@ -65,7 +67,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_config);
-		message = (TextView)findViewById(R.id.message);
+		message = findViewById(R.id.message);
 		mapping = getResources().getIntArray(R.array.angle_preset_values);
 
 		sun = createSun();
@@ -77,7 +79,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 		});
 
-		angle = (SeekBar)findViewById(R.id.angle);
+		angle = findViewById(R.id.angle);
 		angle.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				setPresetByAngle(toThreshold(progress));
@@ -91,14 +93,14 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 		});
 
-		relation = (CompoundButton)findViewById(R.id.thresholdRelation);
+		relation = findViewById(R.id.thresholdRelation);
 		relation.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				updateUI(lastResults);
 			}
 		});
 
-		preset = ((Spinner)findViewById(R.id.preset));
+		preset = findViewById(R.id.preset);
 		preset.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
 				if (position != mapping.length - 1) {
@@ -206,10 +208,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				final NumberPicker picker = createAnglePicker(getWidgetPreferences().getFloat(PREF_MOCK_ANGLE, 0));
 				new AlertDialog.Builder(this)
 						.setTitle("Edit Angle")
-						//noinspection NewApi, this case won't work in <11, but it's debug only.
 						.setView(picker)
 						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-							@TargetApi(VERSION_CODES.HONEYCOMB)
 							public void onClick(DialogInterface dialog, int id) {
 								float value = Float.parseFloat(picker.getDisplayedValues()[picker.getValue()]);
 								getWidgetPreferences().edit().putFloat(PREF_MOCK_ANGLE, value).apply();
@@ -257,7 +257,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	 * inspiration from android.text.Html#startImage and end of StringBlock#applyStyles
 	 * possibilities are limitless, for example: getKey() is "string" and text.replace(...)
 	 */
-	private CharSequence getHelpText(@StringRes int annotatedTextID) {
+	private @NonNull CharSequence getHelpText(@StringRes int annotatedTextID) {
 		Resources res = getResources();
 
 		SpannableStringBuilder text = new SpannableStringBuilder(res.getText(annotatedTextID));
@@ -283,8 +283,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return text;
 	}
 
-	@TargetApi(VERSION_CODES.HONEYCOMB)
-	private NumberPicker createAnglePicker(float value) {
+	private @NonNull NumberPicker createAnglePicker(float value) {
 		final NumberPicker picker = new NumberPicker(this);
 		picker.setLayoutParams(new LayoutParams(WRAP_CONTENT, WRAP_CONTENT, Gravity.CENTER_HORIZONTAL));
 		float step = 5;
@@ -301,7 +300,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return picker;
 	}
 
-	private Calendar currentMockDateTime() {
+	private @NonNull Calendar currentMockDateTime() {
 		long initialTime = getWidgetPreferences().getLong(PREF_MOCK_TIME, DEFAULT_MOCK_TIME);
 		final Calendar time = Calendar.getInstance();
 		time.setTimeInMillis(initialTime);
@@ -318,7 +317,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		);
 	}
 
-	void updateUI(SunSearchResults results) {
+	void updateUI(@NonNull SunSearchResults results) {
 		ThresholdRelation rel = getCurrentRelation();
 		float angle = getCurrentThresholdAngle();
 		sun.setSelected(rel, angle);
@@ -355,6 +354,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return typedValue.data;
 	}
 
+	@SuppressLint("QueryPermissionsNeeded") // https://developer.android.com/training/package-visibility/automatic
 	private void openLocationSettings() {
 		Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 		if (intent.resolveActivity(getPackageManager()) != null) {
@@ -379,7 +379,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return sun;
 	}
 
-	protected void update(Location loc) {
+	protected void update(@Nullable Location loc) {
 		SunSearchResults results = null;
 		if (loc != null) {
 			SunSearchParams params = new SunSearchParams(loc.getLatitude(), loc.getLongitude(), Calendar.getInstance());
@@ -441,7 +441,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return -1;
 	}
 
-	private final class LocationUpdater implements LocationListener {
+	private final class LocationUpdater implements LocationListenerCompat {
 		private final SunAngleWidgetUpdater updater = new SunAngleWidgetUpdater(SunAngleWidgetConfiguration.this);
 
 		public void single() {
@@ -453,11 +453,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			updater.clearLocation(this);
 		}
 
-		@SuppressWarnings("deprecation")
-		public void onStatusChanged(String provider, int status, Bundle extras) { /* NOP */}
-		public void onProviderDisabled(String provider) { /* NOP */}
-		public void onProviderEnabled(String provider) { /* NOP */}
-		public void onLocationChanged(Location location) {
+		public void onLocationChanged(@NonNull Location location) {
 			if (Log.isLoggable("Sun", Log.VERBOSE)) {
 				Log.v("Sun", this + ".onLocationChanged(" + location + ")");
 			}
@@ -466,7 +462,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 
 		@Override
-		public String toString() {
+		public @NonNull String toString() {
 			return String.format(Locale.ROOT, "LocationUpdater(%08x)[%d]", this.hashCode(), getAppWidgetId());
 		}
 	}

@@ -10,9 +10,10 @@ import org.junit.rules.ExternalResource;
 
 import android.app.ActivityManager;
 import android.app.IActivityManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Singleton;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Fixes the following exception during Paparazzi screenshot tests.

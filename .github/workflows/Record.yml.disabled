@@ -32,8 +32,8 @@ jobs:
           # sdkmanager --install "tools"
           # sdkmanager --install "platform-tools"
           # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-23"
-          sdkmanager --install "platforms;android-23"
+          echo sdkmanager --install "platforms;android-31"
+          sdkmanager --install "platforms;android-31"
 
       - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v2
@@ -59,7 +59,7 @@ jobs:
           git status
           git push
           git status
- 
+
       - name: Upload "Screenshot Record Results".
         if: success() || failure()
         uses: actions/upload-artifact@v2

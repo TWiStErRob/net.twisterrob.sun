@@ -5,14 +5,17 @@ import java.util.Locale;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.location.*;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.location.LocationListenerCompat;
 
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.logic.*;
 
-public class SunAngleWidgetProvider extends LoggingAppWidgetProvider implements LocationListener {
+public class SunAngleWidgetProvider extends LoggingAppWidgetProvider implements LocationListenerCompat {
 	private static final String TAG = "Sun";
 
 	public static final String PREF_NAME = "SunAngleWidget";
@@ -65,7 +68,7 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider implements 
 	}
 
 	@Override
-	public void onLocationChanged(Location location) {
+	public void onLocationChanged(@Nullable Location location) {
 		if (Log.isLoggable(TAG, Log.VERBOSE)) {
 			Log.v(TAG, this + ".onLocationChanged(" + location + ")");
 		}
@@ -87,17 +90,12 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider implements 
 		return String.format(Locale.ROOT, "%08x", this.hashCode());
 	}
 
-	@SuppressWarnings("deprecation")
-	public void onStatusChanged(String provider, int status, Bundle extras) { /* NOP */}
-	public void onProviderDisabled(String provider) { /* NOP */}
-	public void onProviderEnabled(String provider) { /* NOP */}
-
-	public static SharedPreferences getPreferences(Context context, int appWidgetId) {
+	public static SharedPreferences getPreferences(@NonNull Context context, int appWidgetId) {
 		return context.getApplicationContext()
 		              .getSharedPreferences(PREF_NAME + "-" + appWidgetId, Context.MODE_PRIVATE);
 	}
 
-	public static int[] getAppWidgetIds(Context context) {
+	public static int[] getAppWidgetIds(@NonNull Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
 		ComponentName component = new ComponentName(context.getApplicationContext(), SunAngleWidgetProvider.class);
 		return appWidgetManager.getAppWidgetIds(component);
