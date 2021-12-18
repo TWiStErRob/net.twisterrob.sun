@@ -15,9 +15,21 @@ includeBuild("gradle/plugins")
 
 pluginManagement {
 	repositories {
-		google()
+		google {
+			content {
+				includeGroupByRegex("""^com\.android(\..*)?$""")
+				includeGroupByRegex("""^com\.google\..*$""")
+				includeGroupByRegex("""^androidx\..*$""")
+			}
+		}
 		mavenCentral()
-		gradlePluginPortal()
+		gradlePluginPortal {
+			content {
+				includeGroup("com.gradle")
+				includeGroup("com.gradle.enterprise")
+				includeGroup("gradle.plugin.org.gradle.android")
+			}
+		}
 		//maven { name = "Sonatype SNAPSHOTs s01"; setUrl("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
 	}
 	resolutionStrategy {
