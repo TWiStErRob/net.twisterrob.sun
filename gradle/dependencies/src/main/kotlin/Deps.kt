@@ -16,7 +16,7 @@ object Deps {
 		const val targetSdkVersion = 19
 
 		const val plugin = "com.android.tools.build:gradle:4.2.2"
-		const val cacheFix = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:2.4.4"
+		const val cacheFix = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:2.4.5"
 	}
 
 	object AndroidX {
