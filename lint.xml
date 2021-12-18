@@ -10,6 +10,11 @@
 	<issue id="UnusedResources">
 		<!-- Used by *ScreenshotTest via PaparazziCoat. -->
 		<ignore regexp="`R.style.AppTheme_ScreenshotTest`" />
+
+		<!-- Auto-generated -->
+		<ignore regexp="R\.bool\.in_prod" />
+		<ignore regexp="R\.bool\.in_test" />
+
 	</issue>
 
 </lint>
