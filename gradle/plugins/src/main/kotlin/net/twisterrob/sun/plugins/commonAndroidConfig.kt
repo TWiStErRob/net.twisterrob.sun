@@ -11,7 +11,7 @@ internal fun Project.commonAndroidConfig() {
 	extensions.configure<BaseExtension> {
 		compileSdkVersion(Deps.Android.compileSdkVersion)
 		defaultConfig {
-			minSdkVersion(Deps.Android.minSdkVersion)
+			minSdk = Deps.Android.minSdkVersion
 		}
 		lintOptions {
 			xmlReport = true

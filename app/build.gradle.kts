@@ -13,6 +13,6 @@ dependencies {
 android {
 	defaultConfig {
 		applicationId = "net.twisterrob.sun"
-		targetSdkVersion(Deps.Android.targetSdkVersion)
+		targetSdk = Deps.Android.targetSdkVersion
 	}
 }
