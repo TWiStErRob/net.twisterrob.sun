@@ -17,7 +17,3 @@ gradlePlugin {
 		implementationClass = "net.twisterrob.sun.dependencies.DependenciesPlugin"
 	}
 }
-
-kotlinDslPluginOptions {
-	experimentalWarning.set(false)
-}
