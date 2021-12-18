@@ -3,7 +3,7 @@
 	<issue id="UnusedResources">
 
 		<!-- False positive, it is used by lower modules, and auto-generated in app, the merger will use it. -->
-		<ignore regexp="R\.string\.app_package" />
+<!--		<ignore regexp="R\.string\.app_package" />-->
 
 	</issue>
 
