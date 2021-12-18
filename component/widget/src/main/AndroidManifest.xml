@@ -10,7 +10,10 @@
 
 	<application>
 
-		<receiver android:name="net.twisterrob.sun.android.SunAngleWidgetProvider">
+		<receiver
+			android:name="net.twisterrob.sun.android.SunAngleWidgetProvider"
+			android:exported="true"
+			>
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
