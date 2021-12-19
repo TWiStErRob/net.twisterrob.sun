@@ -8,7 +8,7 @@
 		<activity
 			android:name="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
 			android:label="@string/config_title"
-			android:exported="false"
+			android:exported="true"
 			>
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
