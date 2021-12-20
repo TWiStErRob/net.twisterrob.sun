@@ -2,7 +2,6 @@ package net.twisterrob.sun.test.screenshots;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.concurrent.Callable;
 
 import org.junit.rules.RuleChain;
@@ -18,12 +17,15 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 
+import com.android.ide.common.rendering.api.SessionParams.RenderingMode;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Px;
 import app.cash.paparazzi.DeviceConfig;
 import app.cash.paparazzi.EnvironmentKt;
 import app.cash.paparazzi.HtmlReportWriter;
 import app.cash.paparazzi.Paparazzi;
+import app.cash.paparazzi.RenderExtension;
 import app.cash.paparazzi.SnapshotVerifier;
 
 public class PaparazziCoat implements TestRule {
@@ -72,14 +74,15 @@ public class PaparazziCoat implements TestRule {
 	public static @NonNull Paparazzi createPaparazzi() {
 		return new Paparazzi(
 				EnvironmentKt.detectEnvironment(),
-				DeviceConfig.Companion.getNEXUS_5(),
+				DeviceConfig.NEXUS_5,
 				"AppTheme.ScreenshotTest",
+				RenderingMode.NORMAL,
 				true,
 				0.0,
 				Boolean.parseBoolean(System.getProperty("paparazzi.test.verify"))
 						? new SnapshotVerifier(0.0, new File("src/test/snapshots"))
 						: new HtmlReportWriter(),
-				new HashSet<>(Collections.singletonList(new CropViewRenderExtension()))
+				Collections.<RenderExtension>emptySet()
 		);
 	}
 }
