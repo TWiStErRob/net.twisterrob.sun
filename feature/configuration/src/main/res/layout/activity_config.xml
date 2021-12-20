@@ -62,7 +62,7 @@
 		android:layout_alignParentLeft="true"
 		android:layout_below="@id/message"
 		android:layout_toLeftOf="@id/angle"
-		tools:src="@drawable/ic_launcher"
 		android:contentDescription="@string/cd_selected_angle"
+		tools:src="@drawable/ic_launcher"
 		/>
 </RelativeLayout>
