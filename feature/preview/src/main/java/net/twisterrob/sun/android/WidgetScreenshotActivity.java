@@ -28,6 +28,8 @@ import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.preview.R;
 
 public class WidgetScreenshotActivity extends Activity {
+	private static final String TAG = "WidgetScreenshot";
+
 	private AppWidgetManager manager;
 	private AppWidgetHost host;
 	private ViewGroup layout;
@@ -154,7 +156,13 @@ public class WidgetScreenshotActivity extends Activity {
 
 	private void resetView(int appWidgetId) {
 		AppWidgetProviderInfo info = manager.getAppWidgetInfo(appWidgetId);
+		if (info == null) {
+			Log.w(TAG, "Cannot get widget info for " + appWidgetId);
+		}
 		AppWidgetHostView hostView = host.createView(getApplicationContext(), appWidgetId, info);
+		if (hostView == null) {
+			Log.w(TAG, host + " failed to create widget view for " + appWidgetId);
+		}
 		layout.removeAllViews();
 		layout.addView(hostView);
 		updateSize();

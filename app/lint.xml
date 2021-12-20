@@ -1,8 +1,10 @@
 <lint>
 
 	<issue id="UnusedResources">
-		<ignore regexp="R\.bool\.in_prod" />
-		<ignore regexp="R\.bool\.in_test" />
+
+		<!-- False positive, it is used by lower modules, and auto-generated in app, the merger will use it. -->
+		<ignore regexp="R\.string\.app_package" />
+
 	</issue>
 
 </lint>

@@ -7,7 +7,9 @@
 		<activity
 			android:name="net.twisterrob.sun.android.WidgetScreenshotActivity"
 			android:label="Sun Position Widget Preview"
-			android:enabled="@bool/in_test">
+			android:enabled="@bool/in_test"
+			android:exported="true"
+			>
 			<intent-filter android:label="Sun Preview">
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -19,7 +21,8 @@
 			android:authorities="@string/app_package"
 			android:enabled="@bool/in_test"
 			android:exported="false"
-			android:grantUriPermissions="true">
+			android:grantUriPermissions="true"
+			>
 			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/paths_screenshot" />
 		</provider>
 

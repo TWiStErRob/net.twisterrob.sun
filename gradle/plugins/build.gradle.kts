@@ -30,7 +30,3 @@ gradlePlugin {
 		implementationClass = "net.twisterrob.sun.plugins.PaparazziPlugin"
 	}
 }
-
-kotlinDslPluginOptions {
-	experimentalWarning.set(false)
-}

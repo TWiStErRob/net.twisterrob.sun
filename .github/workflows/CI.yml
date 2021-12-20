@@ -51,6 +51,18 @@ jobs:
           assemble
           check
           violationReportHtml
+          violationCountFile
+
+      - name: Fail if there are violations
+        run: |
+          count=$(cat "${{ github.workspace }}/build/reports/violations.count")
+          if [[ "$count" != "0" ]]; then
+            echo "There were $count violations"
+            exit 1
+          else
+            echo "No violations found."
+            exit 0
+          fi
 
       - name: Upload "Unit Test Results".
         if: success() || failure()

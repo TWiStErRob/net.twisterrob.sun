@@ -7,17 +7,14 @@
 	<issue id="UnknownNullness" severity="ignore" />
 	<issue id="SyntheticAccessor" severity="ignore" />
 
-	<issue id="ObsoleteLintCustomCheck">
-		<!-- This should go away once on AGP 7.x.
-		     > Lint found an issue registry (androidx.appcompat.AppCompatIssueRegistry) which requires a newer API level.
-		     > That means that the custom lint checks are intended for a newer lint version; please upgrade
-		-->
-		<ignore regexp="`androidx\.appcompat\.AppCompatIssueRegistry`" />
-	</issue>
-
 	<issue id="UnusedResources">
 		<!-- Used by *ScreenshotTest via PaparazziCoat. -->
 		<ignore regexp="`R.style.AppTheme_ScreenshotTest`" />
+
+		<!-- Auto-generated -->
+		<ignore regexp="R\.bool\.in_prod" />
+		<ignore regexp="R\.bool\.in_test" />
+
 	</issue>
 
 </lint>

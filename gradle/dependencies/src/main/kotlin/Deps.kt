@@ -15,8 +15,11 @@ object Deps {
 		 */
 		const val targetSdkVersion = 19
 
-		const val plugin = "com.android.tools.build:gradle:4.2.2"
-		const val cacheFix = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:2.4.4"
+		/**
+		 * TODEL 211012777 when updating from 7.0
+		 */
+		const val plugin = "com.android.tools.build:gradle:7.0.4"
+		const val cacheFix = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin:2.4.5"
 	}
 
 	object AndroidX {
