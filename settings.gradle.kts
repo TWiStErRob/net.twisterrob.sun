@@ -30,15 +30,15 @@ pluginManagement {
 				includeGroup("gradle.plugin.org.gradle.android")
 			}
 		}
-		maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-			name = "Sonatype 01: SNAPSHOTs"
-			content {
-				includeGroup("net.twisterrob.gradle")
-			}
-			mavenContent {
-				snapshotsOnly()
-			}
-		}
+		//maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+		//	name = "Sonatype 01: SNAPSHOTs"
+		//	content {
+		//		includeGroup("net.twisterrob.gradle")
+		//	}
+		//	mavenContent {
+		//		snapshotsOnly()
+		//	}
+		//}
 	}
 	resolutionStrategy {
 		eachPlugin {
