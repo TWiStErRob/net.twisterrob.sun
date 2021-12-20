@@ -50,7 +50,6 @@ public class SunAngleWidgetUpdater {
 		this.context = context;
 	}
 
-	@SuppressLint("MissingPermission") // targetSdkVersion is <23
 	public void clearLocation(LocationListenerCompat fallback) {
 		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 		LocationManagerCompat.removeUpdates(lm, fallback);
@@ -58,7 +57,6 @@ public class SunAngleWidgetUpdater {
 
 	@SuppressWarnings("deprecation") // Cannot use LocationManagerCompat.getCurrentLocation yet:
 	// tried, but it gets into infinite loop when there's no location and runs on a different thread.
-	@SuppressLint("MissingPermission") // targetSdkVersion is <23
 	// TODO https://developer.android.com/training/location/retrieve-current.html#GetLocation
 	public @Nullable Location getLocation(final @NonNull LocationListenerCompat fallback) {
 		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);

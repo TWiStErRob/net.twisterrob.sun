@@ -9,9 +9,6 @@ object Deps {
 
 		const val minSdkVersion = 14
 
-		/**
-		 * TOFIX MissingPermission when updating
-		 */
 		const val targetSdkVersion = 31
 
 		/**
