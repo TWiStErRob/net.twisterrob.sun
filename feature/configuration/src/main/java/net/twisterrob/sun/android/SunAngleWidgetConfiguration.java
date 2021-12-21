@@ -33,6 +33,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.location.LocationListenerCompat;
+import androidx.core.util.Consumer;
 
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.sun.algo.*;
@@ -120,7 +121,11 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 		});
 
-		locationUpdater = new LocationUpdater();
+		locationUpdater = new LocationUpdater(getApplicationContext(), getAppWidgetId(), new Consumer<Location>() {
+			@Override public void accept(Location location) {
+				update(location);
+			}
+		});
 	}
 
 	@Override protected void onResume() {
@@ -446,13 +451,21 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return -1;
 	}
 
-	private final class LocationUpdater implements LocationListenerCompat {
+	private static final class LocationUpdater implements LocationListenerCompat {
 
-		private final SunAngleWidgetUpdater updater = new SunAngleWidgetUpdater(SunAngleWidgetConfiguration.this);
+		private final @NonNull SunAngleWidgetUpdater updater;
+		private final int appWidgetId;
+		private final @NonNull Consumer<Location> update;
+
+		LocationUpdater(@NonNull Context context, int appWidgetId, @NonNull Consumer<Location> update) {
+			this.updater = new SunAngleWidgetUpdater(context);
+			this.appWidgetId = appWidgetId;
+			this.update = update;
+		}
 
 		public void single() {
 			Location location = updater.getLocation(this);
-			update(location);
+			update.accept(location);
 		}
 
 		public void cancel() {
@@ -464,12 +477,12 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				Log.v("Sun", this + ".onLocationChanged(" + location + ")");
 			}
 			cancel();
-			update(location);
+			update.accept(location);
 		}
 
 		@Override
 		public @NonNull String toString() {
-			return String.format(Locale.ROOT, "LocationUpdater(%08x)[%d]", this.hashCode(), getAppWidgetId());
+			return String.format(Locale.ROOT, "LocationUpdater(%08x)[%d]", this.hashCode(), appWidgetId);
 		}
 	}
 }
