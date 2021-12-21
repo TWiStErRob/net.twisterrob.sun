@@ -24,6 +24,10 @@ object Deps {
 		const val annotations = "androidx.annotation:annotation:1.3.0"
 	}
 
+	object ThirdParty {
+		const val permissions ="pub.devrel:easypermissions:3.0.0"
+	}
+
 	object Kotlin {
 
 		const val version = "1.5.31"
