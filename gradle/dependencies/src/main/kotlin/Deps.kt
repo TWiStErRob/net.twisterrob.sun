@@ -9,11 +9,7 @@ object Deps {
 
 		const val minSdkVersion = 14
 
-		/**
-		 * TODEL ExpiredTargetSdkVersion when updating
-		 * TOFIX MissingPermission when updating
-		 */
-		const val targetSdkVersion = 19
+		const val targetSdkVersion = 31
 
 		/**
 		 * TODEL 211012777 when updating from 7.0
@@ -26,6 +22,10 @@ object Deps {
 
 		const val appcompat = "androidx.appcompat:appcompat:1.4.0-rc01"
 		const val annotations = "androidx.annotation:annotation:1.3.0"
+	}
+
+	object ThirdParty {
+		const val permissions ="pub.devrel:easypermissions:3.0.0"
 	}
 
 	object Kotlin {

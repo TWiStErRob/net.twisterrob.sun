@@ -2,7 +2,11 @@
 
 	<string name="threshold_relation_above">above</string>
 	<string name="threshold_relation_below">below</string>
-	<string name="warning_no_location"><b>The widget needs to know where you are</b>. Please adjust your Location Settings by tapping here, then wait a moment.</string>
+	<string name="warning_no_location_clueless"><b>The widget needs to know your where you are</b>. Not sure why but the app doesn\'t see that there\'s location.</string>
+	<string name="warning_no_location_permission"><b>The widget needs to know your where you are</b>. Please allow access to the precise location by tapping here.</string>
+	<string name="warning_no_location_permission_settings"><b>The widget needs to know your where you are</b>. Please allow access to the precise location in the Settings app by tapping here.</string>
+	<string name="warning_no_location"><b>The widget needs to know where you are</b>. Please enable your Location in Settings app by tapping here, then wait a moment.</string>
+	<string name="warning_no_location_rationale">The widget needs to know where you are to calculate the location of the Sun in the sky. Please allow access to the device\'s precise location.</string>
 	<string name="warning_no_location_settings">Can\'t start Location Settings, sorry.</string>
 	<string name="warning_maximum">The sun will not go above %1$.1f° in the foreseeable future, setting %2$.1f° will always yield the same results.</string>
 	<string name="warning_minimum">The sun will not go below %1$.1f° in the foreseeable future, setting %2$.1f° will always yield the same results.</string>

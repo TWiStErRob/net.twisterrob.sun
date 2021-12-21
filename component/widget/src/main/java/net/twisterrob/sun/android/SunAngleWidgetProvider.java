@@ -15,7 +15,8 @@ import androidx.core.location.LocationListenerCompat;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.logic.*;
 
-public class SunAngleWidgetProvider extends LoggingAppWidgetProvider implements LocationListenerCompat {
+public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
+
 	private static final String TAG = "Sun";
 
 	public static final String PREF_NAME = "SunAngleWidget";
@@ -64,21 +65,21 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider implements 
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		TODOs.add(appWidgetIds);
 		UPDATER.setContext(context);
-		updateAll();
+		updateAll(context);
 	}
 
-	@Override
-	public void onLocationChanged(@Nullable Location location) {
-		if (Log.isLoggable(TAG, Log.VERBOSE)) {
-			Log.v(TAG, this + ".onLocationChanged(" + location + ")");
-		}
-		UPDATER.clearLocation(this);
-		updateAll();
-	}
-
-	private void updateAll() {
+	private void updateAll(final @NonNull Context context) {
 		try {
-			TODOs.catchup(UPDATER, this);
+			TODOs.catchup(UPDATER, new LocationListenerCompat() {
+				@Override
+				public void onLocationChanged(@Nullable Location location) {
+					if (Log.isLoggable(TAG, Log.VERBOSE)) {
+						Log.v(TAG, SunAngleWidgetProvider.this + ".onLocationChanged(" + location + ")");
+					}
+					UPDATER.clearLocation(this);
+					updateAll(context);
+				}
+			});
 		} catch (Exception ex) {
 			Log.e(TAG, this + ".updateAll", ex);
 			Toast.makeText(UPDATER.getContext(), ex.toString(), Toast.LENGTH_LONG).show();

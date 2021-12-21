@@ -13,10 +13,16 @@ import android.location.LocationManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.location.LocationListenerCompat;
 import androidx.core.location.LocationManagerCompat;
+
+import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
+import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
 import net.twisterrob.sun.algo.SunCalculator;
 import net.twisterrob.sun.algo.SunSearchResults;
@@ -50,18 +56,25 @@ public class SunAngleWidgetUpdater {
 		this.context = context;
 	}
 
-	@SuppressLint("MissingPermission") // targetSdkVersion is <23
+	@SuppressLint("MissingPermission") // guarded by hasLocationPermission()
 	public void clearLocation(LocationListenerCompat fallback) {
-		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-		LocationManagerCompat.removeUpdates(lm, fallback);
+		if (hasLocationPermission()) {
+			LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+			LocationManagerCompat.removeUpdates(lm, fallback);
+		}
 	}
 
 	@SuppressWarnings("deprecation") // Cannot use LocationManagerCompat.getCurrentLocation yet:
 	// tried, but it gets into infinite loop when there's no location and runs on a different thread.
-	@SuppressLint("MissingPermission") // targetSdkVersion is <23
 	// TODO https://developer.android.com/training/location/retrieve-current.html#GetLocation
+	@SuppressLint("MissingPermission") // guarded by hasLocationPermission()
 	public @Nullable Location getLocation(final @NonNull LocationListenerCompat fallback) {
+		if (!hasLocationPermission()) {
+			Log.w("Sun", "No location permission granted, stopping " + this+ " for " + fallback);
+			return null;
+		}
 		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+		// The passive provider doesn't seem to work with coarse permission only.
 		Location location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 		if (location == null) {
 			Criteria criteria = new Criteria();
@@ -84,6 +97,11 @@ public class SunAngleWidgetUpdater {
 			}
 		}
 		return location;
+	}
+
+	private boolean hasLocationPermission() {
+		return checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
+				|| checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED;
 	}
 
 	public static void forceUpdateAll(Context context) {

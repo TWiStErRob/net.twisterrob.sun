@@ -9,6 +9,7 @@ dependencies {
 	implementation(project(":component:theme"))
 	implementation(Deps.AndroidX.annotations)
 	implementation(Deps.AndroidX.appcompat)
+	implementation(Deps.ThirdParty.permissions)
 }
 
 android {
