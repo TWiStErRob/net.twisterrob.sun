@@ -442,7 +442,11 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			} else {
 				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
 				message.setText(R.string.warning_no_location_clueless);
-				message.setOnClickListener(null);
+				message.setOnClickListener(new OnClickListener() {
+					@Override public void onClick(View v) {
+						updateOrRequestPermissions();
+					}
+				});
 			}
 		}
 	}
