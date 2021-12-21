@@ -39,13 +39,14 @@ import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
 import net.twisterrob.sun.android.view.SunThresholdDrawable;
-import net.twisterrob.sun.configuration.R;
 import net.twisterrob.sun.configuration.BuildConfig;
+import net.twisterrob.sun.configuration.R;
 import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
 
 public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
+
 	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);
 	private static final int MINIMUM_COLOR = Color.argb(0xAA, 0x00, 0x88, 0xFF);
 	private CompoundButton relation;
@@ -81,14 +82,16 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 
 		angle = findViewById(R.id.angle);
 		angle.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+			@Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				setPresetByAngle(toThreshold(progress));
 				updateUI(lastResults);
 			}
-			public void onStartTrackingTouch(SeekBar seekBar) {
+
+			@Override public void onStartTrackingTouch(SeekBar seekBar) {
 				// ignore
 			}
-			public void onStopTrackingTouch(SeekBar seekBar) {
+
+			@Override public void onStopTrackingTouch(SeekBar seekBar) {
 				// ignore
 			}
 		});
@@ -309,7 +312,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return time;
 	}
 
-	private void updateCheckableOption(MenuItem item, boolean checkedState) {
+	private static void updateCheckableOption(@NonNull MenuItem item, boolean checkedState) {
 		item.setChecked(checkedState);
 		item.setIcon(checkedState
 				? android.R.drawable.checkbox_on_background
@@ -402,6 +405,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private static ThresholdRelation toRelation(boolean checked) {
 		return checked? ThresholdRelation.ABOVE : ThresholdRelation.BELOW;
 	}
+
 	private static boolean toChecked(ThresholdRelation rel) {
 		return rel == ThresholdRelation.ABOVE;
 	}
@@ -409,6 +413,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private static float toThreshold(int progress) {
 		return progress - 90;
 	}
+
 	private static int toProgress(float threshold) {
 		return (int)(threshold + 90);
 	}
@@ -442,6 +447,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	}
 
 	private final class LocationUpdater implements LocationListenerCompat {
+
 		private final SunAngleWidgetUpdater updater = new SunAngleWidgetUpdater(SunAngleWidgetConfiguration.this);
 
 		public void single() {
