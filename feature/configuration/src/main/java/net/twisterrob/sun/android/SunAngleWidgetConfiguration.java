@@ -5,11 +5,13 @@ import java.util.*;
 import android.annotation.SuppressLint;
 import android.app.*;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.*;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.*;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.*;
@@ -20,10 +22,21 @@ import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.DatePicker;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.ImageView;
+import android.widget.NumberPicker;
+import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.appwidget.AppWidgetManager.*;
 import static android.view.ViewGroup.LayoutParams.*;
 
@@ -33,7 +46,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.location.LocationListenerCompat;
+import androidx.core.location.LocationManagerCompat;
 import androidx.core.util.Consumer;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
+import pub.devrel.easypermissions.PermissionRequest;
 
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.sun.algo.*;
@@ -126,6 +144,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				update(location);
 			}
 		});
+		updateOrRequestPermissions();
 	}
 
 	@Override protected void onResume() {
@@ -137,6 +156,48 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		locationUpdater.cancel();
 		super.onDestroy();
 	}
+
+	private static final int REQUEST_CODE_LOCATION = 12312;
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+			updateOrRequestPermissions();
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(
+			int requestCode,
+			@NonNull String[] permissions,
+			@NonNull int[] grantResults
+	) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+	}
+
+	@AfterPermissionGranted(REQUEST_CODE_LOCATION)
+	private void updateOrRequestPermissions() {
+		if (EasyPermissions.hasPermissions(this, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)) {
+			locationUpdater.single();
+		} else {
+			EasyPermissions.requestPermissions(
+					new PermissionRequest
+							.Builder(
+									this,
+									REQUEST_CODE_LOCATION,
+									ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
+							)
+							.setRationale(R.string.warning_no_location_rationale)
+							.setPositiveButtonText(android.R.string.ok)
+							.setNegativeButtonText(android.R.string.cancel)
+							.build()
+			);
+		}
+	}
+
 	@Override protected SharedPreferences onPreferencesOpen(int appWidgetId) {
 		return SunAngleWidgetProvider.getPreferences(getApplicationContext(), appWidgetId);
 	}
@@ -346,13 +407,43 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
 		}
 		if (!results.params.hasLocation()) {
-			message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
-			message.setText(R.string.warning_no_location);
-			message.setOnClickListener(new OnClickListener() {
-				@Override public void onClick(View v) {
-					openLocationSettings();
+			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			if (!LocationManagerCompat.isLocationEnabled(locationManager) ) {
+				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
+				message.setText(R.string.warning_no_location);
+				message.setOnClickListener(new OnClickListener() {
+					@Override public void onClick(View v) {
+						openLocationSettings();
+					}
+				});
+			} else if (!EasyPermissions.hasPermissions(this, ACCESS_FINE_LOCATION)) {
+				if (EasyPermissions.permissionPermanentlyDenied(this, ACCESS_FINE_LOCATION)) {
+					message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
+					message.setText(R.string.warning_no_location_permission_settings);
+					message.setOnClickListener(new OnClickListener() {
+						@SuppressWarnings("deprecation")
+						@Override public void onClick(View v) {
+							Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+									.setData(Uri.fromParts("package", getPackageName(), null))
+									.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							// deprecation:Need to clean up code before I can change to registerForActivityResult.
+							startActivityForResult(intent, 0);
+						}
+					});
+				} else {
+					message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
+					message.setText(R.string.warning_no_location_permission);
+					message.setOnClickListener(new OnClickListener() {
+						@Override public void onClick(View v) {
+							updateOrRequestPermissions();
+						}
+					});
 				}
-			});
+			} else {
+				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
+				message.setText(R.string.warning_no_location_clueless);
+				message.setOnClickListener(null);
+			}
 		}
 	}
 
