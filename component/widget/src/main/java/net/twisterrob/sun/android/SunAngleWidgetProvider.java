@@ -3,10 +3,8 @@ package net.twisterrob.sun.android;
 import java.util.Locale;
 
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.location.Location;
+import android.content.*;
+import android.location.*;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,8 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.location.LocationListenerCompat;
 
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
-import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
-import net.twisterrob.sun.android.logic.WidgetUpdateList;
+import net.twisterrob.sun.android.logic.*;
 
 public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 

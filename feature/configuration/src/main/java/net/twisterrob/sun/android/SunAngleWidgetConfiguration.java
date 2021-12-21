@@ -163,8 +163,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
-			updateOrRequestPermissions();
+		switch (requestCode) {
+			case AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE:
+				updateOrRequestPermissions();
+				break;
 		}
 	}
 
