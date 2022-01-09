@@ -10,7 +10,6 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -185,8 +184,7 @@ public class SunAngleWidgetView {
 	}
 
 	protected static @NonNull PendingIntent createRefreshIntent(@NonNull Context context, int appWidgetId) {
-		ComponentName widget = new ComponentName(context, SunAngleWidgetProvider.class);
-		Intent intent = WidgetHelpers.createUpdateIntent(widget, appWidgetId);
+		Intent intent = WidgetHelpers.createUpdateIntent(context, SunAngleWidgetProvider.class, appWidgetId);
 		@SuppressLint("InlinedApi") // New flag shouldn't cause a problem in older versions.
 		int flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
 		return PendingIntent.getBroadcast(context, appWidgetId, intent, flags);

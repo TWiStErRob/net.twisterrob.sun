@@ -54,6 +54,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
 import net.twisterrob.android.app.WidgetConfigurationActivity;
+import net.twisterrob.android.widget.WidgetHelpers;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
@@ -295,7 +296,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 						.show();
 				return true;
 		} else if (id == R.id.action_mock_fill) {
-				int[] appWidgetIds = SunAngleWidgetProvider.getAppWidgetIds(this);
+			int[] appWidgetIds = WidgetHelpers.getAppWidgetIds(this, SunAngleWidgetProvider.class);
 				float[] presets = {90, -90, 0, -3, -9, -15, -6, -12, -18, 180};
 				for (int i = 0; i < appWidgetIds.length && i < presets.length; ++i) {
 					int appWidgetId = appWidgetIds[i];
@@ -307,7 +308,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				}
 				return true;
 		} else if (id == R.id.action_mock_clearAll) {
-				int[] appWidgetIds = SunAngleWidgetProvider.getAppWidgetIds(this);
+			int[] appWidgetIds = WidgetHelpers.getAppWidgetIds(this, SunAngleWidgetProvider.class);
 				float[] presets = {90, -90, 0, -3, -9, -15, -6, -12, -18, 180};
 				for (int i = 0; i < appWidgetIds.length && i < presets.length; ++i) {
 					int appWidgetId = appWidgetIds[i];

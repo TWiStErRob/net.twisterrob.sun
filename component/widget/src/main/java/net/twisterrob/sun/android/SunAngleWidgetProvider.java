@@ -95,10 +95,4 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 		return context.getApplicationContext()
 		              .getSharedPreferences(PREF_NAME + "-" + appWidgetId, Context.MODE_PRIVATE);
 	}
-
-	public static int[] getAppWidgetIds(@NonNull Context context) {
-		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
-		ComponentName component = new ComponentName(context.getApplicationContext(), SunAngleWidgetProvider.class);
-		return appWidgetManager.getAppWidgetIds(component);
-	}
 }
