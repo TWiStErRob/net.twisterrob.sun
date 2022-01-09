@@ -12,7 +12,10 @@ import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import net.twisterrob.android.widget.WidgetHelpers;
+
 public abstract class WidgetConfigurationActivity extends AppCompatActivity {
+
 	private SharedPreferences prefs;
 	private int appWidgetId;
 	private Intent result;
@@ -56,11 +59,7 @@ public abstract class WidgetConfigurationActivity extends AppCompatActivity {
 	private void forceUpdate() {
 		AppWidgetProviderInfo info =
 				AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetInfo(appWidgetId);
-
-		Intent intent = new Intent();
-		intent.setComponent(info.provider);
-		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[] {appWidgetId});
+		Intent intent = WidgetHelpers.createUpdateIntent(info.provider, appWidgetId);
 		sendBroadcast(intent);
 	}
 

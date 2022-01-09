@@ -10,6 +10,7 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +30,7 @@ import androidx.annotation.Nullable;
 
 import static androidx.core.content.ContextCompat.getColor;
 
+import net.twisterrob.android.widget.WidgetHelpers;
 import net.twisterrob.sun.algo.SunSearchResults;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.SunAngleWidgetProvider;
@@ -183,16 +185,10 @@ public class SunAngleWidgetView {
 	}
 
 	protected static @NonNull PendingIntent createRefreshIntent(@NonNull Context context, int appWidgetId) {
-		Intent intent = createUpdateIntent(context, appWidgetId);
+		ComponentName widget = new ComponentName(context, SunAngleWidgetProvider.class);
+		Intent intent = WidgetHelpers.createUpdateIntent(widget, appWidgetId);
 		@SuppressLint("InlinedApi") // New flag shouldn't cause a problem in older versions.
 		int flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
 		return PendingIntent.getBroadcast(context, appWidgetId, intent, flags);
-	}
-
-	protected static @NonNull Intent createUpdateIntent(@NonNull Context context, @NonNull int... appWidgetIds) {
-		Intent intent = new Intent(context, SunAngleWidgetProvider.class);
-		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-		return intent;
 	}
 }
