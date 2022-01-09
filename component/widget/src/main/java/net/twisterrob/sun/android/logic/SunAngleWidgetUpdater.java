@@ -4,7 +4,6 @@ import java.util.Calendar;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
@@ -105,15 +104,6 @@ public class SunAngleWidgetUpdater {
 		return hasFinePermission || hasCoarsePermission;
 	}
 
-	public static void forceUpdateAll(Context context) {
-		forceUpdate(context, SunAngleWidgetProvider.getAppWidgetIds(context));
-	}
-
-	public static void forceUpdate(Context context, int... appWidgetIds) {
-		Intent intent = createUpdateIntent(context, appWidgetIds);
-		context.sendBroadcast(intent);
-	}
-
 	public boolean update(int appWidgetId, @NonNull LocationListenerCompat fallback) {
 		Location location = getLocation(fallback);
 		if (Log.isLoggable("Sun", Log.VERBOSE)) {
@@ -142,12 +132,5 @@ public class SunAngleWidgetUpdater {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 		return result != null;
-	}
-
-	protected static @NonNull Intent createUpdateIntent(@NonNull Context context, @NonNull int... appWidgetIds) {
-		Intent intent = new Intent(context, SunAngleWidgetProvider.class);
-		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-		return intent;
 	}
 }
