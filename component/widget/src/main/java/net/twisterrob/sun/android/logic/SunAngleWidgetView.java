@@ -189,7 +189,7 @@ public class SunAngleWidgetView {
 		return PendingIntent.getBroadcast(context, appWidgetId, intent, flags);
 	}
 
-	protected static @NonNull  Intent createUpdateIntent(@NonNull Context context, @NonNull int... appWidgetIds) {
+	protected static @NonNull Intent createUpdateIntent(@NonNull Context context, @NonNull int... appWidgetIds) {
 		Intent intent = new Intent(context, SunAngleWidgetProvider.class);
 		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);

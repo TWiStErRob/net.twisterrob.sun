@@ -70,7 +70,7 @@ public class SunAngleWidgetUpdater {
 	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
 	public @Nullable Location getLocation(final @NonNull LocationListenerCompat fallback) {
 		if (!hasLocationPermission()) {
-			Log.w("Sun", "No location permission granted, stopping " + this+ " for " + fallback);
+			Log.w("Sun", "No location permission granted, stopping " + this + " for " + fallback);
 			return null;
 		}
 		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
@@ -100,8 +100,9 @@ public class SunAngleWidgetUpdater {
 	}
 
 	private boolean hasLocationPermission() {
-		return checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
-				|| checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED;
+		boolean hasFinePermission = checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED;
+		boolean hasCoarsePermission = checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED;
+		return hasFinePermission || hasCoarsePermission;
 	}
 
 	public static void forceUpdateAll(Context context) {
@@ -143,7 +144,7 @@ public class SunAngleWidgetUpdater {
 		return result != null;
 	}
 
-	protected static Intent createUpdateIntent(Context context, int... appWidgetIds) {
+	protected static @NonNull Intent createUpdateIntent(@NonNull Context context, @NonNull int... appWidgetIds) {
 		Intent intent = new Intent(context, SunAngleWidgetProvider.class);
 		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);

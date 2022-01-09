@@ -87,7 +87,7 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 	}
 
 	@Override
-	public String toString() {
+	public @NonNull String toString() {
 		return String.format(Locale.ROOT, "%08x", this.hashCode());
 	}
 
