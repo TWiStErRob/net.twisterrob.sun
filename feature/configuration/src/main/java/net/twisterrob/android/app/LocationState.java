@@ -1,0 +1,12 @@
+package net.twisterrob.android.app;
+
+public enum LocationState {
+	LOCATION_DISABLED,
+	LOCATION_ENABLED,
+	COARSE_DENIED,
+	COARSE_GRANTED,
+	FINE_DENIED,
+	FINE_GRANTED,
+	BACKGROUND_DENIED,
+	BACKGROUND_GRANTED,
+}
