@@ -67,6 +67,8 @@ import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
 
 public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 
+	private static final String TAG = "Config";
+
 	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);
 	private static final int MINIMUM_COLOR = Color.argb(0xAA, 0x00, 0x88, 0xFF);
 	private CompoundButton relation;
@@ -128,8 +130,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			@Override public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
 				if (position != mapping.length - 1) {
 					int presetAngleValue = mapping[position];
-					if (Log.isLoggable("Config", Log.DEBUG)) {
-						Log.d("Config", "Preset for pos: " + position + " = " + presetAngleValue);
+					if (Log.isLoggable(TAG, Log.DEBUG)) {
+						Log.d(TAG, "Preset for pos: " + position + " = " + presetAngleValue);
 					}
 					angle.setProgress(toProgress(presetAngleValue));
 				}
@@ -530,8 +532,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	}
 
 	protected void setPresetByAngle(float angle) {
-		if (Log.isLoggable("Config", Log.DEBUG)) {
-			Log.d("Config", "Syncing preset for angle: " + angle);
+		if (Log.isLoggable(TAG, Log.DEBUG)) {
+			Log.d(TAG, "Syncing preset for angle: " + angle);
 		}
 		int position = find(mapping, Math.round(angle));
 		if (position == -1) {
