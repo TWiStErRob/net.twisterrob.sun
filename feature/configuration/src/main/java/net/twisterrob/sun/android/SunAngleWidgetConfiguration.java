@@ -2,6 +2,7 @@ package net.twisterrob.sun.android;
 
 import java.util.*;
 
+import android.Manifest.permission;
 import android.annotation.SuppressLint;
 import android.app.*;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -12,6 +13,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.*;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.*;
@@ -35,8 +37,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.appwidget.AppWidgetManager.*;
 import static android.view.ViewGroup.LayoutParams.*;
 
@@ -48,13 +48,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.location.LocationListenerCompat;
-import androidx.core.location.LocationManagerCompat;
 import androidx.core.util.Consumer;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
+import net.twisterrob.android.app.LocationStateDeterminer;
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.android.widget.WidgetHelpers;
 import net.twisterrob.sun.algo.*;
@@ -162,7 +162,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		super.onDestroy();
 	}
 
-	private static final int REQUEST_CODE_LOCATION = 12312;
+	private static final int REQUEST_CODE_FOREGROUND_LOCATION = 1234;
+	private static final int REQUEST_CODE_BACKGROUND_LOCATION = 1235;
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -185,19 +186,49 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
 	}
 
-	@AfterPermissionGranted(REQUEST_CODE_LOCATION)
+	@AfterPermissionGranted(REQUEST_CODE_FOREGROUND_LOCATION)
 	private void updateOrRequestPermissions() {
-		if (EasyPermissions.hasPermissions(this, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)) {
-			locationUpdater.single();
+		if (Log.isLoggable(TAG, Log.DEBUG)) {
+			Log.d(TAG, "updateOrRequestPermissions " + new LocationStateDeterminer(this).determine());
+		}
+		String[] locationPermissions = LocationStateDeterminer.calculatePermissionsToRequest();
+		if (EasyPermissions.hasPermissions(this, locationPermissions)) {
+			updateOrRequestBackgroundPermissions();
 		} else {
 			EasyPermissions.requestPermissions(
 					new PermissionRequest
 							.Builder(
 									this,
-									REQUEST_CODE_LOCATION,
-									ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
+									REQUEST_CODE_FOREGROUND_LOCATION,
+									locationPermissions
 							)
 							.setRationale(R.string.warning_no_location_rationale)
+							.setPositiveButtonText(android.R.string.ok)
+							.setNegativeButtonText(android.R.string.cancel)
+							.build()
+			);
+		}
+	}
+
+	@AfterPermissionGranted(REQUEST_CODE_BACKGROUND_LOCATION)
+	private void updateOrRequestBackgroundPermissions() {
+		if (Log.isLoggable(TAG, Log.DEBUG)) {
+			Log.d(TAG, "updateOrRequestBackgroundPermissions " + new LocationStateDeterminer(this).determine());
+		}
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R
+				|| EasyPermissions.hasPermissions(this, permission.ACCESS_BACKGROUND_LOCATION)) {
+			locationUpdater.single();
+		} else {
+			CharSequence label = this.getPackageManager().getBackgroundPermissionOptionLabel();
+			String rationale = getString(R.string.warning_no_location_rationale_background, label);
+			EasyPermissions.requestPermissions(
+					new PermissionRequest
+							.Builder(
+									this,
+									REQUEST_CODE_BACKGROUND_LOCATION,
+									permission.ACCESS_BACKGROUND_LOCATION
+							)
+							.setRationale(rationale)
 							.setPositiveButtonText(android.R.string.ok)
 							.setNegativeButtonText(android.R.string.cancel)
 							.build()

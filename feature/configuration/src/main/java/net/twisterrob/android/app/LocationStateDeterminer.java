@@ -28,6 +28,12 @@ public class LocationStateDeterminer {
 						return LocationState.BACKGROUND_GRANTED;
 					} else if (shouldBackgroundRationale()) {
 						return LocationState.BACKGROUND_DENIED;
+					} else if (false) {
+						// It is possible this was really denied,
+						// so permission=false && shouldShowRationale==false, and requesting even fails,
+						// but it is impossible to detect this case with Android SDK APIs.
+						// https://stackoverflow.com/a/63487691/253468
+						return LocationState.BACKGROUND_DENIED;
 					}
 					return LocationState.FINE_GRANTED;
 				} else if (shouldFineRationale()) {
@@ -78,5 +84,40 @@ public class LocationStateDeterminer {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Implementation of <a href="https://developer.android.com/training/location/permissions">Location Permissions</a>.
+	 */
+	public static @NonNull String[] calculatePermissionsToRequest() {
+		String[] locationPermissions;
+		if (Build.VERSION_CODES.R <= Build.VERSION.SDK_INT) {
+			// Complex world. Background location need to be requested separately from FINE and COARSE.
+			// > On Android 11 (API level 30) and higher, however, the system dialog doesn't include the "Allow all the time" option.
+			// > Instead, users must enable background location on a settings page.
+			// > If you try to request only ACCESS_FINE_LOCATION, the system ignores the request on some releases of Android 12.
+			// > If your app targets Android 12 or higher, the system logs the following error message in Logcat:
+			// > ACCESS_FINE_LOCATION must be requested with ACCESS_COARSE_LOCATION.
+			locationPermissions = new String[] {
+					permission.ACCESS_FINE_LOCATION,
+					permission.ACCESS_COARSE_LOCATION
+			};
+		} else if (Build.VERSION_CODES.Q <= /*==*/ Build.VERSION.SDK_INT) {
+			// Sad world, background location need to be requested too in order to update a widget.
+			// > The system permissions dialog includes an option named "Allow all the time".
+			locationPermissions = new String[] {
+					permission.ACCESS_FINE_LOCATION,
+					permission.ACCESS_COARSE_LOCATION,
+					permission.ACCESS_BACKGROUND_LOCATION
+			};
+		} else /*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)*/ {
+			// Weird world, only FINE and COARSE to worry about, but to get FINE, one must include COARSE.
+			// Android allows foreground and background for these.
+			locationPermissions = new String[] {
+					permission.ACCESS_FINE_LOCATION,
+					permission.ACCESS_COARSE_LOCATION
+			};
+		}
+		return locationPermissions;
 	}
 }
