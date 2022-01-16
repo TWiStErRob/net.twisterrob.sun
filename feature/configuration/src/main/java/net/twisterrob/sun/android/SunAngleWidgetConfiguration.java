@@ -52,7 +52,6 @@ import androidx.core.util.Consumer;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
-import pub.devrel.easypermissions.PermissionRequest;
 
 import net.twisterrob.android.app.LocationStateDeterminer;
 import net.twisterrob.android.app.WidgetConfigurationActivity;
@@ -196,16 +195,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			updateOrRequestBackgroundPermissions();
 		} else {
 			EasyPermissions.requestPermissions(
-					new PermissionRequest
-							.Builder(
-									this,
-									REQUEST_CODE_FOREGROUND_LOCATION,
-									locationPermissions
-							)
-							.setRationale(R.string.warning_no_location_rationale)
-							.setPositiveButtonText(android.R.string.ok)
-							.setNegativeButtonText(android.R.string.cancel)
-							.build()
+					this,
+					getString(R.string.warning_no_location_rationale),
+					REQUEST_CODE_FOREGROUND_LOCATION,
+					locationPermissions
 			);
 		}
 	}
@@ -220,18 +213,11 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			locationUpdater.single();
 		} else {
 			CharSequence label = this.getPackageManager().getBackgroundPermissionOptionLabel();
-			String rationale = getString(R.string.warning_no_location_rationale_background, label);
 			EasyPermissions.requestPermissions(
-					new PermissionRequest
-							.Builder(
-									this,
-									REQUEST_CODE_BACKGROUND_LOCATION,
-									permission.ACCESS_BACKGROUND_LOCATION
-							)
-							.setRationale(rationale)
-							.setPositiveButtonText(android.R.string.ok)
-							.setNegativeButtonText(android.R.string.cancel)
-							.build()
+					this,
+					getString(R.string.warning_no_location_rationale_background, label),
+					REQUEST_CODE_BACKGROUND_LOCATION,
+					permission.ACCESS_BACKGROUND_LOCATION
 			);
 		}
 	}
