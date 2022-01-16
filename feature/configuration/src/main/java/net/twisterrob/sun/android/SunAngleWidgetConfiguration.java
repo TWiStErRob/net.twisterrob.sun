@@ -441,27 +441,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				break;
 		}
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
-		message.setTextColor(foregroundColor(this));
-		message.setOnClickListener(null);
-		switch (rel) {
-			case ABOVE:
-				message.setText(getString(R.string.message_selected_angle_above, angle));
-				break;
-			case BELOW:
-				message.setText(getString(R.string.message_selected_angle_below, angle));
-				break;
-		}
-		if (belowMin) {
-			message.setTextColor(MINIMUM_COLOR);
-			message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
-		}
-		if (aboveMax) {
-			message.setTextColor(MAXIMUM_COLOR);
-			message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
-		}
-		if (!results.params.hasLocation()) {
-			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			if (!LocationManagerCompat.isLocationEnabled(locationManager) ) {
+		switch (new LocationStateDeterminer(this).determine()) {
+			case LOCATION_DISABLED:
 				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
 				message.setText(R.string.warning_no_location);
 				message.setOnClickListener(new OnClickListener() {
@@ -469,38 +450,68 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 						openLocationSettings();
 					}
 				});
-			} else if (!EasyPermissions.hasPermissions(this, ACCESS_FINE_LOCATION)) {
-				if (EasyPermissions.permissionPermanentlyDenied(this, ACCESS_FINE_LOCATION)) {
-					message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
-					message.setText(R.string.warning_no_location_permission_settings);
-					message.setOnClickListener(new OnClickListener() {
-						@SuppressWarnings("deprecation")
-						@Override public void onClick(View v) {
-							Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-									.setData(Uri.fromParts("package", getPackageName(), null))
-									.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							// deprecation:Need to clean up code before I can change to registerForActivityResult.
-							startActivityForResult(intent, 0);
-						}
-					});
+				break;
+			case COARSE_DENIED:
+				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
+				message.setText(R.string.warning_no_location_permission_settings);
+				message.setOnClickListener(new OnClickListener() {
+					@Override public void onClick(View v) {
+						openAppSettings();
+					}
+				});
+				break;
+			case LOCATION_ENABLED:
+			case COARSE_GRANTED:
+			case FINE_DENIED:
+				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
+				message.setText(R.string.warning_no_location_permission);
+				message.setOnClickListener(new OnClickListener() {
+					@Override public void onClick(View v) {
+						updateOrRequestPermissions();
+					}
+				});
+				break;
+			case FINE_GRANTED:
+			case BACKGROUND_DENIED:
+				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
+				CharSequence label = this.getPackageManager().getBackgroundPermissionOptionLabel();
+				message.setText(getString(R.string.warning_no_location_rationale_background, label));
+				message.setOnClickListener(new OnClickListener() {
+					@Override public void onClick(View v) {
+						updateOrRequestBackgroundPermissions();
+					}
+				});
+				break;
+			case BACKGROUND_GRANTED:
+				if (results.params.hasLocation()) {
+					message.setTextColor(foregroundColor(this));
+					switch (rel) {
+						case ABOVE:
+							message.setText(getString(R.string.message_selected_angle_above, angle));
+							break;
+						case BELOW:
+							message.setText(getString(R.string.message_selected_angle_below, angle));
+							break;
+					}
+					if (belowMin) {
+						message.setTextColor(MINIMUM_COLOR);
+						message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
+					}
+					if (aboveMax) {
+						message.setTextColor(MAXIMUM_COLOR);
+						message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
+					}
+					message.setOnClickListener(null);
 				} else {
 					message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
-					message.setText(R.string.warning_no_location_permission);
+					message.setText(R.string.warning_no_location_clueless);
 					message.setOnClickListener(new OnClickListener() {
 						@Override public void onClick(View v) {
 							updateOrRequestPermissions();
 						}
 					});
 				}
-			} else {
-				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
-				message.setText(R.string.warning_no_location_clueless);
-				message.setOnClickListener(new OnClickListener() {
-					@Override public void onClick(View v) {
-						updateOrRequestPermissions();
-					}
-				});
-			}
+				break;
 		}
 	}
 
@@ -508,6 +519,16 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		TypedValue typedValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.colorForeground, typedValue, true);
 		return typedValue.data;
+	}
+
+
+	@SuppressWarnings("deprecation")
+	private void openAppSettings() {
+		Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+				.setData(Uri.fromParts("package", getPackageName(), null))
+				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		// deprecation:Need to clean up code before I can change to registerForActivityResult.
+		startActivityForResult(intent, 0);
 	}
 
 	@SuppressLint("QueryPermissionsNeeded") // https://developer.android.com/training/package-visibility/automatic
