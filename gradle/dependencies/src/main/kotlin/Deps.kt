@@ -20,7 +20,9 @@ object Deps {
 
 	object AndroidX {
 
-		const val appcompat = "androidx.appcompat:appcompat:1.4.0-rc01"
+		const val appcompat = "androidx.appcompat:appcompat:1.4.1"
+		const val activity = "androidx.activity:activity:1.4.0"
+		const val fragment = "androidx.fragment:fragment:1.4.0"
 		const val annotations = "androidx.annotation:annotation:1.3.0"
 	}
 
