@@ -193,7 +193,7 @@ public class LocationStateDeterminerTest {
 		doReturn(test.hasBackground).when(sut).hasBackground();
 		doReturn(test.shouldBackgroundRationale).when(sut).shouldBackgroundRationale();
 
-		LocationState actual = sut.determine();
+		LocationState actual = sut.determine(false);
 
 		assertEquals(test.expectedState, actual);
 	}

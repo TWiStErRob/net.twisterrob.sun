@@ -20,7 +20,7 @@ public class LocationStateDeterminer {
 		this.context = context;
 	}
 
-	public @NonNull LocationState determine() {
+	public @NonNull LocationState determine(boolean safeResults) {
 		if (isLocationEnabled()) {
 			if (hasCoarse()) {
 				if (hasFine()) {
@@ -35,15 +35,15 @@ public class LocationStateDeterminer {
 						// https://stackoverflow.com/a/63487691/253468
 						return LocationState.BACKGROUND_DENIED;
 					}
-					return LocationState.FINE_GRANTED;
+					return safeResults? LocationState.BACKGROUND_DENIED : LocationState.FINE_GRANTED;
 				} else if (shouldFineRationale()) {
 					return LocationState.FINE_DENIED;
 				}
-				return LocationState.COARSE_GRANTED;
+				return safeResults? LocationState.FINE_DENIED : LocationState.COARSE_GRANTED;
 			} else if (shouldCoarseRationale()) {
 				return LocationState.COARSE_DENIED;
 			}
-			return LocationState.LOCATION_ENABLED;
+			return safeResults? LocationState.COARSE_DENIED : LocationState.LOCATION_ENABLED;
 		} else {
 			return LocationState.LOCATION_DISABLED;
 		}

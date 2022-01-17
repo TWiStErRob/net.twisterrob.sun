@@ -188,7 +188,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	@AfterPermissionGranted(REQUEST_CODE_FOREGROUND_LOCATION)
 	private void updateOrRequestPermissions() {
 		if (Log.isLoggable(TAG, Log.DEBUG)) {
-			Log.d(TAG, "updateOrRequestPermissions " + new LocationStateDeterminer(this).determine());
+			Log.d(TAG, "updateOrRequestPermissions " + new LocationStateDeterminer(this).determine(true));
 		}
 		String[] locationPermissions = LocationStateDeterminer.calculatePermissionsToRequest();
 		if (EasyPermissions.hasPermissions(this, locationPermissions)) {
@@ -206,7 +206,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	@AfterPermissionGranted(REQUEST_CODE_BACKGROUND_LOCATION)
 	private void updateOrRequestBackgroundPermissions() {
 		if (Log.isLoggable(TAG, Log.DEBUG)) {
-			Log.d(TAG, "updateOrRequestBackgroundPermissions " + new LocationStateDeterminer(this).determine());
+			Log.d(TAG, "updateOrRequestBackgroundPermissions " + new LocationStateDeterminer(this).determine(true));
 		}
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R
 				|| EasyPermissions.hasPermissions(this, permission.ACCESS_BACKGROUND_LOCATION)) {
@@ -427,8 +427,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				break;
 		}
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
-		switch (new LocationStateDeterminer(this).determine()) {
-			case LOCATION_DISABLED:
+		switch (new LocationStateDeterminer(this).determine(true)) {
+			case LOCATION_DISABLED: {
 				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
 				message.setText(R.string.warning_no_location);
 				message.setOnClickListener(new OnClickListener() {
@@ -437,7 +437,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					}
 				});
 				break;
-			case COARSE_DENIED:
+			}
+			case COARSE_DENIED: {
 				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
 				message.setText(R.string.warning_no_location_permission_settings);
 				message.setOnClickListener(new OnClickListener() {
@@ -446,9 +447,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					}
 				});
 				break;
+			}
 			case LOCATION_ENABLED:
-			case COARSE_GRANTED:
-			case FINE_DENIED:
+			case COARSE_GRANTED: {
 				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
 				message.setText(R.string.warning_no_location_permission);
 				message.setOnClickListener(new OnClickListener() {
@@ -457,8 +458,18 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					}
 				});
 				break;
-			case FINE_GRANTED:
-			case BACKGROUND_DENIED:
+			}
+			case FINE_DENIED: {
+				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
+				message.setText(R.string.warning_no_location_permission_settings);
+				message.setOnClickListener(new OnClickListener() {
+					@Override public void onClick(View v) {
+						openAppSettings();
+					}
+				});
+				break;
+			}
+			case FINE_GRANTED: {
 				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
 				CharSequence label = this.getPackageManager().getBackgroundPermissionOptionLabel();
 				message.setText(getString(R.string.warning_no_location_rationale_background, label));
@@ -467,8 +478,20 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 						updateOrRequestBackgroundPermissions();
 					}
 				});
+			break;
+			}
+			case BACKGROUND_DENIED: {
+				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
+				CharSequence label = this.getPackageManager().getBackgroundPermissionOptionLabel();
+				message.setText(getString(R.string.warning_no_location_rationale_background, label));
+				message.setOnClickListener(new OnClickListener() {
+					@Override public void onClick(View v) {
+						openAppSettings();
+					}
+				});
 				break;
-			case BACKGROUND_GRANTED:
+			}
+			case BACKGROUND_GRANTED: {
 				if (results.params.hasLocation()) {
 					message.setTextColor(foregroundColor(this));
 					switch (rel) {
@@ -498,6 +521,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					});
 				}
 				break;
+			}
 		}
 	}
 
