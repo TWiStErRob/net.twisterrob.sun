@@ -13,7 +13,9 @@ import android.util.Log;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions;
+import androidx.annotation.AnyThread;
 import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -102,6 +104,7 @@ public class LocationPermissionCompat {
 		);
 	}
 
+	@AnyThread
 	public @NonNull LocationState currentState() {
 		if (isLocationEnabled()) {
 			if (hasCoarse()) {
@@ -131,6 +134,7 @@ public class LocationPermissionCompat {
 		}
 	}
 
+	@UiThread
 	public void executeWithPermissions() {
 		requestForeground();
 	}
@@ -301,6 +305,7 @@ public class LocationPermissionCompat {
 		return locationPermissions;
 	}
 
+	@UiThread
 	public interface LocationPermissionEvents {
 
 		void done();
@@ -314,6 +319,7 @@ public class LocationPermissionCompat {
 		/**
 		 * Callback for letting the user choose what to do after being shown a rationale.
 		 */
+		@UiThread
 		interface RationaleContinuation {
 
 			/**
