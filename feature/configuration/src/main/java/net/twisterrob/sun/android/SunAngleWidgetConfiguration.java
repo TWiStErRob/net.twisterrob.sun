@@ -49,7 +49,6 @@ import androidx.core.location.LocationListenerCompat;
 import androidx.core.util.Consumer;
 
 import net.twisterrob.android.app.LocationPermissionCompat;
-import net.twisterrob.android.app.LocationStateDeterminer;
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.android.widget.WidgetHelpers;
 import net.twisterrob.sun.algo.*;
@@ -436,7 +435,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		} else {
 			message.setVisibility(View.GONE);
 		}
-		switch (new LocationStateDeterminer(this).determine()) {
+		switch (permissions.currentState()) {
 			case LOCATION_DISABLED: {
 				warning.setVisibility(View.VISIBLE);
 				warning.setText(R.string.warning_no_location);

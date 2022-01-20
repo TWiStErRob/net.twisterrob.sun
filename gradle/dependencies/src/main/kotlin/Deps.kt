@@ -27,10 +27,6 @@ object Deps {
 		const val constraint = "androidx.constraintlayout:constraintlayout:2.1.3"
 	}
 
-	object ThirdParty {
-		const val permissions ="pub.devrel:easypermissions:3.0.0"
-	}
-
 	object Kotlin {
 
 		const val version = "1.5.31"
@@ -44,6 +40,7 @@ object Deps {
 
 		const val paparazzi = "app.cash.paparazzi:paparazzi:0.9.0"
 		const val junit4 = "junit:junit:4.13.2"
+		const val truth = "com.google.truth:truth:1.1.3"
 		const val mockito = "org.mockito:mockito-inline:4.2.0"
 		const val paramInjector = "com.google.testparameterinjector:test-parameter-injector:1.5"
 	}

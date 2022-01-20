@@ -11,10 +11,10 @@ dependencies {
 	implementation(Deps.AndroidX.appcompat)
 	implementation(Deps.AndroidX.activity)
 	implementation(Deps.AndroidX.fragment)
-	implementation(Deps.ThirdParty.permissions)
 	implementation(Deps.AndroidX.constraint)
 
 	testImplementation(Deps.Test.junit4)
+	testImplementation(Deps.Test.truth)
 	testImplementation(Deps.Test.mockito)
 	testImplementation(Deps.Test.paramInjector)
 }
