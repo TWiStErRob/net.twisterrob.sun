@@ -20,12 +20,12 @@ public class LocationStateDeterminer {
 		this.context = context;
 	}
 
-	public @NonNull LocationState determine(boolean safeResults) {
+	public @NonNull LocationState determine() {
 		if (isLocationEnabled()) {
 			if (hasCoarse()) {
 				if (hasFine()) {
 					if (hasBackground()) {
-						return LocationState.BACKGROUND_GRANTED;
+						return LocationState.ALL_GRANTED;
 					} else if (shouldBackgroundRationale()) {
 						return LocationState.BACKGROUND_DENIED;
 					} else if (false) {
@@ -35,15 +35,15 @@ public class LocationStateDeterminer {
 						// https://stackoverflow.com/a/63487691/253468
 						return LocationState.BACKGROUND_DENIED;
 					}
-					return safeResults? LocationState.BACKGROUND_DENIED : LocationState.FINE_GRANTED;
+					return LocationState.BACKGROUND_DENIED;
 				} else if (shouldFineRationale()) {
 					return LocationState.FINE_DENIED;
 				}
-				return safeResults? LocationState.FINE_DENIED : LocationState.COARSE_GRANTED;
+				return LocationState.FINE_DENIED;
 			} else if (shouldCoarseRationale()) {
 				return LocationState.COARSE_DENIED;
 			}
-			return safeResults? LocationState.COARSE_DENIED : LocationState.LOCATION_ENABLED;
+			return LocationState.COARSE_DENIED;
 		} else {
 			return LocationState.LOCATION_DISABLED;
 		}
@@ -89,7 +89,7 @@ public class LocationStateDeterminer {
 	/**
 	 * Implementation of <a href="https://developer.android.com/training/location/permissions">Location Permissions</a>.
 	 */
-	public static @NonNull String[] calculatePermissionsToRequest() {
+	public static @NonNull String[] calculateForegroundPermissionsToRequest() {
 		String[] locationPermissions;
 		if (Build.VERSION_CODES.R <= Build.VERSION.SDK_INT) {
 			// Complex world. Background location need to be requested separately from FINE and COARSE.
@@ -116,6 +116,20 @@ public class LocationStateDeterminer {
 			locationPermissions = new String[] {
 					permission.ACCESS_FINE_LOCATION,
 					permission.ACCESS_COARSE_LOCATION
+			};
+		}
+		return locationPermissions;
+	}
+
+	public static @NonNull String[] calculateBackgroundPermissionsToRequest() {
+		String[] locationPermissions;
+		if (Build.VERSION_CODES.R <= Build.VERSION.SDK_INT) {
+			locationPermissions = new String[] {
+					permission.ACCESS_BACKGROUND_LOCATION
+			};
+		} else /*if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R)*/ {
+			locationPermissions = new String[] {
+					// none
 			};
 		}
 		return locationPermissions;

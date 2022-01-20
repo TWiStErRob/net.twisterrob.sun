@@ -2,7 +2,6 @@ package net.twisterrob.sun.android;
 
 import java.util.*;
 
-import android.Manifest.permission;
 import android.annotation.SuppressLint;
 import android.app.*;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -13,7 +12,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.*;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.*;
@@ -49,10 +47,8 @@ import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.location.LocationListenerCompat;
 import androidx.core.util.Consumer;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.AppSettingsDialog;
-import pub.devrel.easypermissions.EasyPermissions;
 
+import net.twisterrob.android.app.LocationPermissionCompat;
 import net.twisterrob.android.app.LocationStateDeterminer;
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.android.widget.WidgetHelpers;
@@ -74,6 +70,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private static final int MINIMUM_COLOR = Color.argb(0xAA, 0x00, 0x88, 0xFF);
 	private CompoundButton relation;
 	private TextView message;
+	private TextView warning;
 	private SeekBar angle;
 	private Spinner preset;
 	private SunThresholdDrawable sun;
@@ -81,6 +78,53 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private int[] mapping;
 	private Menu menu;
 	private LocationUpdater locationUpdater;
+	private final LocationPermissionCompat permissions =
+			new LocationPermissionCompat(this, new LocationPermissionCompat.LocationPermissionEvents() {
+				@Override public void done() {
+					Log.wtf(TAG, "done");
+					locationUpdater.single();
+				}
+
+				@Override public void showForegroundRationale(final @NonNull RationaleContinuation continuation) {
+					Log.wtf(TAG, "foreground");
+					new AlertDialog.Builder(SunAngleWidgetConfiguration.this)
+							.setTitle(R.string.warning_no_location)
+							.setMessage(R.string.warning_no_location_rationale)
+							.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+								@Override public void onClick(DialogInterface dialog, int which) {
+									continuation.retry();
+								}
+							})
+							.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+								@Override public void onClick(DialogInterface dialog, int which) {
+									continuation.cancel();
+								}
+							})
+							.show();
+				}
+
+				@Override public void showBackgroundRationale(final @NonNull RationaleContinuation continuation) {
+					Log.wtf(TAG, "background");
+					new AlertDialog.Builder(SunAngleWidgetConfiguration.this)
+							.setTitle(R.string.warning_no_location)
+							.setMessage(R.string.warning_no_location_rationale_background)
+							.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+								@Override public void onClick(DialogInterface dialog, int which) {
+									continuation.retry();
+								}
+							})
+							.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+								@Override public void onClick(DialogInterface dialog, int which) {
+									continuation.cancel();
+								}
+							})
+							.show();
+				}
+
+				@Override public void failed() {
+					Log.wtf(TAG, "failed");
+				}
+			});
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState) {
 		if (BuildConfig.DEBUG) {
@@ -92,6 +136,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 
 		setContentView(R.layout.activity_config);
 		message = findViewById(R.id.message);
+		warning = findViewById(R.id.warning);
 		mapping = getResources().getIntArray(R.array.angle_preset_values);
 
 		sun = createSun();
@@ -148,7 +193,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				update(location);
 			}
 		});
-		updateOrRequestPermissions();
+
+		if (savedInstanceState == null) {
+			permissions.executeWithPermissions();
+		}
 	}
 
 	@Override protected void onResume() {
@@ -159,67 +207,6 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	@Override protected void onDestroy() {
 		locationUpdater.cancel();
 		super.onDestroy();
-	}
-
-	private static final int REQUEST_CODE_FOREGROUND_LOCATION = 1234;
-	private static final int REQUEST_CODE_BACKGROUND_LOCATION = 1235;
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		switch (requestCode) {
-			case AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE:
-				updateOrRequestPermissions();
-				break;
-		}
-	}
-
-	@Override
-	public void onRequestPermissionsResult(
-			int requestCode,
-			@NonNull String[] permissions,
-			@NonNull int[] grantResults
-	) {
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-	}
-
-	@AfterPermissionGranted(REQUEST_CODE_FOREGROUND_LOCATION)
-	private void updateOrRequestPermissions() {
-		if (Log.isLoggable(TAG, Log.DEBUG)) {
-			Log.d(TAG, "updateOrRequestPermissions " + new LocationStateDeterminer(this).determine(true));
-		}
-		String[] locationPermissions = LocationStateDeterminer.calculatePermissionsToRequest();
-		if (EasyPermissions.hasPermissions(this, locationPermissions)) {
-			updateOrRequestBackgroundPermissions();
-		} else {
-			EasyPermissions.requestPermissions(
-					this,
-					getString(R.string.warning_no_location_rationale),
-					REQUEST_CODE_FOREGROUND_LOCATION,
-					locationPermissions
-			);
-		}
-	}
-
-	@AfterPermissionGranted(REQUEST_CODE_BACKGROUND_LOCATION)
-	private void updateOrRequestBackgroundPermissions() {
-		if (Log.isLoggable(TAG, Log.DEBUG)) {
-			Log.d(TAG, "updateOrRequestBackgroundPermissions " + new LocationStateDeterminer(this).determine(true));
-		}
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R
-				|| EasyPermissions.hasPermissions(this, permission.ACCESS_BACKGROUND_LOCATION)) {
-			locationUpdater.single();
-		} else {
-			CharSequence label = this.getPackageManager().getBackgroundPermissionOptionLabel();
-			EasyPermissions.requestPermissions(
-					this,
-					getString(R.string.warning_no_location_rationale_background, label),
-					REQUEST_CODE_BACKGROUND_LOCATION,
-					permission.ACCESS_BACKGROUND_LOCATION
-			);
-		}
 	}
 
 	@Override protected @NonNull SharedPreferences onPreferencesOpen(int appWidgetId) {
@@ -427,96 +414,70 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				break;
 		}
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
-		switch (new LocationStateDeterminer(this).determine(true)) {
+		if (results.params.hasLocation()) {
+			message.setVisibility(View.VISIBLE);
+			message.setTextColor(foregroundColor(this));
+			switch (rel) {
+				case ABOVE:
+					message.setText(getString(R.string.message_selected_angle_above, angle));
+					break;
+				case BELOW:
+					message.setText(getString(R.string.message_selected_angle_below, angle));
+					break;
+			}
+			if (belowMin) {
+				message.setTextColor(MINIMUM_COLOR);
+				message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
+			}
+			if (aboveMax) {
+				message.setTextColor(MAXIMUM_COLOR);
+				message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
+			}
+		} else {
+			message.setVisibility(View.GONE);
+		}
+		switch (new LocationStateDeterminer(this).determine()) {
 			case LOCATION_DISABLED: {
-				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
-				message.setText(R.string.warning_no_location);
-				message.setOnClickListener(new OnClickListener() {
+				warning.setVisibility(View.VISIBLE);
+				warning.setText(R.string.warning_no_location);
+				warning.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
 						openLocationSettings();
 					}
 				});
 				break;
 			}
-			case COARSE_DENIED: {
-				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
-				message.setText(R.string.warning_no_location_permission_settings);
-				message.setOnClickListener(new OnClickListener() {
-					@Override public void onClick(View v) {
-						openAppSettings();
-					}
-				});
-				break;
-			}
-			case LOCATION_ENABLED:
-			case COARSE_GRANTED: {
-				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
-				message.setText(R.string.warning_no_location_permission);
-				message.setOnClickListener(new OnClickListener() {
-					@Override public void onClick(View v) {
-						updateOrRequestPermissions();
-					}
-				});
-				break;
-			}
+			case COARSE_DENIED:
 			case FINE_DENIED: {
-				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
-				message.setText(R.string.warning_no_location_permission_settings);
-				message.setOnClickListener(new OnClickListener() {
+				warning.setVisibility(View.VISIBLE);
+				warning.setText(R.string.warning_no_location_permission_settings);
+				warning.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
 						openAppSettings();
 					}
 				});
 				break;
-			}
-			case FINE_GRANTED: {
-				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
-				CharSequence label = this.getPackageManager().getBackgroundPermissionOptionLabel();
-				message.setText(getString(R.string.warning_no_location_rationale_background, label));
-				message.setOnClickListener(new OnClickListener() {
-					@Override public void onClick(View v) {
-						updateOrRequestBackgroundPermissions();
-					}
-				});
-			break;
 			}
 			case BACKGROUND_DENIED: {
-				message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
+				warning.setVisibility(View.VISIBLE);
 				CharSequence label = this.getPackageManager().getBackgroundPermissionOptionLabel();
-				message.setText(getString(R.string.warning_no_location_rationale_background, label));
-				message.setOnClickListener(new OnClickListener() {
+				warning.setText(getString(R.string.warning_no_location_rationale_background, label));
+				warning.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
 						openAppSettings();
 					}
 				});
 				break;
 			}
-			case BACKGROUND_GRANTED: {
+			case ALL_GRANTED: {
 				if (results.params.hasLocation()) {
-					message.setTextColor(foregroundColor(this));
-					switch (rel) {
-						case ABOVE:
-							message.setText(getString(R.string.message_selected_angle_above, angle));
-							break;
-						case BELOW:
-							message.setText(getString(R.string.message_selected_angle_below, angle));
-							break;
-					}
-					if (belowMin) {
-						message.setTextColor(MINIMUM_COLOR);
-						message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
-					}
-					if (aboveMax) {
-						message.setTextColor(MAXIMUM_COLOR);
-						message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
-					}
-					message.setOnClickListener(null);
+					warning.setVisibility(View.GONE);
 				} else {
-					message.setTextColor(ContextCompat.getColor(this, R.color.invalid));
-					message.setText(R.string.warning_no_location_clueless);
-					message.setOnClickListener(new OnClickListener() {
+					warning.setVisibility(View.VISIBLE);
+					warning.setText(R.string.warning_no_location_clueless);
+					warning.setOnClickListener(new OnClickListener() {
 						@Override public void onClick(View v) {
-							updateOrRequestPermissions();
+//							updateOrRequestPermissions();
 						}
 					});
 				}

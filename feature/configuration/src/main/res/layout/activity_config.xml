@@ -19,13 +19,27 @@
 		/>
 
 	<TextView
+		android:id="@+id/warning"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		android:textColor="@color/invalid"
+		android:textIsSelectable="false"
+		android:visibility="gone"
+		tools:text="@string/warning_no_location"
+		tools:visibility="visible"
+		/>
+
+	<TextView
 		android:id="@+id/message"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:clickable="true"
 		android:focusable="true"
 		android:textIsSelectable="false"
-		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/warning"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		tools:text="@string/message_selected_angle_above"

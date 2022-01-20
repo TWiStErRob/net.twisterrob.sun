@@ -125,12 +125,12 @@ public class LocationStateDeterminerTest {
 		T1100111(LocationState.FINE_DENIED, true, true, false, false, true, true, true),
 		T1101000(LocationState.FINE_GRANTED, true, true, false, true, false, false, false),
 		T1101001(LocationState.BACKGROUND_DENIED, true, true, false, true, false, false, true),
-		T1101010(LocationState.BACKGROUND_GRANTED, true, true, false, true, false, true, false),
-		T1101011(LocationState.BACKGROUND_GRANTED, true, true, false, true, false, true, true),
+		T1101010(LocationState.ALL_GRANTED, true, true, false, true, false, true, false),
+		T1101011(LocationState.ALL_GRANTED, true, true, false, true, false, true, true),
 		T1101100(LocationState.FINE_GRANTED, true, true, false, true, true, false, false),
 		T1101101(LocationState.BACKGROUND_DENIED, true, true, false, true, true, false, true),
-		T1101110(LocationState.BACKGROUND_GRANTED, true, true, false, true, true, true, false),
-		T1101111(LocationState.BACKGROUND_GRANTED, true, true, false, true, true, true, true),
+		T1101110(LocationState.ALL_GRANTED, true, true, false, true, true, true, false),
+		T1101111(LocationState.ALL_GRANTED, true, true, false, true, true, true, true),
 		T1110000(LocationState.COARSE_GRANTED, true, true, true, false, false, false, false),
 		T1110001(LocationState.COARSE_GRANTED, true, true, true, false, false, false, true),
 		T1110010(LocationState.COARSE_GRANTED, true, true, true, false, false, true, false),
@@ -141,12 +141,12 @@ public class LocationStateDeterminerTest {
 		T1110111(LocationState.FINE_DENIED, true, true, true, false, true, true, true),
 		T1111000(LocationState.FINE_GRANTED, true, true, true, true, false, false, false),
 		T1111001(LocationState.BACKGROUND_DENIED, true, true, true, true, false, false, true),
-		T1111010(LocationState.BACKGROUND_GRANTED, true, true, true, true, false, true, false),
-		T1111011(LocationState.BACKGROUND_GRANTED, true, true, true, true, false, true, true),
+		T1111010(LocationState.ALL_GRANTED, true, true, true, true, false, true, false),
+		T1111011(LocationState.ALL_GRANTED, true, true, true, true, false, true, true),
 		T1111100(LocationState.FINE_GRANTED, true, true, true, true, true, false, false),
 		T1111101(LocationState.BACKGROUND_DENIED, true, true, true, true, true, false, true),
-		T1111110(LocationState.BACKGROUND_GRANTED, true, true, true, true, true, true, false),
-		T1111111(LocationState.BACKGROUND_GRANTED, true, true, true, true, true, true, true),
+		T1111110(LocationState.ALL_GRANTED, true, true, true, true, true, true, false),
+		T1111111(LocationState.ALL_GRANTED, true, true, true, true, true, true, true),
 		;
 
 		final @NonNull LocationState expectedState;
@@ -193,7 +193,7 @@ public class LocationStateDeterminerTest {
 		doReturn(test.hasBackground).when(sut).hasBackground();
 		doReturn(test.shouldBackgroundRationale).when(sut).shouldBackgroundRationale();
 
-		LocationState actual = sut.determine(false);
+		LocationState actual = sut.determine();
 
 		assertEquals(test.expectedState, actual);
 	}
