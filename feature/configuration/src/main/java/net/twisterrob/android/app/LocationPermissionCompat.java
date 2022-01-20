@@ -37,8 +37,6 @@ import net.twisterrob.android.app.LocationPermissionCompat.LocationPermissionEve
  */
 public class LocationPermissionCompat {
 
-	private static final String TAG = "Config";
-
 	private final @NonNull AppCompatActivity activity;
 	private final @NonNull LocationPermissionEvents callback;
 	private final @NonNull ActivityResultLauncher<String[]> foregroundLocationPermissionLauncher;
@@ -54,7 +52,6 @@ public class LocationPermissionCompat {
 				new RequestMultiplePermissions(),
 				new ActivityResultCallback<Map<String, Boolean>>() {
 					@Override public void onActivityResult(final Map<String, Boolean> isGranted) {
-						Log.wtf(TAG, "foregroundResult: " + isGranted);
 						if (isAllGranted(isGranted)) {
 							requestBackground();
 						} else {
@@ -80,7 +77,6 @@ public class LocationPermissionCompat {
 				new RequestMultiplePermissions(),
 				new ActivityResultCallback<Map<String, Boolean>>() {
 					@Override public void onActivityResult(Map<String, Boolean> isGranted) {
-						Log.wtf(TAG, "backgroundResult: " + isGranted);
 						if (isAllGranted(isGranted)) {
 							permissionsReady();
 						} else {
