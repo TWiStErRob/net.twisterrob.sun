@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -102,32 +101,19 @@ public class LocationPermissionCompat {
 
 	@AnyThread
 	public @NonNull LocationState currentState() {
-		if (isLocationEnabled()) {
-			if (hasCoarse()) {
-				if (hasFine()) {
-					if (hasBackground()) {
-						return LocationState.ALL_GRANTED;
-					} else if (shouldBackgroundRationale()) {
-						return LocationState.BACKGROUND_DENIED;
-					} else if (false) {
-						// It is possible this was really denied,
-						// so permission=false && shouldShowRationale==false, and requesting even fails,
-						// but it is impossible to detect this case with Android SDK APIs.
-						// https://stackoverflow.com/a/63487691/253468
-						return LocationState.BACKGROUND_DENIED;
-					}
-					return LocationState.BACKGROUND_DENIED;
-				} else if (shouldFineRationale()) {
-					return LocationState.FINE_DENIED;
-				}
-				return LocationState.FINE_DENIED;
-			} else if (shouldCoarseRationale()) {
-				return LocationState.COARSE_DENIED;
-			}
-			return LocationState.COARSE_DENIED;
-		} else {
+		if (!isLocationEnabled()) {
 			return LocationState.LOCATION_DISABLED;
 		}
+		if (!hasCoarse()) {
+			return LocationState.COARSE_DENIED;
+		}
+		if (!hasFine()) {
+			return LocationState.FINE_DENIED;
+		}
+		if (!hasBackground()) {
+			return LocationState.BACKGROUND_DENIED;
+		}
+		return LocationState.ALL_GRANTED;
 	}
 
 	@UiThread
@@ -221,16 +207,8 @@ public class LocationPermissionCompat {
 		return hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
 	}
 
-	@VisibleForTesting boolean shouldCoarseRationale() {
-		return needsRationale(Manifest.permission.ACCESS_COARSE_LOCATION);
-	}
-
 	@VisibleForTesting boolean hasFine() {
 		return hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-	}
-
-	@VisibleForTesting boolean shouldFineRationale() {
-		return needsRationale(Manifest.permission.ACCESS_FINE_LOCATION);
 	}
 
 	@VisibleForTesting boolean hasBackground() {
@@ -238,14 +216,6 @@ public class LocationPermissionCompat {
 			return hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
 		} else {
 			return true;
-		}
-	}
-
-	@VisibleForTesting boolean shouldBackgroundRationale() {
-		if (Build.VERSION_CODES.Q <= Build.VERSION.SDK_INT) {
-			return needsRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
-		} else {
-			return false;
 		}
 	}
 
