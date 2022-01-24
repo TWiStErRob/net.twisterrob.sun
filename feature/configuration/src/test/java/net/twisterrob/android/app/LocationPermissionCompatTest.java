@@ -114,7 +114,7 @@ public class LocationPermissionCompatTest {
 			@TestParameter({
 					"14", "15", "16", "17", "18", "19", "20",
 					"21", "22", "23", "24", "25", "26", "27", "28",
-					"30", "31", "32"
+					"29", "30", "31", "32"
 			}) int version
 	) {
 		setAPIVersion(version);
@@ -126,24 +126,6 @@ public class LocationPermissionCompatTest {
 				.containsExactly(
 						Manifest.permission.ACCESS_FINE_LOCATION,
 						Manifest.permission.ACCESS_COARSE_LOCATION
-				);
-	}
-
-	@Test public void testForegroundPermissionsAllTogether(
-			@TestParameter({
-					"29"
-			}) int version
-	) {
-		setAPIVersion(version);
-
-		String[] foreground = LocationPermissionCompat.calculateForegroundPermissionsToRequest();
-
-		assertThat(foreground)
-				.asList()
-				.containsExactly(
-						Manifest.permission.ACCESS_FINE_LOCATION,
-						Manifest.permission.ACCESS_COARSE_LOCATION,
-						Manifest.permission.ACCESS_BACKGROUND_LOCATION
 				);
 	}
 
@@ -160,21 +142,9 @@ public class LocationPermissionCompatTest {
 		assertThat(foreground).isEmpty();
 	}
 
-	@Test public void testBackgroundPermissionsAllTogether(
-			@TestParameter({
-					"29"
-			}) int version
-	) {
-		setAPIVersion(version);
-
-		String[] foreground = LocationPermissionCompat.calculateBackgroundPermissionsToRequest();
-
-		assertThat(foreground).isEmpty();
-	}
-
 	@Test public void testBackgroundPermissionsSeparately(
 			@TestParameter({
-					"30", "31", "32"
+					"29", "30", "31", "32"
 			}) int version
 	) {
 		setAPIVersion(version);
@@ -190,6 +160,7 @@ public class LocationPermissionCompatTest {
 
 	private static void setAPIVersion(int version) {
 		try {
+			//noinspection JavaReflectionMemberAccess works on JVM, where it matters for Unit tests.
 			Field modifiers = Field.class.getDeclaredField("modifiers");
 			modifiers.setAccessible(true);
 			Field SDK_INT = android.os.Build.VERSION.class.getDeclaredField("SDK_INT");

@@ -8,10 +8,12 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.*;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.*;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.*;
@@ -101,10 +103,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				}
 
 				@Override public void showBackgroundRationale(final @NonNull RationaleContinuation continuation) {
-					CharSequence label = getPackageManager().getBackgroundPermissionOptionLabel();
 					new AlertDialog.Builder(SunAngleWidgetConfiguration.this)
 							.setTitle(R.string.no_location_background_rationale_title)
-							.setMessage(getString(R.string.no_location_background_rationale, label))
+							.setMessage(getString(R.string.no_location_background_rationale, getBackgroundLabel()))
 							.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 								@Override public void onClick(DialogInterface dialog, int which) {
 									continuation.retry();
@@ -458,8 +459,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 			case BACKGROUND_DENIED: {
 				warning.setVisibility(View.VISIBLE);
-				CharSequence label = getPackageManager().getBackgroundPermissionOptionLabel();
-				warning.setText(getString(R.string.no_location_background_guide, label));
+				warning.setText(getString(R.string.no_location_background_guide, getBackgroundLabel()));
 				warning.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
 						openAppSettings();
@@ -472,15 +472,28 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					warning.setVisibility(View.GONE);
 				} else {
 					warning.setVisibility(View.VISIBLE);
-					warning.setText(R.string.no_location_clueless);
+					warning.setText(R.string.no_location_no_fix);
 					warning.setOnClickListener(new OnClickListener() {
 						@Override public void onClick(View v) {
-							openAppSettings();
+							openAMapsApp();
 						}
 					});
 				}
 				break;
 			}
+		}
+	}
+
+	/**
+	 * Polyfill for {@link PackageManager#getBackgroundPermissionOptionLabel()}.
+	 */
+	private @NonNull CharSequence getBackgroundLabel() {
+		if (Build.VERSION_CODES.R <= Build.VERSION.SDK_INT) {
+			return getPackageManager().getBackgroundPermissionOptionLabel();
+		} else if (Build.VERSION_CODES.Q <= Build.VERSION.SDK_INT) {
+			return getString(R.string.no_location_background_option_label_29);
+		} else {
+			throw new IllegalStateException("Unreachable, background permission is not a thing < Android 10 / API 29");
 		}
 	}
 
@@ -511,6 +524,21 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			startActivity(intent);
 		} else {
 			Toast.makeText(this, R.string.no_location_guide_failed, Toast.LENGTH_LONG).show();
+		}
+	}
+
+	private void openAMapsApp() {
+		try {
+			Intent intent = new Intent(Intent.ACTION_VIEW)
+					// See https://developer.android.com/guide/components/intents-common#Maps
+					.setData(Uri.parse("geo:0,0"))
+					.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+		} catch (ActivityNotFoundException ex) {
+			// Fail quietly. The UI didn't indicate there is any action. If it works, it works.
+			if (Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "No Maps app present which could handle `geo:` URIs.");
+			}
 		}
 	}
 

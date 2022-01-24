@@ -5,13 +5,13 @@
 	<string name="no_location_foreground_rationale">The widget needs to know where you are to calculate the location of the Sun in the sky.\n\nPlease allow access to the device\'s precise location.</string>
 	<string name="no_location_background_rationale_title">Background location recommended</string>
 	<string name="no_location_background_rationale">Sometimes home screen widget updates happen while there\'s another app running. You need to allow the location permission all the time to ensure there\'s always up-to-date data visible when you see it.\n\nPlease select the “%1$s” option in the next screen to allow this widget to update while not visible.</string>
+	<string name="no_location_background_option_label_29">Allow all the time</string>
 
-	<string name="no_location_rationale_and_guide">%1$s %2$s</string>
 	<string name="no_location_enabled_guide">Please enable your device Location in the Settings app by tapping here. After coming back, wait a moment to allow the system to figure things out.</string>
 	<string name="no_location_foreground_guide">The widget needs to know where you are to calculate the location of the Sun in the sky.\nPlease allow access to the precise location in the app Settings by tapping here.</string>
 	<string name="no_location_background_guide">Sometimes home screen widget updates happen while there\'s another app running and the widget is not visible.\nPlease allow access to the precise location permission in the app Settings using the “%1$s“ option by tapping here.</string>
 	<string name="no_location_guide_failed">Can\'t start Settings app, sorry.\n\nPlease go to device Settings to manually enable location or permissions.</string>
 
-	<string name="no_location_clueless">The widget needs to know where you are, however for unknown reasons the app doesn\'t see your location. Please ensure that location permissions are allowed, precise background location access is recommended.</string>
+	<string name="no_location_no_fix">The widget needs to know where you are, however due to performance reasons it will not request a location. Please open Maps or other app that shows your location.</string>
 
 </resources>
