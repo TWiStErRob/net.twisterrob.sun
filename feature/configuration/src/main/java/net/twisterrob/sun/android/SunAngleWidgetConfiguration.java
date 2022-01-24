@@ -397,8 +397,16 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		sun.setSelected(rel, angle);
 		boolean belowMin = angle <= results.minimum.angle;
 		boolean aboveMax = angle >= results.maximum.angle;
-		sun.setMinimumEdge(rel == ThresholdRelation.ABOVE && !belowMin);
-		sun.setMaximumEdge(rel == ThresholdRelation.BELOW && !aboveMax);
+		switch (rel) {
+			case ABOVE:
+				sun.setMaximumEdge(aboveMax);
+				sun.setMinimumEdge(!belowMin);
+				break;
+			case BELOW:
+				sun.setMaximumEdge(!aboveMax);
+				sun.setMinimumEdge(belowMin);
+				break;
+		}
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
 		message.setTextColor(foregroundColor(this));
 		message.setOnClickListener(null);
