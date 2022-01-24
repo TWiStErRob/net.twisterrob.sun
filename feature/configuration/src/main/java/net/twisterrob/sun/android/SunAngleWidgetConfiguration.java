@@ -80,15 +80,13 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private final LocationPermissionCompat permissions =
 			new LocationPermissionCompat(this, new LocationPermissionCompat.LocationPermissionEvents() {
 				@Override public void done() {
-					Log.wtf(TAG, "done");
 					locationUpdater.single();
 				}
 
 				@Override public void showForegroundRationale(final @NonNull RationaleContinuation continuation) {
-					Log.wtf(TAG, "foreground");
 					new AlertDialog.Builder(SunAngleWidgetConfiguration.this)
-							.setTitle(R.string.warning_no_location)
-							.setMessage(R.string.warning_no_location_rationale)
+							.setTitle(R.string.no_location_foreground_rationale_title)
+							.setMessage(R.string.no_location_foreground_rationale)
 							.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 								@Override public void onClick(DialogInterface dialog, int which) {
 									continuation.retry();
@@ -103,10 +101,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				}
 
 				@Override public void showBackgroundRationale(final @NonNull RationaleContinuation continuation) {
-					Log.wtf(TAG, "background");
+					CharSequence label = getPackageManager().getBackgroundPermissionOptionLabel();
 					new AlertDialog.Builder(SunAngleWidgetConfiguration.this)
-							.setTitle(R.string.warning_no_location)
-							.setMessage(R.string.warning_no_location_rationale_background)
+							.setTitle(R.string.no_location_background_rationale_title)
+							.setMessage(getString(R.string.no_location_background_rationale, label))
 							.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 								@Override public void onClick(DialogInterface dialog, int which) {
 									continuation.retry();
@@ -121,7 +119,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				}
 
 				@Override public void failed() {
-					Log.wtf(TAG, "failed");
+					// This will display a warning with a pointer to Settings.
+					locationUpdater.single();
 				}
 			});
 
@@ -438,7 +437,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		switch (permissions.currentState()) {
 			case LOCATION_DISABLED: {
 				warning.setVisibility(View.VISIBLE);
-				warning.setText(R.string.warning_no_location);
+				warning.setText(R.string.no_location_enabled_guide);
 				warning.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
 						openLocationSettings();
@@ -449,7 +448,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			case COARSE_DENIED:
 			case FINE_DENIED: {
 				warning.setVisibility(View.VISIBLE);
-				warning.setText(R.string.warning_no_location_permission_settings);
+				warning.setText(R.string.no_location_foreground_guide);
 				warning.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
 						openAppSettings();
@@ -459,8 +458,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 			case BACKGROUND_DENIED: {
 				warning.setVisibility(View.VISIBLE);
-				CharSequence label = this.getPackageManager().getBackgroundPermissionOptionLabel();
-				warning.setText(getString(R.string.warning_no_location_rationale_background, label));
+				CharSequence label = getPackageManager().getBackgroundPermissionOptionLabel();
+				warning.setText(getString(R.string.no_location_background_guide, label));
 				warning.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
 						openAppSettings();
@@ -473,10 +472,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					warning.setVisibility(View.GONE);
 				} else {
 					warning.setVisibility(View.VISIBLE);
-					warning.setText(R.string.warning_no_location_clueless);
+					warning.setText(R.string.no_location_clueless);
 					warning.setOnClickListener(new OnClickListener() {
 						@Override public void onClick(View v) {
-//							updateOrRequestPermissions();
+							openAppSettings();
 						}
 					});
 				}
@@ -491,14 +490,18 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return typedValue.data;
 	}
 
-
+	@SuppressLint("QueryPermissionsNeeded") // https://developer.android.com/training/package-visibility/automatic
 	@SuppressWarnings("deprecation")
 	private void openAppSettings() {
 		Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
 				.setData(Uri.fromParts("package", getPackageName(), null))
 				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		// deprecation:Need to clean up code before I can change to registerForActivityResult.
-		startActivityForResult(intent, 0);
+		if (intent.resolveActivity(getPackageManager()) != null) {
+			// deprecation:Need to clean up code before I can change to registerForActivityResult.
+			startActivityForResult(intent, 0);
+		} else {
+			Toast.makeText(this, R.string.no_location_guide_failed, Toast.LENGTH_LONG).show();
+		}
 	}
 
 	@SuppressLint("QueryPermissionsNeeded") // https://developer.android.com/training/package-visibility/automatic
@@ -507,7 +510,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		if (intent.resolveActivity(getPackageManager()) != null) {
 			startActivity(intent);
 		} else {
-			Toast.makeText(this, R.string.warning_no_location_settings, Toast.LENGTH_LONG).show();
+			Toast.makeText(this, R.string.no_location_guide_failed, Toast.LENGTH_LONG).show();
 		}
 	}
 
