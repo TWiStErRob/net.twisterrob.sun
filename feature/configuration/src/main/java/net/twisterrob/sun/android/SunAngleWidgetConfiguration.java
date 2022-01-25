@@ -41,6 +41,8 @@ import static android.appwidget.AppWidgetManager.*;
 import static android.view.ViewGroup.LayoutParams.*;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -54,6 +56,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
 import net.twisterrob.android.app.WidgetConfigurationActivity;
+import net.twisterrob.android.widget.WidgetHelpers;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
@@ -65,6 +68,8 @@ import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
 
 public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
+
+	private static final String TAG = "Config";
 
 	private static final int MAXIMUM_COLOR = Color.argb(0xAA, 0xFF, 0x44, 0x22);
 	private static final int MINIMUM_COLOR = Color.argb(0xAA, 0x00, 0x88, 0xFF);
@@ -78,7 +83,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private Menu menu;
 	private LocationUpdater locationUpdater;
 
-	@Override protected void onCreate(Bundle savedInstanceState) {
+	@Override protected void onCreate(@Nullable Bundle savedInstanceState) {
 		if (BuildConfig.DEBUG) {
 			if (!getIntent().hasExtra(EXTRA_APPWIDGET_ID)) {
 				getIntent().putExtra(EXTRA_APPWIDGET_ID, 183);
@@ -127,8 +132,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			@Override public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
 				if (position != mapping.length - 1) {
 					int presetAngleValue = mapping[position];
-					if (Log.isLoggable("Config", Log.DEBUG)) {
-						Log.d("Config", "Preset for pos: " + position + " = " + presetAngleValue);
+					if (Log.isLoggable(TAG, Log.DEBUG)) {
+						Log.d(TAG, "Preset for pos: " + position + " = " + presetAngleValue);
 					}
 					angle.setProgress(toProgress(presetAngleValue));
 				}
@@ -200,17 +205,17 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 	}
 
-	@Override protected SharedPreferences onPreferencesOpen(int appWidgetId) {
+	@Override protected @NonNull SharedPreferences onPreferencesOpen(int appWidgetId) {
 		return SunAngleWidgetProvider.getPreferences(getApplicationContext(), appWidgetId);
 	}
 
-	@Override protected void onPreferencesLoad(SharedPreferences prefs) {
+	@Override protected void onPreferencesLoad(@NonNull SharedPreferences prefs) {
 		String rel = prefs.getString(PREF_THRESHOLD_RELATION, DEFAULT_THRESHOLD_RELATION.name());
 		relation.setChecked(toChecked(ThresholdRelation.valueOf(rel)));
 		angle.setProgress(toProgress(prefs.getFloat(PREF_THRESHOLD_ANGLE, DEFAULT_THRESHOLD_ANGLE)));
 	}
 
-	@Override public boolean onCreateOptionsMenu(Menu menu) {
+	@Override public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.config, menu);
 		SharedPreferences prefs = getWidgetPreferences();
@@ -224,7 +229,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return true;
 	}
 
-	@Override public boolean onOptionsItemSelected(MenuItem item) {
+	@Override public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.action_show_lastUpdateTime || id == R.id.action_show_partOfDay) {
 				updateCheckableOption(item, !item.isChecked());
@@ -295,7 +300,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 						.show();
 				return true;
 		} else if (id == R.id.action_mock_fill) {
-				int[] appWidgetIds = SunAngleWidgetProvider.getAppWidgetIds(this);
+			int[] appWidgetIds = WidgetHelpers.getAppWidgetIds(this, SunAngleWidgetProvider.class);
 				float[] presets = {90, -90, 0, -3, -9, -15, -6, -12, -18, 180};
 				for (int i = 0; i < appWidgetIds.length && i < presets.length; ++i) {
 					int appWidgetId = appWidgetIds[i];
@@ -307,7 +312,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				}
 				return true;
 		} else if (id == R.id.action_mock_clearAll) {
-				int[] appWidgetIds = SunAngleWidgetProvider.getAppWidgetIds(this);
+			int[] appWidgetIds = WidgetHelpers.getAppWidgetIds(this, SunAngleWidgetProvider.class);
 				float[] presets = {90, -90, 0, -3, -9, -15, -6, -12, -18, 180};
 				for (int i = 0; i < appWidgetIds.length && i < presets.length; ++i) {
 					int appWidgetId = appWidgetIds[i];
@@ -394,12 +399,27 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		sun.setSelected(rel, angle);
 		boolean belowMin = angle <= results.minimum.angle;
 		boolean aboveMax = angle >= results.maximum.angle;
-		sun.setMinimumEdge(rel == ThresholdRelation.ABOVE && !belowMin);
-		sun.setMaximumEdge(rel == ThresholdRelation.BELOW && !aboveMax);
+		switch (rel) {
+			case ABOVE:
+				sun.setMaximumEdge(aboveMax);
+				sun.setMinimumEdge(!belowMin);
+				break;
+			case BELOW:
+				sun.setMaximumEdge(!aboveMax);
+				sun.setMinimumEdge(belowMin);
+				break;
+		}
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
 		message.setTextColor(foregroundColor(this));
 		message.setOnClickListener(null);
-		message.setText(getString(R.string.message_selected_angle, getRelString(rel), angle));
+		switch (rel) {
+			case ABOVE:
+				message.setText(getString(R.string.message_selected_angle_above, angle));
+				break;
+			case BELOW:
+				message.setText(getString(R.string.message_selected_angle_below, angle));
+				break;
+		}
 		if (belowMin) {
 			message.setTextColor(MINIMUM_COLOR);
 			message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
@@ -469,12 +489,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 	}
 
-	private CharSequence getRelString(ThresholdRelation rel) {
-		int id = rel == ThresholdRelation.ABOVE? R.string.threshold_relation_above : R.string.threshold_relation_below;
-		return getString(id);
-	}
-
-	protected SunThresholdDrawable createSun() {
+	protected @NonNull SunThresholdDrawable createSun() {
 		sun = new SunThresholdDrawable();
 		sun.setRadius(256);
 		sun.setSelectedVisuals(16, 20, Color.argb(0x66, 0x00, 0xFF, 0x00));
@@ -497,40 +512,40 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		this.lastResults = results;
 	}
 
-	@Override protected void onPreferencesSave(SharedPreferences.Editor edit) {
+	@Override protected void onPreferencesSave(@NonNull SharedPreferences.Editor edit) {
 		edit.putString(PREF_THRESHOLD_RELATION, getCurrentRelation().name());
 		edit.putFloat(PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
 		edit.putBoolean(PREF_SHOW_UPDATE_TIME, menu.findItem(R.id.action_show_lastUpdateTime).isChecked());
 		edit.putBoolean(PREF_SHOW_PART_OF_DAY, menu.findItem(R.id.action_show_partOfDay).isChecked());
 	}
 
-	private static ThresholdRelation toRelation(boolean checked) {
+	private static @NonNull ThresholdRelation toRelation(boolean checked) {
 		return checked? ThresholdRelation.ABOVE : ThresholdRelation.BELOW;
 	}
 
-	private static boolean toChecked(ThresholdRelation rel) {
+	private static boolean toChecked(@NonNull ThresholdRelation rel) {
 		return rel == ThresholdRelation.ABOVE;
 	}
 
-	private static float toThreshold(int progress) {
+	private static @FloatRange(from = -90, to = 90) float toThreshold(@IntRange(from = 0, to = 180) int progress) {
 		return progress - 90;
 	}
 
-	private static int toProgress(float threshold) {
+	private static @IntRange(from = 0, to = 180) int toProgress(@FloatRange(from = -90, to = 90) float threshold) {
 		return (int)(threshold + 90);
 	}
 
-	protected ThresholdRelation getCurrentRelation() {
+	protected @NonNull ThresholdRelation getCurrentRelation() {
 		return toRelation(relation.isChecked());
 	}
 
-	protected float getCurrentThresholdAngle() {
+	protected @FloatRange(from = -90, to = 90) float getCurrentThresholdAngle() {
 		return toThreshold(angle.getProgress());
 	}
 
 	protected void setPresetByAngle(float angle) {
-		if (Log.isLoggable("Config", Log.DEBUG)) {
-			Log.d("Config", "Syncing preset for angle: " + angle);
+		if (Log.isLoggable(TAG, Log.DEBUG)) {
+			Log.d(TAG, "Syncing preset for angle: " + angle);
 		}
 		int position = find(mapping, Math.round(angle));
 		if (position == -1) {
@@ -539,7 +554,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		preset.setSelection(position);
 	}
 
-	private static int find(int[] array, int value) {
+	private static @IntRange(from = -1) int find(@NonNull int[] array, int value) {
 		for (int i = 0; i < array.length; ++i) {
 			if (array[i] == value) {
 				return i;

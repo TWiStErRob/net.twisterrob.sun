@@ -3,8 +3,9 @@ package net.twisterrob.sun.android;
 import java.util.Locale;
 
 import android.appwidget.AppWidgetManager;
-import android.content.*;
-import android.location.*;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,7 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.core.location.LocationListenerCompat;
 
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
-import net.twisterrob.sun.android.logic.*;
+import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
+import net.twisterrob.sun.android.logic.WidgetUpdateList;
 
 public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 
@@ -87,18 +89,12 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 	}
 
 	@Override
-	public String toString() {
+	public @NonNull String toString() {
 		return String.format(Locale.ROOT, "%08x", this.hashCode());
 	}
 
-	public static SharedPreferences getPreferences(@NonNull Context context, int appWidgetId) {
+	public static @NonNull SharedPreferences getPreferences(@NonNull Context context, int appWidgetId) {
 		return context.getApplicationContext()
 		              .getSharedPreferences(PREF_NAME + "-" + appWidgetId, Context.MODE_PRIVATE);
-	}
-
-	public static int[] getAppWidgetIds(@NonNull Context context) {
-		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
-		ComponentName component = new ComponentName(context.getApplicationContext(), SunAngleWidgetProvider.class);
-		return appWidgetManager.getAppWidgetIds(component);
 	}
 }

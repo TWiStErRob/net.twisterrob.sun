@@ -4,7 +4,6 @@ import java.util.Calendar;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
@@ -42,7 +41,7 @@ public class SunAngleWidgetUpdater {
 		// no context (yet)
 	}
 
-	public SunAngleWidgetUpdater(Context context) {
+	public SunAngleWidgetUpdater(@NonNull Context context) {
 		setContext(context);
 	}
 
@@ -52,12 +51,12 @@ public class SunAngleWidgetUpdater {
 		return context;
 	}
 
-	public void setContext(Context context) {
+	public void setContext(@NonNull Context context) {
 		this.context = context;
 	}
 
 	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
-	public void clearLocation(LocationListenerCompat fallback) {
+	public void clearLocation(@NonNull LocationListenerCompat fallback) {
 		if (hasLocationPermission()) {
 			LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 			LocationManagerCompat.removeUpdates(lm, fallback);
@@ -70,7 +69,7 @@ public class SunAngleWidgetUpdater {
 	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
 	public @Nullable Location getLocation(final @NonNull LocationListenerCompat fallback) {
 		if (!hasLocationPermission()) {
-			Log.w("Sun", "No location permission granted, stopping " + this+ " for " + fallback);
+			Log.w("Sun", "No location permission granted, stopping " + this + " for " + fallback);
 			return null;
 		}
 		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
@@ -100,17 +99,9 @@ public class SunAngleWidgetUpdater {
 	}
 
 	private boolean hasLocationPermission() {
-		return checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
-				|| checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED;
-	}
-
-	public static void forceUpdateAll(Context context) {
-		forceUpdate(context, SunAngleWidgetProvider.getAppWidgetIds(context));
-	}
-
-	public static void forceUpdate(Context context, int... appWidgetIds) {
-		Intent intent = createUpdateIntent(context, appWidgetIds);
-		context.sendBroadcast(intent);
+		boolean hasFinePermission = checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED;
+		boolean hasCoarsePermission = checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED;
+		return hasFinePermission || hasCoarsePermission;
 	}
 
 	public boolean update(int appWidgetId, @NonNull LocationListenerCompat fallback) {
@@ -141,12 +132,5 @@ public class SunAngleWidgetUpdater {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 		return result != null;
-	}
-
-	protected static Intent createUpdateIntent(Context context, int... appWidgetIds) {
-		Intent intent = new Intent(context, SunAngleWidgetProvider.class);
-		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-		return intent;
 	}
 }

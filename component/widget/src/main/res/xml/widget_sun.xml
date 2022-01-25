@@ -1,5 +1,7 @@
 <!-- Configuration is disabled to prevent phantom widgets,
      defaults are used and user can tap config any time. -->
+<!-- See https://developer.android.com/guide/topics/appwidgets#AppWidgetProviderInfo. -->
+<!-- See https://developer.android.com/reference/android/appwidget/AppWidgetProviderInfo. -->
 <appwidget-provider
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
@@ -12,5 +14,6 @@
 	android:updatePeriodMillis="1800000"
 	android:widgetCategory="home_screen|keyguard"
 	tools:configure="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
+	tools:context="net.twisterrob.sun.android.SunAngleWidgetProvider"
 	tools:ignore="UnusedAttribute"
 	/>
