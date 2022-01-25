@@ -89,12 +89,12 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					new AlertDialog.Builder(SunAngleWidgetConfiguration.this)
 							.setTitle(R.string.no_location_foreground_rationale_title)
 							.setMessage(R.string.no_location_foreground_rationale)
-							.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+							.setPositiveButton(R.string.no_location_foreground_rationale_ok, new DialogInterface.OnClickListener() {
 								@Override public void onClick(DialogInterface dialog, int which) {
 									continuation.retry();
 								}
 							})
-							.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+							.setNegativeButton(R.string.no_location_foreground_rationale_cancel, new DialogInterface.OnClickListener() {
 								@Override public void onClick(DialogInterface dialog, int which) {
 									continuation.cancel();
 								}
@@ -106,12 +106,12 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					new AlertDialog.Builder(SunAngleWidgetConfiguration.this)
 							.setTitle(R.string.no_location_background_rationale_title)
 							.setMessage(getString(R.string.no_location_background_rationale, getBackgroundLabel()))
-							.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+							.setPositiveButton(R.string.no_location_background_rationale_ok, new DialogInterface.OnClickListener() {
 								@Override public void onClick(DialogInterface dialog, int which) {
 									continuation.retry();
 								}
 							})
-							.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+							.setNegativeButton(R.string.no_location_background_rationale_cancel, new DialogInterface.OnClickListener() {
 								@Override public void onClick(DialogInterface dialog, int which) {
 									continuation.cancel();
 								}

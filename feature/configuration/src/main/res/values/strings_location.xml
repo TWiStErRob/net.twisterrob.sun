@@ -2,9 +2,14 @@
 <resources>
 
 	<string name="no_location_foreground_rationale_title">Precise location recommended</string>
-	<string name="no_location_foreground_rationale">The widget needs to know where you are to calculate the location of the Sun in the sky.\n\nPlease allow access to the device\'s precise location.</string>
-	<string name="no_location_background_rationale_title">Background location recommended</string>
-	<string name="no_location_background_rationale">Sometimes home screen widget updates happen while there\'s another app running. You need to allow the location permission all the time to ensure there\'s always up-to-date data visible when you see it.\n\nPlease select the “%1$s” option in the next screen to allow this widget to update while not visible.</string>
+	<string name="no_location_foreground_rationale">The widget needs to know your location to calculate the position of the Sun.\n\nIt works best if you allow precise location at the next step.</string>
+	<string name="no_location_foreground_rationale_ok">Next</string>
+	<string name="no_location_foreground_rationale_cancel">@android:string/cancel</string>
+
+	<string name="no_location_background_rationale_title">Allow location all the time</string>
+	<string name="no_location_background_rationale">To display up-to-date information about the Sun on the home screen, the widget needs access to your location all the time.\n\nPlease select the “%1$s” option in the next screen.</string>
+	<string name="no_location_background_rationale_ok">Next</string>
+	<string name="no_location_background_rationale_cancel">@android:string/cancel</string>
 	<string name="no_location_background_option_label_29">Allow all the time</string>
 
 	<string name="no_location_enabled_guide">Please enable your device Location in the Settings app by tapping here. After coming back, wait a moment to allow the system to figure things out.</string>
