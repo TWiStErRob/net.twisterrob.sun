@@ -2,7 +2,6 @@ package net.twisterrob.sun.android.logic;
 
 import java.util.Calendar;
 
-import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +17,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 import androidx.core.location.LocationListenerCompat;
 import androidx.core.location.LocationManagerCompat;
 
@@ -56,7 +56,7 @@ public class SunAngleWidgetUpdater {
 		this.context = context;
 	}
 
-	@SuppressLint("MissingPermission") // guarded by hasLocationPermission()
+	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
 	public void clearLocation(LocationListenerCompat fallback) {
 		if (hasLocationPermission()) {
 			LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
@@ -67,7 +67,7 @@ public class SunAngleWidgetUpdater {
 	@SuppressWarnings("deprecation") // Cannot use LocationManagerCompat.getCurrentLocation yet:
 	// tried, but it gets into infinite loop when there's no location and runs on a different thread.
 	// TODO https://developer.android.com/training/location/retrieve-current.html#GetLocation
-	@SuppressLint("MissingPermission") // guarded by hasLocationPermission()
+	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
 	public @Nullable Location getLocation(final @NonNull LocationListenerCompat fallback) {
 		if (!hasLocationPermission()) {
 			Log.w("Sun", "No location permission granted, stopping " + this+ " for " + fallback);

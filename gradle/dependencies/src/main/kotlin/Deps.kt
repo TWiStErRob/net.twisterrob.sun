@@ -20,7 +20,9 @@ object Deps {
 
 	object AndroidX {
 
-		const val appcompat = "androidx.appcompat:appcompat:1.4.0-rc01"
+		const val appcompat = "androidx.appcompat:appcompat:1.4.1"
+		const val activity = "androidx.activity:activity:1.4.0"
+		const val fragment = "androidx.fragment:fragment:1.4.0"
 		const val annotations = "androidx.annotation:annotation:1.3.0"
 	}
 
@@ -41,7 +43,7 @@ object Deps {
 
 		const val paparazzi = "app.cash.paparazzi:paparazzi:0.9.0"
 		const val junit4 = "junit:junit:4.13.2"
-		const val mockito = "org.mockito:mockito-core:4.0.0"
+		const val mockito = "org.mockito:mockito-inline:4.2.0"
 		const val paramInjector = "com.google.testparameterinjector:test-parameter-injector:1.5"
 	}
 }
