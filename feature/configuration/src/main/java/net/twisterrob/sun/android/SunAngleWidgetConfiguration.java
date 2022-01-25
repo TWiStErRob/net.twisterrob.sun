@@ -402,7 +402,14 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
 		message.setTextColor(foregroundColor(this));
 		message.setOnClickListener(null);
-		message.setText(getString(R.string.message_selected_angle, getRelString(rel), angle));
+		switch (rel) {
+			case ABOVE:
+				message.setText(getString(R.string.message_selected_angle_above, angle));
+				break;
+			case BELOW:
+				message.setText(getString(R.string.message_selected_angle_below, angle));
+				break;
+		}
 		if (belowMin) {
 			message.setTextColor(MINIMUM_COLOR);
 			message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
@@ -470,11 +477,6 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		} else {
 			Toast.makeText(this, R.string.warning_no_location_settings, Toast.LENGTH_LONG).show();
 		}
-	}
-
-	private CharSequence getRelString(ThresholdRelation rel) {
-		int id = rel == ThresholdRelation.ABOVE? R.string.threshold_relation_above : R.string.threshold_relation_below;
-		return getString(id);
 	}
 
 	protected SunThresholdDrawable createSun() {
