@@ -4,12 +4,13 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.twisterrob.android.widget.WidgetHelpers;
@@ -20,7 +21,7 @@ public abstract class WidgetConfigurationActivity extends AppCompatActivity {
 	private int appWidgetId;
 	private Intent result;
 
-	@Override protected void onCreate(Bundle savedInstanceState) {
+	@Override protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
@@ -40,7 +41,7 @@ public abstract class WidgetConfigurationActivity extends AppCompatActivity {
 		prefs = onPreferencesOpen(appWidgetId);
 	}
 
-	@Override protected void onPostCreate(Bundle savedInstanceState) {
+	@Override protected void onPostCreate(@Nullable Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		if (savedInstanceState == null) {
 			onPreferencesLoad(prefs);
@@ -63,13 +64,16 @@ public abstract class WidgetConfigurationActivity extends AppCompatActivity {
 		sendBroadcast(intent);
 	}
 
-	protected abstract SharedPreferences onPreferencesOpen(int appWidgetId);
+	protected abstract @NonNull SharedPreferences onPreferencesOpen(int appWidgetId);
 
-	protected abstract void onPreferencesLoad(SharedPreferences prefs);
+	protected abstract void onPreferencesLoad(@NonNull SharedPreferences prefs);
 
-	protected abstract void onPreferencesSave(Editor prefs);
+	protected abstract void onPreferencesSave(@NonNull SharedPreferences.Editor edit);
 
-	protected final SharedPreferences getWidgetPreferences() {
+	/**
+	 * @return {@code null} before {@code super.onCreate()}.
+	 */
+	protected final @NonNull SharedPreferences getWidgetPreferences() {
 		return prefs;
 	}
 

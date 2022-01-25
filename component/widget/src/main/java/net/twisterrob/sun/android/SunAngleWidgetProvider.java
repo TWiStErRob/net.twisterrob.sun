@@ -91,7 +91,7 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 		return String.format(Locale.ROOT, "%08x", this.hashCode());
 	}
 
-	public static SharedPreferences getPreferences(@NonNull Context context, int appWidgetId) {
+	public static @NonNull SharedPreferences getPreferences(@NonNull Context context, int appWidgetId) {
 		return context.getApplicationContext()
 		              .getSharedPreferences(PREF_NAME + "-" + appWidgetId, Context.MODE_PRIVATE);
 	}

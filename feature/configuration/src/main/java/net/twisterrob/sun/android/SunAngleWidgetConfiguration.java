@@ -41,6 +41,8 @@ import static android.appwidget.AppWidgetManager.*;
 import static android.view.ViewGroup.LayoutParams.*;
 
 import androidx.annotation.ColorInt;
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -81,7 +83,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private Menu menu;
 	private LocationUpdater locationUpdater;
 
-	@Override protected void onCreate(Bundle savedInstanceState) {
+	@Override protected void onCreate(@Nullable Bundle savedInstanceState) {
 		if (BuildConfig.DEBUG) {
 			if (!getIntent().hasExtra(EXTRA_APPWIDGET_ID)) {
 				getIntent().putExtra(EXTRA_APPWIDGET_ID, 183);
@@ -203,17 +205,17 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 	}
 
-	@Override protected SharedPreferences onPreferencesOpen(int appWidgetId) {
+	@Override protected @NonNull SharedPreferences onPreferencesOpen(int appWidgetId) {
 		return SunAngleWidgetProvider.getPreferences(getApplicationContext(), appWidgetId);
 	}
 
-	@Override protected void onPreferencesLoad(SharedPreferences prefs) {
+	@Override protected void onPreferencesLoad(@NonNull SharedPreferences prefs) {
 		String rel = prefs.getString(PREF_THRESHOLD_RELATION, DEFAULT_THRESHOLD_RELATION.name());
 		relation.setChecked(toChecked(ThresholdRelation.valueOf(rel)));
 		angle.setProgress(toProgress(prefs.getFloat(PREF_THRESHOLD_ANGLE, DEFAULT_THRESHOLD_ANGLE)));
 	}
 
-	@Override public boolean onCreateOptionsMenu(Menu menu) {
+	@Override public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.config, menu);
 		SharedPreferences prefs = getWidgetPreferences();
@@ -227,7 +229,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return true;
 	}
 
-	@Override public boolean onOptionsItemSelected(MenuItem item) {
+	@Override public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.action_show_lastUpdateTime || id == R.id.action_show_partOfDay) {
 				updateCheckableOption(item, !item.isChecked());
@@ -487,7 +489,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 	}
 
-	protected SunThresholdDrawable createSun() {
+	protected @NonNull SunThresholdDrawable createSun() {
 		sun = new SunThresholdDrawable();
 		sun.setRadius(256);
 		sun.setSelectedVisuals(16, 20, Color.argb(0x66, 0x00, 0xFF, 0x00));
@@ -510,34 +512,34 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		this.lastResults = results;
 	}
 
-	@Override protected void onPreferencesSave(SharedPreferences.Editor edit) {
+	@Override protected void onPreferencesSave(@NonNull SharedPreferences.Editor edit) {
 		edit.putString(PREF_THRESHOLD_RELATION, getCurrentRelation().name());
 		edit.putFloat(PREF_THRESHOLD_ANGLE, getCurrentThresholdAngle());
 		edit.putBoolean(PREF_SHOW_UPDATE_TIME, menu.findItem(R.id.action_show_lastUpdateTime).isChecked());
 		edit.putBoolean(PREF_SHOW_PART_OF_DAY, menu.findItem(R.id.action_show_partOfDay).isChecked());
 	}
 
-	private static ThresholdRelation toRelation(boolean checked) {
+	private static @NonNull ThresholdRelation toRelation(boolean checked) {
 		return checked? ThresholdRelation.ABOVE : ThresholdRelation.BELOW;
 	}
 
-	private static boolean toChecked(ThresholdRelation rel) {
+	private static boolean toChecked(@NonNull ThresholdRelation rel) {
 		return rel == ThresholdRelation.ABOVE;
 	}
 
-	private static float toThreshold(int progress) {
+	private static @FloatRange(from = -90, to = 90) float toThreshold(@IntRange(from = 0, to = 180) int progress) {
 		return progress - 90;
 	}
 
-	private static int toProgress(float threshold) {
+	private static @IntRange(from = 0, to = 180) int toProgress(@FloatRange(from = -90, to = 90) float threshold) {
 		return (int)(threshold + 90);
 	}
 
-	protected ThresholdRelation getCurrentRelation() {
+	protected @NonNull ThresholdRelation getCurrentRelation() {
 		return toRelation(relation.isChecked());
 	}
 
-	protected float getCurrentThresholdAngle() {
+	protected @FloatRange(from = -90, to = 90) float getCurrentThresholdAngle() {
 		return toThreshold(angle.getProgress());
 	}
 
@@ -552,7 +554,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		preset.setSelection(position);
 	}
 
-	private static int find(int[] array, int value) {
+	private static @IntRange(from = -1) int find(@NonNull int[] array, int value) {
 		for (int i = 0; i < array.length; ++i) {
 			if (array[i] == value) {
 				return i;

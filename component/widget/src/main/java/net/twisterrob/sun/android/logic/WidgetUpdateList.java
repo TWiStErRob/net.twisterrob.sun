@@ -9,15 +9,15 @@ import androidx.core.location.LocationListenerCompat;
 
 public class WidgetUpdateList {
 
-	private final Set<Integer> toBeUpdated = new HashSet<>();
+	private final @NonNull Set<Integer> toBeUpdated = new HashSet<>();
 
-	public synchronized void remove(int... ids) {
+	public synchronized void remove(@NonNull int... ids) {
 		for (int id : ids) {
 			toBeUpdated.remove(id);
 		}
 	}
 
-	public synchronized void add(int... ids) {
+	public synchronized void add(@NonNull int... ids) {
 		for (int id : ids) {
 			toBeUpdated.add(id);
 		}

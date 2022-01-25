@@ -41,7 +41,7 @@ public class SunAngleWidgetUpdater {
 		// no context (yet)
 	}
 
-	public SunAngleWidgetUpdater(Context context) {
+	public SunAngleWidgetUpdater(@NonNull Context context) {
 		setContext(context);
 	}
 
@@ -51,12 +51,12 @@ public class SunAngleWidgetUpdater {
 		return context;
 	}
 
-	public void setContext(Context context) {
+	public void setContext(@NonNull Context context) {
 		this.context = context;
 	}
 
 	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
-	public void clearLocation(LocationListenerCompat fallback) {
+	public void clearLocation(@NonNull LocationListenerCompat fallback) {
 		if (hasLocationPermission()) {
 			LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 			LocationManagerCompat.removeUpdates(lm, fallback);

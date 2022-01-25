@@ -15,10 +15,13 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 public class LoggingAppWidgetProvider extends AppWidgetProvider {
-	private final String tag;
+
+	private final @NonNull String tag;
+
 	protected LoggingAppWidgetProvider() {
 		tag = getClass().getSimpleName();
 	}
+
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		if (Log.isLoggable(tag, Log.VERBOSE)) {
@@ -72,7 +75,7 @@ public class LoggingAppWidgetProvider extends AppWidgetProvider {
 	}
 
 	@Override
-	public String toString() {
+	public @NonNull String toString() {
 		return String.format(Locale.ROOT, "%08x", this.hashCode());
 	}
 }
