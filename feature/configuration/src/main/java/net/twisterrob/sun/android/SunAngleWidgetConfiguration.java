@@ -46,6 +46,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.location.LocationListenerCompat;
 import androidx.core.util.Consumer;
 
+import net.twisterrob.android.PermissionInterrogator;
 import net.twisterrob.android.app.LocationPermissionCompat;
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.android.widget.WidgetHelpers;
@@ -78,8 +79,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private Menu menu;
 	private LocationUpdater locationUpdater;
 	private final IntentOpener intentOpener = new IntentOpener(this);
+	private final PermissionInterrogator interrogator = new PermissionInterrogator(this);
 	private final LocationPermissionCompat permissions =
-			new LocationPermissionCompat(this, new LocationPermissionCompat.LocationPermissionEvents() {
+			new LocationPermissionCompat(this, interrogator, new LocationPermissionCompat.LocationPermissionEvents() {
 				@Override public void done() {
 					locationUpdater.single();
 				}

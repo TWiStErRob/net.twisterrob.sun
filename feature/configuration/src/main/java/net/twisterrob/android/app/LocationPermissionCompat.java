@@ -3,13 +3,11 @@ package net.twisterrob.android.app;
 import java.util.Map;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultCaller;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions;
 import androidx.annotation.AnyThread;
@@ -17,11 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.location.LocationManagerCompat;
 
+import net.twisterrob.android.PermissionInterrogator;
 import net.twisterrob.android.app.LocationPermissionCompat.LocationPermissionEvents.RationaleContinuation;
+import net.twisterrob.android.PermissionInterrogator.LocationState;
 
 /**
  * Abstract away the complexity of location permissions.
@@ -36,26 +33,27 @@ import net.twisterrob.android.app.LocationPermissionCompat.LocationPermissionEve
  */
 public class LocationPermissionCompat {
 
-	private final @NonNull AppCompatActivity activity;
+	private final @NonNull PermissionInterrogator interrogator;
 	private final @NonNull LocationPermissionEvents callback;
 	private final @NonNull ActivityResultLauncher<String[]> foregroundLocationPermissionLauncher;
 	private final @NonNull ActivityResultLauncher<String[]> backgroundLocationPermissionLauncher;
 
 	public LocationPermissionCompat(
-			@NonNull AppCompatActivity activity,
+			final @NonNull ActivityResultCaller activity,
+			final @NonNull PermissionInterrogator interrogator,
 			final @NonNull LocationPermissionEvents callback
 	) {
-		this.activity = activity;
+		this.interrogator = interrogator;
 		this.callback = callback;
 		this.foregroundLocationPermissionLauncher = activity.registerForActivityResult(
 				new RequestMultiplePermissions(),
 				new ActivityResultCallback<Map<String, Boolean>>() {
 					@Override public void onActivityResult(final Map<String, Boolean> isGranted) {
-						if (isAllGranted(isGranted)) {
+						if (interrogator.isAllGranted(isGranted)) {
 							requestBackground();
 						} else {
 							final String[] permissions = isGranted.keySet().toArray(new String[0]);
-							if (needsAnyRationale(permissions)) {
+							if (interrogator.needsAnyRationale(permissions)) {
 								callback.showForegroundRationale(new RationaleContinuation() {
 									@Override public void retry() {
 										foregroundLocationPermissionLauncher.launch(permissions);
@@ -76,11 +74,11 @@ public class LocationPermissionCompat {
 				new RequestMultiplePermissions(),
 				new ActivityResultCallback<Map<String, Boolean>>() {
 					@Override public void onActivityResult(Map<String, Boolean> isGranted) {
-						if (isAllGranted(isGranted)) {
+						if (interrogator.isAllGranted(isGranted)) {
 							permissionsReady();
 						} else {
 							final String[] permissions = isGranted.keySet().toArray(new String[0]);
-							if (needsAnyRationale(permissions)) {
+							if (interrogator.needsAnyRationale(permissions)) {
 								callback.showBackgroundRationale(new RationaleContinuation() {
 									@Override public void retry() {
 										backgroundLocationPermissionLauncher.launch(permissions);
@@ -101,19 +99,7 @@ public class LocationPermissionCompat {
 
 	@AnyThread
 	public @NonNull LocationState currentState() {
-		if (!isLocationEnabled()) {
-			return LocationState.LOCATION_DISABLED;
-		}
-		if (!hasCoarse()) {
-			return LocationState.COARSE_DENIED;
-		}
-		if (!hasFine()) {
-			return LocationState.FINE_DENIED;
-		}
-		if (!hasBackground()) {
-			return LocationState.BACKGROUND_DENIED;
-		}
-		return LocationState.ALL_GRANTED;
+		return interrogator.currentState();
 	}
 
 	@UiThread
@@ -127,9 +113,9 @@ public class LocationPermissionCompat {
 
 	private void requestForeground() {
 		final String[] permissions = calculateForegroundPermissionsToRequest();
-		if (hasAllPermissions(permissions)) {
+		if (interrogator.hasAllPermissions(permissions)) {
 			requestBackground();
-		} else if (needsAnyRationale(permissions)) {
+		} else if (interrogator.needsAnyRationale(permissions)) {
 			callback.showForegroundRationale(new RationaleContinuation() {
 				@Override public void retry() {
 					foregroundLocationPermissionLauncher.launch(permissions);
@@ -146,9 +132,9 @@ public class LocationPermissionCompat {
 
 	private void requestBackground() {
 		final String[] permissions = calculateBackgroundPermissionsToRequest();
-		if (hasAllPermissions(permissions)) {
+		if (interrogator.hasAllPermissions(permissions)) {
 			permissionsReady();
-		} else if (needsAnyRationale(permissions)) {
+		} else if (interrogator.needsAnyRationale(permissions)) {
 			callback.showBackgroundRationale(new RationaleContinuation() {
 				@Override public void retry() {
 					backgroundLocationPermissionLauncher.launch(permissions);
@@ -160,62 +146,6 @@ public class LocationPermissionCompat {
 			});
 		} else {
 			backgroundLocationPermissionLauncher.launch(permissions);
-		}
-	}
-
-	private boolean hasAllPermissions(@NonNull String... permissions) {
-		for (String permission : permissions) {
-			if (!hasPermission(permission)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private boolean hasPermission(@NonNull String permission) {
-		return ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED;
-	}
-
-	private boolean needsAnyRationale(@NonNull String... permissions) {
-		for (String permission : permissions) {
-			if (needsRationale(permission)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean needsRationale(@NonNull String permission) {
-		return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
-	}
-
-	private static boolean isAllGranted(@NonNull Map<String, Boolean> permissions) {
-		for (Boolean isGranted : permissions.values()) {
-			if (isGranted != Boolean.TRUE) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@VisibleForTesting boolean isLocationEnabled() {
-		LocationManager locationManager = (LocationManager)activity.getSystemService(Context.LOCATION_SERVICE);
-		return LocationManagerCompat.isLocationEnabled(locationManager);
-	}
-
-	@VisibleForTesting boolean hasCoarse() {
-		return hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-	}
-
-	@VisibleForTesting boolean hasFine() {
-		return hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-	}
-
-	@VisibleForTesting boolean hasBackground() {
-		if (Build.VERSION_CODES.Q <= Build.VERSION.SDK_INT) {
-			return hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
-		} else {
-			return true;
 		}
 	}
 
@@ -309,13 +239,5 @@ public class LocationPermissionCompat {
 			 */
 			void cancel();
 		}
-	}
-
-	public enum LocationState {
-		LOCATION_DISABLED,
-		COARSE_DENIED,
-		FINE_DENIED,
-		BACKGROUND_DENIED,
-		ALL_GRANTED,
 	}
 }

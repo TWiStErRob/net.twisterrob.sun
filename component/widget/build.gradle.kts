@@ -12,5 +12,9 @@ dependencies {
 	implementation(Deps.AndroidX.activity)
 	implementation(Deps.AndroidX.fragment)
 
+	testImplementation(Deps.Test.junit4)
+	testImplementation(Deps.Test.truth)
+	testImplementation(Deps.Test.mockito)
+	testImplementation(Deps.Test.paramInjector)
 	testRuntimeOnly(project(":feature:configuration"))
 }
