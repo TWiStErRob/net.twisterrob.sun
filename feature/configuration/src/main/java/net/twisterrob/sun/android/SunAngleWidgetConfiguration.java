@@ -2,7 +2,6 @@ package net.twisterrob.sun.android;
 
 import java.util.*;
 
-import android.annotation.SuppressLint;
 import android.app.*;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
@@ -12,10 +11,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.*;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.*;
 import android.text.style.*;
 import android.util.Log;
@@ -35,7 +32,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import static android.appwidget.AppWidgetManager.*;
 import static android.view.ViewGroup.LayoutParams.*;
@@ -81,6 +77,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private int[] mapping;
 	private Menu menu;
 	private LocationUpdater locationUpdater;
+	private final IntentOpener intentOpener = new IntentOpener(this);
 	private final LocationPermissionCompat permissions =
 			new LocationPermissionCompat(this, new LocationPermissionCompat.LocationPermissionEvents() {
 				@Override public void done() {
@@ -443,10 +440,11 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			case LOCATION_DISABLED: {
 				warning.setVisibility(View.VISIBLE);
 				warningText.setText(R.string.no_location_enabled_guide);
+				warningAction.setVisibility(intentOpener.canOpenLocationSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_enabled_guide_action);
 				warningAction.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
-						openLocationSettings();
+						intentOpener.openLocationSettings();
 					}
 				});
 				break;
@@ -455,10 +453,11 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			case FINE_DENIED: {
 				warning.setVisibility(View.VISIBLE);
 				warningText.setText(R.string.no_location_foreground_guide);
+				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_foreground_guide_action);
 				warningAction.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
-						openAppSettings(R.string.no_location_foreground_guide_action_failed);
+						intentOpener.openAppSettings();
 					}
 				});
 				break;
@@ -466,10 +465,11 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			case BACKGROUND_DENIED: {
 				warning.setVisibility(View.VISIBLE);
 				warningText.setText(getString(R.string.no_location_background_guide, getBackgroundLabel()));
+				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_background_guide_action);
 				warningAction.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
-						openAppSettings(R.string.no_location_background_guide_action_failed);
+						intentOpener.openAppSettings();
 					}
 				});
 				break;
@@ -480,10 +480,11 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				} else {
 					warning.setVisibility(View.VISIBLE);
 					warningText.setText(R.string.no_location_no_fix);
+					warningAction.setVisibility(intentOpener.canOpenAMapsApp() ? View.VISIBLE : View.GONE);
 					warningAction.setText(R.string.no_location_no_fix_action);
 					warningAction.setOnClickListener(new OnClickListener() {
 						@Override public void onClick(View v) {
-							openAMapsApp();
+							intentOpener.openAMapsApp();
 						}
 					});
 				}
@@ -509,45 +510,6 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		TypedValue typedValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.colorForeground, typedValue, true);
 		return typedValue.data;
-	}
-
-	@SuppressLint("QueryPermissionsNeeded") // https://developer.android.com/training/package-visibility/automatic
-	@SuppressWarnings("deprecation")
-	private void openAppSettings(@StringRes int errorMessage) {
-		Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-				.setData(Uri.fromParts("package", getPackageName(), null))
-				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		if (intent.resolveActivity(getPackageManager()) != null) {
-			// deprecation:Need to clean up code before I can change to registerForActivityResult.
-			startActivityForResult(intent, 0);
-		} else {
-			Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
-		}
-	}
-
-	@SuppressLint("QueryPermissionsNeeded") // https://developer.android.com/training/package-visibility/automatic
-	private void openLocationSettings() {
-		Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-		if (intent.resolveActivity(getPackageManager()) != null) {
-			startActivity(intent);
-		} else {
-			Toast.makeText(this, R.string.no_location_enabled_guide_action_failed, Toast.LENGTH_LONG).show();
-		}
-	}
-
-	private void openAMapsApp() {
-		try {
-			Intent intent = new Intent(Intent.ACTION_VIEW)
-					// See https://developer.android.com/guide/components/intents-common#Maps
-					.setData(Uri.parse("geo:0,0"))
-					.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-		} catch (ActivityNotFoundException ex) {
-			// Fail quietly. The UI didn't indicate there is any action. If it works, it works.
-			if (Log.isLoggable(TAG, Log.WARN)) {
-				Log.w(TAG, "No Maps app present which could handle `geo:` URIs.");
-			}
-		}
 	}
 
 	protected @NonNull SunThresholdDrawable createSun() {

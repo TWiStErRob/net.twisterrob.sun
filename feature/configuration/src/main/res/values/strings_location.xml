@@ -14,15 +14,12 @@
 
 	<string name="no_location_enabled_guide">Please enable your device Location in the Settings app by tapping here. After coming back, wait a moment to allow the system to figure things out.</string>
 	<string name="no_location_enabled_guide_action">Open Settings</string>
-	<string name="no_location_enabled_guide_action_failed">Can\'t start Settings app, sorry.\n\nPlease go to device Settings to manually enable location or permissions.</string>
 
-	<string name="no_location_foreground_guide">The widget needs to know where you are to calculate the location of the Sun in the sky.\nPlease allow access to the precise location in the app Settings by tapping here.</string>
+	<string name="no_location_foreground_guide">Widget can not calculate the location of the sun, you must allow precise location permission in the app settings.</string>
 	<string name="no_location_foreground_guide_action">Open App Settings</string>
-	<string name="no_location_foreground_guide_action_failed">Can\'t start app Settings, sorry.\n\nPlease go to device Settings to manually permissions for Sun Position Widget.</string>
 
 	<string name="no_location_background_guide">Sometimes home screen widget updates happen while there\'s another app running and the widget is not visible.\nPlease allow access to the precise location permission in the app Settings using the “%1$s“ option by tapping here.</string>
-	<string name="no_location_background_guide_action">Open App Settings.</string>
-	<string name="no_location_background_guide_action_failed">Can\'t start app Settings, sorry.\n\nPlease go to device Settings to manually permissions for Sun Position Widget.</string>
+	<string name="no_location_background_guide_action">Open App Settings</string>
 
 
 	<string name="no_location_no_fix">The widget needs to know where you are, however due to performance reasons it will not request a location. Please open Maps or other app that shows your location.</string>
