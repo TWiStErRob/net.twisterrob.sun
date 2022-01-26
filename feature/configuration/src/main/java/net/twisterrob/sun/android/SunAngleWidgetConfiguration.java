@@ -46,8 +46,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.location.LocationListenerCompat;
 import androidx.core.util.Consumer;
 
-import net.twisterrob.android.PermissionInterrogator;
 import net.twisterrob.android.app.LocationPermissionCompat;
+import net.twisterrob.android.app.PermissionInterrogator;
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.android.widget.WidgetHelpers;
 import net.twisterrob.sun.algo.*;

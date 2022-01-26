@@ -1,4 +1,4 @@
-package net.twisterrob.android;
+package net.twisterrob.android.app;
 
 import java.util.Map;
 

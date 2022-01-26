@@ -16,9 +16,8 @@ import androidx.annotation.UiThread;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
-import net.twisterrob.android.PermissionInterrogator;
 import net.twisterrob.android.app.LocationPermissionCompat.LocationPermissionEvents.RationaleContinuation;
-import net.twisterrob.android.PermissionInterrogator.LocationState;
+import net.twisterrob.android.app.PermissionInterrogator.LocationState;
 
 /**
  * Abstract away the complexity of location permissions.

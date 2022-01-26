@@ -1,4 +1,4 @@
-package net.twisterrob.android;
+package net.twisterrob.android.app;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,7 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import androidx.annotation.NonNull;
 
-import net.twisterrob.android.PermissionInterrogator.LocationState;
+import net.twisterrob.android.app.PermissionInterrogator.LocationState;
 
 @RunWith(TestParameterInjector.class)
 public class PermissionInterrogatorTest {
