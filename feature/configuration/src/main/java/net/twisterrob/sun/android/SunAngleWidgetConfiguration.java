@@ -503,6 +503,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			return getPackageManager().getBackgroundPermissionOptionLabel();
 		} else if (Build.VERSION_CODES.Q <= Build.VERSION.SDK_INT) {
 			return getString(R.string.no_location_background_option_label_29);
+		} else if (Build.VERSION_CODES.M <= Build.VERSION.SDK_INT) {
+			return ""; // reachable, but not used.
 		} else {
 			throw new IllegalStateException("Unreachable, background permission is not a thing < Android 10 / API 29");
 		}

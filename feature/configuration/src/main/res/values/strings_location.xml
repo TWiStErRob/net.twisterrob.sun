@@ -1,44 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="DuplicateStrings">
 
-	<string name="no_location_foreground_rationale_title">Precise location recommended</string>
+	<string name="no_location_foreground_rationale_title">Location Required</string>
 	<string name="no_location_foreground_rationale">
 		The widget needs to know your location to calculate the position of the Sun.
 		\n
-		\nIt works best if you allow precise location at the next step.
+		\nIt only works if you allow location access at the next step.
 	</string>
 	<string name="no_location_foreground_rationale_ok">Next</string>
 	<string name="no_location_foreground_rationale_cancel">@android:string/cancel</string>
 
-	<string name="no_location_background_rationale_title">Allow location all the time</string>
-	<string name="no_location_background_rationale">
-		To display up-to-date information about the Sun on the home screen, the widget needs access to your location all the time.
+	<!-- This one skips the string format placeholder, because that's only relevant above API 29. -->
+	<string name="no_location_foreground_guide" tools:ignore="StringFormatInvalid">
+		The widget needs to know your location to calculate the position of the Sun.
 		\n
-		\nPlease select the “%1$s” option in the next screen.
+		\nPlease give permission to the location in the app settings.
 	</string>
-	<string name="no_location_background_rationale_ok">Next</string>
-	<string name="no_location_background_rationale_cancel">@android:string/cancel</string>
-	<string name="no_location_background_option_label_29">Allow all the time</string>
+	<string name="no_location_foreground_guide_action">Open App Settings</string>
 
 	<string name="no_location_enabled_guide">
 		Please enable Location on your device in the Settings.
 		After coming back, wait a moment to allow the system to figure things out.
 	</string>
 	<string name="no_location_enabled_guide_action">Open Settings</string>
-
-	<string name="no_location_foreground_guide">
-		Widget can not calculate the location of the Sun, you must allow precise location permission in the app settings.
-		\n
-		\nPlease allow access to the precise location permission in the app settings using the “%1$s“ option.
-	</string>
-	<string name="no_location_foreground_guide_action">Open App Settings</string>
-
-	<string name="no_location_background_guide">
-		To display up-to-date information about the Sun on the home screen, the widget needs access to your location all the time.
-		\n
-		\nPlease allow access to the precise location permission in the app settings using the “%1$s“ option.
-	</string>
-	<string name="no_location_background_guide_action">Open App Settings</string>
 
 	<string name="no_location_no_fix">
 		The widget needs to know where you are, however due to performance reasons it will not request a location.

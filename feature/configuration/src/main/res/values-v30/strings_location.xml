@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- From API 30 precise location comes into play. -->
+<resources>
+
+	<string name="no_location_foreground_rationale_title">Precise location required</string>
+	<string name="no_location_foreground_rationale">
+		The widget needs to know your location to calculate the position of the Sun.
+		\n
+		\nIt only works if you allow precise location access at the next step.
+	</string>
+
+	<string name="no_location_foreground_guide">
+		The widget needs to know your location to calculate the position of the Sun.
+		\n
+		\nPlease give permission to precise location in the app settings using the “%1$s“ option.
+	</string>
+
+
+	<string name="no_location_background_guide">
+		To display up-to-date information about the Sun on the home screen, the widget needs access to your location all the time.
+		\n
+		\nPlease give permission to precise location in the app settings using the “%1$s“ option.
+	</string>
+
+</resources>
