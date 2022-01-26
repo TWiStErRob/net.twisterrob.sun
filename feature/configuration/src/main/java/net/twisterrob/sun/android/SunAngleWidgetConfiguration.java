@@ -452,7 +452,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			case COARSE_DENIED:
 			case FINE_DENIED: {
 				warning.setVisibility(View.VISIBLE);
-				warningText.setText(R.string.no_location_foreground_guide);
+				warningText.setText(getString(R.string.no_location_foreground_guide, getBackgroundLabel()));
 				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_foreground_guide_action);
 				warningAction.setOnClickListener(new OnClickListener() {
