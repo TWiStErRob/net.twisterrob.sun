@@ -18,21 +18,41 @@
 		app:layout_constraintBottom_toBottomOf="parent"
 		/>
 
-	<TextView
+	<!-- https://github.com/material-components/material-components-android/issues/74 -->
+	<LinearLayout
 		android:id="@+id/warning"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:clickable="true"
-		android:focusable="true"
-		android:textColor="@color/invalid"
-		android:textIsSelectable="false"
+		android:padding="16dp"
+		android:orientation="vertical"
+		android:background="@android:drawable/dialog_holo_light_frame"
+		android:backgroundTint="@color/invalid"
+		android:backgroundTintMode="multiply"
 		android:visibility="gone"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		tools:text="@string/no_location_enabled_guide"
 		tools:visibility="visible"
-		/>
+		tools:ignore="UnusedAttribute"
+		>
+
+		<TextView
+			android:id="@+id/warning_text"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/no_location_enabled_guide"
+			/>
+
+		<Button
+			android:id="@+id/warning_action"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="end"
+			android:layout_marginTop="4dp"
+			tools:text="@string/no_location_enabled_guide_action"
+			/>
+
+	</LinearLayout>
 
 	<TextView
 		android:id="@+id/message"

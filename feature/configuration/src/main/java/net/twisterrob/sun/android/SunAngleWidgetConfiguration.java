@@ -71,7 +71,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private static final int MINIMUM_COLOR = Color.argb(0xAA, 0x00, 0x88, 0xFF);
 	private CompoundButton relation;
 	private TextView message;
-	private TextView warning;
+	private View warning;
+	private TextView warningText;
+	private Button warningAction;
 	private SeekBar angle;
 	private Spinner preset;
 	private SunThresholdDrawable sun;
@@ -136,6 +138,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		setContentView(R.layout.activity_config);
 		message = findViewById(R.id.message);
 		warning = findViewById(R.id.warning);
+		warningText = findViewById(R.id.warning_text);
+		warningAction = findViewById(R.id.warning_action);
 		mapping = getResources().getIntArray(R.array.angle_preset_values);
 
 		sun = createSun();
@@ -438,8 +442,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		switch (permissions.currentState()) {
 			case LOCATION_DISABLED: {
 				warning.setVisibility(View.VISIBLE);
-				warning.setText(R.string.no_location_enabled_guide);
-				warning.setOnClickListener(new OnClickListener() {
+				warningText.setText(R.string.no_location_enabled_guide);
+				warningAction.setText(R.string.no_location_enabled_guide_action);
+				warningAction.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
 						openLocationSettings();
 					}
@@ -449,20 +454,22 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			case COARSE_DENIED:
 			case FINE_DENIED: {
 				warning.setVisibility(View.VISIBLE);
-				warning.setText(R.string.no_location_foreground_guide);
-				warning.setOnClickListener(new OnClickListener() {
+				warningText.setText(R.string.no_location_foreground_guide);
+				warningAction.setText(R.string.no_location_foreground_guide_action);
+				warningAction.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
-						openAppSettings();
+						openAppSettings(R.string.no_location_foreground_guide_action_failed);
 					}
 				});
 				break;
 			}
 			case BACKGROUND_DENIED: {
 				warning.setVisibility(View.VISIBLE);
-				warning.setText(getString(R.string.no_location_background_guide, getBackgroundLabel()));
-				warning.setOnClickListener(new OnClickListener() {
+				warningText.setText(getString(R.string.no_location_background_guide, getBackgroundLabel()));
+				warningAction.setText(R.string.no_location_background_guide_action);
+				warningAction.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
-						openAppSettings();
+						openAppSettings(R.string.no_location_background_guide_action_failed);
 					}
 				});
 				break;
@@ -472,8 +479,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					warning.setVisibility(View.GONE);
 				} else {
 					warning.setVisibility(View.VISIBLE);
-					warning.setText(R.string.no_location_no_fix);
-					warning.setOnClickListener(new OnClickListener() {
+					warningText.setText(R.string.no_location_no_fix);
+					warningAction.setText(R.string.no_location_no_fix_action);
+					warningAction.setOnClickListener(new OnClickListener() {
 						@Override public void onClick(View v) {
 							openAMapsApp();
 						}
@@ -505,7 +513,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 
 	@SuppressLint("QueryPermissionsNeeded") // https://developer.android.com/training/package-visibility/automatic
 	@SuppressWarnings("deprecation")
-	private void openAppSettings() {
+	private void openAppSettings(@StringRes int errorMessage) {
 		Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
 				.setData(Uri.fromParts("package", getPackageName(), null))
 				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -513,7 +521,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			// deprecation:Need to clean up code before I can change to registerForActivityResult.
 			startActivityForResult(intent, 0);
 		} else {
-			Toast.makeText(this, R.string.no_location_guide_failed, Toast.LENGTH_LONG).show();
+			Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -523,7 +531,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		if (intent.resolveActivity(getPackageManager()) != null) {
 			startActivity(intent);
 		} else {
-			Toast.makeText(this, R.string.no_location_guide_failed, Toast.LENGTH_LONG).show();
+			Toast.makeText(this, R.string.no_location_enabled_guide_action_failed, Toast.LENGTH_LONG).show();
 		}
 	}
 
