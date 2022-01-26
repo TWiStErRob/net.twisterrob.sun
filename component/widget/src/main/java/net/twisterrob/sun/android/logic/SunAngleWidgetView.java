@@ -83,6 +83,7 @@ public class SunAngleWidgetView {
 			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1_invalid);
 			views.setTextViewText(R.id.timeUpdated, time3.format(times.now().getTime()));
 			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_location));
+			views.setTextViewText(R.id.threshold, res.getText(R.string.call_to_action_location_fix));
 			views.setOnClickPendingIntent(R.id.state, createRefreshIntent(context, appWidgetId));
 			views.setOnClickPendingIntent(R.id.threshold, createOpenIntent(context, appWidgetId));
 		} else {
