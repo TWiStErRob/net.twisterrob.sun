@@ -3,7 +3,9 @@
 	package="net.twisterrob.sun.configuration"
 	>
 
-	<application>
+	<application
+		android:supportsRtl="true"
+		>
 
 		<activity
 			android:name="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
