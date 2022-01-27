@@ -12,6 +12,7 @@ dependencies {
 	implementation(Deps.AndroidX.activity)
 	implementation(Deps.AndroidX.fragment)
 	implementation(Deps.ThirdParty.permissions)
+	implementation(Deps.AndroidX.constraint)
 }
 
 android {

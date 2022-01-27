@@ -1,68 +1,84 @@
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:padding="@dimen/margin2"
-	tools:ignore="RtlHardcoded"
+	android:padding="8dp"
 	tools:context="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
 	>
+
 	<Button
 		android:id="@+id/btn_ok"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
 		android:text="@string/config_done"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
 		/>
+
 	<TextView
 		android:id="@+id/message"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
 		android:clickable="true"
 		android:focusable="true"
 		android:textIsSelectable="false"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
 		tools:text="@string/message_selected_angle_above"
 		/>
+
 	<ToggleButton
 		android:id="@+id/thresholdRelation"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_above="@id/btn_ok"
-		android:layout_alignParentRight="true"
 		android:textOn="@string/threshold_relation_above"
 		android:textOff="@string/threshold_relation_below"
 		android:checked="true"
+		app:layout_constraintBottom_toTopOf="@id/btn_ok"
+		app:layout_constraintEnd_toEndOf="parent"
 		/>
+
 	<Spinner
 		android:id="@+id/preset"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_above="@id/btn_ok"
-		android:layout_toLeftOf="@id/thresholdRelation"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
 		android:entries="@array/angle_preset"
+		app:layout_constraintEnd_toStartOf="@id/thresholdRelation"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintBottom_toTopOf="@id/btn_ok"
+		app:layout_constraintTop_toTopOf="@id/thresholdRelation"
 		/>
+
 	<net.twisterrob.android.view.VerticalSeekBar
 		android:id="@+id/angle"
 		android:layout_width="wrap_content"
-		android:layout_height="fill_parent"
-		android:layout_alignBottom="@id/visualization"
-		android:layout_alignParentRight="true"
-		android:layout_alignTop="@id/visualization"
+		android:layout_height="0dp"
 		android:max="180"
+		android:mirrorForRtl="false"
 		android:thumb="@drawable/ic_sun"
+		app:layout_constraintTop_toTopOf="@id/visualization"
+		app:layout_constraintBottom_toBottomOf="@id/visualization"
+		app:layout_constraintEnd_toEndOf="parent"
 		tools:progress="90"
+		tools:ignore="UnusedAttribute"
 		/>
+
 	<ImageView
 		android:id="@+id/visualization"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_margin="@dimen/margin"
-		android:layout_above="@id/preset"
-		android:layout_alignParentLeft="true"
-		android:layout_below="@id/message"
-		android:layout_toLeftOf="@id/angle"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:layout_margin="4dp"
 		android:contentDescription="@string/cd_selected_angle"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/angle"
+		app:layout_constraintTop_toBottomOf="@id/message"
+		app:layout_constraintBottom_toTopOf="@id/thresholdRelation"
 		tools:src="@drawable/ic_launcher"
+		tools:ignore="RedundantDescriptionCheck"
 		/>
-</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

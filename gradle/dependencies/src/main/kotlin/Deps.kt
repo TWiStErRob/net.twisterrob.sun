@@ -24,6 +24,7 @@ object Deps {
 		const val activity = "androidx.activity:activity:1.4.0"
 		const val fragment = "androidx.fragment:fragment:1.4.0"
 		const val annotations = "androidx.annotation:annotation:1.3.0"
+		const val constraint = "androidx.constraintlayout:constraintlayout:2.1.3"
 	}
 
 	object ThirdParty {

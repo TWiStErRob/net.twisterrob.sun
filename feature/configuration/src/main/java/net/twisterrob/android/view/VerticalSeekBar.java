@@ -8,13 +8,19 @@ import android.view.MotionEvent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatSeekBar;
 
+/**
+ * For use RTL-compatible layouts add {@link android.R.attr#mirrorForRtl}.
+ */
 public class VerticalSeekBar extends AppCompatSeekBar {
+
 	public VerticalSeekBar(Context context) {
 		super(context);
 	}
+
 	public VerticalSeekBar(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
+
 	public VerticalSeekBar(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
