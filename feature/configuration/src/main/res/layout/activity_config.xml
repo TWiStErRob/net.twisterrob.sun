@@ -58,11 +58,13 @@
 		android:layout_width="wrap_content"
 		android:layout_height="0dp"
 		android:max="180"
+		android:mirrorForRtl="false"
 		android:thumb="@drawable/ic_sun"
 		app:layout_constraintTop_toTopOf="@id/visualization"
 		app:layout_constraintBottom_toBottomOf="@id/visualization"
 		app:layout_constraintEnd_toEndOf="parent"
 		tools:progress="90"
+		tools:ignore="UnusedAttribute"
 		/>
 
 	<ImageView
