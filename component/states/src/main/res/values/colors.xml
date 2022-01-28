@@ -1,5 +1,6 @@
 <resources>
 
 	<color name="invalid">#f66</color>
+	<color name="invalid_light">#fdd</color>
 
 </resources>
