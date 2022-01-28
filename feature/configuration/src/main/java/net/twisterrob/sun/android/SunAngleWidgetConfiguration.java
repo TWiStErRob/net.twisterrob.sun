@@ -416,27 +416,22 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				break;
 		}
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
-		if (results.params.hasLocation()) {
-			message.setVisibility(View.VISIBLE);
-			message.setTextColor(foregroundColor(this));
-			switch (rel) {
-				case ABOVE:
-					message.setText(getString(R.string.message_selected_angle_above, angle));
-					break;
-				case BELOW:
-					message.setText(getString(R.string.message_selected_angle_below, angle));
-					break;
-			}
-			if (belowMin) {
-				message.setTextColor(MINIMUM_COLOR);
-				message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
-			}
-			if (aboveMax) {
-				message.setTextColor(MAXIMUM_COLOR);
-				message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
-			}
-		} else {
-			message.setVisibility(View.GONE);
+		message.setTextColor(foregroundColor(this));
+		switch (rel) {
+			case ABOVE:
+				message.setText(getString(R.string.message_selected_angle_above, angle));
+				break;
+			case BELOW:
+				message.setText(getString(R.string.message_selected_angle_below, angle));
+				break;
+		}
+		if (belowMin) {
+			message.setTextColor(MINIMUM_COLOR);
+			message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle));
+		}
+		if (aboveMax) {
+			message.setTextColor(MAXIMUM_COLOR);
+			message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
 		}
 		switch (permissions.currentState()) {
 			case LOCATION_DISABLED: {
