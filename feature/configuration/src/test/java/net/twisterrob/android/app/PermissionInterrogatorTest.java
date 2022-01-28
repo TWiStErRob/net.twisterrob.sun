@@ -58,13 +58,9 @@ public class PermissionInterrogatorTest {
 				boolean hasBackground
 		) {
 			this.expectedState = expectedState;
-
 			this.hasLocation = hasLocation;
-
 			this.hasCoarse = hasCoarse;
-
 			this.hasFine = hasFine;
-
 			this.hasBackground = hasBackground;
 		}
 	}
@@ -82,11 +78,12 @@ public class PermissionInterrogatorTest {
 			}
 		}
 
+		Collection<String> covered = new HashSet<>();
 		for (LocationStateExpectations value : LocationStateExpectations.values()) {
-			all.remove("" + value.hasLocation + value.hasCoarse + value.hasFine + value.hasBackground);
+			covered.add("" + value.hasLocation + value.hasCoarse + value.hasFine + value.hasBackground);
 		}
 
-		assertThat(all).isEmpty();
+		assertThat(covered).containsExactlyElementsIn(all);
 	}
 
 	@Test public void testCurrentState(@TestParameter LocationStateExpectations test) {
