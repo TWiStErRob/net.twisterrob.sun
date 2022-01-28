@@ -12,6 +12,7 @@ dependencies {
 	implementation(Deps.AndroidX.activity)
 	implementation(Deps.AndroidX.fragment)
 	implementation(Deps.AndroidX.constraint)
+	implementation(Deps.AndroidX.card)
 
 	testImplementation(Deps.Test.junit4)
 	testImplementation(Deps.Test.truth)

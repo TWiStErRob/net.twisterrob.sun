@@ -19,16 +19,13 @@
 		/>
 
 	<!-- https://github.com/material-components/material-components-android/issues/74 -->
-	<LinearLayout
+	<androidx.cardview.widget.CardView
 		android:id="@+id/warning"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:padding="16dp"
-		android:orientation="vertical"
-		android:background="@android:drawable/dialog_holo_light_frame"
-		android:backgroundTint="@color/invalid"
-		android:backgroundTintMode="multiply"
 		android:visibility="gone"
+		app:contentPadding="8dp"
+		app:cardBackgroundColor="@color/invalid"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -36,23 +33,31 @@
 		tools:ignore="UnusedAttribute"
 		>
 
-		<TextView
-			android:id="@+id/warning_text"
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/no_location_enabled_guide"
-			/>
+			android:orientation="vertical"
+			>
 
-		<Button
-			android:id="@+id/warning_action"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="end"
-			android:layout_marginTop="4dp"
-			tools:text="@string/no_location_enabled_guide_action"
-			/>
+			<TextView
+				android:id="@+id/warning_text"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/no_location_enabled_guide"
+				/>
 
-	</LinearLayout>
+			<Button
+				android:id="@+id/warning_action"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="end"
+				android:layout_marginTop="4dp"
+				tools:text="@string/no_location_enabled_guide_action"
+				/>
+
+		</LinearLayout>
+
+	</androidx.cardview.widget.CardView>
 
 	<TextView
 		android:id="@+id/message"
