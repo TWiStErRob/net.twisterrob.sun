@@ -21,8 +21,10 @@
 	<include
 		android:id="@+id/warning"
 		layout="@layout/warning_banner"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		android:visibility="gone"
-		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toTopOf="@id/btn_ok"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		tools:visibility="visible"
@@ -35,7 +37,7 @@
 		android:textIsSelectable="false"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintBottom_toTopOf="@+id/preset"
+		app:layout_constraintTop_toTopOf="parent"
 		tools:text="@string/message_selected_angle_above"
 		/>
 
@@ -46,7 +48,7 @@
 		android:textOn="@string/threshold_relation_above"
 		android:textOff="@string/threshold_relation_below"
 		android:checked="true"
-		app:layout_constraintBottom_toTopOf="@id/btn_ok"
+		app:layout_constraintBottom_toTopOf="@id/warning"
 		app:layout_constraintEnd_toEndOf="parent"
 		/>
 
@@ -83,8 +85,8 @@
 		android:contentDescription="@string/cd_selected_angle"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toStartOf="@id/angle"
-		app:layout_constraintTop_toBottomOf="@id/warning"
-		app:layout_constraintBottom_toTopOf="@id/message"
+		app:layout_constraintTop_toBottomOf="@id/message"
+		app:layout_constraintBottom_toTopOf="@id/preset"
 		tools:src="@drawable/ic_launcher"
 		tools:ignore="RedundantDescriptionCheck"
 		/>
