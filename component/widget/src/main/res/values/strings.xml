@@ -14,6 +14,8 @@
 
 	<string name="call_to_action_refresh">Tap to refresh</string>
 	<string name="call_to_action_location">No location available</string>
+
 	<string name="call_to_action_settings">Change Settings</string>
+	<string name="call_to_action_location_fix">Fix Location</string>
 
 </resources>
