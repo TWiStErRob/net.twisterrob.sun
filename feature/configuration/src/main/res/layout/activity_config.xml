@@ -41,6 +41,18 @@
 		tools:text="@string/message_selected_angle_above"
 		/>
 
+	<androidx.constraintlayout.widget.Barrier
+		android:id="@+id/bottom"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:barrierDirection="top"
+		app:constraint_referenced_ids="
+			preset,
+			preset_label,
+			thresholdRelation,
+		"
+		/>
+
 	<ToggleButton
 		android:id="@+id/thresholdRelation"
 		android:layout_width="wrap_content"
@@ -270,7 +282,7 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toStartOf="@id/angle_ticks"
 		app:layout_constraintTop_toBottomOf="@id/message"
-		app:layout_constraintBottom_toTopOf="@id/thresholdRelation"
+		app:layout_constraintBottom_toTopOf="@id/bottom"
 		android:contentDescription="@string/cd_selected_angle"
 		tools:ignore="RedundantDescriptionCheck"
 		tools:src="@drawable/ic_launcher"
