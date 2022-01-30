@@ -99,6 +99,8 @@
 		app:layout_constraintEnd_toEndOf="@id/angle"
 		app:layout_constraintTop_toTopOf="@id/angle"
 		app:layout_constraintBottom_toBottomOf="@id/angle"
+		android:backgroundTint="#4fff"
+		android:backgroundTintMode="multiply"
 		tools:background="#11000000"
 		/>
 
@@ -111,6 +113,8 @@
 		app:layout_constraintBottom_toBottomOf="@id/visualization"
 		android:max="180"
 		android:mirrorForRtl="false"
+		android:progressTint="@android:color/transparent"
+		android:splitTrack="true"
 		android:thumb="@drawable/ic_sun"
 		android:tickMark="@color/invalid"
 		android:tickMarkTint="@color/invalid"
