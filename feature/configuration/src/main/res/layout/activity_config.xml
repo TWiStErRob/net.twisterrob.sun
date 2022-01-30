@@ -142,69 +142,6 @@
 			/>
 
 		<androidx.constraintlayout.widget.Guideline
-			android:id="@+id/tick_guide_p18"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			app:layout_constraintGuide_percent="0.4"
-			android:orientation="horizontal"
-			/>
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="@id/tick_guide_p18"
-			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p18"
-			android:text="18°"
-			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="8dp"
-			android:drawableRight="@drawable/tick"
-			android:includeFontPadding="false"
-			/>
-
-		<androidx.constraintlayout.widget.Guideline
-			android:id="@+id/tick_guide_p12"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			app:layout_constraintGuide_percent="0.4333333"
-			android:orientation="horizontal"
-			/>
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="@id/tick_guide_p12"
-			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p12"
-			android:text="12°"
-			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="8dp"
-			android:drawableRight="@drawable/tick"
-			android:includeFontPadding="false"
-			/>
-
-		<androidx.constraintlayout.widget.Guideline
-			android:id="@+id/tick_guide_p6"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			app:layout_constraintGuide_percent="0.466666"
-			android:orientation="horizontal"
-			/>
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintTop_toTopOf="@id/tick_guide_p6"
-			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p6"
-			android:text="6°"
-			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="8dp"
-			android:drawableRight="@drawable/tick"
-			android:includeFontPadding="false"
-			/>
-
-		<androidx.constraintlayout.widget.Guideline
 			android:id="@+id/tick_guide_0"
 			android:layout_width="0dp"
 			android:layout_height="0dp"
