@@ -11,6 +11,9 @@ import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.location.*;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,6 +49,7 @@ import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.location.LocationListenerCompat;
 import androidx.core.util.Consumer;
+import androidx.core.view.ViewCompat;
 
 import net.twisterrob.android.app.LocationPermissionCompat;
 import net.twisterrob.android.app.PermissionInterrogator;
@@ -55,6 +59,8 @@ import net.twisterrob.android.widget.WidgetHelpers;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
+import net.twisterrob.sun.android.ui.SunGradientShaderFactory;
+import net.twisterrob.sun.android.ui.SunGradientShaderFactory.Type;
 import net.twisterrob.sun.android.view.SunThresholdDrawable;
 import net.twisterrob.sun.configuration.BuildConfig;
 import net.twisterrob.sun.configuration.R;
@@ -145,6 +151,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 
 		sun = createSun();
 		((ImageView)findViewById(R.id.visualization)).setImageDrawable(sun);
+		ViewCompat.setBackground(findViewById(R.id.angle_background), createSunStrip());
 
 		findViewById(R.id.btn_ok).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -521,6 +528,13 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		TypedValue typedValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.colorForeground, typedValue, true);
 		return typedValue.data;
+	}
+
+	protected @NonNull Drawable createSunStrip() {
+		PaintDrawable paint = new PaintDrawable();
+		paint.setShape(new RectShape());
+		paint.setShaderFactory(new SunGradientShaderFactory(Type.Vertical));
+		return paint;
 	}
 
 	protected @NonNull SunThresholdDrawable createSun() {
