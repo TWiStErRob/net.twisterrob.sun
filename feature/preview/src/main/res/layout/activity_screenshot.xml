@@ -5,7 +5,6 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical"
 	tools:context="net.twisterrob.sun.android.WidgetScreenshotActivity"
-	tools:ignore="HardcodedText,SelectableText"
 	>
 
 	<FrameLayout
@@ -38,6 +37,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical|end"
 				android:text="Width:"
+				tools:ignore="HardcodedText"
 				/>
 
 			<SeekBar
@@ -51,6 +51,7 @@
 			<TextView
 				android:id="@+id/widthDisplay"
 				android:layout_gravity="center_vertical|start"
+				android:textIsSelectable="false"
 				tools:text="72dp"
 				/>
 
@@ -63,6 +64,7 @@
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical|end"
 				android:text="Height:"
+				tools:ignore="HardcodedText"
 				/>
 
 			<SeekBar
@@ -76,6 +78,7 @@
 			<TextView
 				android:id="@+id/heightDisplay"
 				android:layout_gravity="center_vertical|start"
+				android:textIsSelectable="false"
 				tools:text="86dp"
 				/>
 
