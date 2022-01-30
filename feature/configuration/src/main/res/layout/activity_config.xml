@@ -67,8 +67,7 @@
 		android:id="@+id/angle"
 		android:layout_width="wrap_content"
 		android:layout_height="0dp"
-		android:layout_marginRight="-20dp"
-		app:layout_constraintEnd_toStartOf="@id/angle_ticks"
+		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintTop_toTopOf="@id/visualization"
 		app:layout_constraintBottom_toBottomOf="@id/visualization"
 		android:max="180"
@@ -89,10 +88,13 @@
 		android:layout_height="0dp"
 		android:paddingTop="16dp"
 		android:paddingBottom="16dp"
-		app:layout_constraintEnd_toEndOf="parent"
+		android:layout_marginRight="-20dp"
+		android:layout_marginEnd="-20dp"
+		app:layout_constraintEnd_toStartOf="@id/angle"
 		app:layout_constraintTop_toTopOf="@id/angle"
 		app:layout_constraintBottom_toBottomOf="@id/angle"
 		android:clipToPadding="false"
+		tools:ignore="HardcodedText"
 		>
 
 		<androidx.constraintlayout.widget.Guideline
@@ -101,20 +103,20 @@
 			android:layout_height="0dp"
 			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintGuide_percent="0.0"
+			app:layout_constraintGuide_begin="16dp"
 			android:orientation="horizontal"
 			/>
 
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="@id/tick_guide_p90"
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p90"
 			android:text="90°"
-			android:drawableLeft="@drawable/tick"
+			android:drawableEnd="@drawable/tick"
 			android:drawablePadding="12dp"
-			android:drawableStart="@drawable/tick"
+			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
 
@@ -129,13 +131,13 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="@id/tick_guide_p50"
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p50"
 			android:text="50°"
-			android:drawableLeft="@drawable/tick"
+			android:drawableEnd="@drawable/tick"
 			android:drawablePadding="12dp"
-			android:drawableStart="@drawable/tick"
+			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
 
@@ -150,13 +152,13 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="@id/tick_guide_p18"
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p18"
 			android:text="18°"
-			android:drawableLeft="@drawable/tick"
+			android:drawableEnd="@drawable/tick"
 			android:drawablePadding="12dp"
-			android:drawableStart="@drawable/tick"
+			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
 
@@ -171,13 +173,13 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="@id/tick_guide_p12"
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p12"
 			android:text="12°"
-			android:drawableLeft="@drawable/tick"
+			android:drawableEnd="@drawable/tick"
 			android:drawablePadding="12dp"
-			android:drawableStart="@drawable/tick"
+			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
 
@@ -192,13 +194,13 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="@id/tick_guide_p6"
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p6"
 			android:text="6°"
-			android:drawableLeft="@drawable/tick"
+			android:drawableEnd="@drawable/tick"
 			android:drawablePadding="12dp"
-			android:drawableStart="@drawable/tick"
+			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
 
@@ -213,13 +215,13 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="@id/tick_guide_0"
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_0"
 			android:text="0°"
-			android:drawableLeft="@drawable/tick"
+			android:drawableEnd="@drawable/tick"
 			android:drawablePadding="12dp"
-			android:drawableStart="@drawable/tick"
+			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
 
@@ -234,13 +236,13 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="@id/tick_guide_n6"
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_n6"
 			android:text="-6°"
-			android:drawableLeft="@drawable/tick"
+			android:drawableEnd="@drawable/tick"
 			android:drawablePadding="12dp"
-			android:drawableStart="@drawable/tick"
+			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
 
@@ -255,13 +257,13 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="@id/tick_guide_n12"
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_n12"
 			android:text="-12°"
-			android:drawableLeft="@drawable/tick"
+			android:drawableEnd="@drawable/tick"
 			android:drawablePadding="12dp"
-			android:drawableStart="@drawable/tick"
+			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
 
@@ -276,13 +278,13 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="@id/tick_guide_n18"
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_n18"
 			android:text="-18°"
-			android:drawableLeft="@drawable/tick"
+			android:drawableEnd="@drawable/tick"
 			android:drawablePadding="12dp"
-			android:drawableStart="@drawable/tick"
+			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
 
@@ -297,13 +299,13 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="@id/tick_guide_n90"
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_n90"
 			android:text="-90°"
-			android:drawableLeft="@drawable/tick"
+			android:drawableEnd="@drawable/tick"
 			android:drawablePadding="12dp"
-			android:drawableStart="@drawable/tick"
+			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
 
@@ -315,7 +317,7 @@
 		android:layout_height="0dp"
 		android:layout_margin="4dp"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintEnd_toStartOf="@id/angle"
+		app:layout_constraintEnd_toStartOf="@id/angle_ticks"
 		app:layout_constraintTop_toBottomOf="@id/message"
 		app:layout_constraintBottom_toTopOf="@id/thresholdRelation"
 		android:contentDescription="@string/cd_selected_angle"
