@@ -5,6 +5,7 @@
 	android:layout_height="match_parent"
 	tools:showIn="@layout/widget_1x1_designer"
 	>
+
 	<TextView
 		android:id="@+id/timeUpdated"
 		style="@style/WidgetFont.Secondary.Small"
@@ -41,4 +42,5 @@
 		android:gravity="center"
 		tools:text="@string/call_to_action_refresh"
 		/>
+
 </RelativeLayout>

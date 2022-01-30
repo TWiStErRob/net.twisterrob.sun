@@ -5,14 +5,18 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
-	tools:ignore="DuplicateIncludedIds"
 	>
+
 	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		android:orientation="horizontal"
+		tools:ignore="DuplicateIncludedIds"
 		>
+
+		<!-- lint:DuplicateIncludedIds: it's only for preview. -->
+
 		<include
 			layout="@layout/widget_1x1"
 			android:layout_width="84dp"
@@ -20,6 +24,7 @@
 			android:layout_gravity="center"
 			android:layout_margin="16dp"
 			/>
+
 		<include
 			layout="@layout/widget_1x1_invalid"
 			android:layout_width="84dp"
@@ -27,6 +32,7 @@
 			android:layout_gravity="center"
 			android:layout_margin="16dp"
 			/>
+
 	</LinearLayout>
 
 	<GridLayout
@@ -36,6 +42,7 @@
 		android:useDefaultMargins="true"
 		tools:ignore="NewApi,UnusedAttribute"
 		>
+
 		<!-- @formatter:off -->
 		<include layout="@layout/widget_1x1" android:layout_width="62dp" android:layout_height="62dp" />
 		<include layout="@layout/widget_1x1" android:layout_width="72dp" android:layout_height="62dp" />
@@ -57,5 +64,7 @@
 		<include layout="@layout/widget_1x1" android:layout_width="84dp" android:layout_height="105dp" />
 		<include layout="@layout/widget_1x1" android:layout_width="105dp" android:layout_height="105dp" />
 		<!-- @formatter:on -->
+
 	</GridLayout>
+
 </LinearLayout>
