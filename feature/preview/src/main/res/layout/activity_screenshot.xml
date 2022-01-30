@@ -4,9 +4,9 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	tools:ignore="HardcodedText,SelectableText"
 	tools:context="net.twisterrob.sun.android.WidgetScreenshotActivity"
 	>
+
 	<FrameLayout
 		android:id="@+id/widget"
 		android:layout_width="fill_parent"
@@ -14,6 +14,7 @@
 		android:layout_gravity="center"
 		android:layout_weight="1"
 		/>
+
 	<Spinner
 		android:id="@+id/preset"
 		android:layout_width="fill_parent"
@@ -21,19 +22,24 @@
 		android:entries="@array/widget_size_preset"
 		tools:ignore="UnusedAttribute"
 		/>
+
 	<TableLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_margin="4dp"
 		android:stretchColumns="1"
 		>
+
 		<TableRow>
+
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical|end"
 				android:text="Width:"
+				tools:ignore="HardcodedText"
 				/>
+
 			<SeekBar
 				android:id="@+id/width"
 				android:layout_width="fill_parent"
@@ -41,19 +47,26 @@
 				android:max="88"
 				tools:progress="10"
 				/>
+
 			<TextView
 				android:id="@+id/widthDisplay"
 				android:layout_gravity="center_vertical|start"
+				android:textIsSelectable="false"
 				tools:text="72dp"
 				/>
+
 		</TableRow>
+
 		<TableRow>
+
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_vertical|end"
 				android:text="Height:"
+				tools:ignore="HardcodedText"
 				/>
+
 			<SeekBar
 				android:id="@+id/height"
 				android:layout_width="fill_parent"
@@ -61,11 +74,16 @@
 				android:max="88"
 				tools:progress="24"
 				/>
+
 			<TextView
 				android:id="@+id/heightDisplay"
 				android:layout_gravity="center_vertical|start"
+				android:textIsSelectable="false"
 				tools:text="86dp"
 				/>
+
 		</TableRow>
+
 	</TableLayout>
+
 </LinearLayout>

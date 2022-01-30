@@ -12,22 +12,22 @@
 		android:id="@+id/btn_ok"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/config_done"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintBottom_toBottomOf="parent"
+		android:text="@string/config_done"
 		/>
 
 	<TextView
 		android:id="@+id/message"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
 		android:clickable="true"
 		android:focusable="true"
 		android:textIsSelectable="false"
-		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
 		tools:text="@string/message_selected_angle_above"
 		/>
 
@@ -35,50 +35,52 @@
 		android:id="@+id/thresholdRelation"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintBottom_toTopOf="@id/btn_ok"
 		android:textOn="@string/threshold_relation_above"
 		android:textOff="@string/threshold_relation_below"
 		android:checked="true"
-		app:layout_constraintBottom_toTopOf="@id/btn_ok"
-		app:layout_constraintEnd_toEndOf="parent"
 		/>
 
 	<Spinner
 		android:id="@+id/preset"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
-		android:entries="@array/angle_preset"
-		app:layout_constraintEnd_toStartOf="@id/thresholdRelation"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintBottom_toTopOf="@id/btn_ok"
+		app:layout_constraintEnd_toStartOf="@id/thresholdRelation"
 		app:layout_constraintTop_toTopOf="@id/thresholdRelation"
+		app:layout_constraintBottom_toTopOf="@id/btn_ok"
+		android:entries="@array/angle_preset"
 		/>
 
 	<net.twisterrob.android.view.VerticalSeekBar
 		android:id="@+id/angle"
 		android:layout_width="wrap_content"
 		android:layout_height="0dp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="@id/visualization"
+		app:layout_constraintBottom_toBottomOf="@id/visualization"
 		android:max="180"
 		android:mirrorForRtl="false"
 		android:thumb="@drawable/ic_sun"
-		app:layout_constraintTop_toTopOf="@id/visualization"
-		app:layout_constraintBottom_toBottomOf="@id/visualization"
-		app:layout_constraintEnd_toEndOf="parent"
-		tools:progress="90"
 		tools:ignore="UnusedAttribute"
-		/>
+		tools:progress="90"
+		>
+		<!-- lint:UnusedAttribute: mirrorForRtl is API 18+, which is where it matters only. -->
+	</net.twisterrob.android.view.VerticalSeekBar>
 
 	<ImageView
 		android:id="@+id/visualization"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
 		android:layout_margin="4dp"
-		android:contentDescription="@string/cd_selected_angle"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toStartOf="@id/angle"
 		app:layout_constraintTop_toBottomOf="@id/message"
 		app:layout_constraintBottom_toTopOf="@id/thresholdRelation"
-		tools:src="@drawable/ic_launcher"
+		android:contentDescription="@string/cd_selected_angle"
 		tools:ignore="RedundantDescriptionCheck"
+		tools:src="@drawable/ic_launcher"
 		/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
