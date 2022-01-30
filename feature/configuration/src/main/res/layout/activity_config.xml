@@ -115,7 +115,7 @@
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p90"
 			android:text="90°"
 			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="12dp"
+			android:drawablePadding="8dp"
 			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
@@ -136,7 +136,7 @@
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p50"
 			android:text="50°"
 			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="12dp"
+			android:drawablePadding="8dp"
 			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
@@ -157,7 +157,7 @@
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p18"
 			android:text="18°"
 			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="12dp"
+			android:drawablePadding="8dp"
 			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
@@ -178,7 +178,7 @@
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p12"
 			android:text="12°"
 			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="12dp"
+			android:drawablePadding="8dp"
 			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
@@ -199,7 +199,7 @@
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_p6"
 			android:text="6°"
 			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="12dp"
+			android:drawablePadding="8dp"
 			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
@@ -220,7 +220,7 @@
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_0"
 			android:text="0°"
 			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="12dp"
+			android:drawablePadding="8dp"
 			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
@@ -241,7 +241,7 @@
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_n6"
 			android:text="-6°"
 			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="12dp"
+			android:drawablePadding="8dp"
 			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
@@ -262,7 +262,7 @@
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_n12"
 			android:text="-12°"
 			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="12dp"
+			android:drawablePadding="8dp"
 			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
@@ -283,7 +283,7 @@
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_n18"
 			android:text="-18°"
 			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="12dp"
+			android:drawablePadding="8dp"
 			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
@@ -304,7 +304,7 @@
 			app:layout_constraintBottom_toBottomOf="@id/tick_guide_n90"
 			android:text="-90°"
 			android:drawableEnd="@drawable/tick"
-			android:drawablePadding="12dp"
+			android:drawablePadding="8dp"
 			android:drawableRight="@drawable/tick"
 			android:includeFontPadding="false"
 			/>
