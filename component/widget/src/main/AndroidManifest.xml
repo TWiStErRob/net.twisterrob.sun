@@ -3,7 +3,10 @@
 	package="net.twisterrob.sun.android.widget"
 	>
 
-	<uses-feature android:name="android.software.app_widgets" android:required="false" />
+	<uses-feature
+		android:name="android.software.app_widgets"
+		android:required="false"
+		/>
 
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -15,10 +18,16 @@
 			android:name="net.twisterrob.sun.android.SunAngleWidgetProvider"
 			android:exported="true"
 			>
+
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
-			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_sun" />
+
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/widget_sun"
+				/>
+
 		</receiver>
 
 	</application>

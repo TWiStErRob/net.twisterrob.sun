@@ -4,9 +4,10 @@
 	android:id="@+id/root"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:showIn="@layout/widget_1x1_designer"
 	tools:ignore="RtlHardcoded"
+	tools:showIn="@layout/widget_1x1_designer"
 	>
+
 	<LinearLayout
 		android:id="@+id/threshold_container"
 		android:layout_width="fill_parent"
@@ -16,6 +17,7 @@
 		android:orientation="vertical"
 		android:background="@color/widget_highlight"
 		>
+
 		<TextView
 			android:id="@+id/threshold"
 			style="@style/WidgetFont.Secondary.Small"
@@ -23,29 +25,36 @@
 			android:layout_gravity="center_horizontal"
 			tools:text="@string/threshold_placeholder"
 			/>
+
 		<LinearLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			android:orientation="horizontal"
 			>
+
 			<TextView
 				android:id="@+id/timeThresholdFrom"
 				style="@style/WidgetFont.Primary.Small"
 				tools:text="@string/time_2_placeholder"
 				/>
+
 			<TextView
 				style="@style/WidgetFont.Primary.Small"
 				android:text="-"
 				tools:ignore="HardcodedText"
 				/>
+
 			<TextView
 				android:id="@+id/timeThresholdTo"
 				style="@style/WidgetFont.Primary.Small"
 				tools:text="@string/time_2_placeholder"
 				/>
+
 		</LinearLayout>
+
 	</LinearLayout>
+
 	<ImageView
 		android:id="@+id/angle_background"
 		android:layout_width="wrap_content"
@@ -59,6 +68,7 @@
 		tools:ignore="ContentDescription"
 		tools:src="@drawable/bg_day"
 		/>
+
 	<RelativeLayout
 		android:id="@+id/angle_container"
 		android:layout_width="wrap_content"
@@ -66,11 +76,13 @@
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
 		>
+
 		<TextView
 			android:id="@+id/angle"
 			style="@style/WidgetFont.Primary.Big"
 			tools:text="@string/angle_placeholder"
 			/>
+
 		<TextView
 			android:id="@+id/angleFraction"
 			style="@style/WidgetFont.Primary.Small"
@@ -80,9 +92,10 @@
 			android:layout_toRightOf="@id/angle"
 			android:ellipsize="none"
 			android:singleLine="true"
-			tools:text="@string/angle_placeholder_fraction"
 			tools:ignore="NegativeMargin"
+			tools:text="@string/angle_placeholder_fraction"
 			/>
+
 		<TextView
 			android:id="@+id/angleSign"
 			style="@style/WidgetFont.Primary.Big"
@@ -90,24 +103,28 @@
 			android:text="°"
 			tools:ignore="HardcodedText"
 			/>
+
 	</RelativeLayout>
+
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_above="@id/threshold_container"
 		android:layout_below="@id/angle_container"
 		>
+
 		<TextView
 			android:id="@+id/timeUpdated"
 			style="@style/WidgetFont.Secondary.Small"
 			android:layout_marginRight="1dp"
+			android:layout_marginEnd="1dp"
 			android:layout_marginBottom="1dp"
 			android:layout_alignParentBottom="true"
 			android:layout_alignParentEnd="true"
 			android:layout_alignParentRight="true"
-			android:layout_marginEnd="1dp"
 			tools:text="@string/time_3_placeholder"
 			/>
+
 		<TextView
 			android:id="@+id/state"
 			style="@style/WidgetFont.Primary.Small"
@@ -120,5 +137,7 @@
 			tools:ignore="NegativeMargin"
 			tools:text="@string/light_state_twilight_astronomical"
 			/>
+
 	</RelativeLayout>
+
 </RelativeLayout>
