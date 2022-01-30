@@ -35,9 +35,9 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textIsSelectable="false"
+		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
 		tools:text="@string/message_selected_angle_above"
 		/>
 
@@ -86,7 +86,7 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toStartOf="@id/angle"
 		app:layout_constraintTop_toBottomOf="@id/message"
-		app:layout_constraintBottom_toTopOf="@id/preset"
+		app:layout_constraintBottom_toTopOf="@id/thresholdRelation"
 		tools:src="@drawable/ic_launcher"
 		tools:ignore="RedundantDescriptionCheck"
 		/>

@@ -2,6 +2,7 @@ package net.twisterrob.sun.android;
 
 import java.util.*;
 
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
@@ -48,6 +49,7 @@ import androidx.core.util.Consumer;
 
 import net.twisterrob.android.app.LocationPermissionCompat;
 import net.twisterrob.android.app.PermissionInterrogator;
+import net.twisterrob.android.app.PermissionInterrogator.LocationState;
 import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.android.widget.WidgetHelpers;
 import net.twisterrob.sun.algo.*;
@@ -106,7 +108,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				@Override public void showBackgroundRationale(final @NonNull RationaleContinuation continuation) {
 					new AlertDialog.Builder(SunAngleWidgetConfiguration.this)
 							.setTitle(R.string.no_location_background_rationale_title)
-							.setMessage(getString(R.string.no_location_background_rationale, getBackgroundLabel()))
+							.setMessage(getString(R.string.no_location_background_rationale, getBackgroundLabelCompat()))
 							.setPositiveButton(R.string.no_location_background_rationale_ok, new DialogInterface.OnClickListener() {
 								@Override public void onClick(DialogInterface dialog, int which) {
 									continuation.retry();
@@ -399,6 +401,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		);
 	}
 
+	@SuppressLint("StringFormatInvalid")
 	void updateUI(@NonNull SunSearchResults results) {
 		ThresholdRelation rel = getCurrentRelation();
 		float angle = getCurrentThresholdAngle();
@@ -433,7 +436,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			message.setTextColor(MAXIMUM_COLOR);
 			message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle));
 		}
-		switch (permissions.currentState()) {
+		LocationState state = permissions.currentState();
+		switch (state) {
 			case LOCATION_DISABLED: {
 				warning.setVisibility(View.VISIBLE);
 				warningText.setText(R.string.no_location_enabled_guide);
@@ -449,7 +453,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			case COARSE_DENIED:
 			case FINE_DENIED: {
 				warning.setVisibility(View.VISIBLE);
-				warningText.setText(getString(R.string.no_location_foreground_guide, getBackgroundLabel()));
+				// lint:StringFormatInvalid the %1 param is meant for API 29+ version of this string.
+				warningText.setText(getString(R.string.no_location_foreground_guide, getBackgroundLabelCompat()));
 				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_foreground_guide_action);
 				warningAction.setOnClickListener(new OnClickListener() {
@@ -461,7 +466,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 			case BACKGROUND_DENIED: {
 				warning.setVisibility(View.VISIBLE);
-				warningText.setText(getString(R.string.no_location_background_guide, getBackgroundLabel()));
+				warningText.setText(getString(R.string.no_location_background_guide, getBackgroundLabelCompat()));
 				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_background_guide_action);
 				warningAction.setOnClickListener(new OnClickListener() {
@@ -487,13 +492,15 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				}
 				break;
 			}
+			default:
+				throw new InternalError("Unexpected location state: " + state);
 		}
 	}
 
 	/**
 	 * Polyfill for {@link PackageManager#getBackgroundPermissionOptionLabel()}.
 	 */
-	private @NonNull CharSequence getBackgroundLabel() {
+	private @NonNull CharSequence getBackgroundLabelCompat() {
 		if (Build.VERSION_CODES.R <= Build.VERSION.SDK_INT) {
 			return getPackageManager().getBackgroundPermissionOptionLabel();
 		} else if (Build.VERSION_CODES.Q <= Build.VERSION.SDK_INT) {
