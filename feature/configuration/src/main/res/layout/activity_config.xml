@@ -124,7 +124,7 @@
 			android:id="@+id/tick_guide_p50"
 			android:layout_width="0dp"
 			android:layout_height="0dp"
-			app:layout_constraintGuide_percent="0.277777"
+			app:layout_constraintGuide_percent="0.222222"
 			android:orientation="horizontal"
 			/>
 
