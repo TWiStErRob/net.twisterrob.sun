@@ -176,6 +176,11 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		});
 
 		preset = findViewById(R.id.preset);
+		findViewById(R.id.preset_label).setOnClickListener(new OnClickListener() {
+			@Override public void onClick(View v) {
+				preset.performClick();
+			}
+		});
 		preset.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
 				if (position != mapping.length - 1) {

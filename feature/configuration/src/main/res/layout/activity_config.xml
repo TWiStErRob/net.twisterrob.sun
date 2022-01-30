@@ -52,13 +52,27 @@
 		android:checked="true"
 		/>
 
+	<TextView
+		android:id="@+id/preset_label"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:paddingStart="4dp"
+		android:paddingEnd="4dp"
+		android:layout_marginBottom="-8dp"
+		app:layout_constraintStart_toStartOf="@id/preset"
+		app:layout_constraintEnd_toEndOf="@id/preset"
+		app:layout_constraintBottom_toTopOf="@id/preset"
+		android:text="@string/preset_label"
+		android:labelFor="@id/preset"
+		/>
+
 	<Spinner
 		android:id="@+id/preset"
+		style="@style/Widget.AppCompat.Spinner.Underlined"
 		android:layout_width="0dp"
-		android:layout_height="0dp"
+		android:layout_height="wrap_content"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toStartOf="@id/thresholdRelation"
-		app:layout_constraintTop_toTopOf="@id/thresholdRelation"
 		app:layout_constraintBottom_toBottomOf="@id/thresholdRelation"
 		android:entries="@array/angle_preset"
 		/>
