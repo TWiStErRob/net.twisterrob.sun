@@ -1,37 +1,39 @@
 package net.twisterrob.sun.algo;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.TimeZone;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import androidx.annotation.NonNull;
 
 import net.twisterrob.sun.Sun;
-import net.twisterrob.sun.algo.SunSearchResults.*;
+import net.twisterrob.sun.algo.SunSearchResults.SunSearchParams;
+import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 
-/**
- * http://aa.usno.navy.mil/data/docs/AltAz.php
- * http://aa.usno.navy.mil/cgi-bin/aa_altazw.pl?FFX=2&obj=10&xxy=2014&xxm=6&xxd=21&xxi=1&place=%28no+name+given%29&xx0=-1&xx1=0&xx2=4&yy0=1&yy1=51&yy2=31&zz1=1&zz0=1&ZZZ=END
- */
 public class SunCalculatorTest {
-	protected Sun sun = new PhotovoltaicSun(); // TODO externalize
 
-	private double lat;
-	private double lon;
-	private Calendar time;
+	private @NonNull Sun sun;
 
 	@Before
 	public void setUp() {
-		lat = 51.519586;
-		lon = -0.068586;
-		time = Calendar.getInstance();
-		time.setTimeZone(TimeZone.getTimeZone("Europe/London"));
-		time.set(2014, Calendar.JUNE, 21, 0, 0, 0);
+		sun = new PhotovoltaicSun(); // TODO externalize
 	}
 
+	/**
+	 * http://aa.usno.navy.mil/data/docs/AltAz.php
+	 * http://aa.usno.navy.mil/cgi-bin/aa_altazw.pl?FFX=2&obj=10&xxy=2014&xxm=6&xxd=21&xxi=1&place=%28no+name+given%29&xx0=-1&xx1=0&xx2=4&yy0=1&yy1=51&yy2=31&zz1=1&zz0=1&ZZZ=END
+	 */
 	@Test
-	public void test() {
+	public void testSunnyDayInTheUK() {
+		// Ramar House, London, UK
+		double lat = 51.519586;
+		double lon = -0.068586;
 		SunSearchParams params = new SunSearchParams(lat, lon, at(9, 30), ThresholdRelation.ABOVE, 50);
 
 		SunSearchResults result = new SunCalculator(sun).find(params);
@@ -53,8 +55,11 @@ public class SunCalculatorTest {
 		assertEquals(at(13, 2), result.maximum.time);
 	}
 
-	private Calendar at(int hour, int minute) {
-		Calendar time = (Calendar)this.time.clone();
+	private @NonNull Calendar at(int hour, int minute) {
+		Calendar time = Calendar.getInstance();
+		time.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+		time.set(2014, Calendar.JUNE, 21, 0, 0, 0);
+		time.set(Calendar.MILLISECOND, 0);
 		time.add(Calendar.HOUR, hour);
 		time.add(Calendar.MINUTE, minute);
 		return time;
