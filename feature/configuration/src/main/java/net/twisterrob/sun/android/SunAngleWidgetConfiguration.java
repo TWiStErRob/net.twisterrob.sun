@@ -142,7 +142,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_config);
+		setContentView(R.layout.config_activity);
 		message = findViewById(R.id.message);
 		warning = findViewById(R.id.warning);
 		warningText = findViewById(R.id.warning_text);
