@@ -89,16 +89,22 @@ public class SunCalculator {
 			}
 			running.add(Calendar.MINUTE, every);
 		}
+		// The algorithm above uses a scan from `start` to `end`.
+		// The Sun will always make a path of a frown in the sky.
+		// The two ends of the result will be the two ends of this frown.
 		if (result.start == null || result.end == null) {
-			// If one end of the result is missing, clear both to prevent weird displays.
+			// If one end of the result is missing, clear both to prevent weird displays, like (--:-- - 00:00).
 			result.start = null;
 			result.end = null;
 		} else if (relation == ThresholdRelation.BELOW) {
+			// Swap the end result to make sure that the start and end will be in timely order.
 			Calendar temp = result.end;
 			result.end = result.start;
 			result.start = temp;
 			result.end.add(Calendar.DATE, 1);
-		} // TODO else is wrong, null and ABOVE, default elsewhere.
+		} else if (relation == ThresholdRelation.ABOVE) {
+			// No need to transform, because the order is already timely.
+		}
 		return result;
 	}
 }

@@ -57,6 +57,32 @@ public class SunCalculatorTest {
 	}
 
 	@Test
+	public void testTwilightInTheUK() {
+		// Ramar House, London, UK
+		double lat = 51.519586;
+		double lon = -0.068586;
+		SunSearchParams params = new SunSearchParams(lat, lon, at(9, 30), ThresholdRelation.BELOW, -12);
+
+		SunSearchResults result = new SunCalculator(sun).find(params);
+
+		assertEquals(-12, result.params.thresholdAngle, 1e-6);
+		assertEquals(at(9, 30), result.current.time);
+		assertEquals(40.9, result.current.angle, 0.5);
+		assertNotNull(result.threshold);
+		assertEquals(at(23, 24), result.threshold.start);
+		assertEquals(nextDay(at(2, 40)), result.threshold.end);
+		assertNotNull(result.horizon);
+		assertEquals(at(4, 50), result.horizon.start);
+		assertEquals(at(21, 15), result.horizon.end);
+		assertNotNull(result.minimum);
+		assertEquals(-15, result.minimum.angle, 0.5);
+		assertEquals(at(1, 2), result.minimum.time);
+		assertNotNull(result.maximum);
+		assertEquals(62, result.maximum.angle, 0.5);
+		assertEquals(at(13, 2), result.maximum.time);
+	}
+
+	@Test
 	public void testAboveMax() {
 		// Ramar House, London, UK
 		double lat = 51.519586;
