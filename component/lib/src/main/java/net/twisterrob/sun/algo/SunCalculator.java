@@ -83,7 +83,11 @@ public class SunCalculator {
 			}
 			running.add(Calendar.MINUTE, every);
 		}
-		if (relation == ThresholdRelation.BELOW) {
+		if (result.start == null || result.end == null) {
+			// If one end of the result is missing, clear both to prevent weird displays.
+			result.start = null;
+			result.end = null;
+		} else if (relation == ThresholdRelation.BELOW) {
 			Calendar temp = result.end;
 			result.end = result.start;
 			result.start = temp;

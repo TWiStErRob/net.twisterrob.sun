@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import androidx.annotation.NonNull;
 
@@ -53,6 +54,115 @@ public class SunCalculatorTest {
 		assertNotNull(result.maximum);
 		assertEquals(62, result.maximum.angle, 0.5);
 		assertEquals(at(13, 2), result.maximum.time);
+	}
+
+	@Test
+	public void testAboveMax() {
+		// Ramar House, London, UK
+		double lat = 51.519586;
+		double lon = -0.068586;
+		SunSearchParams params = new SunSearchParams(lat, lon, at(9, 30), ThresholdRelation.ABOVE, 63);
+
+		SunSearchResults result = new SunCalculator(sun).find(params);
+
+		assertEquals(63, result.params.thresholdAngle, 1e-6);
+		assertEquals(at(9, 30), result.current.time);
+		assertEquals(40.9, result.current.angle, 0.5);
+		assertNotNull(result.threshold);
+		assertNull(result.threshold.start);
+		assertNull(result.threshold.end);
+		assertNotNull(result.horizon);
+		assertEquals(at(4, 50), result.horizon.start);
+		assertEquals(at(21, 15), result.horizon.end);
+		assertNotNull(result.minimum);
+		assertEquals(-15, result.minimum.angle, 0.5);
+		assertEquals(at(1, 2), result.minimum.time);
+		assertNotNull(result.maximum);
+		assertEquals(62, result.maximum.angle, 0.5);
+		assertEquals(at(13, 2), result.maximum.time);
+	}
+
+	@Test
+	public void testAboveMin() {
+		// Ramar House, London, UK
+		double lat = 51.519586;
+		double lon = -0.068586;
+		SunSearchParams params = new SunSearchParams(lat, lon, at(9, 30), ThresholdRelation.ABOVE, -20);
+
+		SunSearchResults result = new SunCalculator(sun).find(params);
+
+		assertEquals(-20, result.params.thresholdAngle, 1e-6);
+		assertEquals(at(9, 30), result.current.time);
+		assertEquals(40.9, result.current.angle, 0.5);
+		assertNotNull(result.threshold);
+		assertNull(result.threshold.start);
+		assertNull(result.threshold.end);
+		assertNotNull(result.horizon);
+		assertEquals(at(4, 50), result.horizon.start);
+		assertEquals(at(21, 15), result.horizon.end);
+		assertNotNull(result.minimum);
+		assertEquals(-15, result.minimum.angle, 0.5);
+		assertEquals(at(1, 2), result.minimum.time);
+		assertNotNull(result.maximum);
+		assertEquals(62, result.maximum.angle, 0.5);
+		assertEquals(at(13, 2), result.maximum.time);
+	}
+
+	@Test
+	public void testBelowMax() {
+		// Ramar House, London, UK
+		double lat = 51.519586;
+		double lon = -0.068586;
+		SunSearchParams params = new SunSearchParams(lat, lon, at(9, 30), ThresholdRelation.BELOW, 64);
+
+		SunSearchResults result = new SunCalculator(sun).find(params);
+
+		assertEquals(64, result.params.thresholdAngle, 1e-6);
+		assertEquals(at(9, 30), result.current.time);
+		assertEquals(40.9, result.current.angle, 0.5);
+		assertNotNull(result.threshold);
+		assertNull(result.threshold.start);
+		assertNull(result.threshold.end);
+		assertNotNull(result.horizon);
+		assertEquals(at(4, 50), result.horizon.start);
+		assertEquals(at(21, 15), result.horizon.end);
+		assertNotNull(result.minimum);
+		assertEquals(-15, result.minimum.angle, 0.5);
+		assertEquals(at(1, 2), result.minimum.time);
+		assertNotNull(result.maximum);
+		assertEquals(62, result.maximum.angle, 0.5);
+		assertEquals(at(13, 2), result.maximum.time);
+	}
+
+	@Test
+	public void testBelowMin() {
+		// Ramar House, London, UK
+		double lat = 51.519586;
+		double lon = -0.068586;
+		SunSearchParams params = new SunSearchParams(lat, lon, at(9, 30), ThresholdRelation.BELOW, -16);
+
+		SunSearchResults result = new SunCalculator(sun).find(params);
+
+		assertEquals(-16, result.params.thresholdAngle, 1e-6);
+		assertEquals(at(9, 30), result.current.time);
+		assertEquals(40.9, result.current.angle, 0.5);
+		assertNotNull(result.threshold);
+		assertNull(result.threshold.start);
+		assertNull(result.threshold.end);
+		assertNotNull(result.horizon);
+		assertEquals(at(4, 50), result.horizon.start);
+		assertEquals(at(21, 15), result.horizon.end);
+		assertNotNull(result.minimum);
+		assertEquals(-15, result.minimum.angle, 0.5);
+		assertEquals(at(1, 2), result.minimum.time);
+		assertNotNull(result.maximum);
+		assertEquals(62, result.maximum.angle, 0.5);
+		assertEquals(at(13, 2), result.maximum.time);
+	}
+
+	private @NonNull Calendar nextDay(@NonNull Calendar time) {
+		time.add(Calendar.DATE, 1);
+		return time;
 	}
 
 	private @NonNull Calendar at(int hour, int minute) {
