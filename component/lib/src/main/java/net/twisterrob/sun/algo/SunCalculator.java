@@ -6,9 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import net.twisterrob.sun.Sun;
-import net.twisterrob.sun.algo.SunSearchResults.*;
+import net.twisterrob.sun.algo.SunSearchResults.Moment;
+import net.twisterrob.sun.algo.SunSearchResults.Range;
+import net.twisterrob.sun.algo.SunSearchResults.SunSearchParams;
+import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 
 public class SunCalculator {
+
 	private final @NonNull Sun sun;
 
 	public SunCalculator(@NonNull Sun sun) {
@@ -49,6 +53,7 @@ public class SunCalculator {
 			running.add(Calendar.MINUTE, every);
 		}
 	}
+
 	public static @NonNull Calendar startOfDay(@NonNull Calendar time) {
 		Calendar result = (Calendar)time.clone();
 		result.set(Calendar.HOUR_OF_DAY, 0);
@@ -56,6 +61,7 @@ public class SunCalculator {
 		result.set(Calendar.SECOND, 0);
 		return result;
 	}
+
 	public static @NonNull Calendar endOfDay(@NonNull Calendar time) {
 		Calendar result = startOfDay(time);
 		result.add(Calendar.DATE, 1);
@@ -83,12 +89,22 @@ public class SunCalculator {
 			}
 			running.add(Calendar.MINUTE, every);
 		}
-		if (relation == ThresholdRelation.BELOW) {
+		// The algorithm above uses a scan from `start` to `end`.
+		// The Sun will always make a path of a frown in the sky.
+		// The two ends of the result will be the two ends of this frown.
+		if (result.start == null || result.end == null) {
+			// If one end of the result is missing, clear both to prevent weird displays, like (--:-- - 00:00).
+			result.start = null;
+			result.end = null;
+		} else if (relation == ThresholdRelation.BELOW) {
+			// Swap the end result to make sure that the start and end will be in timely order.
 			Calendar temp = result.end;
 			result.end = result.start;
 			result.start = temp;
 			result.end.add(Calendar.DATE, 1);
-		} // TODO else is wrong, null and ABOVE, default elsewhere.
+		} else if (relation == ThresholdRelation.ABOVE) {
+			// No need to transform, because the order is already timely.
+		}
 		return result;
 	}
 }
