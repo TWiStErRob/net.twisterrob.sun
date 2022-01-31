@@ -8,6 +8,7 @@ import android.graphics.drawable.ShapeDrawable.ShaderFactory;
 
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.ui.SunGradientShaderFactory;
+import net.twisterrob.sun.android.ui.SunGradientShaderFactory.Type;
 
 public class SunThresholdDrawable extends Drawable {
 	private SunConstantState s;
@@ -125,7 +126,7 @@ public class SunThresholdDrawable extends Drawable {
 	}
 
 	private static final class SunConstantState extends ConstantState {
-		private static final ShaderFactory SHADER_FACTORY = new SunGradientShaderFactory();
+		private static final ShaderFactory SHADER_FACTORY = new SunGradientShaderFactory(Type.Radial);
 
 		public int changingConfigurations;
 		public int radius;

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/angle_ticks"
+	android:layout_width="wrap_content"
+	android:layout_height="match_parent"
+	android:paddingTop="16dp"
+	android:paddingBottom="16dp"
+	android:clipToPadding="false"
+	tools:ignore="HardcodedText"
+	>
+
+	<!-- lint:HardcodedText hard-codes the angles which are the same all around the world,
+	     formatting might be different, but for now English only.
+	 -->
+
+	<androidx.constraintlayout.widget.Guideline
+		android:id="@+id/tick_guide_p90"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintGuide_percent="0.0"
+		android:orientation="horizontal"
+		/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="@id/tick_guide_p90"
+		app:layout_constraintBottom_toBottomOf="@id/tick_guide_p90"
+		android:text="90°"
+		android:drawablePadding="12dp"
+		android:includeFontPadding="false"
+		app:drawableEndCompat="@drawable/tick"
+		tools:drawableEnd="@drawable/tick"
+		/>
+
+	<androidx.constraintlayout.widget.Guideline
+		android:id="@+id/tick_guide_p50"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintGuide_percent="0.222222"
+		android:orientation="horizontal"
+		/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="@id/tick_guide_p50"
+		app:layout_constraintBottom_toBottomOf="@id/tick_guide_p50"
+		android:text="50°"
+		android:drawablePadding="12dp"
+		android:includeFontPadding="false"
+		app:drawableEndCompat="@drawable/tick"
+		tools:drawableEnd="@drawable/tick"
+		/>
+
+	<androidx.constraintlayout.widget.Guideline
+		android:id="@+id/tick_guide_0"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintGuide_percent="0.5"
+		android:orientation="horizontal"
+		/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="@id/tick_guide_0"
+		app:layout_constraintBottom_toBottomOf="@id/tick_guide_0"
+		android:text="0°"
+		android:drawablePadding="12dp"
+		android:includeFontPadding="false"
+		app:drawableEndCompat="@drawable/tick"
+		tools:drawableEnd="@drawable/tick"
+		/>
+
+	<androidx.constraintlayout.widget.Guideline
+		android:id="@+id/tick_guide_n6"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintGuide_percent="0.533333"
+		android:orientation="horizontal"
+		/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="@id/tick_guide_n6"
+		app:layout_constraintBottom_toBottomOf="@id/tick_guide_n6"
+		android:text="-6°"
+		android:drawablePadding="12dp"
+		android:includeFontPadding="false"
+		app:drawableEndCompat="@drawable/tick"
+		tools:drawableEnd="@drawable/tick"
+		/>
+
+	<androidx.constraintlayout.widget.Guideline
+		android:id="@+id/tick_guide_n12"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintGuide_percent="0.566666"
+		android:orientation="horizontal"
+		/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="@id/tick_guide_n12"
+		app:layout_constraintBottom_toBottomOf="@id/tick_guide_n12"
+		android:text="-12°"
+		android:drawablePadding="12dp"
+		android:includeFontPadding="false"
+		app:drawableEndCompat="@drawable/tick"
+		tools:drawableEnd="@drawable/tick"
+		/>
+
+	<androidx.constraintlayout.widget.Guideline
+		android:id="@+id/tick_guide_n18"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintGuide_percent="0.6"
+		android:orientation="horizontal"
+		/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="@id/tick_guide_n18"
+		app:layout_constraintBottom_toBottomOf="@id/tick_guide_n18"
+		android:text="-18°"
+		android:drawablePadding="12dp"
+		android:includeFontPadding="false"
+		app:drawableEndCompat="@drawable/tick"
+		tools:drawableEnd="@drawable/tick"
+		/>
+
+	<androidx.constraintlayout.widget.Guideline
+		android:id="@+id/tick_guide_n90"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		app:layout_constraintGuide_percent="1.0"
+		android:orientation="horizontal"
+		/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="@id/tick_guide_n90"
+		app:layout_constraintBottom_toBottomOf="@id/tick_guide_n90"
+		android:text="-90°"
+		android:drawablePadding="12dp"
+		android:includeFontPadding="false"
+		app:drawableEndCompat="@drawable/tick"
+		tools:drawableEnd="@drawable/tick"
+		/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

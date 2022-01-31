@@ -20,7 +20,7 @@
 
 	<include
 		android:id="@+id/warning"
-		layout="@layout/warning_banner"
+		layout="@layout/config_warning_banner"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +41,18 @@
 		tools:text="@string/message_selected_angle_above"
 		/>
 
+	<androidx.constraintlayout.widget.Barrier
+		android:id="@+id/bottom"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:barrierDirection="top"
+		app:constraint_referenced_ids="
+			preset,
+			preset_label,
+			thresholdRelation,
+		"
+		/>
+
 	<ToggleButton
 		android:id="@+id/thresholdRelation"
 		android:layout_width="wrap_content"
@@ -52,16 +64,52 @@
 		android:checked="true"
 		/>
 
+	<TextView
+		android:id="@+id/preset_label"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:paddingStart="4dp"
+		android:paddingEnd="4dp"
+		android:layout_marginBottom="-8dp"
+		app:layout_constraintStart_toStartOf="@id/preset"
+		app:layout_constraintEnd_toEndOf="@id/preset"
+		app:layout_constraintBottom_toTopOf="@id/preset"
+		android:text="@string/preset_label"
+		android:labelFor="@id/preset"
+		tools:ignore="NegativeMargin"
+		>
+		<!-- lint:NegativeMargin couldn't find a better way to overlap the views. -->
+	</TextView>
+
 	<Spinner
 		android:id="@+id/preset"
+		style="@style/Widget.AppCompat.Spinner.Underlined"
 		android:layout_width="0dp"
-		android:layout_height="0dp"
+		android:layout_height="wrap_content"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toStartOf="@id/thresholdRelation"
-		app:layout_constraintTop_toTopOf="@id/thresholdRelation"
 		app:layout_constraintBottom_toBottomOf="@id/thresholdRelation"
 		android:entries="@array/angle_preset"
 		/>
+
+	<View
+		android:id="@+id/angle_background"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		android:paddingTop="16dp"
+		android:paddingBottom="16dp"
+		app:layout_constraintStart_toStartOf="@id/angle"
+		app:layout_constraintEnd_toEndOf="@id/angle"
+		app:layout_constraintTop_toTopOf="@id/angle"
+		app:layout_constraintBottom_toBottomOf="@id/angle"
+		android:backgroundTint="#4fff"
+		android:backgroundTintMode="multiply"
+		tools:background="#11000000"
+		tools:ignore="UnusedAttribute"
+		>
+		<!-- lint:UnusedAttribute backgroundTint pre 21 degrades visuals, but not experience. -->
+		<!-- lint:UnusedAttribute backgroundTintMode pre 21 degrades visuals, but not experience. -->
+	</View>
 
 	<net.twisterrob.android.view.VerticalSeekBar
 		android:id="@+id/angle"
@@ -72,12 +120,32 @@
 		app:layout_constraintBottom_toBottomOf="@id/visualization"
 		android:max="180"
 		android:mirrorForRtl="false"
+		android:progressTint="@android:color/transparent"
+		android:splitTrack="true"
 		android:thumb="@drawable/ic_sun"
+		android:tickMark="@color/invalid"
+		android:tickMarkTint="@color/invalid"
+		app:tickMark="@color/invalid"
 		tools:ignore="UnusedAttribute"
 		tools:progress="90"
 		>
 		<!-- lint:UnusedAttribute: mirrorForRtl is API 18+, which is where it matters only. -->
 	</net.twisterrob.android.view.VerticalSeekBar>
+
+	<include
+		android:id="@+id/angle_ticks"
+		layout="@layout/config_angle_ticks"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:layout_marginRight="-20dp"
+		android:layout_marginEnd="-20dp"
+		app:layout_constraintEnd_toStartOf="@id/angle"
+		app:layout_constraintTop_toTopOf="@id/angle"
+		app:layout_constraintBottom_toBottomOf="@id/angle"
+		tools:ignore="NegativeMargin"
+		>
+		<!-- lint:NegativeMargin couldn't find a better way to overlap the views. -->
+	</include>
 
 	<ImageView
 		android:id="@+id/visualization"
@@ -85,9 +153,9 @@
 		android:layout_height="0dp"
 		android:layout_margin="4dp"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintEnd_toStartOf="@id/angle"
+		app:layout_constraintEnd_toStartOf="@id/angle_ticks"
 		app:layout_constraintTop_toBottomOf="@id/message"
-		app:layout_constraintBottom_toTopOf="@id/thresholdRelation"
+		app:layout_constraintBottom_toTopOf="@id/bottom"
 		android:contentDescription="@string/cd_selected_angle"
 		tools:ignore="RedundantDescriptionCheck"
 		tools:src="@drawable/ic_launcher"
