@@ -37,6 +37,7 @@
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
+		android:minLines="3"
 		android:textIsSelectable="false"
 		tools:text="@string/message_selected_angle_above"
 		/>
