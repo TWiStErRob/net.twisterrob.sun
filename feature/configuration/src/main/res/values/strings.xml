@@ -3,8 +3,8 @@
 	<string name="threshold_relation_above">above</string>
 	<string name="threshold_relation_below">below</string>
 	<string name="preset_label">Sun position presets</string>
-	<string name="warning_maximum">The Sun will not reach above %1$.1f° these days of the year, so setting threshold to %2$.0f° will just show %3$s.</string>
-	<string name="warning_minimum">The Sun will not reach below %1$.1f° these days of the year, so setting threshold to %2$.0f° will just show %3$s.</string>
+	<string name="warning_maximum">The threshold is set to %2$.0f°, which is above the maximum (%1$.1f°) the Sun will reach. The widget will show %3$s on the home screen.</string>
+	<string name="warning_minimum">The threshold is set to %2$.0f°, which is below the minimum (%1$.1f°) the Sun will reach. The widget will show %3$s on the home screen.</string>
 	<string name="message_selected_angle_above">The widget will show the current angle and the time range when the Sun is above %1$.0f°.</string>
 	<string name="message_selected_angle_below">The widget will show the current angle and the time range when the Sun is below %1$.0f°.</string>
 	<string name="cd_selected_angle">Visualization of selected angle threshold</string>
