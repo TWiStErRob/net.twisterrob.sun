@@ -5,7 +5,7 @@
 	<string name="no_location_foreground_rationale">
 		The widget needs to know your location to calculate the position of the Sun.
 		\n
-		\nIt only works if you allow location access at the next step.
+		\nIt only works if you allow access to location at the next step.
 	</string>
 	<string name="no_location_foreground_rationale_ok">Next</string>
 	<string name="no_location_foreground_rationale_cancel">@android:string/cancel</string>
