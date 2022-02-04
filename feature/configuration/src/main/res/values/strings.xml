@@ -10,10 +10,13 @@
 	<string name="cd_selected_angle">Visualization of selected angle threshold</string>
 	<string name="config_done">Save Settings</string>
 	<string name="config_title">Sun Widget Settings</string>
-	<string name="config_info">Info</string>
+
 	<string name="pref_showPartOfDay_title">Show Part of Day</string>
 	<string name="pref_showLastUpdateTime_title">Show Last Update</string>
-	<string name="config_help">
+
+	<string name="config_info">Info</string>
+	<string name="config_info_title">Sun Position Widget</string>
+	<string name="config_info_body">
 		<big><b>What can I see?</b></big>
 		\n<annotation drawable="widget_1x1_preview">&#xFFFC;</annotation>
 		\nThe widget shows the height of the Sun. This position is measured by the <i>Altitude angle</i>, the angle between the horizon and the Sun.
@@ -31,5 +34,6 @@
 		You can show/hide the <i>Part of The Day</i> and <i>Last Update</i> time displays on the home screen.
 		This is helpful in case your device\'s Launcher App doesn\'t give enough space for the widget, and it looks crammed.
 	</string>
+	<string name="config_info_close">@android:string/ok</string>
 
 </resources>

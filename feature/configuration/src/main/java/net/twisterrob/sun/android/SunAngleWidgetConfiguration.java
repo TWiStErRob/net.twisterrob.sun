@@ -257,9 +257,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		} else if (id == R.id.action_help) {
 				new AlertDialog.Builder(this)
 						.setIcon(R.drawable.ic_launcher)
-						.setTitle(getTitle())
-						.setMessage(getHelpText(R.string.config_help))
-						.setPositiveButton(android.R.string.ok, null)
+						.setTitle(R.string.config_info_title)
+						.setMessage(getHelpText(R.string.config_info_body))
+						.setPositiveButton(R.string.config_info_close, null)
 						.create()
 						.show()
 				;
