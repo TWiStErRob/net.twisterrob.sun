@@ -14,21 +14,22 @@
 	<string name="pref_showPartOfDay_title">Show Part of Day</string>
 	<string name="pref_showLastUpdateTime_title">Show Last Update</string>
 	<string name="config_help">
-		<big><b>What\'s that degree (°)?</b></big>
-		\n<i>Altitude angle</i>.
-		The widget shows the current position of the Sun, which is the angle between the horizon and the Sun:
+		<big><b>What can I see?</b></big>
 		\n<annotation drawable="widget_1x1_preview">&#xFFFC;</annotation>
-
-		\n\n<big><b>Threshold</b></big>
-		\n<i>You can set a threshold for the Sun\'s position.</i>
-		The threshold will show the time range when the Sun\'s altitude angle is above/below the threshold.
-		The time range will be <b>bold</b> when the Sun is in the right position.
-		The start/end time of the range will be <annotation color="coming_soon" bgcolor="widget_highlight">highlighted</annotation> up to 30 minutes before the Sun enters/leaves the specified range.
-		\n<b>For example</b>: if the threshold is above 0° this is good for a soft alert before sunrise/sunset.
-
-		\n\n<big><b>Hide parts of the widget</b></big>
-		\n<i>Open the Options menu (︙) to do so.</i>
-		You can show/hide the part of the day and last update time displays in case your phone\'s current launcher doesn\'t give enough space for the widget.
+		\nThe widget shows the height of the Sun. This position is measured by the <i>Altitude angle</i>, the angle between the horizon and the Sun.
+		\n
+		\n<big><b>Threshold</b></big>
+		\n<i>You can choose an angle as a threshold.</i>
+		The widget will calculate the time range the Sun is above or below this height.
+		\n
+		\nThe time range will be <b>bold</b> when the Sun is in the right position.
+		\nThe time will be highlighted (<annotation color="coming_soon" bgcolor="widget_highlight">like this</annotation>) for the 30 minutes while the Sun approaches the threshold.
+		\n\n<b>For example</b>: when the threshold is set to <i>above 0°</i>, the widget can be used as a soft alert for sunrise/sunset.
+		\n
+		\n<big><b>Hide parts of the widget</b></big>
+		\n<i>Open the Options menu (︙) in the Sun Widget Settings to do so.</i>
+		You can show/hide the <i>Part of The Day</i> and <i>Last Update</i> time displays on the home screen.
+		This is helpful in case your device\'s Launcher App doesn\'t give enough space for the widget, and it looks crammed.
 	</string>
 
 </resources>
