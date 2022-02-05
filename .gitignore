@@ -11,6 +11,7 @@ build/
 
 # Android
 /project.properties
+/local.properties
 
 # Other
 /temp
