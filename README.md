@@ -10,3 +10,7 @@
 ## Development
 
 For development setup see [development.md](docs/development.md).
+
+## Release
+
+For release process see [release.md](https://github.com/TWiStErRob/.github/blob/main/RELEASE.md).

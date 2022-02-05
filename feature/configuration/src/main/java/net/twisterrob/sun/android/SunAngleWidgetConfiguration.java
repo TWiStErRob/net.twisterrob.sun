@@ -77,6 +77,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private CompoundButton relation;
 	private TextView message;
 	private View warning;
+	private TextView warningTitle;
 	private TextView warningText;
 	private Button warningAction;
 	private SeekBar angle;
@@ -145,6 +146,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		setContentView(R.layout.config_activity);
 		message = findViewById(R.id.message);
 		warning = findViewById(R.id.warning);
+		warningTitle = findViewById(R.id.warning_title);
 		warningText = findViewById(R.id.warning_text);
 		warningAction = findViewById(R.id.warning_action);
 		mapping = getResources().getIntArray(R.array.angle_preset_values);
@@ -257,9 +259,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		} else if (id == R.id.action_help) {
 				new AlertDialog.Builder(this)
 						.setIcon(R.drawable.ic_launcher)
-						.setTitle(getTitle())
-						.setMessage(getHelpText(R.string.config_help))
-						.setPositiveButton(android.R.string.ok, null)
+						.setTitle(R.string.config_info_title)
+						.setMessage(getHelpText(R.string.config_info_body))
+						.setPositiveButton(R.string.config_info_close, null)
 						.create()
 						.show()
 				;
@@ -452,6 +454,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		switch (state) {
 			case LOCATION_DISABLED: {
 				warning.setVisibility(View.VISIBLE);
+				warningTitle.setText(R.string.no_location_enabled_guide_title);
 				warningText.setText(R.string.no_location_enabled_guide);
 				warningAction.setVisibility(intentOpener.canOpenLocationSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_enabled_guide_action);
@@ -465,6 +468,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			case COARSE_DENIED:
 			case FINE_DENIED: {
 				warning.setVisibility(View.VISIBLE);
+				warningTitle.setText(R.string.no_location_foreground_guide_title);
 				// lint:StringFormatInvalid the %1 param is meant for API 29+ version of this string.
 				warningText.setText(getString(R.string.no_location_foreground_guide, getBackgroundLabelCompat()));
 				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
@@ -478,6 +482,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 			case BACKGROUND_DENIED: {
 				warning.setVisibility(View.VISIBLE);
+				warningTitle.setText(R.string.no_location_background_guide_title);
 				warningText.setText(getString(R.string.no_location_background_guide, getBackgroundLabelCompat()));
 				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_background_guide_action);
@@ -493,6 +498,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					warning.setVisibility(View.GONE);
 				} else {
 					warning.setVisibility(View.VISIBLE);
+					warningTitle.setText(R.string.no_location_no_fix_title);
 					warningText.setText(R.string.no_location_no_fix);
 					warningAction.setVisibility(intentOpener.canOpenAMapsApp() ? View.VISIBLE : View.GONE);
 					warningAction.setText(R.string.no_location_no_fix_action);

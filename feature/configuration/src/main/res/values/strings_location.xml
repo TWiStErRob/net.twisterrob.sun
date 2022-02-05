@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="DuplicateStrings">
 
-	<string name="no_location_foreground_rationale_title">Location Required</string>
+	<string name="no_location_foreground_rationale_title">Location required</string>
 	<string name="no_location_foreground_rationale">
 		The widget needs to know your location to calculate the position of the Sun.
 		\n
-		\nIt only works if you allow location access at the next step.
+		\nIt only works if you allow access to Location at the next step.
 	</string>
 	<string name="no_location_foreground_rationale_ok">Next</string>
 	<string name="no_location_foreground_rationale_cancel">@android:string/cancel</string>
 
+	<string name="no_location_foreground_guide_title">@string/no_location_foreground_rationale_title</string>
 	<!-- This one skips the string format placeholder, because that's only relevant above API 29. -->
 	<string name="no_location_foreground_guide" tools:ignore="StringFormatInvalid">
 		The widget needs to know your location to calculate the position of the Sun.
 		\n
-		\nPlease give permission to the location in the app settings.
+		\nPlease give permission to Location in the App Settings.
 	</string>
 	<string name="no_location_foreground_guide_action">Open App Settings</string>
 
+	<string name="no_location_enabled_guide_title">Device location required</string>
 	<string name="no_location_enabled_guide">
 		Please enable Location on your device in the Settings.
 		After coming back, wait a moment to allow the system to figure things out.
 	</string>
 	<string name="no_location_enabled_guide_action">Open Settings</string>
 
+	<string name="no_location_no_fix_title">Location not found yet</string>
 	<string name="no_location_no_fix">
 		The widget needs to know where you are, however due to performance reasons it will not request a location.
 		Please open Maps or another app that shows your location, and then come back.
