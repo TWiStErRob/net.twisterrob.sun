@@ -15,7 +15,7 @@
 	<string name="pref_showLastUpdateTime_title">Show Last Update</string>
 
 	<string name="config_info">Info</string>
-	<string name="config_info_title">Sun Position Widget</string>
+	<string name="config_info_title">Sun Position Widget - Help</string>
 	<string name="config_info_body">
 		<big><b>What can I see?</b></big>
 		\n<annotation drawable="widget_1x1_preview">&#xFFFC;</annotation>
