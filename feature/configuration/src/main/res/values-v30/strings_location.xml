@@ -9,13 +9,15 @@
 		\nIt only works if you allow access to precise Location at the next step.
 	</string>
 
-	<string name="no_location_background_rationale_title">Precise location required all the time</string>
 	<string name="no_location_foreground_guide">
 		The widget needs to know your location to calculate the position of the Sun.
 		\n
 		\nPlease give permission to precise Location in the App Settings using the “%1$s“ option.
 	</string>
 
+	<string name="no_location_background_rationale_title">Precise location required all the time</string>
+
+	<string name="no_location_background_guide_title">@string/no_location_background_rationale_title</string>
 	<string name="no_location_background_guide">
 		To display up-to-date information on the home screen, the widget needs access to your location all the time.
 		\n

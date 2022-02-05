@@ -18,6 +18,7 @@
 	<string name="no_location_background_rationale_cancel">@android:string/cancel</string>
 	<string name="no_location_background_option_label_29">Allow all the time</string>
 
+	<string name="no_location_background_guide_title">@string/no_location_background_rationale_title</string>
 	<string name="no_location_background_guide">
 		To display up-to-date information on the home screen, the widget needs access to your location all the time.
 		\n
