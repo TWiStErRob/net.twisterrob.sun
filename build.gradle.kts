@@ -6,3 +6,8 @@ plugins {
 	id("net.twisterrob.quality") version "0.13"
 	id("project-dependencies") apply false
 }
+
+buildscript {
+	// Substitute for lack of settings.gradle's pluginManagement.resolutionStrategy.cacheChangingModulesFor.
+	configurations.classpath.get().resolutionStrategy.cacheChangingModulesFor(0, "seconds") // -SNAPSHOT
+}
