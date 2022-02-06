@@ -1,16 +1,17 @@
 <manifest
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	package="net.twisterrob.sun.preview">
+	package="net.twisterrob.sun.preview"
+	>
 
 	<application>
 
 		<activity
 			android:name="net.twisterrob.sun.android.WidgetScreenshotActivity"
-			android:label="Sun Position Widget Preview"
+			android:label="@string/preview_title"
 			android:enabled="@bool/in_test"
 			android:exported="true"
 			>
-			<intent-filter android:label="Sun Preview">
+			<intent-filter android:label="@string/preview_launcher_title">
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
@@ -23,7 +24,10 @@
 			android:exported="false"
 			android:grantUriPermissions="true"
 			>
-			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/paths_screenshot" />
+			<meta-data
+				android:name="android.support.FILE_PROVIDER_PATHS"
+				android:resource="@xml/paths_screenshot"
+				/>
 		</provider>
 
 	</application>
