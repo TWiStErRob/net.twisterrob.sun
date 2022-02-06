@@ -7,6 +7,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:minWidth="62dp"
 	android:minHeight="62dp"
+	android:description="@string/widget_description"
 	android:initialKeyguardLayout="@layout/widget_1x1_invalid"
 	android:initialLayout="@layout/widget_1x1_invalid"
 	android:previewImage="@drawable/widget_1x1_preview"
@@ -16,4 +17,10 @@
 	tools:configure="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
 	tools:context="net.twisterrob.sun.android.SunAngleWidgetProvider"
 	tools:ignore="UnusedAttribute"
-	/>
+	>
+
+	<!-- previewImage/description: for the picker, description only applies API 31+. -->
+
+	<!-- initialLayout: invalid to make sure it's clearly visible if it's not configured. -->
+
+</appwidget-provider>
