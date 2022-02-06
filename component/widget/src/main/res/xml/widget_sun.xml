@@ -7,6 +7,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:minWidth="62dp"
 	android:minHeight="62dp"
+	android:configure="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
 	android:description="@string/widget_description"
 	android:initialKeyguardLayout="@layout/widget_1x1_invalid"
 	android:initialLayout="@layout/widget_1x1_invalid"
@@ -14,10 +15,15 @@
 	android:resizeMode="none"
 	android:updatePeriodMillis="1800000"
 	android:widgetCategory="home_screen|keyguard"
-	tools:configure="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
+	android:widgetFeatures="reconfigurable|configuration_optional"
 	tools:context="net.twisterrob.sun.android.SunAngleWidgetProvider"
 	tools:ignore="UnusedAttribute"
 	>
+
+	<!-- configure/configuration_optional: it wasn't enabled before,
+	     but now with permissions being all the rage, need to open it to start requesting permissions.
+	     It's not mandatory though, because the widget will alert when necessary.
+	-->
 
 	<!-- previewImage/description: for the picker, description only applies API 31+. -->
 
