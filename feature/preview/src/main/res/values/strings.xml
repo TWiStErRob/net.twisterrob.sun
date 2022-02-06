@@ -1,5 +1,7 @@
 <resources>
 
 	<string name="app_package">TO BE MERGED with :app</string>
+	<string name="preview_title">Sun Position Widget Preview</string>
+	<string name="preview_launcher_title">Sun Preview</string>
 
 </resources>
