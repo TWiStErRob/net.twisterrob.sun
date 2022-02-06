@@ -7,13 +7,40 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:minWidth="62dp"
 	android:minHeight="62dp"
+	android:configure="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
+	android:description="@string/widget_description"
 	android:initialKeyguardLayout="@layout/widget_1x1_invalid"
 	android:initialLayout="@layout/widget_1x1_invalid"
+	android:minResizeHeight="0dp"
+	android:minResizeWidth="0dp"
 	android:previewImage="@drawable/widget_1x1_preview"
-	android:resizeMode="none"
+	android:resizeMode="vertical|horizontal"
+	android:targetCellHeight="1"
+	android:targetCellWidth="2"
 	android:updatePeriodMillis="1800000"
 	android:widgetCategory="home_screen|keyguard"
-	tools:configure="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
+	android:widgetFeatures="reconfigurable|configuration_optional"
 	tools:context="net.twisterrob.sun.android.SunAngleWidgetProvider"
 	tools:ignore="UnusedAttribute"
-	/>
+	>
+
+	<!--
+	     * minWidth/minHeight: for <= API 30, a 1x1 widget.
+	     * targetCellWidth/targetCellHeight:
+	       For API 30, widgets are very rounded so content has less space.
+	       Target 2 cells wide to account for this.
+	     * resizeMode/minResizeWidth/minResizeHeight:
+	       Allow the user to resize to any size, since I can't guess their launcher sizes.
+	       One may accept a bit cut off angle or time, just for a 1x1 size.
+	-->
+
+	<!-- configure/configuration_optional: it wasn't enabled before,
+	     but now with permissions being all the rage, need to open it to start requesting permissions.
+	     It's not mandatory though, because the widget will alert when necessary.
+	-->
+
+	<!-- previewImage/description: for the picker, description only applies API 31+. -->
+
+	<!-- initialLayout: invalid to make sure it's clearly visible if it's not configured. -->
+
+</appwidget-provider>
