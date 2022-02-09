@@ -2,8 +2,11 @@ package net.twisterrob.sun.android;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.util.Log;
@@ -52,6 +55,16 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 	 */
 	private static final SunAngleWidgetUpdater UPDATER = new SunAngleWidgetUpdater();
 	private static final WidgetUpdateList TODOs = new WidgetUpdateList();
+
+	@Inject WidgetComponent component = null;
+
+	@Override
+	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
+		if (component == null) {
+			DaggerWidgetComponent.create().inject(this);
+		}
+		super.onReceive(context, intent);
+	}
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
