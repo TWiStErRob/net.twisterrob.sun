@@ -25,6 +25,10 @@ gradlePlugin {
 		id = "project-module-android-app"
 		implementationClass = "net.twisterrob.sun.plugins.AndroidAppPlugin"
 	}
+	plugins.register("project-module-java-library") {
+		id = "project-module-java-library"
+		implementationClass = "net.twisterrob.sun.plugins.JavaLibraryPlugin"
+	}
 	plugins.register("project-feature-paparazzi") {
 		id = "project-feature-paparazzi"
 		implementationClass = "net.twisterrob.sun.plugins.PaparazziPlugin"

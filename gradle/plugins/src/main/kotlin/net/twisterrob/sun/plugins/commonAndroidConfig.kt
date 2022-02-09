@@ -5,11 +5,11 @@ import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.lint.AndroidLintTask
 import org.gradle.api.Project
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.withType
 
 internal fun Project.commonAndroidConfig() {
+	commonJavaConfig()
 	// TODO https://github.com/gradle/android-cache-fix-gradle-plugin/issues/215
 	//apply(plugin = "org.gradle.android.cache-fix")
 	extensions.configure<BaseExtension> {
@@ -28,15 +28,5 @@ internal fun Project.commonAndroidConfig() {
 			this.inputs.files(rootProject.file("lint.xml")).withPathSensitivity(PathSensitivity.RELATIVE)
 			this.inputs.files(project.file("lint.xml")).withPathSensitivity(PathSensitivity.RELATIVE)
 		}
-	}
-	tasks.withType<JavaCompile> {
-		options.compilerArgs = options.compilerArgs + listOf(
-			// Enable all warnings during compilation.
-			"-Xlint:all",
-			// Workaround for https://github.com/cashapp/paparazzi/issues/362.
-			"-Xlint:-classfile",
-			// Fail build when warnings pop up.
-			"-Werror",
-		)
 	}
 }
