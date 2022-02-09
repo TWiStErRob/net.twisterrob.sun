@@ -37,6 +37,12 @@ object Deps {
 		val compilerEmbeddable = "org.jetbrains.kotlin:kotlin-compiler-embeddable:${version}"
 	}
 
+	object Dagger {
+
+		const val dagger = "com.google.dagger:dagger:2.40.5"
+		const val compiler = "com.google.dagger:dagger-compiler:2.40.5"
+	}
+
 	object Test {
 
 		const val paparazzi = "app.cash.paparazzi:paparazzi:0.9.0"

@@ -3,6 +3,7 @@ rootProject.name = "Sun"
 include(":app")
 include(":feature:configuration")
 include(":feature:preview")
+include(":component:core")
 include(":component:widget")
 include(":component:states")
 include(":component:lib")
