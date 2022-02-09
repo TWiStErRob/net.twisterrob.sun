@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 
@@ -25,6 +26,10 @@ public class WidgetHelpers {
 	) {
 		Intent intent = new Intent();
 		intent.setComponent(target);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			// https://developer.android.com/guide/topics/appwidgets/advanced#broadcastreceiver-priority
+			intent.setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+		}
 		intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
 		return intent;
