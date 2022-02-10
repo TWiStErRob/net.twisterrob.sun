@@ -171,7 +171,7 @@ public class SunAngleWidgetView {
 		return colorString;
 	}
 
-	protected static @NonNull PendingIntent createOpenIntent(@NonNull Context context, int appWidgetId) {
+	private static @NonNull PendingIntent createOpenIntent(@NonNull Context context, int appWidgetId) {
 		try {
 			Class<?> SAWC = Class.forName("net.twisterrob.sun.android.SunAngleWidgetConfiguration");
 			Intent configIntent = new Intent(context, SAWC);
@@ -184,7 +184,7 @@ public class SunAngleWidgetView {
 		}
 	}
 
-	protected static @NonNull PendingIntent createRefreshIntent(@NonNull Context context, int appWidgetId) {
+	private static @NonNull PendingIntent createRefreshIntent(@NonNull Context context, int appWidgetId) {
 		Intent intent = WidgetHelpers.createUpdateIntent(context, SunAngleWidgetProvider.class, appWidgetId);
 		@SuppressLint("InlinedApi") // New flag shouldn't cause a problem in older versions.
 		int flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
