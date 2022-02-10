@@ -66,7 +66,7 @@ import net.twisterrob.sun.configuration.BuildConfig;
 import net.twisterrob.sun.configuration.R;
 import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 
-import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.*;
 
 public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 
@@ -228,7 +228,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	}
 
 	@Override protected @NonNull SharedPreferences onPreferencesOpen(int appWidgetId) {
-		return SunAngleWidgetProvider.getPreferences(getApplicationContext(), appWidgetId);
+		return SunAngleWidgetPreferences.getPreferences(getApplicationContext(), appWidgetId);
 	}
 
 	@Override protected void onPreferencesLoad(@NonNull SharedPreferences prefs) {

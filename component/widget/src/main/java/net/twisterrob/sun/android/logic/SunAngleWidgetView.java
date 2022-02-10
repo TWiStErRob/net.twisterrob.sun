@@ -43,10 +43,10 @@ import net.twisterrob.sun.android.widget.R;
 import net.twisterrob.sun.model.LightState;
 import net.twisterrob.sun.model.LightStateMap;
 
-import static net.twisterrob.sun.android.SunAngleWidgetProvider.DEFAULT_SHOW_PART_OF_DAY;
-import static net.twisterrob.sun.android.SunAngleWidgetProvider.DEFAULT_SHOW_UPDATE_TIME;
-import static net.twisterrob.sun.android.SunAngleWidgetProvider.PREF_SHOW_PART_OF_DAY;
-import static net.twisterrob.sun.android.SunAngleWidgetProvider.PREF_SHOW_UPDATE_TIME;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_SHOW_PART_OF_DAY;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_SHOW_UPDATE_TIME;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_PART_OF_DAY;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_UPDATE_TIME;
 
 public class SunAngleWidgetView {
 

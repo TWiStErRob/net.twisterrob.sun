@@ -27,6 +27,13 @@ import androidx.core.content.FileProvider;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.preview.R;
 
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_MOCK_TIME;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_MOCK_TIME;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_PART_OF_DAY;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_UPDATE_TIME;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_THRESHOLD_ANGLE;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_THRESHOLD_RELATION;
+
 public class WidgetScreenshotActivity extends Activity {
 	private static final String TAG = "WidgetScreenshot";
 
@@ -102,14 +109,14 @@ public class WidgetScreenshotActivity extends Activity {
 		host = new AppWidgetHost(getApplicationContext(), 0);
 		host.deleteHost(); // clean up leftovers, if any
 		appWidgetId = host.allocateAppWidgetId();
-		SunAngleWidgetProvider
+		SunAngleWidgetPreferences
 				.getPreferences(this, appWidgetId)
 				.edit()
-				.putLong(SunAngleWidgetProvider.PREF_MOCK_TIME, SunAngleWidgetProvider.DEFAULT_MOCK_TIME)
-				.putString(SunAngleWidgetProvider.PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name())
-				.putFloat(SunAngleWidgetProvider.PREF_THRESHOLD_ANGLE, 0)
-				.putBoolean(SunAngleWidgetProvider.PREF_SHOW_UPDATE_TIME, true)
-				.putBoolean(SunAngleWidgetProvider.PREF_SHOW_PART_OF_DAY, true)
+				.putLong(PREF_MOCK_TIME, DEFAULT_MOCK_TIME)
+				.putString(PREF_THRESHOLD_RELATION, ThresholdRelation.ABOVE.name())
+				.putFloat(PREF_THRESHOLD_ANGLE, 0)
+				.putBoolean(PREF_SHOW_UPDATE_TIME, true)
+				.putBoolean(PREF_SHOW_PART_OF_DAY, true)
 				.apply();
 		bindWidget(appWidgetId, new ComponentName(getApplicationContext(), SunAngleWidgetProvider.class));
 	}
