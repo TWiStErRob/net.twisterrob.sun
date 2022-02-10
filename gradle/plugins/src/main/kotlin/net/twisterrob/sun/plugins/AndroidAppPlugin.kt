@@ -8,6 +8,7 @@ class AndroidAppPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
 		target.apply(plugin = "net.twisterrob.android-app")
+		target.apply(plugin = "net.twisterrob.kotlin")
 		target.commonAndroidConfig()
 	}
 }

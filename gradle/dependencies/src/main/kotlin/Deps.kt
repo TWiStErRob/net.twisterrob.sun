@@ -33,6 +33,7 @@ object Deps {
 		const val version = "1.5.31"
 		val bom = "org.jetbrains.kotlin:kotlin-bom:${version}"
 		val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${version}"
+		val stdlib8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${version}"
 		val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${version}"
 		val compilerEmbeddable = "org.jetbrains.kotlin:kotlin-compiler-embeddable:${version}"
 	}

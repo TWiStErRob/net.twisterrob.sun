@@ -1,10 +1,10 @@
-package net.twisterrob.sun.android;
+package net.twisterrob.sun.android
 
-import android.app.Application;
+import android.app.Application
 
-class App extends Application {
+class App : Application() {
 
-	@Override public void onCreate() {
-		super.onCreate();
+	override fun onCreate() {
+		super.onCreate()
 	}
 }
