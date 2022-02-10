@@ -63,6 +63,7 @@ public class ActivityManagerSingletonHack extends ExternalResource {
 	 * Workaround because {@code IActivityManager manager = mock(IActivityManager.class)}
 	 * throws {@link IncompatibleClassChangeError}.
 	 */
+	@SuppressWarnings("rawtypes") // Class[]
 	private static @NonNull IActivityManager mockActivityManager() {
 		return (IActivityManager)Proxy.newProxyInstance(
 				IActivityManager.class.getClassLoader(),
