@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
 	implementation(project(":component:core"))
-	annotationProcessor(Deps.Dagger.compiler)
+	kapt(Deps.Dagger.compiler)
 	api(project(":component:lib"))
 	implementation(project(":component:states"))
 	implementation(project(":component:theme"))
