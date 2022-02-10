@@ -22,12 +22,6 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 
 	private static final String TAG = "Sun";
 
-	/**
-	 * Needs to be static because random instances are created for separate onReceive calls.
-	 */
-	private static final SunAngleWidgetUpdater UPDATER = new SunAngleWidgetUpdater();
-	private static final WidgetUpdateList TODOs = new WidgetUpdateList();
-
 	@Inject WidgetComponent component = null;
 
 	@Override
@@ -41,7 +35,6 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 	@Override
 	public void onDeleted(@NonNull Context context, @NonNull int[] appWidgetIds) {
 		super.onDeleted(context, appWidgetIds);
-		TODOs.remove(appWidgetIds);
 		for (int appWidgetId : appWidgetIds) {
 			SunAngleWidgetPreferences.getPreferences(context, appWidgetId).edit().clear().apply();
 		}
@@ -50,13 +43,14 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 	@Override
 	public void onUpdate(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, @NonNull int[] appWidgetIds) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
-		TODOs.add(appWidgetIds);
-		UPDATER.setContext(context);
-		updateAll(context);
+		updateAll(context, appWidgetIds);
 	}
 
-	private void updateAll(final @NonNull Context context) {
+	private void updateAll(final @NonNull Context context, final @NonNull int... appWidgetIds) {
+		final SunAngleWidgetUpdater UPDATER = new SunAngleWidgetUpdater(context);
 		try {
+			WidgetUpdateList TODOs = new WidgetUpdateList();
+			TODOs.add(appWidgetIds);
 			TODOs.catchup(UPDATER, new LocationListenerCompat() {
 				@Override
 				public void onLocationChanged(@Nullable Location location) {
@@ -64,7 +58,7 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 						Log.v(TAG, SunAngleWidgetProvider.this + ".onLocationChanged(" + location + ")");
 					}
 					UPDATER.clearLocation(this);
-					updateAll(context);
+					updateAll(context, appWidgetIds);
 				}
 			});
 		} catch (Exception ex) {

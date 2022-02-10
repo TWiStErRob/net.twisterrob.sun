@@ -37,10 +37,6 @@ public class SunAngleWidgetUpdater {
 	private static final SunAngleWidgetView VIEW = new SunAngleWidgetView(new TimeProvider());
 	private static final SunCalculator CALC = new SunCalculator(new PhotovoltaicSun());
 
-	public SunAngleWidgetUpdater() {
-		// no context (yet)
-	}
-
 	public SunAngleWidgetUpdater(@NonNull Context context) {
 		setContext(context);
 	}
