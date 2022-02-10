@@ -6,11 +6,6 @@ Project is a standard Android Gradle project, so Android Studio or IntelliJ IDEA
 
 ### LogCat
 
-```shell
-# Statically hard-coded tags.
-adb shell setprop log.tag.Sun V
-adb shell setprop log.tag.WidgetConfiguration V
-adb shell setprop log.tag.Config V
-# Dynamic logging tag in LoggingAppWidgetProvider.
-adb shell setprop log.tag.SunAngleWidgetProvider V
-```
+Most logs are behind `isLoggable`, so need to enable manually.
+
+See [enable-tags.bat](enable-tags.bat) for list of tags.
