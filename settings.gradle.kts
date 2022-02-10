@@ -29,6 +29,7 @@ pluginManagement {
 				includeGroup("com.gradle")
 				includeGroup("com.gradle.enterprise")
 				includeGroup("gradle.plugin.org.gradle.android")
+				includeGroup("org.jetbrains.kotlin.android")
 			}
 		}
 		maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
