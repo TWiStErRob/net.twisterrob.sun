@@ -7,6 +7,8 @@ import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -67,6 +69,7 @@ public class SunAngleWidgetView {
 
 	private final @NonNull TimeProvider times;
 
+	@Inject
 	public SunAngleWidgetView(@NonNull TimeProvider times) {
 		this.times = times;
 	}

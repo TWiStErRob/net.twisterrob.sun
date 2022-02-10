@@ -23,6 +23,7 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 	private static final String TAG = "Sun";
 
 	@Inject WidgetComponent component = null;
+	@Inject SunAngleWidgetUpdater updater = null;
 
 	@Override
 	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
@@ -47,17 +48,16 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 	}
 
 	private void updateAll(final @NonNull Context context, final @NonNull int... appWidgetIds) {
-		final SunAngleWidgetUpdater UPDATER = new SunAngleWidgetUpdater(context);
 		try {
 			WidgetUpdateList TODOs = new WidgetUpdateList();
 			TODOs.add(appWidgetIds);
-			TODOs.catchup(UPDATER, new LocationListenerCompat() {
+			TODOs.catchup(updater, new LocationListenerCompat() {
 				@Override
 				public void onLocationChanged(@Nullable Location location) {
 					if (Log.isLoggable(TAG, Log.VERBOSE)) {
 						Log.v(TAG, SunAngleWidgetProvider.this + ".onLocationChanged(" + location + ")");
 					}
-					UPDATER.clearLocation(this);
+					updater.clearLocation(this);
 					updateAll(context, appWidgetIds);
 				}
 			});

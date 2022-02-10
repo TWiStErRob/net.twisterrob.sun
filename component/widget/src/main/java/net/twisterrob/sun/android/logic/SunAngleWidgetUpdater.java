@@ -2,6 +2,8 @@ package net.twisterrob.sun.android.logic;
 
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -28,27 +30,24 @@ import net.twisterrob.sun.algo.SunSearchResults;
 import net.twisterrob.sun.algo.SunSearchResults.SunSearchParams;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.SunAngleWidgetPreferences;
-import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 
 import static net.twisterrob.sun.android.SunAngleWidgetPreferences.*;
 
 public class SunAngleWidgetUpdater {
 
-	private static final SunAngleWidgetView VIEW = new SunAngleWidgetView(new TimeProvider());
-	private static final SunCalculator CALC = new SunCalculator(new PhotovoltaicSun());
+	private final @NonNull Context context;
+	private final @NonNull SunAngleWidgetView view;
+	private final @NonNull SunCalculator calculator;
 
-	public SunAngleWidgetUpdater(@NonNull Context context) {
-		setContext(context);
-	}
-
-	private Context context;
-
-	public Context getContext() {
-		return context;
-	}
-
-	public void setContext(@NonNull Context context) {
+	@Inject
+	public SunAngleWidgetUpdater(
+			@NonNull Context context,
+			@NonNull SunAngleWidgetView view,
+			@NonNull SunCalculator calculator
+	) {
 		this.context = context;
+		this.view = view;
+		this.calculator = calculator;
 	}
 
 	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
@@ -119,12 +118,12 @@ public class SunAngleWidgetUpdater {
 			if (prefs.contains(PREF_MOCK_TIME)) {
 				params.time.setTimeInMillis(prefs.getLong(PREF_MOCK_TIME, DEFAULT_MOCK_TIME));
 			}
-			result = CALC.find(params);
+			result = calculator.find(params);
 			if (prefs.contains(PREF_MOCK_ANGLE)) {
 				result.current.angle = prefs.getFloat(PREF_MOCK_ANGLE, DEFAULT_MOCK_ANGLE);
 			}
 		}
-		RemoteViews views = VIEW.createUpdateViews(context, appWidgetId, result, prefs);
+		RemoteViews views = view.createUpdateViews(context, appWidgetId, result, prefs);
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 		return result != null;

@@ -59,6 +59,8 @@ import net.twisterrob.android.widget.WidgetHelpers;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
 import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
+import net.twisterrob.sun.android.logic.SunAngleWidgetView;
+import net.twisterrob.sun.android.logic.TimeProvider;
 import net.twisterrob.sun.android.ui.SunGradientShaderFactory;
 import net.twisterrob.sun.android.ui.SunGradientShaderFactory.Type;
 import net.twisterrob.sun.android.view.SunThresholdDrawable;
@@ -624,7 +626,9 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		private final @NonNull Consumer<Location> update;
 
 		LocationUpdater(@NonNull Context context, int appWidgetId, @NonNull Consumer<Location> update) {
-			this.updater = new SunAngleWidgetUpdater(context);
+			SunAngleWidgetView view = new SunAngleWidgetView(new TimeProvider());
+			SunCalculator calculator = new SunCalculator(new PhotovoltaicSun());
+			this.updater = new SunAngleWidgetUpdater(context, view, calculator);
 			this.appWidgetId = appWidgetId;
 			this.update = update;
 		}
