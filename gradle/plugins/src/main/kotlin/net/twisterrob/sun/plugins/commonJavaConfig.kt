@@ -19,7 +19,7 @@ internal fun Project.commonJavaConfig() {
 			// > dagger.Component,android.annotation.TargetApi
 			"-Xlint:-processing",
 			// Fail build when warnings pop up.
-			"-Werror",
+			"-Werror"
 		)
 	}
 }
