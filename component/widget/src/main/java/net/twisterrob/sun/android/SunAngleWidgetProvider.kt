@@ -8,7 +8,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.location.LocationListenerCompat
 import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater
-import net.twisterrob.sun.android.logic.WidgetUpdateList
 import java.util.*
 import javax.inject.Inject
 
@@ -36,9 +35,7 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 
 	private fun updateAll(context: Context, vararg appWidgetIds: Int) {
 		try {
-			val TODOs = WidgetUpdateList()
-			TODOs.add(*appWidgetIds)
-			TODOs.catchup(updater, object : LocationListenerCompat {
+			val fallback = object : LocationListenerCompat {
 				override fun onLocationChanged(location: Location) {
 					if (Log.isLoggable(TAG, Log.VERBOSE)) {
 						Log.v(TAG, "${this@SunAngleWidgetProvider}.onLocationChanged(${location})")
@@ -46,7 +43,12 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 					updater.clearLocation(this)
 					updateAll(context, *appWidgetIds)
 				}
-			})
+			}
+			for (appWidgetId in appWidgetIds) {
+				if (!updater.update(appWidgetId, fallback)) {
+					Log.w(TAG, "${this}.update(${appWidgetId}) failed.")
+				}
+			}
 		} catch (ex: Exception) {
 			Log.e(TAG, "${this}.updateAll", ex)
 			Toast.makeText(context, ex.toString(), Toast.LENGTH_LONG).show()
