@@ -7,23 +7,12 @@ import javax.inject.Inject;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresPermission;
-import androidx.core.location.LocationListenerCompat;
-import androidx.core.location.LocationManagerCompat;
-
-import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
-import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
 import net.twisterrob.sun.algo.SunCalculator;
 import net.twisterrob.sun.algo.SunSearchResults;
@@ -31,7 +20,14 @@ import net.twisterrob.sun.algo.SunSearchResults.SunSearchParams;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.SunAngleWidgetPreferences;
 
-import static net.twisterrob.sun.android.SunAngleWidgetPreferences.*;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_MOCK_ANGLE;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_MOCK_TIME;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_THRESHOLD_ANGLE;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_THRESHOLD_RELATION;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_MOCK_ANGLE;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_MOCK_TIME;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_THRESHOLD_ANGLE;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_THRESHOLD_RELATION;
 
 public class SunAngleWidgetUpdater {
 
@@ -50,57 +46,7 @@ public class SunAngleWidgetUpdater {
 		this.calculator = calculator;
 	}
 
-	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
-	public void clearLocation(@NonNull LocationListenerCompat fallback) {
-		if (hasLocationPermission()) {
-			LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-			LocationManagerCompat.removeUpdates(lm, fallback);
-		}
-	}
-
-	@SuppressWarnings("deprecation") // Cannot use LocationManagerCompat.getCurrentLocation yet:
-	// tried, but it gets into infinite loop when there's no location and runs on a different thread.
-	// TODO https://developer.android.com/training/location/retrieve-current.html#GetLocation
-	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
-	public @Nullable Location getLocation(final @NonNull LocationListenerCompat fallback) {
-		if (!hasLocationPermission()) {
-			Log.w("Sun", "No location permission granted, stopping " + this + " for " + fallback);
-			return null;
-		}
-		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-		// The passive provider doesn't seem to work with coarse permission only.
-		Location location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-		if (location == null) {
-			Criteria criteria = new Criteria();
-			criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-			criteria.setPowerRequirement(Criteria.POWER_LOW);
-			String provider = lm.getBestProvider(criteria, true);
-			if (provider != null) {
-				location = lm.getLastKnownLocation(provider);
-				if (location == null) {
-					if (Log.isLoggable("Sun", Log.VERBOSE)) {
-						Log.v("Sun", "No location, request update on " + provider + " for " + fallback);
-					}
-					lm.requestSingleUpdate(provider, fallback, null);
-				}
-			} else {
-				if (Log.isLoggable("Sun", Log.VERBOSE)) {
-					Log.v("Sun", "No provider enabled wait for update");
-				}
-				lm.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, fallback, null);
-			}
-		}
-		return location;
-	}
-
-	private boolean hasLocationPermission() {
-		boolean hasFinePermission = checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED;
-		boolean hasCoarsePermission = checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED;
-		return hasFinePermission || hasCoarsePermission;
-	}
-
-	public boolean update(int appWidgetId, @NonNull LocationListenerCompat fallback) {
-		Location location = getLocation(fallback);
+	public boolean update(int appWidgetId, @Nullable Location location) {
 		if (Log.isLoggable("Sun", Log.VERBOSE)) {
 			Log.v("Sun", "update(" + appWidgetId + "," + location + ")");
 		}

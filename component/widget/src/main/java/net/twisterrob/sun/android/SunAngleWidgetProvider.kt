@@ -15,6 +15,7 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 
 	@Inject lateinit var component: WidgetComponent
 	@Inject lateinit var updater: SunAngleWidgetUpdater
+	@Inject lateinit var locations: LocationRetriever
 
 	override fun onReceive(context: Context, intent: Intent) {
 		DaggerWidgetComponent.factory().create(context).inject(this)
@@ -34,18 +35,23 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 	}
 
 	private fun updateAll(context: Context, vararg appWidgetIds: Int) {
-		try {
-			val fallback = object : LocationListenerCompat {
-				override fun onLocationChanged(location: Location) {
-					if (Log.isLoggable(TAG, Log.VERBOSE)) {
-						Log.v(TAG, "${this@SunAngleWidgetProvider}.onLocationChanged(${location})")
-					}
-					updater.clearLocation(this)
-					updateAll(context, *appWidgetIds)
+		val fallback = object : LocationListenerCompat {
+			override fun onLocationChanged(location: Location) {
+				if (Log.isLoggable(TAG, Log.VERBOSE)) {
+					Log.v(TAG, "${this@SunAngleWidgetProvider}.onLocationChanged(${location})")
 				}
+				locations.clearLocation(this)
+				updateAll(context, location, *appWidgetIds)
 			}
+		}
+		val location = locations.getLocation(fallback)
+		updateAll(context, location, *appWidgetIds)
+	}
+
+	private fun updateAll(context: Context, location: Location?, vararg appWidgetIds: Int) {
+		try {
 			for (appWidgetId in appWidgetIds) {
-				if (!updater.update(appWidgetId, fallback)) {
+				if (!updater.update(appWidgetId, location)) {
 					Log.w(TAG, "${this}.update(${appWidgetId}) failed.")
 				}
 			}
