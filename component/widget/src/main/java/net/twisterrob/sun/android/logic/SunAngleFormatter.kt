@@ -15,7 +15,9 @@ internal class SunAngleFormatter {
 	}
 
 	internal class Result(
+		@JvmField
 		val angle: String,
+		@JvmField
 		val fraction: String
 	)
 
