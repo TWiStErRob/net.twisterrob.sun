@@ -19,8 +19,23 @@ class LocationRetriever @Inject constructor(
 	private val context: Context
 ) {
 
+	fun get(block: (Location?) -> Unit) {
+		val fallback = object : LocationListenerCompat {
+			override fun onLocationChanged(location: Location) {
+				if (Log.isLoggable(TAG, Log.VERBOSE)) {
+					Log.v(TAG, "${this}.onLocationChanged(${location})")
+				}
+				clearLocation(this)
+				block(location)
+			}
+		}
+		val location = getLocation(fallback)
+		// If this is null, then block might be called twice: once now, and once fallback completes (if at all).
+		block(location)
+	}
+
 	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
-	fun clearLocation(fallback: LocationListenerCompat) {
+	private fun clearLocation(fallback: LocationListenerCompat) {
 		if (hasLocationPermission()) {
 			val lm = context.getSystemService<LocationManager>()!!
 			LocationManagerCompat.removeUpdates(lm, fallback)
@@ -31,7 +46,7 @@ class LocationRetriever @Inject constructor(
 	// tried, but it gets into infinite loop when there's no location and runs on a different thread.
 	// TODO https://developer.android.com/training/location/retrieve-current.html#GetLocation
 	@RequiresPermission(value = ACCESS_FINE_LOCATION, conditional = true /*guarded by hasLocationPermission()*/)
-	fun getLocation(fallback: LocationListenerCompat): Location? {
+	private fun getLocation(fallback: LocationListenerCompat): Location? {
 		if (!hasLocationPermission()) {
 			Log.w(TAG, "No location permission granted, stopping ${this} for ${fallback}")
 			return null
@@ -56,7 +71,7 @@ class LocationRetriever @Inject constructor(
 				}
 			} else {
 				if (Log.isLoggable(TAG, Log.VERBOSE)) {
-					Log.v(TAG, "No provider enabled wait for update")
+					Log.v(TAG, "No provider enabled, wait for update.")
 				}
 				@Suppress("DEPRECATION")
 				lm.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, fallback, null)
