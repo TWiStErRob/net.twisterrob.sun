@@ -1,43 +1,35 @@
-package net.twisterrob.sun.android.logic;
+package net.twisterrob.sun.android.logic
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import kotlin.math.abs
 
-import androidx.annotation.NonNull;
+internal class SunAngleFormatter {
 
-class SunAngleFormatter {
-
-	private static final DecimalFormat FORMATTER = initFractionFormat();
-
-	@NonNull Result format(double angle) {
-		String sign = angle < 0? "-" : ""; // because I want to display ±0
-		return new Result(
-				sign + Math.abs((int)angle),
-				FORMATTER.format(angle)
-		);
+	fun format(angle: Double): Result {
+		val sign = if (angle < 0) "-" else "" // Because I want to display ±0.
+		return Result(
+			angle = sign + abs(angle.toInt()),
+			fraction = FORMATTER.format(angle)
+		)
 	}
 
-	private static @NonNull DecimalFormat initFractionFormat() {
-		DecimalFormat nf = (DecimalFormat)NumberFormat.getInstance();
-		nf.setNegativePrefix("");
-		nf.setNegativeSuffix("");
-		nf.setPositivePrefix("");
-		nf.setPositiveSuffix("");
-		nf.setMinimumIntegerDigits(0);
-		nf.setMaximumIntegerDigits(0);
-		nf.setMinimumFractionDigits(4);
-		nf.setMaximumFractionDigits(4);
-		return nf;
-	}
+	internal class Result(
+		val angle: String,
+		val fraction: String
+	)
 
-	static class Result {
+	companion object {
 
-		public final @NonNull String angle;
-		public final @NonNull String fraction;
-
-		Result(@NonNull String angle, @NonNull String fraction) {
-			this.angle = angle;
-			this.fraction = fraction;
+		private val FORMATTER: DecimalFormat = (NumberFormat.getInstance() as DecimalFormat).apply {
+			negativePrefix = ""
+			negativeSuffix = ""
+			positivePrefix = ""
+			positiveSuffix = ""
+			minimumIntegerDigits = 0
+			maximumIntegerDigits = 0
+			minimumFractionDigits = 4
+			maximumFractionDigits = 4
 		}
 	}
 }
