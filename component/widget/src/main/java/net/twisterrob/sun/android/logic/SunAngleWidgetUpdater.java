@@ -27,10 +27,10 @@ import net.twisterrob.sun.algo.SunCalculator;
 import net.twisterrob.sun.algo.SunSearchResults;
 import net.twisterrob.sun.algo.SunSearchResults.SunSearchParams;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
-import net.twisterrob.sun.android.SunAngleWidgetProvider;
+import net.twisterrob.sun.android.SunAngleWidgetPreferences;
 import net.twisterrob.sun.pveducation.PhotovoltaicSun;
 
-import static net.twisterrob.sun.android.SunAngleWidgetProvider.*;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.*;
 
 public class SunAngleWidgetUpdater {
 
@@ -111,7 +111,7 @@ public class SunAngleWidgetUpdater {
 		}
 
 		SunSearchResults result = null;
-		SharedPreferences prefs = SunAngleWidgetProvider.getPreferences(context, appWidgetId);
+		SharedPreferences prefs = SunAngleWidgetPreferences.getPreferences(context, appWidgetId);
 		if (location != null) {
 			SunSearchParams params = new SunSearchParams();
 			params.latitude = location.getLatitude();

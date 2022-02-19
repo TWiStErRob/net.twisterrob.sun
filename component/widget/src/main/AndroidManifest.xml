@@ -8,6 +8,12 @@
 		android:required="false"
 		/>
 
+	<!-- @RequiresFeature(PackageManager.FEATURE_LOCATION) android.location.LocationManager -->
+	<uses-feature
+		android:name="android.hardware.location"
+		android:required="true"
+		/>
+
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />

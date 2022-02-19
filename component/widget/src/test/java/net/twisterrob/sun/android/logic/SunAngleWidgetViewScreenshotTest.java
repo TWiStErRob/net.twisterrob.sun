@@ -30,8 +30,8 @@ import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.test.screenshots.PaparazziCoat;
 import net.twisterrob.sun.test.screenshots.ScreenshotTest;
 
-import static net.twisterrob.sun.android.SunAngleWidgetProvider.PREF_SHOW_PART_OF_DAY;
-import static net.twisterrob.sun.android.SunAngleWidgetProvider.PREF_SHOW_UPDATE_TIME;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_PART_OF_DAY;
+import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_UPDATE_TIME;
 
 @RunWith(TestParameterInjector.class)
 @Category(ScreenshotTest.class)

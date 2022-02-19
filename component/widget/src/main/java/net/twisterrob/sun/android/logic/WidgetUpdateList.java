@@ -25,7 +25,7 @@ public class WidgetUpdateList {
 
 	public synchronized void catchup(@NonNull SunAngleWidgetUpdater updater, @NonNull LocationListenerCompat fallback) {
 		for (Iterator<Integer> current = toBeUpdated.iterator(); current.hasNext(); ) {
-			Integer appWidgetId = current.next();
+			int appWidgetId = current.next();
 			if (updater.update(appWidgetId, fallback)) {
 				current.remove();
 			}
