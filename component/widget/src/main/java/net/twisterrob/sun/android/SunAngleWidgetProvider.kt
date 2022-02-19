@@ -30,12 +30,15 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 
 	override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds)
-		locations.get { location ->
+		val async = goAsync()
+		locations.get(5000L) { location ->
 			try {
 				updateAll(location, *appWidgetIds)
 			} catch (ex: Exception) {
 				Log.e(TAG, "${this}.updateAll", ex)
 				Toast.makeText(context, ex.toString(), Toast.LENGTH_LONG).show()
+			} finally {
+				async.finish()
 			}
 		}
 	}
