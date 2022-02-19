@@ -61,7 +61,7 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 	@Override
 	public void onReceive(@NonNull Context context, @NonNull Intent intent) {
 		if (component == null) {
-			DaggerWidgetComponent.create().inject(this);
+			DaggerWidgetComponent.factory().create(context).inject(this);
 		}
 		super.onReceive(context, intent);
 	}
