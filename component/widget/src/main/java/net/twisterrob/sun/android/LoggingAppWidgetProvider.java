@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class LoggingAppWidgetProvider extends AppWidgetProvider {
 
@@ -23,7 +24,7 @@ public class LoggingAppWidgetProvider extends AppWidgetProvider {
 	}
 
 	@Override
-	public void onDeleted(Context context, int[] appWidgetIds) {
+	public void onDeleted(@NonNull Context context, @NonNull int[] appWidgetIds) {
 		if (Log.isLoggable(tag, Log.VERBOSE)) {
 			Log.v(tag, this + ".onDeleted(" + Arrays.toString(appWidgetIds) + ")");
 		}
@@ -31,7 +32,7 @@ public class LoggingAppWidgetProvider extends AppWidgetProvider {
 	}
 
 	@Override
-	public void onEnabled(Context context) {
+	public void onEnabled(@NonNull Context context) {
 		if (Log.isLoggable(tag, Log.VERBOSE)) {
 			Log.v(tag, this + ".onEnabled");
 		}
@@ -39,7 +40,7 @@ public class LoggingAppWidgetProvider extends AppWidgetProvider {
 	}
 
 	@Override
-	public void onDisabled(Context context) {
+	public void onDisabled(@NonNull Context context) {
 		if (Log.isLoggable(tag, Log.VERBOSE)) {
 			Log.v(tag, this + ".onDisabled");
 		}
@@ -56,7 +57,7 @@ public class LoggingAppWidgetProvider extends AppWidgetProvider {
 	}
 
 	@Override
-	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+	public void onUpdate(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		if (Log.isLoggable(tag, Log.VERBOSE)) {
 			Log.v(tag, this + ".onUpdate(" + Arrays.toString(appWidgetIds) + ")");
 		}
@@ -65,13 +66,22 @@ public class LoggingAppWidgetProvider extends AppWidgetProvider {
 
 	@TargetApi(VERSION_CODES.JELLY_BEAN)
 	@Override
-	public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId,
-			Bundle newOptions) {
+	public void onAppWidgetOptionsChanged(@NonNull Context context, @NonNull AppWidgetManager appWidgetManager, int appWidgetId,
+			@Nullable Bundle newOptions) {
 		if (Log.isLoggable(tag, Log.VERBOSE)) {
-			newOptions.get(null); // force unparcel
-			Log.v(tag, this + ".onAppWidgetOptionsChanged(" + appWidgetId + ", " + newOptions.toString() + ")");
+			if (newOptions != null) newOptions.get(null); // force unparcel
+			Log.v(tag, this + ".onAppWidgetOptionsChanged(" + appWidgetId + ", " + newOptions + ")");
 		}
 		super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+	}
+
+	@TargetApi(VERSION_CODES.LOLLIPOP)
+	@Override
+	public void onRestored(@NonNull Context context, @NonNull int[] oldWidgetIds, @NonNull int[] newWidgetIds) {
+		if (Log.isLoggable(tag, Log.VERBOSE)) {
+			Log.v(tag, this + ".onRestored(" + Arrays.toString(oldWidgetIds) + "," + Arrays.toString(newWidgetIds) + ")");
+		}
+		super.onRestored(context, oldWidgetIds, newWidgetIds);
 	}
 
 	@Override
