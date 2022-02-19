@@ -1,41 +1,66 @@
-package net.twisterrob.sun.android;
+package net.twisterrob.sun.android
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Context
+import android.content.SharedPreferences
+import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation
 
-import androidx.annotation.NonNull;
+object SunAngleWidgetPreferences {
 
-import static net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
+	private const val PREF_NAME = "SunAngleWidget"
 
-public class SunAngleWidgetPreferences {
-	public static final String PREF_NAME = "SunAngleWidget";
-	/** String: {@link ThresholdRelation#name() ThresholdRelation constant name},
-	 * default: {@link ThresholdRelation#ABOVE ABOVE} */
-	public static final String PREF_THRESHOLD_RELATION = "relation";
-	public static final ThresholdRelation DEFAULT_THRESHOLD_RELATION = ThresholdRelation.ABOVE;
-	/** double: angle in degrees,
-	 * default: {@value #DEFAULT_THRESHOLD_ANGLE} */
-	public static final String PREF_THRESHOLD_ANGLE = "threshold";
-	public static final float DEFAULT_THRESHOLD_ANGLE = 0;
-	/** double: angle in degrees,
-	 * default: {@value #DEFAULT_MOCK_ANGLE} */
-	public static final String PREF_MOCK_ANGLE = "mockAngle";
-	public static final float DEFAULT_MOCK_ANGLE = Float.NaN;
-	/** long: {@link System#currentTimeMillis()},
-	 * default: {@value #DEFAULT_MOCK_ANGLE} */
-	public static final String PREF_MOCK_TIME = "mockTime";
-	public static final long DEFAULT_MOCK_TIME = 520597560L * 1000;
-	/** boolean: true=show,
-	 * default: {@value #DEFAULT_SHOW_UPDATE_TIME} */
-	public static final String PREF_SHOW_UPDATE_TIME = "showLastUpdateTime";
-	public static final boolean DEFAULT_SHOW_UPDATE_TIME = false;
-	/** boolean: true=show,
-	 * default: {@value #DEFAULT_SHOW_PART_OF_DAY} */
-	public static final String PREF_SHOW_PART_OF_DAY = "showPartOfDay";
-	public static final boolean DEFAULT_SHOW_PART_OF_DAY = true;
+	/**
+	 * *type*: [String]
+	 * *description*: [ThresholdRelation.name],
+	 * *default*: [ThresholdRelation.ABOVE]
+	 */
+	const val PREF_THRESHOLD_RELATION = "relation"
 
-	public static @NonNull SharedPreferences getPreferences(@NonNull Context context, int appWidgetId) {
-		return context.getApplicationContext()
-		              .getSharedPreferences(PREF_NAME + "-" + appWidgetId, Context.MODE_PRIVATE);
-	}
+	@JvmField
+	val DEFAULT_THRESHOLD_RELATION = ThresholdRelation.ABOVE
+
+	/**
+	 * *type*: [Double]
+	 * *description*: angle in degrees,
+	 * *default*: [DEFAULT_THRESHOLD_ANGLE]
+	 */
+	const val PREF_THRESHOLD_ANGLE = "threshold"
+	const val DEFAULT_THRESHOLD_ANGLE = 0f
+
+	/**
+	 * *type*: [Double]
+	 * *description*: angle in degrees
+	 * *default*: [DEFAULT_MOCK_ANGLE]
+	 */
+	const val PREF_MOCK_ANGLE = "mockAngle"
+	const val DEFAULT_MOCK_ANGLE = Float.NaN
+
+	/**
+	 * *type*: [Long]
+	 * *description*: [System.currentTimeMillis]
+	 * *default*: [DEFAULT_MOCK_ANGLE]
+	 */
+	const val PREF_MOCK_TIME = "mockTime"
+	const val DEFAULT_MOCK_TIME = 520597560L * 1000
+
+	/**
+	 * *type*: [Boolean]
+	 * *description*: true=show
+	 * *default*: [DEFAULT_SHOW_UPDATE_TIME]
+	 */
+	const val PREF_SHOW_UPDATE_TIME = "showLastUpdateTime"
+	const val DEFAULT_SHOW_UPDATE_TIME = false
+
+	/**
+	 * *type*: [Boolean]
+	 * *description*: true=show
+	 * *default*: [DEFAULT_SHOW_PART_OF_DAY]
+	 */
+	const val PREF_SHOW_PART_OF_DAY = "showPartOfDay"
+	const val DEFAULT_SHOW_PART_OF_DAY = true
+
+	@JvmStatic
+	fun getPreferences(context: Context, appWidgetId: Int): SharedPreferences =
+		context
+			.applicationContext
+			.getSharedPreferences("${PREF_NAME}-${appWidgetId}", Context.MODE_PRIVATE)
 }
