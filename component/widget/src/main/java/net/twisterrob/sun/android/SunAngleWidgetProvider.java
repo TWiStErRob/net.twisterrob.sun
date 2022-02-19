@@ -69,7 +69,7 @@ public class SunAngleWidgetProvider extends LoggingAppWidgetProvider {
 			});
 		} catch (Exception ex) {
 			Log.e(TAG, this + ".updateAll", ex);
-			Toast.makeText(UPDATER.getContext(), ex.toString(), Toast.LENGTH_LONG).show();
+			Toast.makeText(context, ex.toString(), Toast.LENGTH_LONG).show();
 		}
 	}
 
