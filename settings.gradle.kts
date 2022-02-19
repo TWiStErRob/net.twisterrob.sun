@@ -3,6 +3,7 @@ rootProject.name = "Sun"
 include(":app")
 include(":feature:configuration")
 include(":feature:preview")
+include(":component:core")
 include(":component:widget")
 include(":component:states")
 include(":component:lib")
@@ -28,6 +29,7 @@ pluginManagement {
 				includeGroup("com.gradle")
 				includeGroup("com.gradle.enterprise")
 				includeGroup("gradle.plugin.org.gradle.android")
+				includeGroup("org.jetbrains.kotlin.android")
 			}
 		}
 		maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {

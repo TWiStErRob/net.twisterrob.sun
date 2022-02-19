@@ -1,6 +1,7 @@
 plugins {
 	// TODEL workaround in :app/build.gradle.kts for 194525628 for 7.2+
 	id("com.android.application") version "7.0.4" apply false
+	id("org.jetbrains.kotlin.android") version "1.5.31" apply false
 	// TODEL workaround in settings.gradle.kts once released.
 	id("app.cash.paparazzi") version "0.9.0" apply false
 	id("net.twisterrob.root") version "0.14-20220205.192501-3"

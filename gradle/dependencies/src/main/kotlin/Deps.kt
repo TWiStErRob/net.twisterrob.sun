@@ -33,8 +33,15 @@ object Deps {
 		const val version = "1.5.31"
 		val bom = "org.jetbrains.kotlin:kotlin-bom:${version}"
 		val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${version}"
+		val stdlib8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${version}"
 		val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${version}"
 		val compilerEmbeddable = "org.jetbrains.kotlin:kotlin-compiler-embeddable:${version}"
+	}
+
+	object Dagger {
+
+		const val dagger = "com.google.dagger:dagger:2.40.5"
+		const val compiler = "com.google.dagger:dagger-compiler:2.40.5"
 	}
 
 	object Test {

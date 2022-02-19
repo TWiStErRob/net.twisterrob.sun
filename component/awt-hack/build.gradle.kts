@@ -1,3 +1,3 @@
 plugins {
-	id("net.twisterrob.java-library")
+	id("project-module-java-library")
 }
