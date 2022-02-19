@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.location.LocationListenerCompat
 import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
