@@ -27,6 +27,7 @@ import net.twisterrob.sun.algo.SunSearchResults.Moment;
 import net.twisterrob.sun.algo.SunSearchResults.Range;
 import net.twisterrob.sun.algo.SunSearchResults.SunSearchParams;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
+import net.twisterrob.sun.android.ui.UiStates;
 import net.twisterrob.sun.test.screenshots.PaparazziCoat;
 import net.twisterrob.sun.test.screenshots.ScreenshotTest;
 
@@ -46,7 +47,7 @@ public class SunAngleWidgetViewScreenshotTest {
 	public void setUp() {
 		TimeProvider mockTime = mock(TimeProvider.class);
 		when(mockTime.now()).thenReturn(midnight());
-		sut = new SunAngleWidgetView(mockTime);
+		sut = new SunAngleWidgetView(mockTime, new UiStates());
 	}
 
 	@Test

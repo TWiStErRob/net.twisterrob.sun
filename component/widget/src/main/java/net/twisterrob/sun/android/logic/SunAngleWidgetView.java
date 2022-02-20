@@ -36,14 +36,9 @@ import net.twisterrob.sun.algo.SunSearchResults;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.SunAngleWidgetProvider;
 import net.twisterrob.sun.android.logic.SunAngleFormatter.Result;
-import net.twisterrob.sun.android.ui.AngleColorIDs;
-import net.twisterrob.sun.android.ui.BackgroundIDs;
-import net.twisterrob.sun.android.ui.StateColorIDs;
-import net.twisterrob.sun.android.ui.StateNameIDs;
-import net.twisterrob.sun.android.ui.UpdateColorIDs;
+import net.twisterrob.sun.android.ui.UiStates;
 import net.twisterrob.sun.android.widget.R;
 import net.twisterrob.sun.model.LightState;
-import net.twisterrob.sun.model.LightStateMap;
 
 import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_SHOW_PART_OF_DAY;
 import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_SHOW_UPDATE_TIME;
@@ -55,11 +50,6 @@ public class SunAngleWidgetView {
 	private static final SunAngleFormatter fraction = new SunAngleFormatter();
 	private static final DateFormat time2 = new SimpleDateFormat("HH:mm", Locale.getDefault());
 	private static final DateFormat time3 = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-	private static final LightStateMap<Integer> STATE_LABELs = new StateNameIDs();
-	private static final LightStateMap<Integer> BGs = new BackgroundIDs();
-	private static final LightStateMap<Integer> ANGLE_COLORs = new AngleColorIDs();
-	private static final LightStateMap<Integer> STATE_COLORs = new StateColorIDs();
-	private static final LightStateMap<Integer> UPDATE_COLORs = new UpdateColorIDs();
 	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<>(ThresholdRelation.class);
 
 	static {
@@ -68,10 +58,12 @@ public class SunAngleWidgetView {
 	}
 
 	private final @NonNull TimeProvider times;
+	private final @NonNull UiStates states;
 
 	@Inject
-	public SunAngleWidgetView(@NonNull TimeProvider times) {
+	public SunAngleWidgetView(@NonNull TimeProvider times, @NonNull UiStates states) {
 		this.times = times;
+		this.states = states;
 	}
 
 	@NonNull RemoteViews createUpdateViews(
@@ -93,9 +85,9 @@ public class SunAngleWidgetView {
 			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1);
 			LightState state = LightState.from(results.current.angle);
 
-			views.setImageViewResource(R.id.angle_background, BGs.get(state, results.current.time));
+			views.setImageViewResource(R.id.angle_background, states.getBackground(state, results.current.time));
 
-			int angleColor = getColor(context, ANGLE_COLORs.get(state, results.current.time));
+			int angleColor = getColor(context, states.getAngleColor(state, results.current.time));
 			views.setTextColor(R.id.angle, angleColor);
 			views.setTextColor(R.id.angleFraction, angleColor);
 			views.setTextColor(R.id.angleSign, angleColor);
@@ -106,9 +98,9 @@ public class SunAngleWidgetView {
 
 			if (prefs.getBoolean(PREF_SHOW_PART_OF_DAY, DEFAULT_SHOW_PART_OF_DAY)) {
 				views.setViewVisibility(R.id.state, View.VISIBLE);
-				CharSequence stateText = res.getText(STATE_LABELs.get(state, results.current.time));
+				CharSequence stateText = res.getText(states.getStateLabel(state, results.current.time));
 				views.setTextViewText(R.id.state, state == LightState.INVALID? bold(stateText) : stateText);
-				views.setTextColor(R.id.state, getColor(context, STATE_COLORs.get(state, results.current.time)));
+				views.setTextColor(R.id.state, getColor(context, states.getStateColor(state, results.current.time)));
 			} else {
 				views.setViewVisibility(R.id.state, View.GONE);
 			}
@@ -116,7 +108,7 @@ public class SunAngleWidgetView {
 			if (prefs.getBoolean(PREF_SHOW_UPDATE_TIME, DEFAULT_SHOW_UPDATE_TIME)) {
 				views.setViewVisibility(R.id.timeUpdated, View.VISIBLE);
 				views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
-				views.setTextColor(R.id.timeUpdated, getColor(context, UPDATE_COLORs.get(state, results.current.time)));
+				views.setTextColor(R.id.timeUpdated, getColor(context, states.getUpdateColor(state, results.current.time)));
 			} else {
 				views.setViewVisibility(R.id.timeUpdated, View.GONE);
 			}

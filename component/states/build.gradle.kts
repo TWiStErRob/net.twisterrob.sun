@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+	implementation(Deps.AndroidX.annotations)
 	implementation(project(":component:core"))
 	implementation(project(":component:lib"))
 }
