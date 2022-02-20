@@ -2,6 +2,8 @@ package net.twisterrob.sun.model;
 
 import java.util.*;
 
+import androidx.annotation.NonNull;
+
 public class LightStateMap<T> {
 	private final Map<LightState, T> MORNING_STATE_IDs = new EnumMap<>(LightState.class);
 	private final Map<LightState, T> EVENING_STATE_IDs = new EnumMap<>(LightState.class);
@@ -19,7 +21,7 @@ public class LightStateMap<T> {
 		EVENING_STATE_IDs.put(state, value);
 	}
 
-	public T get(LightState state, Calendar time) {
+	public @NonNull T get(@NonNull LightState state, @NonNull Calendar time) {
 		if (time.get(Calendar.AM_PM) == Calendar.AM) {
 			return MORNING_STATE_IDs.get(state);
 		} else {

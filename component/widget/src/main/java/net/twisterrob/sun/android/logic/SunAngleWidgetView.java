@@ -154,7 +154,7 @@ public class SunAngleWidgetView {
 		Calendar start = results.threshold.start;
 		Calendar end = results.threshold.end;
 		Calendar now = results.current.time;
-		Integer thresholdResource = RELATIONS.get(results.params.thresholdRelation);
+		int thresholdResource = RELATIONS.get(results.params.thresholdRelation);
 		CharSequence threshold = context.getString(thresholdResource, (int)results.params.thresholdAngle);
 		if (now.after(start) && now.before(end)) {
 			threshold = bold(threshold);
