@@ -207,7 +207,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		});
 
 		locationUpdater = new LocationUpdater(getApplicationContext(), getAppWidgetId(), new Consumer<Location>() {
-			@Override public void accept(Location location) {
+			@Override public void accept(@Nullable Location location) {
 				update(location);
 			}
 		});
@@ -624,7 +624,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		private final @NonNull Consumer<Location> update;
 		private boolean cancelled = false;
 
-		LocationUpdater(@NonNull Context context, int appWidgetId, @NonNull Consumer<Location> update) {
+		LocationUpdater(@NonNull Context context, int appWidgetId, @NonNull Consumer</*@Nullable*/ Location> update) {
 			this.updater = new LocationRetriever(context);
 			this.appWidgetId = appWidgetId;
 			this.update = update;
@@ -639,7 +639,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 
 		@Override
-		public Unit invoke(Location location) {
+		public Unit invoke(@Nullable Location location) {
 			if (Log.isLoggable("Sun", Log.VERBOSE)) {
 				Log.v("Sun", this + ".onLocationChanged(" + location + ")");
 			}
