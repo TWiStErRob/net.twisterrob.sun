@@ -1,10 +1,7 @@
 package net.twisterrob.sun.android.logic;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.EnumMap;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -47,9 +44,6 @@ import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_UPD
 
 public class SunAngleWidgetView {
 
-	private static final SunAngleFormatter fraction = new SunAngleFormatter();
-	private static final DateFormat time2 = new SimpleDateFormat("HH:mm", Locale.getDefault());
-	private static final DateFormat time3 = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<>(ThresholdRelation.class);
 
 	static {
@@ -59,11 +53,17 @@ public class SunAngleWidgetView {
 
 	private final @NonNull TimeProvider times;
 	private final @NonNull UiStates states;
+	private final @NonNull SunAngleFormatter formatter;
 
 	@Inject
-	public SunAngleWidgetView(@NonNull TimeProvider times, @NonNull UiStates states) {
+	public SunAngleWidgetView(
+			@NonNull TimeProvider times,
+			@NonNull UiStates states,
+			@NonNull SunAngleFormatter formatter
+	) {
 		this.times = times;
 		this.states = states;
+		this.formatter = formatter;
 	}
 
 	@NonNull RemoteViews createUpdateViews(
@@ -76,7 +76,7 @@ public class SunAngleWidgetView {
 		RemoteViews views;
 		if (results == null) {
 			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1_invalid);
-			views.setTextViewText(R.id.timeUpdated, time3.format(times.now().getTime()));
+			views.setTextViewText(R.id.timeUpdated, formatter.formatTime3(times.now().getTime()));
 			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_location));
 			views.setTextViewText(R.id.threshold, res.getText(R.string.call_to_action_location_fix));
 			views.setOnClickPendingIntent(R.id.state, createRefreshIntent(context, appWidgetId));
@@ -91,7 +91,7 @@ public class SunAngleWidgetView {
 			views.setTextColor(R.id.angle, angleColor);
 			views.setTextColor(R.id.angleFraction, angleColor);
 			views.setTextColor(R.id.angleSign, angleColor);
-			Result angle = fraction.format(results.current.angle);
+			Result angle = formatter.formatFraction(results.current.angle);
 			views.setTextViewText(R.id.angle, angle.angle);
 			views.setTextViewText(R.id.angleFraction, angle.fraction);
 			views.setOnClickPendingIntent(R.id.root, createRefreshIntent(context, appWidgetId));
@@ -107,8 +107,9 @@ public class SunAngleWidgetView {
 
 			if (prefs.getBoolean(PREF_SHOW_UPDATE_TIME, DEFAULT_SHOW_UPDATE_TIME)) {
 				views.setViewVisibility(R.id.timeUpdated, View.VISIBLE);
-				views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
-				views.setTextColor(R.id.timeUpdated, getColor(context, states.getUpdateColor(state, results.current.time)));
+				views.setTextViewText(R.id.timeUpdated, formatter.formatTime3(results.current.time.getTime()));
+				views.setTextColor(R.id.timeUpdated,
+						getColor(context, states.getUpdateColor(state, results.current.time)));
 			} else {
 				views.setViewVisibility(R.id.timeUpdated, View.GONE);
 			}
@@ -122,7 +123,7 @@ public class SunAngleWidgetView {
 		return views;
 	}
 
-	private static @NonNull CharSequence formatThresholdTime(
+	private @NonNull CharSequence formatThresholdTime(
 			@NonNull Context context,
 			@NonNull SunSearchResults results,
 			@Nullable Calendar time
@@ -131,7 +132,7 @@ public class SunAngleWidgetView {
 		if (time == null) {
 			result = context.getString(R.string.time_2_none);
 		} else {
-			result = time2.format(time.getTime());
+			result = formatter.formatTime2(time.getTime());
 			Calendar justBefore = (Calendar)time.clone();
 			// https://github.com/TWiStErRob/net.twisterrob.sun/issues/17
 			justBefore.add(Calendar.MINUTE, -30); // TODO configure?

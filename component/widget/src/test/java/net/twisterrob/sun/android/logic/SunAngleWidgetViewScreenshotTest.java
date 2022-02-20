@@ -47,7 +47,7 @@ public class SunAngleWidgetViewScreenshotTest {
 	public void setUp() {
 		TimeProvider mockTime = mock(TimeProvider.class);
 		when(mockTime.now()).thenReturn(midnight());
-		sut = new SunAngleWidgetView(mockTime, new UiStates());
+		sut = new SunAngleWidgetView(mockTime, new UiStates(), new SunAngleFormatter());
 	}
 
 	@Test
