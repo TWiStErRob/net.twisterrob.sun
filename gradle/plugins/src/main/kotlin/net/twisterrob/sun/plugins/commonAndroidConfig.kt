@@ -16,6 +16,7 @@ internal fun Project.commonAndroidConfig() {
 		compileSdkVersion(Deps.Android.compileSdkVersion)
 		defaultConfig {
 			minSdk = Deps.Android.minSdkVersion
+			testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		}
 		lintOptions {
 			xmlReport = true

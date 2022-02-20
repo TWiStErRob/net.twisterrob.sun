@@ -8,6 +8,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.util.Log
 import androidx.annotation.RequiresPermission
+import androidx.annotation.VisibleForTesting
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.core.content.getSystemService
@@ -20,6 +21,9 @@ import kotlin.concurrent.thread
 class LocationRetriever @Inject constructor(
 	private val context: Context
 ) {
+
+	@set:VisibleForTesting
+	var checkPassive: Boolean = true
 
 	private interface LocationUpdate {
 
@@ -80,13 +84,15 @@ class LocationRetriever @Inject constructor(
 			callback.noLocation()
 			return
 		}
-		// The passive provider doesn't seem to work with coarse permission only.
-		this.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)?.let { location ->
-			if (Log.isLoggable(TAG, Log.VERBOSE)) {
-				Log.v(TAG, "${this} found cached location in passive provider: $location")
+		if (checkPassive) {
+			// The passive provider doesn't seem to work with coarse permission only.
+			this.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)?.let { location ->
+				if (Log.isLoggable(TAG, Log.VERBOSE)) {
+					Log.v(TAG, "${this} found cached location in passive provider: $location")
+				}
+				callback.cachedLocation(location)
+				return
 			}
-			callback.cachedLocation(location)
-			return
 		}
 		val criteria = Criteria().apply {
 			accuracy = Criteria.ACCURACY_COARSE
