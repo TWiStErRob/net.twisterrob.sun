@@ -12,7 +12,6 @@ import javax.inject.Inject
 
 class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 
-	@Inject lateinit var component: WidgetComponent
 	@Inject lateinit var updater: SunAngleWidgetUpdater
 	@Inject lateinit var locations: LocationRetriever
 
