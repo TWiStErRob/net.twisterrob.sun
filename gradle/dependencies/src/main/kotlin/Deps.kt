@@ -36,6 +36,8 @@ object Deps {
 		val stdlib8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${version}"
 		val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${version}"
 		val compilerEmbeddable = "org.jetbrains.kotlin:kotlin-compiler-embeddable:${version}"
+
+		val detekt = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0"
 	}
 
 	object Dagger {

@@ -1,7 +1,10 @@
 package net.twisterrob.sun.plugins
 
+import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.withType
 
 internal fun Project.commonJavaConfig() {
@@ -23,4 +26,20 @@ internal fun Project.commonJavaConfig() {
 		)
 	}
 	plugins.apply("io.gitlab.arturbosch.detekt")
+	plugins.withId("io.gitlab.arturbosch.detekt") {
+		val detekt = this@commonJavaConfig.extensions.getByName<DetektExtension>("detekt")
+		detekt.apply {
+			ignoreFailures = true
+			buildUponDefaultConfig = true
+			allRules = true
+			config = rootProject.files("config/detekt/detekt.yml")
+			baseline = rootProject.file("config/detekt/detekt-baseline-${project.name}.xml")
+			basePath = rootProject.projectDir.parentFile.absolutePath
+
+			parallel = true
+
+			tasks.withType<Detekt>().configureEach {
+			}
+		}
+	}
 }
