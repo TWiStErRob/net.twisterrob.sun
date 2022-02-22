@@ -102,15 +102,16 @@ jobs:
       - name: Fail if Detekt is missing report or has warnings.
         run: |
           if [ ! -f 'build/reports/detekt/merge.sarif' ]; then # -f: Path exists and is regular file.
-            echo "Detekt report file does not exist"
+            echo "Detekt report file 'build/reports/detekt/merge.sarif' does not exist."
             exit 2
           fi
           if [ ! -f 'build/reports/detekt/merge.xml' ]; then # -f: Path exists and is regular file.
-            echo "Detekt report file does not exist"
+            echo "Detekt report file 'build/reports/detekt/merge.xml' does not exist."
             exit 3
           fi
-          if [ `grep -c '  <file name=' merge.xml` != 0 ]; then # -c: count number of instances
-            echo "There were detekt failures."
+          count=$(grep --count '  <file name=' build/reports/detekt/merge.xml) 
+          if [ $count != 0 ]; then 
+            echo "There were $count Detekt failures in 'build/reports/detekt/merge.xml'."
             exit 4
           fi
 
