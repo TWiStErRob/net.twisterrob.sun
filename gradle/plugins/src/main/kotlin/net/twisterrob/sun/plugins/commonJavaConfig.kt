@@ -41,7 +41,7 @@ internal fun Project.commonJavaConfig() {
 			allRules = true
 			config = rootProject.files("config/detekt/detekt.yml")
 			baseline = rootProject.file("config/detekt/detekt-baseline-${project.name}.xml")
-			basePath = rootProject.projectDir.parentFile.absolutePath
+			basePath = rootProject.projectDir.absolutePath
 
 			parallel = true
 
