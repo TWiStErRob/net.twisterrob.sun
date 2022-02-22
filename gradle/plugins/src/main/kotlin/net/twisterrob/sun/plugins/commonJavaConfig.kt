@@ -2,13 +2,18 @@ package net.twisterrob.sun.plugins
 
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.withType
 
+private val javaVersion = JavaVersion.VERSION_1_8
+
 internal fun Project.commonJavaConfig() {
 	tasks.withType<JavaCompile> {
+		sourceCompatibility = javaVersion.toString()
+		targetCompatibility = javaVersion.toString()
 		options.compilerArgs = options.compilerArgs + listOf(
 			// Enable all warnings during compilation.
 			"-Xlint:all",
@@ -39,6 +44,8 @@ internal fun Project.commonJavaConfig() {
 			parallel = true
 
 			tasks.withType<Detekt>().configureEach {
+				// Target version of the generated JVM bytecode. It is used for type resolution.
+				jvmTarget = javaVersion.toString()
 			}
 		}
 	}
