@@ -30,6 +30,7 @@ pluginManagement {
 				includeGroup("com.gradle.enterprise")
 				includeGroup("gradle.plugin.org.gradle.android")
 				includeGroup("org.jetbrains.kotlin.android")
+				includeGroup("io.gitlab.arturbosch.detekt")
 			}
 		}
 		maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {

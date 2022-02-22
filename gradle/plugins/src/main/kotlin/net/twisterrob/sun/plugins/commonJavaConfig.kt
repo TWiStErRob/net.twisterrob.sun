@@ -22,4 +22,5 @@ internal fun Project.commonJavaConfig() {
 			"-Werror"
 		)
 	}
+	plugins.apply("io.gitlab.arturbosch.detekt")
 }
