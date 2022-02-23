@@ -34,8 +34,8 @@ class LocationRetriever @Inject constructor(
 	}
 
 	fun get(timeout: Long = Long.MAX_VALUE, block: (Location?) -> Unit) {
-		val lm = context.getSystemService<LocationManager>()!!
-		lm.getLocation(object : LocationUpdate {
+		val locationManager = context.getSystemService<LocationManager>()!!
+		locationManager.getLocation(object : LocationUpdate {
 			lateinit var timeoutThread: Thread
 
 			override fun noLocation() {
@@ -50,11 +50,11 @@ class LocationRetriever @Inject constructor(
 				timeoutThread = thread(name = "LocationRetriever.timeout", isDaemon = true) {
 					try {
 						sleep(timeout)
-						lm.clearUpdates(fallback)
+						locationManager.clearUpdates(fallback)
 						block(null)
 					} catch (ex: InterruptedException) {
 						// We got an actual update from fallback.
-						lm.clearUpdates(fallback)
+						locationManager.clearUpdates(fallback)
 					}
 				}
 			}

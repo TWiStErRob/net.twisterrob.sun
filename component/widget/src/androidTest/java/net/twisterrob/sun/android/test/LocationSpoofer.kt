@@ -21,7 +21,8 @@ class LocationSpoofer(
 	private val context: Context
 ) {
 
-	private val lm = context.getSystemService<LocationManager>()!!
+	private val locationManager = context.getSystemService<LocationManager>()!!
+
 	private lateinit var testProvider: String
 
 	fun initialize() {
@@ -43,18 +44,18 @@ class LocationSpoofer(
 		}
 		this.testProvider = testProvider
 
-		assertFalse(lm.hasProvider(testProvider))
+		assertFalse(locationManager.hasProvider(testProvider))
 
-		lm.addTestProvider(testProvider, testProviderProps)
-		assertTrue(lm.hasProvider(testProvider))
+		locationManager.addTestProvider(testProvider, testProviderProps)
+		assertTrue(locationManager.hasProvider(testProvider))
 
-		lm.setTestProviderEnabled(testProvider, true)
-		assertTrue(lm.isProviderEnabled(testProvider))
+		locationManager.setTestProviderEnabled(testProvider, true)
+		assertTrue(locationManager.isProviderEnabled(testProvider))
 	}
 
 	private fun removeTestProvider() {
 		if (::testProvider.isInitialized) {
-			lm.removeTestProvider(testProvider)
+			locationManager.removeTestProvider(testProvider)
 		}
 	}
 
@@ -65,7 +66,7 @@ class LocationSpoofer(
 			accuracy = 0.0f
 		}
 		testLocation.apply(block)
-		lm.setTestProviderLocation(testProvider, testLocation)
+		locationManager.setTestProviderLocation(testProvider, testLocation)
 		return testLocation
 	}
 
@@ -83,11 +84,11 @@ class LocationSpoofer(
 			Log.d("LocationSpoofer", "Should have MOCK_LOCATION now.")
 			assertEquals(AppOpsManager.MODE_ALLOWED, ops.checkMock())
 		}
-		assertTrue(lm.isLocationEnabled)
+		assertTrue(locationManager.isLocationEnabled)
 	}
 
 	private fun disableBuiltInProviders() {
-		lm.allProviders.forEach { provider ->
+		locationManager.allProviders.forEach { provider ->
 			/**
 			 *  Cannot mock the passive provider
 			 *    at android.location.ILocationManager$Stub$Proxy.addTestProvider(ILocationManager.java:2652)
@@ -100,29 +101,29 @@ class LocationSpoofer(
 			 *    at android.location.ILocationManager$Stub.onTransact(ILocationManager.java:1215)
 			 */
 			if (provider != LocationManager.PASSIVE_PROVIDER) {
-				lm.addTestProvider(provider, lm.getProviderProperties(provider)!!)
-				lm.setTestProviderEnabled(provider, false)
+				locationManager.addTestProvider(provider, locationManager.getProviderProperties(provider)!!)
+				locationManager.setTestProviderEnabled(provider, false)
 			}
 		}
 	}
 
 	private fun restoreBuiltinProviders() {
-		lm.allProviders.forEach { provider ->
-			lm.removeTestProvider(provider)
+		locationManager.allProviders.forEach { provider ->
+			locationManager.removeTestProvider(provider)
 		}
 	}
 
 	private fun diagnostics() {
-		val providers = lm.allProviders.joinToString(separator = "\n") {
-			"$it(${lm.isProviderEnabled(it)}):${lm.getProviderProperties(it).toString()}"
+		val providers = locationManager.allProviders.joinToString(separator = "\n") {
+			"$it(${locationManager.isProviderEnabled(it)}):${locationManager.getProviderProperties(it).toString()}"
 		}
 		val criteria = Criteria().apply {
 			accuracy = Criteria.ACCURACY_COARSE
 			powerRequirement = Criteria.POWER_LOW
 		}
-		val bestProvider = lm.getBestProvider(criteria, true) ?: LocationManager.PASSIVE_PROVIDER
-		val last = lm.getLastKnownLocation(bestProvider)
-		val lastPassive = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+		val bestProvider = locationManager.getBestProvider(criteria, true) ?: LocationManager.PASSIVE_PROVIDER
+		val last = locationManager.getLastKnownLocation(bestProvider)
+		val lastPassive = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
 		println(bestProvider + "->" + last.toString() + "\npassive->" + lastPassive + "\n" + providers)
 	}
 }
