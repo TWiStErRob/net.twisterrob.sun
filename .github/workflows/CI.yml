@@ -53,7 +53,17 @@ jobs:
           violationReportHtml
           violationCountFile
 
+      - name: Upload "Lint Results".
+        if: success() || failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Lint Results HTMLs
+          path: |
+            ${{ github.workspace }}/**/build/reports/lint-results*.html
+            ${{ github.workspace }}/build/reports/violations.*
+
       - name: Fail if there are violations
+        if: success() || failure()
         run: |
           count=$(cat "${{ github.workspace }}/build/reports/violations.count")
           if [[ "$count" != "0" ]]; then
@@ -71,15 +81,6 @@ jobs:
           name: Unit Test Results
           path: ${{ github.workspace }}/**/build/reports/tests/*/
 
-      - name: Upload "Lint Results".
-        if: success() || failure()
-        uses: actions/upload-artifact@v2
-        with:
-          name: Lint Results HTMLs
-          path: |
-            ${{ github.workspace }}/**/build/reports/lint-results*.html
-            ${{ github.workspace }}/build/reports/violations.*
-
       - name: Publish Unit Test Results
         if: success() || failure()
         uses: EnricoMi/publish-unit-test-result-action@v1
@@ -89,3 +90,42 @@ jobs:
           report_individual_runs: true
           test_changes_limit: 0
           files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+
+      - name: Upload "Detekt Results".
+        if: success() || failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Detekt Results
+          path: |
+            ${{ github.workspace }}/**/build/reports/detekt/detekt.*
+            ${{ github.workspace }}/build/reports/detekt/merge.*
+
+      - name: Fail if Detekt is missing merged report or has warnings.
+        if: success() || failure()
+        run: |
+          mergedReport=build/reports/detekt/merge.xml
+          if [ ! -f "${mergedReport}" ]; then # -f: Path exists and is regular file.
+            echo "Detekt report file '${mergedReport}' does not exist."
+            exit 2
+          fi
+          count=$(grep --count '<file name=' "${mergedReport}" || true) 
+          if [ $count != 0 ]; then 
+            echo "There were $count Detekt failures in '${mergedReport}'."
+            exit 3
+          fi
+
+      - name: Publish Detekt Results
+        uses: github/codeql-action/upload-sarif@v1
+        if: success() || failure()
+        with:
+          checkout_path: ${{ github.workspace }}
+          sarif_file: ${{ github.workspace }}/build/reports/detekt/merge.sarif
+
+      - name: Fail if Detekt is missing Sarif report for publishing on GitHub.
+        if: success() || failure()
+        run: |
+          mergedReport=build/reports/detekt/merge.sarif
+          if [ ! -f "${mergedReport}" ]; then # -f: Path exists and is regular file.
+            echo "Detekt report file '${mergedReport}' does not exist."
+            exit 2
+          fi

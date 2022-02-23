@@ -13,6 +13,7 @@ repositories {
 dependencies {
 	implementation(Deps.Android.plugin)
 	implementation(Deps.Android.cacheFix)
+	implementation(Deps.Kotlin.detekt)
 	implementation("project-dependencies:dependencies:SNAPSHOT")
 }
 
