@@ -27,12 +27,12 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 		}
 	}
 
-	override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+	override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, vararg appWidgetIds: Int) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds)
 		val async = goAsync()
 		locations.get(5000L) { location ->
 			try {
-				updateAll(location, *appWidgetIds)
+				updateAll(location, appWidgetIds)
 			} catch (ex: Exception) {
 				Log.e(TAG, "${this}.updateAll", ex)
 				Toast.makeText(context, ex.toString(), Toast.LENGTH_LONG).show()
@@ -42,7 +42,7 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 		}
 	}
 
-	private fun updateAll(location: Location?, vararg appWidgetIds: Int) {
+	private fun updateAll(location: Location?, appWidgetIds: IntArray) {
 		for (appWidgetId in appWidgetIds) {
 			if (!updater.update(appWidgetId, location)) {
 				Log.w(TAG, "${this}.update(${appWidgetId}) failed.")
