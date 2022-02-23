@@ -21,6 +21,6 @@ dependencies {
 dependencies {
 	androidTestImplementation(Deps.Test.junit4)
 
-	androidTestImplementation("androidx.test:core:1.4.0")
-	androidTestImplementation("androidx.test:runner:1.4.0")
+	androidTestImplementation(Deps.Test.androidxCore)
+	androidTestImplementation(Deps.Test.androidxRunner)
 }
