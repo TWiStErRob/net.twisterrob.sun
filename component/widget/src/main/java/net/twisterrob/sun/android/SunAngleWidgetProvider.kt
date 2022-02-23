@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.util.Log
-import android.widget.Toast
 import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater
 import java.util.Locale
 import javax.inject.Inject
@@ -33,9 +32,6 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 		locations.get(timeout = MAX_ASYNC_LOCATION_TIME) { location ->
 			try {
 				updateAll(location, appWidgetIds)
-			} catch (ex: Exception) {
-				Log.e(TAG, "${this}.updateAll", ex)
-				Toast.makeText(context, ex.toString(), Toast.LENGTH_LONG).show()
 			} finally {
 				async.finish()
 			}
