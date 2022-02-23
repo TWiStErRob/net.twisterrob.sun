@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-	api(Deps.AndroidX.annotations)
 	api(Deps.Test.paparazzi)
 	api(Deps.Test.junit4)
 	api(Deps.Test.mockito)
