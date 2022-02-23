@@ -103,7 +103,6 @@ jobs:
       - name: Fail if Detekt is missing merged report or has warnings.
         if: success() || failure()
         run: |
-          set -x
           mergedReport=build/reports/detekt/merge.xml
 
           # Fail if Detekt failed.
@@ -111,7 +110,7 @@ jobs:
             echo "Detekt report file '${mergedReport}' does not exist."
             exit 3
           fi
-          count=$(grep --count '<file name=' "${mergedReport}") 
+          count=$(grep --count '<file name=' "${mergedReport}" || true) 
           if [ $count != 0 ]; then 
             echo "There were $count Detekt failures in '${mergedReport}'."
             exit 4
@@ -122,7 +121,6 @@ jobs:
       - name: Fail if Detekt is missing Sarif report for publishing on GitHub.
         if: success() || failure()
         run: |
-          set -x
           mergedReport=build/reports/detekt/merge.sarif
 
           # Fail if Detekt has no sarif, because we can't report to GitHub.
