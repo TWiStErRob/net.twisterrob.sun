@@ -48,7 +48,8 @@ jobs:
           --no-daemon
           --no-build-cache
           --stacktrace
-          assemble
+          -x lint
+          -x test
           check
           violationReportHtml
           violationCountFile
@@ -99,29 +100,38 @@ jobs:
           test_changes_limit: 0
           files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
-      - name: Fail if Detekt is missing report or has warnings.
+      - name: Fail if Detekt is missing merged report or has warnings.
+        if: success() || failure()
         run: |
-          mergedSarif=build/reports/detekt/merge.sarif
-          mergedXml=build/reports/detekt/merge.xml
-
-          # Fail if Detekt has no sarif, because we can't report to GitHub.
-          if [ ! -f "${mergedSarif}" ]; then # -f: Path exists and is regular file.
-            echo "Detekt report file '${mergedSarif}' does not exist."
-            exit 2
-          fi
+          set -x
+          mergedReport=build/reports/detekt/merge.xml
 
           # Fail if Detekt failed.
-          if [ ! -f "${mergedXml}" ]; then # -f: Path exists and is regular file.
-            echo "Detekt report file '${mergedXml}' does not exist."
+          if [ ! -f "${mergedReport}" ]; then # -f: Path exists and is regular file.
+            echo "Detekt report file '${mergedReport}' does not exist."
             exit 3
           fi
-          count=$(grep --count '<file name=' "${mergedXml}") 
+          count=$(grep --count '<file name=' "${mergedReport}") 
           if [ $count != 0 ]; then 
-            echo "There were $count Detekt failures in '${mergedXml}'."
+            echo "There were $count Detekt failures in '${mergedReport}'."
             exit 4
           fi
 
           exit 0 # Be explicit, we're all good. Otherwise `grep`'s $? is returned and build fails. 
+
+      - name: Fail if Detekt is missing Sarif report for publishing on GitHub.
+        if: success() || failure()
+        run: |
+          set -x
+          mergedReport=build/reports/detekt/merge.sarif
+
+          # Fail if Detekt has no sarif, because we can't report to GitHub.
+          if [ ! -f "${mergedReport}" ]; then # -f: Path exists and is regular file.
+            echo "Detekt report file '${mergedReport}' does not exist."
+            exit 2
+          fi
+
+          exit 0 # Be explicit, we're all good.
 
       - name: Publish Detekt Results
         uses: github/codeql-action/upload-sarif@v1
