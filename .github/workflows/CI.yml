@@ -101,19 +101,27 @@ jobs:
 
       - name: Fail if Detekt is missing report or has warnings.
         run: |
-          if [ ! -f 'build/reports/detekt/merge.sarif' ]; then # -f: Path exists and is regular file.
-            echo "Detekt report file 'build/reports/detekt/merge.sarif' does not exist."
+          mergedSarif=build/reports/detekt/merge.sarif
+          mergedXml=build/reports/detekt/merge.xml
+
+          # Fail if Detekt has no sarif, because we can't report to GitHub.
+          if [ ! -f '${mergedSarif}' ]; then # -f: Path exists and is regular file.
+            echo "Detekt report file '${mergedSarif}' does not exist."
             exit 2
           fi
-          if [ ! -f 'build/reports/detekt/merge.xml' ]; then # -f: Path exists and is regular file.
-            echo "Detekt report file 'build/reports/detekt/merge.xml' does not exist."
+
+          # Fail if Detekt failed.
+          if [ ! -f '${mergedXml}' ]; then # -f: Path exists and is regular file.
+            echo "Detekt report file '${mergedXml}' does not exist."
             exit 3
           fi
-          count=$(grep --count '  <file name=' build/reports/detekt/merge.xml) 
+          count=$(grep --count '<file name=' ${mergedXml}) 
           if [ $count != 0 ]; then 
-            echo "There were $count Detekt failures in 'build/reports/detekt/merge.xml'."
+            echo "There were $count Detekt failures in '${mergedXml}'."
             exit 4
           fi
+
+          exit 0 # Be explicit, we're all good. Otherwise `grep`'s $? is returned and build fails. 
 
       - name: Publish Detekt Results
         uses: github/codeql-action/upload-sarif@v1
