@@ -30,7 +30,7 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 	override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, vararg appWidgetIds: Int) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds)
 		val async = goAsync()
-		locations.get(5000L) { location ->
+		locations.get(timeout = MAX_ASYNC_LOCATION_TIME) { location ->
 			try {
 				updateAll(location, appWidgetIds)
 			} catch (ex: Exception) {
@@ -56,5 +56,6 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 	companion object {
 
 		private const val TAG = "Sun"
+		private const val MAX_ASYNC_LOCATION_TIME: Long = 5000
 	}
 }
