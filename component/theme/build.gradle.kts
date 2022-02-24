@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-	implementation(project(":component:core"))
+	implementation(projects.component.core)
 	api(Deps.AndroidX.appcompat)
 }

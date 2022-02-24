@@ -4,18 +4,18 @@ plugins {
 }
 
 dependencies {
-	implementation(project(":component:core"))
+	implementation(projects.component.core)
 	kapt(Deps.Dagger.compiler)
-	api(project(":component:lib"))
-	implementation(project(":component:states"))
-	implementation(project(":component:theme"))
+	api(projects.component.lib)
+	implementation(projects.component.states)
+	implementation(projects.component.theme)
 	implementation(Deps.AndroidX.appcompat)
 	implementation(Deps.AndroidX.activity)
 	implementation(Deps.AndroidX.fragment)
 }
 
 dependencies {
-	testRuntimeOnly(project(":feature:configuration"))
+	testRuntimeOnly(projects.feature.configuration)
 }
 
 dependencies {

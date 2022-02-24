@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-	implementation(project(":component:widget"))
-	implementation(project(":component:theme"))
+	implementation(projects.component.widget)
+	implementation(projects.component.theme)
 	implementation(Deps.AndroidX.appcompat)
 	implementation(Deps.AndroidX.activity)
 	implementation(Deps.AndroidX.fragment)

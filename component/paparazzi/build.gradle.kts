@@ -11,5 +11,5 @@ dependencies {
 	// TODEL https://github.com/cashapp/paparazzi/pull/308
 	api(platform(Deps.Kotlin.bom))
 	// TODEL https://github.com/cashapp/paparazzi/issues/306
-	compileOnly(project(":component:awt-hack"))
+	compileOnly(projects.component.awtHack)
 }
