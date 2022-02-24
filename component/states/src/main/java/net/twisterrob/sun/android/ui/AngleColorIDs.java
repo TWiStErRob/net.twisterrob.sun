@@ -4,7 +4,7 @@ import net.twisterrob.sun.model.LightStateMap;
 
 import static net.twisterrob.sun.model.LightState.*;
 
-public class AngleColorIDs extends LightStateMap<Integer> {
+class AngleColorIDs extends LightStateMap<Integer> {
 	public AngleColorIDs() {
 		put(DAY, android.R.color.white);
 		put(NIGHT, android.R.color.white);

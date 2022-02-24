@@ -53,5 +53,8 @@ object Deps {
 		const val truth = "com.google.truth:truth:1.1.3"
 		const val mockito = "org.mockito:mockito-inline:4.2.0"
 		const val paramInjector = "com.google.testparameterinjector:test-parameter-injector:1.5"
+
+		const val androidxCore = "androidx.test:core:1.4.0"
+		const val androidxRunner = "androidx.test:runner:1.4.0"
 	}
 }

@@ -5,7 +5,7 @@ import net.twisterrob.sun.model.LightStateMap;
 
 import static net.twisterrob.sun.model.LightState.*;
 
-public class StateNameIDs extends LightStateMap<Integer> {
+class StateNameIDs extends LightStateMap<Integer> {
 	public StateNameIDs() {
 		put(DAY, R.string.light_state_day);
 		put(NIGHT, R.string.light_state_night);

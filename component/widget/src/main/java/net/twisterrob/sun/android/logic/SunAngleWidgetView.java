@@ -1,11 +1,10 @@
 package net.twisterrob.sun.android.logic;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.EnumMap;
-import java.util.Locale;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
@@ -34,14 +33,9 @@ import net.twisterrob.sun.algo.SunSearchResults;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.SunAngleWidgetProvider;
 import net.twisterrob.sun.android.logic.SunAngleFormatter.Result;
-import net.twisterrob.sun.android.ui.AngleColorIDs;
-import net.twisterrob.sun.android.ui.BackgroundIDs;
-import net.twisterrob.sun.android.ui.StateColorIDs;
-import net.twisterrob.sun.android.ui.StateNameIDs;
-import net.twisterrob.sun.android.ui.UpdateColorIDs;
+import net.twisterrob.sun.android.ui.UiStates;
 import net.twisterrob.sun.android.widget.R;
 import net.twisterrob.sun.model.LightState;
-import net.twisterrob.sun.model.LightStateMap;
 
 import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_SHOW_PART_OF_DAY;
 import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_SHOW_UPDATE_TIME;
@@ -50,14 +44,6 @@ import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_UPD
 
 public class SunAngleWidgetView {
 
-	private static final SunAngleFormatter fraction = new SunAngleFormatter();
-	private static final DateFormat time2 = new SimpleDateFormat("HH:mm", Locale.getDefault());
-	private static final DateFormat time3 = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-	private static final LightStateMap<Integer> STATE_LABELs = new StateNameIDs();
-	private static final LightStateMap<Integer> BGs = new BackgroundIDs();
-	private static final LightStateMap<Integer> ANGLE_COLORs = new AngleColorIDs();
-	private static final LightStateMap<Integer> STATE_COLORs = new StateColorIDs();
-	private static final LightStateMap<Integer> UPDATE_COLORs = new UpdateColorIDs();
 	private static final Map<ThresholdRelation, Integer> RELATIONS = new EnumMap<>(ThresholdRelation.class);
 
 	static {
@@ -66,9 +52,18 @@ public class SunAngleWidgetView {
 	}
 
 	private final @NonNull TimeProvider times;
+	private final @NonNull UiStates states;
+	private final @NonNull SunAngleFormatter formatter;
 
-	public SunAngleWidgetView(@NonNull TimeProvider times) {
+	@Inject
+	public SunAngleWidgetView(
+			@NonNull TimeProvider times,
+			@NonNull UiStates states,
+			@NonNull SunAngleFormatter formatter
+	) {
 		this.times = times;
+		this.states = states;
+		this.formatter = formatter;
 	}
 
 	@NonNull RemoteViews createUpdateViews(
@@ -81,7 +76,7 @@ public class SunAngleWidgetView {
 		RemoteViews views;
 		if (results == null) {
 			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1_invalid);
-			views.setTextViewText(R.id.timeUpdated, time3.format(times.now().getTime()));
+			views.setTextViewText(R.id.timeUpdated, formatter.formatTime3(times.now().getTime()));
 			views.setTextViewText(R.id.state, res.getText(R.string.call_to_action_location));
 			views.setTextViewText(R.id.threshold, res.getText(R.string.call_to_action_location_fix));
 			views.setOnClickPendingIntent(R.id.state, createRefreshIntent(context, appWidgetId));
@@ -90,30 +85,31 @@ public class SunAngleWidgetView {
 			views = new RemoteViews(context.getPackageName(), R.layout.widget_1x1);
 			LightState state = LightState.from(results.current.angle);
 
-			views.setImageViewResource(R.id.angle_background, BGs.get(state, results.current.time));
+			views.setImageViewResource(R.id.angle_background, states.getBackground(state, results.current.time));
 
-			int angleColor = getColor(context, ANGLE_COLORs.get(state, results.current.time));
+			int angleColor = getColor(context, states.getAngleColor(state, results.current.time));
 			views.setTextColor(R.id.angle, angleColor);
 			views.setTextColor(R.id.angleFraction, angleColor);
 			views.setTextColor(R.id.angleSign, angleColor);
-			Result angle = fraction.format(results.current.angle);
+			Result angle = formatter.formatFraction(results.current.angle);
 			views.setTextViewText(R.id.angle, angle.angle);
 			views.setTextViewText(R.id.angleFraction, angle.fraction);
 			views.setOnClickPendingIntent(R.id.root, createRefreshIntent(context, appWidgetId));
 
 			if (prefs.getBoolean(PREF_SHOW_PART_OF_DAY, DEFAULT_SHOW_PART_OF_DAY)) {
 				views.setViewVisibility(R.id.state, View.VISIBLE);
-				CharSequence stateText = res.getText(STATE_LABELs.get(state, results.current.time));
+				CharSequence stateText = res.getText(states.getStateLabel(state, results.current.time));
 				views.setTextViewText(R.id.state, state == LightState.INVALID? bold(stateText) : stateText);
-				views.setTextColor(R.id.state, getColor(context, STATE_COLORs.get(state, results.current.time)));
+				views.setTextColor(R.id.state, getColor(context, states.getStateColor(state, results.current.time)));
 			} else {
 				views.setViewVisibility(R.id.state, View.GONE);
 			}
 
 			if (prefs.getBoolean(PREF_SHOW_UPDATE_TIME, DEFAULT_SHOW_UPDATE_TIME)) {
 				views.setViewVisibility(R.id.timeUpdated, View.VISIBLE);
-				views.setTextViewText(R.id.timeUpdated, time3.format(results.current.time.getTime()));
-				views.setTextColor(R.id.timeUpdated, getColor(context, UPDATE_COLORs.get(state, results.current.time)));
+				views.setTextViewText(R.id.timeUpdated, formatter.formatTime3(results.current.time.getTime()));
+				views.setTextColor(R.id.timeUpdated,
+						getColor(context, states.getUpdateColor(state, results.current.time)));
 			} else {
 				views.setViewVisibility(R.id.timeUpdated, View.GONE);
 			}
@@ -127,7 +123,7 @@ public class SunAngleWidgetView {
 		return views;
 	}
 
-	private static @NonNull CharSequence formatThresholdTime(
+	private @NonNull CharSequence formatThresholdTime(
 			@NonNull Context context,
 			@NonNull SunSearchResults results,
 			@Nullable Calendar time
@@ -136,7 +132,7 @@ public class SunAngleWidgetView {
 		if (time == null) {
 			result = context.getString(R.string.time_2_none);
 		} else {
-			result = time2.format(time.getTime());
+			result = formatter.formatTime2(time.getTime());
 			Calendar justBefore = (Calendar)time.clone();
 			// https://github.com/TWiStErRob/net.twisterrob.sun/issues/17
 			justBefore.add(Calendar.MINUTE, -30); // TODO configure?
@@ -151,7 +147,7 @@ public class SunAngleWidgetView {
 		Calendar start = results.threshold.start;
 		Calendar end = results.threshold.end;
 		Calendar now = results.current.time;
-		Integer thresholdResource = RELATIONS.get(results.params.thresholdRelation);
+		int thresholdResource = RELATIONS.get(results.params.thresholdRelation);
 		CharSequence threshold = context.getString(thresholdResource, (int)results.params.thresholdAngle);
 		if (now.after(start) && now.before(end)) {
 			threshold = bold(threshold);

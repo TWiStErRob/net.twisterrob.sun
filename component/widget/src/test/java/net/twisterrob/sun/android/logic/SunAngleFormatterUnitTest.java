@@ -30,7 +30,7 @@ public class SunAngleFormatterUnitTest {
 	public void testAngleFormatting() {
 		SunAngleFormatter sut = new SunAngleFormatter();
 
-		Result result = sut.format(angle);
+		Result result = sut.formatFraction(angle);
 
 		assertEquals(expectedWhole, result.angle);
 		assertEquals(expectedFraction, result.fraction);

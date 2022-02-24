@@ -8,7 +8,7 @@
         errorLine2="                ~~~~~~~~~~~~">
         <location
             file="src/main/java/net/twisterrob/android/view/VerticalSeekBar.java"
-            line="41"
+            line="47"
             column="17"/>
     </issue>
 

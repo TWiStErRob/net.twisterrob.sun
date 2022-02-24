@@ -5,7 +5,7 @@ import net.twisterrob.sun.model.LightStateMap;
 
 import static net.twisterrob.sun.model.LightState.*;
 
-public class BackgroundIDs extends LightStateMap<Integer> {
+class BackgroundIDs extends LightStateMap<Integer> {
 	public BackgroundIDs() {
 		put(DAY, R.drawable.bg_day);
 		put(NIGHT, R.drawable.bg_night);

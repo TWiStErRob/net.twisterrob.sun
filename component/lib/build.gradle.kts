@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-	implementation(Deps.AndroidX.annotations)
+	implementation(project(":component:core"))
 
 	testImplementation(Deps.Test.junit4)
 }

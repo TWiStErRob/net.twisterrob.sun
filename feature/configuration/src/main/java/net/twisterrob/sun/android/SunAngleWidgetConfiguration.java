@@ -47,9 +47,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
-import androidx.core.location.LocationListenerCompat;
 import androidx.core.util.Consumer;
 import androidx.core.view.ViewCompat;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 import net.twisterrob.android.app.LocationPermissionCompat;
 import net.twisterrob.android.app.PermissionInterrogator;
@@ -58,7 +59,6 @@ import net.twisterrob.android.app.WidgetConfigurationActivity;
 import net.twisterrob.android.widget.WidgetHelpers;
 import net.twisterrob.sun.algo.*;
 import net.twisterrob.sun.algo.SunSearchResults.*;
-import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater;
 import net.twisterrob.sun.android.ui.SunGradientShaderFactory;
 import net.twisterrob.sun.android.ui.SunGradientShaderFactory.Type;
 import net.twisterrob.sun.android.view.SunThresholdDrawable;
@@ -207,7 +207,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		});
 
 		locationUpdater = new LocationUpdater(getApplicationContext(), getAppWidgetId(), new Consumer<Location>() {
-			@Override public void accept(Location location) {
+			@Override public void accept(@Nullable Location location) {
 				update(location);
 			}
 		});
@@ -617,33 +617,36 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return -1;
 	}
 
-	private static final class LocationUpdater implements LocationListenerCompat {
+	private static final class LocationUpdater implements Function1<Location, Unit> {
 
-		private final @NonNull SunAngleWidgetUpdater updater;
+		private final @NonNull LocationRetriever updater;
 		private final int appWidgetId;
 		private final @NonNull Consumer<Location> update;
+		private boolean cancelled = false;
 
-		LocationUpdater(@NonNull Context context, int appWidgetId, @NonNull Consumer<Location> update) {
-			this.updater = new SunAngleWidgetUpdater(context);
+		LocationUpdater(@NonNull Context context, int appWidgetId, @NonNull Consumer</*@Nullable*/ Location> update) {
+			this.updater = new LocationRetriever(context);
 			this.appWidgetId = appWidgetId;
 			this.update = update;
 		}
 
 		public void single() {
-			Location location = updater.getLocation(this);
-			update.accept(location);
+			updater.get(1000L, this);
 		}
 
 		public void cancel() {
-			updater.clearLocation(this);
+			cancelled = true;
 		}
 
-		public void onLocationChanged(@NonNull Location location) {
+		@Override
+		public Unit invoke(@Nullable Location location) {
 			if (Log.isLoggable("Sun", Log.VERBOSE)) {
 				Log.v("Sun", this + ".onLocationChanged(" + location + ")");
 			}
-			cancel();
-			update.accept(location);
+			if (!cancelled) {
+				update.accept(location);
+			}
+			return Unit.INSTANCE;
 		}
 
 		@Override
