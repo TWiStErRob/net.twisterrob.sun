@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-	implementation(project(":component:core"))
+	implementation(projects.component.core)
 
 	testImplementation(Deps.Test.junit4)
 }
