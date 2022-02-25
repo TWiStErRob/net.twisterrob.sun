@@ -8,11 +8,13 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.the
 import org.gradle.kotlin.dsl.withType
 
-private val javaVersion = JavaVersion.VERSION_1_8
-
 internal fun Project.commonJavaConfig() {
+	// TODEL https://github.com/gradle/gradle/issues/15383, see build.gradle.kts
+	val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
+	val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
 	tasks.withType<JavaCompile> {
 		sourceCompatibility = javaVersion.toString()
 		targetCompatibility = javaVersion.toString()
