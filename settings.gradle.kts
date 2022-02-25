@@ -14,7 +14,6 @@ include(":component:awt-hack")
 include(":component:paparazzi")
 include(":component:theme")
 
-includeBuild("gradle/dependencies")
 includeBuild("gradle/plugins")
 
 pluginManagement {
