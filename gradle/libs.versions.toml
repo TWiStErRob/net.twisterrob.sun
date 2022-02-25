@@ -54,4 +54,12 @@ test-androidx-runner = { module = "androidx.test:runner", version = "1.4.0" }
 
 
 [plugins]
-# nexus = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus" }
+
+# TODEL workaround in :app/build.gradle.kts for 194525628 for 7.2+
+android-app = { id = "com.android.application", version = "7.0.4" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+# TODEL workaround in settings.gradle.kts once released.
+paparazzi = { id = "app.cash.paparazzi", version = "0.9.0" }
+twisterrob-root = { id = "net.twisterrob.root", version = "0.14-20220205.192501-3" }
+twisterrob-quality = { id = "net.twisterrob.quality", version = "0.14-20220205.192501-3" }
+kotlin-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.19.0" }
