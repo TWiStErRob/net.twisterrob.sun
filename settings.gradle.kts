@@ -67,10 +67,6 @@ pluginManagement {
 				"net.twisterrob.quality" -> {
 					useModule("net.twisterrob.gradle:twister-quality:${requested.version}")
 				}
-				// TODEL workaround https://github.com/cashapp/paparazzi/issues/343
-				"app.cash.paparazzi" -> {
-					useModule("app.cash.paparazzi:paparazzi-gradle-plugin:${requested.version}")
-				}
 			}
 		}
 	}

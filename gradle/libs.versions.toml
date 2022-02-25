@@ -26,7 +26,6 @@ dagger = "2.40.5"
 # Changelog (4.x): https://github.com/mockito/mockito/releases
 mockito = "4.2.0"
 
-# TODEL workaround in settings.gradle.kts once released.
 paparazzi = "0.9.0"
 
 twisterrob = "0.14-20220205.192501-3"
