@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
 	implementation(projects.component.core)
-	api(Deps.AndroidX.appcompat)
+	api(libs.androidx.appcompat)
 }

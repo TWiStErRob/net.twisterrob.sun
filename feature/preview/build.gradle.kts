@@ -1,12 +1,11 @@
 plugins {
 	id("project-module-android-library")
-	id("project-dependencies")
 }
 
 dependencies {
 	implementation(projects.component.widget)
 	implementation(projects.component.theme)
-	implementation(Deps.AndroidX.appcompat)
-	implementation(Deps.AndroidX.activity)
-	implementation(Deps.AndroidX.fragment)
+	implementation(libs.androidx.appcompat)
+	implementation(libs.androidx.activity)
+	implementation(libs.androidx.fragment)
 }

@@ -1,7 +1,6 @@
 plugins {
 	`kotlin-dsl`
 	`java-gradle-plugin`
-	id("project-dependencies")
 }
 
 repositories {
@@ -11,10 +10,12 @@ repositories {
 }
 
 dependencies {
-	implementation(Deps.Android.plugin)
-	implementation(Deps.Android.cacheFix)
-	implementation(Deps.Kotlin.detekt)
-	implementation("project-dependencies:dependencies:SNAPSHOT")
+	implementation(libs.android.gradle)
+	implementation(libs.android.cacheFix)
+	implementation(libs.kotlin.detekt)
+
+	// TODEL hack from https://github.com/gradle/gradle/issues/15383#issuecomment-779893192 (there are more parts to this)
+	implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
 
 gradlePlugin {

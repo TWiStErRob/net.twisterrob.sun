@@ -10,9 +10,8 @@ import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
 
-private val javaVersion = JavaVersion.VERSION_1_8
-
 internal fun Project.commonJavaConfig() {
+	val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
 	tasks.withType<JavaCompile> {
 		sourceCompatibility = javaVersion.toString()
 		targetCompatibility = javaVersion.toString()

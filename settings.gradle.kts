@@ -1,6 +1,7 @@
 rootProject.name = "Sun"
 
 enableFeaturePreviewQuietly("TYPESAFE_PROJECT_ACCESSORS", "Type-safe project accessors")
+enableFeaturePreviewQuietly("VERSION_CATALOGS", "Type-safe dependency accessors")
 
 include(":app")
 include(":feature:configuration")
@@ -13,7 +14,6 @@ include(":component:awt-hack")
 include(":component:paparazzi")
 include(":component:theme")
 
-includeBuild("gradle/dependencies")
 includeBuild("gradle/plugins")
 
 pluginManagement {

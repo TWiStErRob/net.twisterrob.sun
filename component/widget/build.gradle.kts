@@ -5,13 +5,13 @@ plugins {
 
 dependencies {
 	implementation(projects.component.core)
-	kapt(Deps.Dagger.compiler)
+	kapt(libs.dagger.compiler)
 	api(projects.component.lib)
 	implementation(projects.component.states)
 	implementation(projects.component.theme)
-	implementation(Deps.AndroidX.appcompat)
-	implementation(Deps.AndroidX.activity)
-	implementation(Deps.AndroidX.fragment)
+	implementation(libs.androidx.appcompat)
+	implementation(libs.androidx.activity)
+	implementation(libs.androidx.fragment)
 }
 
 dependencies {
@@ -19,8 +19,8 @@ dependencies {
 }
 
 dependencies {
-	androidTestImplementation(Deps.Test.junit4)
+	androidTestImplementation(libs.test.junit4)
 
-	androidTestImplementation(Deps.Test.androidxCore)
-	androidTestImplementation(Deps.Test.androidxRunner)
+	androidTestImplementation(libs.test.androidx.core)
+	androidTestImplementation(libs.test.androidx.runner)
 }

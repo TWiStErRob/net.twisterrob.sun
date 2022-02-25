@@ -2,7 +2,6 @@ import net.twisterrob.gradle.android.version
 
 plugins {
 	id("project-module-android-app")
-	id("project-dependencies")
 }
 
 dependencies {
@@ -16,7 +15,7 @@ dependencies {
 android {
 	defaultConfig {
 		applicationId = "net.twisterrob.sun"
-		targetSdk = Deps.Android.targetSdkVersion
+		targetSdk = libs.versions.targetSdkVersion.get().toInt()
 		(this as com.android.build.gradle.internal.dsl.DefaultConfig).version {
 			versionNameFormat = "%1\$d.%2\$d.%3\$d#${VCS.current.revision}"
 		}

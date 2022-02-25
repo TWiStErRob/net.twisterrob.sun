@@ -1,6 +1,5 @@
 package net.twisterrob.sun.plugins
 
-import Deps
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.lint.AndroidLintTask
 import org.gradle.api.Project
@@ -13,9 +12,9 @@ internal fun Project.commonAndroidConfig() {
 	// TODO https://github.com/gradle/android-cache-fix-gradle-plugin/issues/215
 	//apply(plugin = "org.gradle.android.cache-fix")
 	extensions.configure<BaseExtension> {
-		compileSdkVersion(Deps.Android.compileSdkVersion)
+		compileSdkVersion(libs.versions.compileSdkVersion.get().toInt())
 		defaultConfig {
-			minSdk = Deps.Android.minSdkVersion
+			minSdk = libs.versions.minSdkVersion.get().toInt()
 			testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		}
 		lintOptions {
