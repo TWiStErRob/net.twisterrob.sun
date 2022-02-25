@@ -11,19 +11,10 @@ targetSdkVersion = "31"
 # @see kotlin_version in buildSrc/gradle.properties
 kotlin = "1.5.31"
 
-# JUnit 5 = JUnit Platform ([junit-api]) + JUnit Jupiter ([junit-engine]) + JUnit Vintage ([junit-vintage])
-# Changelog: https://junit.org/junit5/docs/current/release-notes/index.html
-junit5 = "5.8.1"
-# GitHub Releases: https://github.com/junit-pioneer/junit-pioneer/releases
-junit5-pioneer = "1.4.2"
-
 # Artifacts: https://mvnrepository.com/artifact/org.mockito/mockito-core
 # Changelog (1.x, 2.x and 3.x): https://github.com/mockito/mockito/blob/main/doc/release-notes/official.md
 # Changelog (4.x): https://github.com/mockito/mockito/releases
 mockito = "4.1.0"
-
-# Versions: https://mvnrepository.com/artifact/org.tmatesoft.svnkit/svnkit
-svnkit = "1.10.3"
 
 [libraries]
 
