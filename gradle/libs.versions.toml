@@ -14,7 +14,6 @@ targetSdkVersion = "31"
 agp = "7.0.4"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
-# @see kotlin_version in buildSrc/gradle.properties
 kotlin = "1.5.31"
 
 detekt = "1.19.0"
