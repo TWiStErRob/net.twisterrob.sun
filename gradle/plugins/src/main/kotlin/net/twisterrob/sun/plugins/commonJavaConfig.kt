@@ -9,6 +9,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 internal fun Project.commonJavaConfig() {
 	val javaVersion = JavaVersion.toVersion(libs.versions.java.get())
@@ -30,6 +31,12 @@ internal fun Project.commonJavaConfig() {
 			// Fail build when warnings pop up.
 			"-Werror"
 		)
+	}
+	tasks.withType<KotlinCompile> {
+		kotlinOptions {
+			jvmTarget = javaVersion.toString()
+			allWarningsAsErrors = true
+		}
 	}
 	plugins.apply("io.gitlab.arturbosch.detekt")
 	plugins.withId("io.gitlab.arturbosch.detekt") {

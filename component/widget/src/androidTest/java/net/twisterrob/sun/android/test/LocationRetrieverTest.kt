@@ -91,7 +91,7 @@ class LocationRetrieverTest {
 				blocker.countDown()
 			}
 		}
-		sleep(2 * 100)
+		sleep(2 * 100L)
 
 		assertTrue(actualLocationReceived)
 		assertEquals(null, actualLocation)
@@ -109,12 +109,12 @@ class LocationRetrieverTest {
 				blocker.countDown()
 			}
 		}
-		sleep(2 * 100)
+		sleep(2 * 100L)
 		locationRule.spoofer.setLocation {
 			latitude = 11.1
 			longitude = 22.2
 		}
-		sleep(100)
+		sleep(100L)
 
 		assertTrue(actualLocationReceived)
 		assertEquals(null, actualLocation)
