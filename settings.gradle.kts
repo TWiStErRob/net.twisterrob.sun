@@ -1,6 +1,7 @@
 rootProject.name = "Sun"
 
 enableFeaturePreviewQuietly("TYPESAFE_PROJECT_ACCESSORS", "Type-safe project accessors")
+enableFeaturePreviewQuietly("VERSION_CATALOGS", "Type-safe dependency accessors")
 
 include(":app")
 include(":feature:configuration")
