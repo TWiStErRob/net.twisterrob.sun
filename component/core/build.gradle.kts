@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-	api(Deps.AndroidX.annotations)
-	api(Deps.Dagger.dagger)
-	api(Deps.Kotlin.stdlib)
-	api(Deps.Kotlin.stdlib8)
-	api(Deps.Kotlin.bom)
+	api(libs.androidx.annotations)
+	api(libs.dagger)
+	api(libs.kotlin.stdlib)
+	api(libs.kotlin.stdlib8)
+	api(libs.kotlin.bom)
 }

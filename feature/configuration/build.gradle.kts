@@ -1,22 +1,21 @@
 plugins {
 	id("project-module-android-library")
-	id("project-dependencies")
 	id("project-feature-paparazzi")
 }
 
 dependencies {
 	implementation(projects.component.widget)
 	implementation(projects.component.theme)
-	implementation(Deps.AndroidX.appcompat)
-	implementation(Deps.AndroidX.activity)
-	implementation(Deps.AndroidX.fragment)
-	implementation(Deps.AndroidX.constraint)
-	implementation(Deps.AndroidX.card)
+	implementation(libs.androidx.appcompat)
+	implementation(libs.androidx.activity)
+	implementation(libs.androidx.fragment)
+	implementation(libs.androidx.constraint)
+	implementation(libs.androidx.card)
 
-	testImplementation(Deps.Test.junit4)
-	testImplementation(Deps.Test.truth)
-	testImplementation(Deps.Test.mockito)
-	testImplementation(Deps.Test.paramInjector)
+	testImplementation(libs.test.junit4)
+	testImplementation(libs.test.truth)
+	testImplementation(libs.test.mockito)
+	testImplementation(libs.test.paramInjector)
 }
 
 android {
