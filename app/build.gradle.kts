@@ -20,10 +20,8 @@ android {
 			versionNameFormat = "%1\$d.%2\$d.%3\$d#${VCS.current.revision}"
 		}
 	}
-	lint {
-		// TODEL AGP 7.2 https://issuetracker.google.com/issues/194525628
-		if (System.getProperty("idea.is.internal").toBoolean()) {
-			isCheckReleaseBuilds = false
-		}
+	// TODEL AGP 7.2 https://issuetracker.google.com/issues/194525628
+	if (System.getProperty("idea.is.internal").toBoolean()) {
+		lint.checkReleaseBuilds = false
 	}
 }

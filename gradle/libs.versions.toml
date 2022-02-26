@@ -9,9 +9,8 @@ targetSdkVersion = "31"
 
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
-# TODEL 211012777 when updating from 7.0
 # TODEL workaround in :app/build.gradle.kts for 194525628 for 7.2+
-agp = "7.0.4"
+agp = "7.1.2"
 androidx-test = "1.4.0"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
