@@ -1,6 +1,6 @@
 plugins {
-	`kotlin-dsl`
-	`java-gradle-plugin`
+	id("org.gradle.kotlin.kotlin-dsl") version "2.1.7" // see appliedKotlinDslPluginsVersion
+	id("java-gradle-plugin")
 }
 
 repositories {
