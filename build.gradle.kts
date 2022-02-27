@@ -1,4 +1,4 @@
-@Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage") // TODEL Gradle 6.4
+@Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage") // TODEL Gradle 7.4
 plugins {
 	alias(libs.plugins.android.app) apply false
 	alias(libs.plugins.kotlin.android) apply false
