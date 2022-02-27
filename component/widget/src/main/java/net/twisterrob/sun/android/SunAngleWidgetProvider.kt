@@ -52,6 +52,11 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 	companion object {
 
 		private const val TAG = "Sun"
+
+		/**
+		 * Be well withing the limits of [android.content.BroadcastReceiver]s.
+		 * https://developer.android.com/guide/topics/appwidgets/advanced#broadcastreceiver-duration
+		 */
 		private const val MAX_ASYNC_LOCATION_TIME: Long = 5000
 	}
 }
