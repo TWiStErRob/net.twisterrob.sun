@@ -1,7 +1,6 @@
 rootProject.name = "Sun"
 
 enableFeaturePreviewQuietly("TYPESAFE_PROJECT_ACCESSORS", "Type-safe project accessors")
-enableFeaturePreviewQuietly("VERSION_CATALOGS", "Type-safe dependency accessors")
 
 include(":app")
 include(":feature:configuration")
@@ -66,10 +65,6 @@ pluginManagement {
 				}
 				"net.twisterrob.quality" -> {
 					useModule("net.twisterrob.gradle:twister-quality:${requested.version}")
-				}
-				// TODEL workaround https://github.com/cashapp/paparazzi/issues/343
-				"app.cash.paparazzi" -> {
-					useModule("app.cash.paparazzi:paparazzi-gradle-plugin:${requested.version}")
 				}
 			}
 		}
