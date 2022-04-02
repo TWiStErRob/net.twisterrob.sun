@@ -27,7 +27,7 @@ mockito = "4.2.0"
 
 paparazzi = "0.9.3"
 
-twisterrob = "0.14"
+twisterrob = "0.14.1"
 
 [libraries]
 

@@ -3,12 +3,6 @@ plugins {
 	id("java-gradle-plugin")
 }
 
-repositories {
-	google()
-	mavenCentral()
-	gradlePluginPortal()
-}
-
 dependencies {
 	implementation(libs.android.gradle)
 	implementation(libs.android.cacheFix)
