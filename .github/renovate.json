@@ -3,5 +3,14 @@
     "config:base",
     "group:allNonMajor"
   ],
-  "ignorePaths": []
+  "ignorePaths": [],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "net.twisterrob.root",
+        "net.twisterrob.quality"
+      ],
+      "enabled": false
+    }
+  ]
 }
