@@ -60,6 +60,10 @@ test-paramInjector = { module = "com.google.testparameterinjector:test-parameter
 test-androidx-core = { module = "androidx.test:core", version.ref = "androidx.test" }
 test-androidx-runner = { module = "androidx.test:runner", version.ref = "androidx.test" }
 
+# Not actually used, see [twisterrob-root] and [twisterrob-quality]. Only here for Renovate to update them.
+twisterrob-convention = { module = "net.twisterrob.gradle:twister-convention-plugins", version.ref = "twisterrob" }
+twisterrob-quality = { module = "net.twisterrob.gradle:twister-quality", version.ref = "twisterrob" }
+
 [bundles]
 
 
