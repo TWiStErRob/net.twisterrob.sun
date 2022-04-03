@@ -55,7 +55,7 @@ jobs:
 
       - name: Upload "Lint Results".
         if: success() || failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Lint Results HTMLs
           path: |
@@ -76,7 +76,7 @@ jobs:
 
       - name: Upload "Unit Test Results".
         if: success() || failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Unit Test Results
           path: ${{ github.workspace }}/**/build/reports/tests/*/
@@ -93,7 +93,7 @@ jobs:
 
       - name: Upload "Detekt Results".
         if: success() || failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Detekt Results
           path: |
