@@ -23,7 +23,7 @@ dagger = "2.41"
 # Artifacts: https://mvnrepository.com/artifact/org.mockito/mockito-core
 # Changelog (1.x, 2.x and 3.x): https://github.com/mockito/mockito/blob/main/doc/release-notes/official.md
 # Changelog (4.x): https://github.com/mockito/mockito/releases
-mockito = "4.4.0"
+mockito = "4.5.1"
 
 paparazzi = "0.9.3"
 
