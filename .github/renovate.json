@@ -1,6 +1,15 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "local>TWiStErRob/renovate-config"
-  ]
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"local>TWiStErRob/renovate-config"
+	],
+	"packageRules": [
+		{
+			"description": "Don't update Kotlin DSL as it depends on Gradle version (KotlinDslPlugins.expectedKotlinDslPluginsVersion in gradle-kotlin-dsl.jar).",
+			"matchPackageNames": [
+				"org.gradle.kotlin.kotlin-dsl"
+			],
+			"automerge": false
+		}
+	]
 }
