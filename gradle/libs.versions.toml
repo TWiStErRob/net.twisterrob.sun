@@ -32,7 +32,7 @@ twisterrob = "0.14.1"
 [libraries]
 
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-android-cacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.5.1" }
+android-cacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.5.2" }
 
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.4.1" }
 androidx-activity = { module = "androidx.activity:activity", version = "1.4.0" }
