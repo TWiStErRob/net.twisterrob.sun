@@ -17,9 +17,4 @@
 
 	</issue>
 
-	<issue id="ObsoleteLintCustomCheck">
-		<!-- androidx 1.4.0 is meant for unreleased AGP 7.1. -->
-		<ignore regexp="`androidx\.fragment\.lint\.FragmentIssueRegistry`" />
-	</issue>
-
 </lint>
