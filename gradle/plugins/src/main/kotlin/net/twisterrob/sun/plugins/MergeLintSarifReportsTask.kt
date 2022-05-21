@@ -12,8 +12,14 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 
+/**
+ * Based on Detekt's SARIF merging task.
+ *
+ * @see io.gitlab.arturbosch.detekt.report.ReportMergeTask
+ * @see io.gitlab.arturbosch.detekt.report.SarifReportMerger
+ */
 @CacheableTask
-abstract class MergeSarifReportsTask : DefaultTask() {
+abstract class MergeLintSarifReportsTask : DefaultTask() {
 
 	@get:InputFiles
 	@get:PathSensitive(PathSensitivity.RELATIVE)

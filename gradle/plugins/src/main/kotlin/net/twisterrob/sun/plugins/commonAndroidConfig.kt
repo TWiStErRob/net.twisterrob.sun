@@ -31,7 +31,7 @@ internal fun Project.commonAndroidConfig() {
 
 			sarifReport = true
 			val lintReportMergeSarif =
-				rootProject.tasks.named<MergeSarifReportsTask>("lintReportMergeSarif")
+				rootProject.tasks.named<MergeLintSarifReportsTask>("lintReportMergeSarif")
 			tasks.withType<AndroidLintTask>().all { finalizedBy(lintReportMergeSarif) }
 			androidComponents.onVariants { variant ->
 				val sarifProvider = variant.artifacts
