@@ -5,7 +5,6 @@ import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.api.AndroidBasePlugin
 import com.android.build.gradle.internal.lint.AndroidLintTask
-import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 import net.twisterrob.gradle.internal.android.unwrapCast
 import org.gradle.api.Project
 import org.gradle.api.plugins.PluginInstantiationException
@@ -31,12 +30,14 @@ internal fun Project.commonAndroidConfig() {
 			baseline = rootProject.file("config/lint/baseline/lint_baseline-${projectSlug}.xml")
 
 			sarifReport = true
-			val lintReportMergeSarif = rootProject.tasks.named<ReportMergeTask>("lintReportMergeSarif")
+			val lintReportMergeSarif =
+				rootProject.tasks.named<MergeSarifReportsTask>("lintReportMergeSarif")
 			tasks.withType<AndroidLintTask>().all { finalizedBy(lintReportMergeSarif) }
 			androidComponents.onVariants { variant ->
-				val sarif = variant.artifacts.unwrapCast<com.android.build.api.artifact.impl.ArtifactsImpl>()
+				val sarifProvider = variant.artifacts
+					.unwrapCast<com.android.build.api.artifact.impl.ArtifactsImpl>()
 					.get(com.android.build.gradle.internal.scope.InternalArtifactType.LINT_SARIF_REPORT)
-				lintReportMergeSarif.configure { input.from(sarif) }
+				lintReportMergeSarif.configure { sarifFiles.from(sarifProvider) }
 			}
 		}
 	}
@@ -44,8 +45,6 @@ internal fun Project.commonAndroidConfig() {
 
 val Project.androidComponents: AndroidComponentsExtension<*, *, *>
 		get() {
-			// REPORT hasPlugin("com.android.base") should be equivalent, but returns false during plugins.withType<ABP> { }
-			// because com.android.build.gradle.internal.plugins.BasePlugin applies ABP class not ID?
 			if (!this.plugins.hasPlugin(AndroidBasePlugin::class.java)) {
 				throw PluginInstantiationException("Cannot use androidComponents before the Android plugins are applied.")
 			}

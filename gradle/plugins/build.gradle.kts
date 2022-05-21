@@ -8,6 +8,7 @@ dependencies {
 	implementation(libs.android.cacheFix)
 	implementation(libs.kotlin.plugin)
 	implementation(libs.kotlin.detekt)
+	implementation(libs.kotlin.detekt.sarif)
 	implementation(libs.twisterrob.quality)
 	implementation(libs.twisterrob.convention)
 
