@@ -19,3 +19,6 @@ tasks.register<io.gitlab.arturbosch.detekt.report.ReportMergeTask>("detektReport
 tasks.register<io.gitlab.arturbosch.detekt.report.ReportMergeTask>("detektReportMergeXml") {
 	output.set(rootProject.buildDir.resolve("reports/detekt/merge.xml"))
 }
+tasks.register<io.gitlab.arturbosch.detekt.report.ReportMergeTask>("lintReportMergeSarif") {
+	output.set(rootProject.buildDir.resolve("reports/lint/merge.sarif"))
+}

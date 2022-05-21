@@ -8,6 +8,8 @@ dependencies {
 	implementation(libs.android.cacheFix)
 	implementation(libs.kotlin.plugin)
 	implementation(libs.kotlin.detekt)
+	implementation(libs.twisterrob.quality)
+	implementation(libs.twisterrob.convention)
 
 	// TODEL hack from https://github.com/gradle/gradle/issues/15383#issuecomment-779893192 (there are more parts to this)
 	implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
