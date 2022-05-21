@@ -3,6 +3,7 @@ package net.twisterrob.sun.plugins.internal
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.lint.AndroidLintTask
+import net.twisterrob.gradle.android.androidComponents
 import net.twisterrob.gradle.internal.android.unwrapCast
 import net.twisterrob.sun.plugins.tasks.MergeLintSarifReportsTask
 import org.gradle.api.Project
