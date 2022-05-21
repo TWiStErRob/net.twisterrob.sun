@@ -18,7 +18,8 @@ internal fun Project.commonAndroidConfig() {
 			testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		}
 		lint {
-			xmlReport = true
+			sarifReport = true
+
 			val projectSlug = project.path.substringAfter(':').replace(":", "+")
 			baseline = rootProject.file("config/lint/baseline/lint_baseline-${projectSlug}.xml")
 		}
