@@ -63,6 +63,15 @@ jobs:
             ${{ github.workspace }}/**/build/reports/lint-results*.html
             ${{ github.workspace }}/build/reports/violations.*
 
+      - name: Fail if Android Lint is missing Sarif report for publishing on GitHub.
+        if: success() || failure()
+        run: |
+          mergedReport=build/reports/lint/merge.sarif
+          if [ ! -f "${mergedReport}" ]; then # -f: Path exists and is regular file.
+            echo "Android Lint report file '${mergedReport}' does not exist."
+            exit 1
+          fi
+
       - name: Publish "Code scanning results / Android Lint".
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
@@ -122,18 +131,18 @@ jobs:
             exit 3
           fi
 
-      - name: Publish "Code scanning results / detekt".
-        uses: github/codeql-action/upload-sarif@v2
-        if: success() || failure()
-        with:
-          checkout_path: ${{ github.workspace }}
-          sarif_file: ${{ github.workspace }}/build/reports/detekt/merge.sarif
-
       - name: Fail if Detekt is missing Sarif report for publishing on GitHub.
         if: success() || failure()
         run: |
           mergedReport=build/reports/detekt/merge.sarif
           if [ ! -f "${mergedReport}" ]; then # -f: Path exists and is regular file.
             echo "Detekt report file '${mergedReport}' does not exist."
-            exit 2
+            exit 1
           fi
+
+      - name: Publish "Code scanning results / detekt".
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          checkout_path: ${{ github.workspace }}
+          sarif_file: ${{ github.workspace }}/build/reports/detekt/merge.sarif
