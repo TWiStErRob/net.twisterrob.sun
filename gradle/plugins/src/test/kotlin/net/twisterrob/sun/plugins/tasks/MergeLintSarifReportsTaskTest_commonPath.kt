@@ -66,6 +66,34 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	}
 
 	@Test
+	fun `prefix increasing`() {
+		assertEquals(
+			"/foo/bar/",
+			commonPath(
+				listOf(
+					"/foo/bar/",
+					"/foo/bar/baz/",
+					"/foo/bar/baz/boo/",
+				)
+			)
+		)
+	}
+
+	@Test
+	fun `prefix decreasing`() {
+		assertEquals(
+			"/foo/bar/",
+			commonPath(
+				listOf(
+					"/foo/bar/baz/boo/",
+					"/foo/bar/baz/",
+					"/foo/bar/",
+				)
+			)
+		)
+	}
+
+	@Test
 	fun `only file name differs`() {
 		assertEquals(
 			"/C:/foo/bar/baz/",
