@@ -54,7 +54,7 @@ jobs:
           violationReportHtml
           violationCountFile
 
-      - name: Upload "Lint Results".
+      - name: Upload "Lint Results HTMLs" artifact.
         if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
@@ -63,7 +63,7 @@ jobs:
             ${{ github.workspace }}/**/build/reports/lint-results*.html
             ${{ github.workspace }}/build/reports/violations.*
 
-      - name: Publish Lint Results
+      - name: Publish "Code scanning results / Android Lint".
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:
@@ -82,14 +82,14 @@ jobs:
             exit 0
           fi
 
-      - name: Upload "Unit Test Results".
+      - name: Upload "Unit Test Results" artifact.
         if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           name: Unit Test Results
           path: ${{ github.workspace }}/**/build/reports/tests/*/
 
-      - name: Publish Unit Test Results
+      - name: Publish "Unit Results" check suite and "Unit Test Results" comment.
         if: success() || failure()
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:
@@ -99,7 +99,7 @@ jobs:
           test_changes_limit: 0
           files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
-      - name: Upload "Detekt Results".
+      - name: Upload "Detekt Results" artifact.
         if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
@@ -122,7 +122,7 @@ jobs:
             exit 3
           fi
 
-      - name: Publish Detekt Results
+      - name: Publish "Code scanning results / detekt".
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:
