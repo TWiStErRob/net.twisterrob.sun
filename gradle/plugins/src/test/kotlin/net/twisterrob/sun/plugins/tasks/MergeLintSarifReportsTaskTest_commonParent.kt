@@ -3,13 +3,13 @@ package net.twisterrob.sun.plugins.tasks
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class MergeLintSarifReportsTaskTest_commonPath {
+class MergeLintSarifReportsTaskTest_commonParent {
 
 	@Test
 	fun `no input`() {
 		assertEquals(
 			"/",
-			commonPath(
+			commonParent(
 				listOf(
 					// empty
 				)
@@ -21,7 +21,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `empty input`() {
 		assertEquals(
 			"/",
-			commonPath(
+			commonParent(
 				listOf(
 					""
 				)
@@ -33,7 +33,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `only one file`() {
 		assertEquals(
 			"/foo/bar/baz/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/foo/bar/baz/yee.xxx",
 				)
@@ -45,7 +45,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `only one folder`() {
 		assertEquals(
 			"/foo/bar/baz/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/foo/bar/baz/",
 				)
@@ -57,7 +57,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `only root`() {
 		assertEquals(
 			"/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/",
 				)
@@ -69,7 +69,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `prefix increasing`() {
 		assertEquals(
 			"/foo/bar/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/foo/bar/",
 					"/foo/bar/baz/",
@@ -83,7 +83,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `prefix decreasing`() {
 		assertEquals(
 			"/foo/bar/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/foo/bar/baz/boo/",
 					"/foo/bar/baz/",
@@ -97,7 +97,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `only file name differs`() {
 		assertEquals(
 			"/C:/foo/bar/baz/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/C:/foo/bar/baz/yee.xxx",
 					"/C:/foo/bar/baz/yoo.xxx",
@@ -110,7 +110,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `different last segment`() {
 		assertEquals(
 			"/C:/foo/bar/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/C:/foo/bar/baz/yee.xxx",
 					"/C:/foo/bar/bazz/yee.xxx",
@@ -123,7 +123,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `different subdirs`() {
 		assertEquals(
 			"/C:/foo/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/C:/foo/bar/baz/yee.xxx",
 					"/C:/foo/bar/bazz/yee.xxx",
@@ -137,7 +137,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `different directories`() {
 		assertEquals(
 			"/C:/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/C:/foo/bar/baz/yee.xxx",
 					"/C:/foo/bar/bazz/yee.xxx",
@@ -151,7 +151,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `different drives`() {
 		assertEquals(
 			"/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/C:/foo/bar/baz/yee.xxx",
 					"/D:/foo/bar/baz/yee.xxx",
@@ -164,7 +164,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `tricky path`() {
 		assertEquals(
 			"/foo/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/foo/bar.baz",
 					"/foo/bar/baz",
@@ -177,7 +177,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `folder and file`() {
 		assertEquals(
 			"/foo/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/foo/bar/",
 					"/foo/bar",
@@ -190,7 +190,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `root as common`() {
 		assertEquals(
 			"/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/foo",
 					"/bar",
@@ -203,7 +203,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `root as input`() {
 		assertEquals(
 			"/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/foo",
 					"/",
@@ -216,7 +216,7 @@ class MergeLintSarifReportsTaskTest_commonPath {
 	fun `unix only file name differs`() {
 		assertEquals(
 			"/foo/bar/",
-			commonPath(
+			commonParent(
 				listOf(
 					"/foo/bar/baz/yee.xxx",
 					"/foo/bar/bazz/yoo.xxx",

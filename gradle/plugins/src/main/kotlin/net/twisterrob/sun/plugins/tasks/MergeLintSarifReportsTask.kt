@@ -107,7 +107,7 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 		val paths = sarifs
 			.mapNotNull { it.run.originalURIBaseIDS }
 			.map { it.values.single().uri!!.substringAfter("file://") }
-		return commonPath(paths)
+		return commonParent(paths)
 	}
 
 	@Suppress("NestedLambdaShadowedImplicitParameter")
@@ -152,7 +152,7 @@ private val SarifSchema210.results: Collection<Result>
  * On Windows `C:\foo\` should be input as `/C:/foo/`, i.e. the drive is "just a folder".
  * Note: This is how `file://` URIs work.
  */
-internal fun commonPath(paths: List<String>): String =
+internal fun commonParent(paths: List<String>): String =
 	(paths.firstOrNull() ?: "")
 		.split('/')
 		.fold("/") { test, segment ->
