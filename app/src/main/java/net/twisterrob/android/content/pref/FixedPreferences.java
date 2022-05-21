@@ -3,6 +3,7 @@ package net.twisterrob.android.content.pref;
 import java.util.*;
 import java.util.Map.Entry;
 
+import android.annotation.SuppressLint;
 import android.content.*;
 
 public abstract class FixedPreferences implements SharedPreferences {
@@ -74,6 +75,7 @@ public abstract class FixedPreferences implements SharedPreferences {
 	protected class FixedPreferencesEditor implements Editor {
 		private final SharedPreferences.Editor edit;
 
+		@SuppressLint("CommitPrefEdits")
 		public FixedPreferencesEditor() {
 			this.edit = prefs.edit();
 		}
