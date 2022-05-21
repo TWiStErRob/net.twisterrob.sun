@@ -63,6 +63,13 @@ jobs:
             ${{ github.workspace }}/**/build/reports/lint-results*.html
             ${{ github.workspace }}/build/reports/violations.*
 
+      - name: Publish Lint Results
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          checkout_path: ${{ github.workspace }}
+          sarif_file: ${{ github.workspace }}/build/reports/lint/merge.sarif
+
       - name: Fail if there are violations
         if: success() || failure()
         run: |
