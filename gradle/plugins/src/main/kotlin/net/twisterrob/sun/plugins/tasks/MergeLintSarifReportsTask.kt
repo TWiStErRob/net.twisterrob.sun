@@ -1,4 +1,4 @@
-package net.twisterrob.sun.plugins
+package net.twisterrob.sun.plugins.tasks
 
 import io.github.detekt.sarif4k.ArtifactLocation
 import io.github.detekt.sarif4k.ReportingDescriptor

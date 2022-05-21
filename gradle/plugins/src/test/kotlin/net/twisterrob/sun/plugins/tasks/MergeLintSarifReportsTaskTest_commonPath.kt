@@ -1,4 +1,4 @@
-package net.twisterrob.sun.plugins
+package net.twisterrob.sun.plugins.tasks
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

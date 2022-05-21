@@ -1,15 +1,12 @@
-package net.twisterrob.sun.plugins
+package net.twisterrob.sun.plugins.internal
 
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.api.AndroidBasePlugin
 import com.android.build.gradle.internal.lint.AndroidLintTask
 import net.twisterrob.gradle.internal.android.unwrapCast
+import net.twisterrob.sun.plugins.tasks.MergeLintSarifReportsTask
 import org.gradle.api.Project
-import org.gradle.api.plugins.PluginInstantiationException
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
 
@@ -42,11 +39,3 @@ internal fun Project.commonAndroidConfig() {
 		}
 	}
 }
-
-val Project.androidComponents: AndroidComponentsExtension<*, *, *>
-		get() {
-			if (!this.plugins.hasPlugin(AndroidBasePlugin::class.java)) {
-				throw PluginInstantiationException("Cannot use androidComponents before the Android plugins are applied.")
-			}
-			return this.extensions["androidComponents"] as AndroidComponentsExtension<*, *, *>
-		}
