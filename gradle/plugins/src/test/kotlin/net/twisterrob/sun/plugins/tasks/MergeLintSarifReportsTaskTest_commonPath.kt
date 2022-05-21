@@ -6,6 +6,66 @@ import org.junit.Test
 class MergeLintSarifReportsTaskTest_commonPath {
 
 	@Test
+	fun `no input`() {
+		assertEquals(
+			"/",
+			commonPath(
+				listOf(
+					// empty
+				)
+			)
+		)
+	}
+
+	@Test
+	fun `empty input`() {
+		assertEquals(
+			"/",
+			commonPath(
+				listOf(
+					""
+				)
+			)
+		)
+	}
+
+	@Test
+	fun `only one file`() {
+		assertEquals(
+			"/foo/bar/baz/",
+			commonPath(
+				listOf(
+					"/foo/bar/baz/yee.xxx",
+				)
+			)
+		)
+	}
+
+	@Test
+	fun `only one folder`() {
+		assertEquals(
+			"/foo/bar/baz/",
+			commonPath(
+				listOf(
+					"/foo/bar/baz/",
+				)
+			)
+		)
+	}
+
+	@Test
+	fun `only root`() {
+		assertEquals(
+			"/",
+			commonPath(
+				listOf(
+					"/",
+				)
+			)
+		)
+	}
+
+	@Test
 	fun `only file name differs`() {
 		assertEquals(
 			"/C:/foo/bar/baz/",

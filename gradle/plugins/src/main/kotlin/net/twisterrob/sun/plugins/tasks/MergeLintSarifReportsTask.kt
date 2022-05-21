@@ -153,11 +153,12 @@ private val SarifSchema210.results: Collection<Result>
  * Note: This is how `file://` URIs work.
  */
 internal fun commonPath(paths: List<String>): String =
-	paths[0]
+	(paths.firstOrNull() ?: "")
 		.split('/')
 		.fold("/") { test, segment ->
 			val prefix = "$test$segment/"
-			if (paths.all { it.startsWith(prefix) }) {
+			// Extra isEmpty check, because .all returns true on empty list.
+			if (paths.isNotEmpty() && paths.all { it.startsWith(prefix) }) {
 				prefix
 			} else {
 				test
