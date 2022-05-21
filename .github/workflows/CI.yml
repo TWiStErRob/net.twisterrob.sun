@@ -64,6 +64,18 @@ jobs:
             ${{ github.workspace }}/**/build/reports/lint-results*.html
             ${{ github.workspace }}/build/reports/violations.*
 
+      - name: Fail if there are violations
+        if: success() || failure()
+        run: |
+          count=$(cat "${{ github.workspace }}/build/reports/violations.count")
+          if [[ "$count" != "0" ]]; then
+            echo "There were $count violations"
+            exit 1
+          else
+            echo "No violations found."
+            exit 0
+          fi
+
       - name: Fail if Android Lint is missing Sarif report for publishing on GitHub.
         if: success() || failure()
         run: |
@@ -79,18 +91,6 @@ jobs:
         with:
           checkout_path: ${{ github.workspace }}
           sarif_file: ${{ github.workspace }}/build/reports/lint/merge.sarif
-
-      - name: Fail if there are violations
-        if: success() || failure()
-        run: |
-          count=$(cat "${{ github.workspace }}/build/reports/violations.count")
-          if [[ "$count" != "0" ]]; then
-            echo "There were $count violations"
-            exit 1
-          else
-            echo "No violations found."
-            exit 0
-          fi
 
       - name: Upload "Unit Test Results" artifact.
         if: success() || failure()
