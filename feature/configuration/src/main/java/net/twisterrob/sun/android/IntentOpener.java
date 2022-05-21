@@ -1,6 +1,5 @@
 package net.twisterrob.sun.android;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
@@ -17,7 +16,6 @@ public class IntentOpener {
 		this.activity = activity;
 	}
 
-	@SuppressLint("QueryPermissionsNeeded") // https://developer.android.com/training/package-visibility/automatic
 	public boolean canOpenAppSettings() {
 		Intent intent = createAppSettingsIntent(activity.getPackageName());
 		return intent.resolveActivity(activity.getPackageManager()) != null;
@@ -36,7 +34,6 @@ public class IntentOpener {
 				.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	}
 
-	@SuppressLint("QueryPermissionsNeeded") // https://developer.android.com/training/package-visibility/automatic
 	public boolean canOpenLocationSettings() {
 		Intent intent = createLocationSettingsIntent();
 		return intent.resolveActivity(activity.getPackageManager()) != null;
