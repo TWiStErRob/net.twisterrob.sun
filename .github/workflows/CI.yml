@@ -49,6 +49,7 @@ jobs:
           --no-daemon
           --no-build-cache
           --stacktrace
+          --continue
           assemble
           check
           violationReportHtml
