@@ -1,5 +1,10 @@
 package net.twisterrob.sun.plugins
 
+import io.github.detekt.sarif4k.ArtifactLocation
+import io.github.detekt.sarif4k.ReportingDescriptor
+import io.github.detekt.sarif4k.Result
+import io.github.detekt.sarif4k.Run
+import io.github.detekt.sarif4k.SarifSchema210
 import io.github.detekt.sarif4k.SarifSerializer
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
@@ -49,28 +54,112 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 			"Some sarifs have no or multiple runs:\n${runs.filterValues { it != 1 }}"
 		}
 
-		val tools = sarifs.mapValues { it.value.runs.single().tool.driver.name }
+		val tools = sarifs.mapValues { it.value.run.tool.driver.name }
 			.entries.groupBy({ it.value }, { it.key })
 		require(tools.size == 1) {
 			"Cannot merge sarifs from different tools:\n$tools"
 		}
 
-		val mergedResults = sarifs.values.flatMap { it.runs.single().results.orEmpty() }
-		// There will be duplicate rules on "id" as key, but GitHub can handle it.
-		val mergedRules = sarifs.values.flatMap { it.runs.single().tool.driver.rules.orEmpty() }
-		val reference = sarifs.values.first()
-		val mergedSarif = reference.copy(
-			runs = listOf(
-				reference.runs.single().copy(
-					results = mergedResults,
-					tool = reference.runs.single().tool.copy(
-						driver = reference.runs.single().tool.driver.copy(
-							rules = mergedRules
+		val commonPath = commonSarifPath(sarifs.values)
+
+		@Suppress("NestedLambdaShadowedImplicitParameter")
+		val mergedSarif = sarifs.values.first().let {
+			it.copy(
+				runs = listOf(
+					it.run.let {
+						it.copy(
+							// Don't map original, as it might be empty if there are no results in that sarif file.
+							originalURIBaseIDS = mapOf(
+								"%SRCROOT%" to ArtifactLocation(
+									uri = "file://${commonPath}"
+								)
+							),
+							results = sarifs.values.flatMap { sarif ->
+								sarif.results.map {
+									it.relocate(sarif, commonPath)
+								}
+							},
+							tool = it.tool.let {
+								it.copy(
+									driver = it.driver.copy(
+										rules = mergeRules(sarifs.values)
+									)
+								)
+							}
 						)
-					)
+					}
 				)
 			)
-		)
+		}
 		output.writeText(SarifSerializer.toJson(mergedSarif))
 	}
+
+	private fun mergeRules(sarifs: Collection<SarifSchema210>): List<ReportingDescriptor> =
+		sarifs
+			// Flatten all the rules into one list.
+			.flatMap { it.run.tool.driver.rules.orEmpty() }
+			// Deduplicate rules by their IDs,
+			.groupBy { it.id }
+			// take first instance of each based on the assumption that their IDs are unique.
+			.map { it.value.first() }
+
+	private fun commonSarifPath(sarifs: Collection<SarifSchema210>): String {
+		val paths = sarifs
+			.mapNotNull { it.run.originalURIBaseIDS }
+			.map { it.values.single().uri!!.substringAfter("file://") }
+		return commonPath(paths)
+	}
+
+	@Suppress("NestedLambdaShadowedImplicitParameter")
+	private fun Result.relocate(sarif: SarifSchema210, common: String): Result {
+		// originalURIBaseIDS.uri = file:///P:/projects/workspace/net.twisterrob.sun/feature/configuration/
+		// common = /P:/projects/workspace/net.twisterrob.sun/
+		// modulePath = feature/configuration/
+		val modulePath =
+			sarif.run.originalURIBaseIDS!!.values.single().uri!!.removePrefix("file://")
+				.removePrefix(common)
+		return this.copy(
+			locations = this.locations?.map {
+				it.copy(
+					physicalLocation = it.physicalLocation?.let {
+						it.copy(
+							artifactLocation = it.artifactLocation?.let {
+								it.copy(
+									uri = it.uri?.let { uri ->
+										// uri = src/main/java/net/twisterrob/android/app/WidgetConfigurationActivity.java
+										modulePath + uri
+									}
+								)
+							}
+						)
+					}
+				)
+			}
+		)
+	}
 }
+
+private val SarifSchema210.run: Run
+	get() = this.runs.single()
+
+private val SarifSchema210.results: Collection<Result>
+	get() = this.run.results.orEmpty()
+
+/**
+ * Input: absolute paths, trailing slash means folder (e.g. /folder/sub/, /folder/file)
+ * Output: absolute path with trailing slash
+ *
+ * On Windows `C:\foo\` should be input as `/C:/foo/`, i.e. the drive is "just a folder".
+ * Note: This is how `file://` URIs work.
+ */
+internal fun commonPath(paths: List<String>): String =
+	paths[0]
+		.split('/')
+		.fold("/") { test, segment ->
+			val prefix = "$test$segment/"
+			if (paths.all { it.startsWith(prefix) }) {
+				prefix
+			} else {
+				test
+			}
+		}
