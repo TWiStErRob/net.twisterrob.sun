@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import net.twisterrob.android.widget.WidgetHelpers;
+import net.twisterrob.sun.configuration.R;
 
 public abstract class WidgetConfigurationActivity extends AppCompatActivity {
 
@@ -38,6 +40,9 @@ public abstract class WidgetConfigurationActivity extends AppCompatActivity {
 			// should return here, but it depends on the child class from here
 		}
 
+		TextView text = findViewById (R.id.accelerate);
+		text.setText("Hello");
+		
 		prefs = onPreferencesOpen(appWidgetId);
 	}
 
