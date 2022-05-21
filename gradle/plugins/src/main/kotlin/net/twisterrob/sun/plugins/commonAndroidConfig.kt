@@ -4,6 +4,7 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.api.AndroidBasePlugin
+import com.android.build.gradle.internal.lint.AndroidLintTask
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 import net.twisterrob.gradle.internal.android.unwrapCast
 import org.gradle.api.Project
@@ -11,6 +12,7 @@ import org.gradle.api.plugins.PluginInstantiationException
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.withType
 
 internal fun Project.commonAndroidConfig() {
 	commonJavaConfig()
@@ -30,10 +32,10 @@ internal fun Project.commonAndroidConfig() {
 
 			sarifReport = true
 			val lintReportMergeSarif = rootProject.tasks.named<ReportMergeTask>("lintReportMergeSarif")
+			tasks.withType<AndroidLintTask>().all { finalizedBy(lintReportMergeSarif) }
 			androidComponents.onVariants { variant ->
 				val sarif = variant.artifacts.unwrapCast<com.android.build.api.artifact.impl.ArtifactsImpl>()
 					.get(com.android.build.gradle.internal.scope.InternalArtifactType.LINT_SARIF_REPORT)
-//				finalizedBy(lintReportMergeSarif)
 				lintReportMergeSarif.configure { input.from(sarif) }
 			}
 		}
