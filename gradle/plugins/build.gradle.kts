@@ -16,6 +16,10 @@ dependencies {
 }
 
 gradlePlugin {
+	plugins.register("project-module-root") {
+		id = "project-module-root"
+		implementationClass = "net.twisterrob.sun.plugins.RootPlugin"
+	}
 	plugins.register("project-module-android-library") {
 		id = "project-module-android-library"
 		implementationClass = "net.twisterrob.sun.plugins.AndroidLibraryPlugin"
