@@ -2,8 +2,8 @@
 *.iml
 *.ipr
 *.iws
-/.idea/
-!/.idea/icon.png
+.idea/
+!.idea/icon.png
 
 # Gradle
 .gradle/
@@ -12,6 +12,7 @@ build/
 # Android
 /project.properties
 /local.properties
+/gradle/plugins/local.properties
 
 # Other
 /temp

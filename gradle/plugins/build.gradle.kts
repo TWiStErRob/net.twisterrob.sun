@@ -14,6 +14,8 @@ dependencies {
 
 	// TODEL hack from https://github.com/gradle/gradle/issues/15383#issuecomment-779893192 (there are more parts to this)
 	implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+
+	testImplementation(libs.test.junit4)
 }
 
 gradlePlugin {
