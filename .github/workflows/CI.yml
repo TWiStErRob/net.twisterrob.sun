@@ -44,6 +44,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build & Verify project using Gradle.
+        id: gradle
         run: >
           ./gradlew
           --no-daemon
@@ -56,6 +57,20 @@ jobs:
           detektReportMergeXml
           lintReportMergeSarif
           violationReportHtml
+
+      - name: Publish "Gradle" result and Build Scan URL.
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: "success",
+              context: "Gradle",
+              description: "${{ steps.gradle.outputs.result }}"
+              target_url: "${{ steps.gradle.outputs.build-scan-url }}"
+            });
 
       - name: Upload "Lint Results" artifact.
         if: success() || failure()
