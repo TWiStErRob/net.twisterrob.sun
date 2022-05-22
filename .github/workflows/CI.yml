@@ -56,7 +56,6 @@ jobs:
           detektReportMergeXml
           lintReportMergeSarif
           violationReportHtml
-          violationCountFile
 
       - name: Upload "Lint Results" artifact.
         if: success() || failure()
@@ -67,18 +66,6 @@ jobs:
             ${{ github.workspace }}/**/build/reports/lint-results*.html
             ${{ github.workspace }}/build/reports/violations.*
             ${{ github.workspace }}/build/reports/lint/merge-*.*
-
-      - name: Fail if there are violations
-        if: success() || failure()
-        run: |
-          count=$(cat "${{ github.workspace }}/build/reports/violations.count")
-          if [[ "$count" != "0" ]]; then
-            echo "There were $count violations"
-            exit 1
-          else
-            echo "No violations found."
-            exit 0
-          fi
 
       - name: Publish "Code scanning results / Android Lint".
         uses: github/codeql-action/upload-sarif@v2
