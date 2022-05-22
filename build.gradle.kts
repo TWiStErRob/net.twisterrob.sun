@@ -21,6 +21,10 @@ tasks.register<io.gitlab.arturbosch.detekt.report.ReportMergeTask>("detektReport
 	output.set(rootProject.buildDir.resolve("reports/detekt/merge.xml"))
 }
 
+tasks.register("lintReportMergeSarif") {
+	// Placeholder task for lifecycle hooking in CI. Will have dependencies from other projects.
+}
+
 tasks.register("check") {
 	description = "Delegate task for checking included builds too."
 	dependsOn(gradle.includedBuild("plugins").task(":check"))

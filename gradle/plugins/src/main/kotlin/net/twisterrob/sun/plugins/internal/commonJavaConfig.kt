@@ -64,15 +64,15 @@ internal fun Project.commonJavaConfig() {
 			}
 		}
 
-		val detektReportMergeSarif = rootProject.tasks.named<ReportMergeTask>("detektReportMergeSarif")
+		val detektReportMergeSarif =
+			rootProject.tasks.named<ReportMergeTask>("detektReportMergeSarif")
 		tasks.withType<Detekt> {
-			finalizedBy(detektReportMergeSarif)
 			detektReportMergeSarif.configure { input.from(this@withType.sarifReportFile) }
 		}
 
-		val detektReportMergeXml = rootProject.tasks.named<ReportMergeTask>("detektReportMergeXml")
+		val detektReportMergeXml =
+			rootProject.tasks.named<ReportMergeTask>("detektReportMergeXml")
 		tasks.withType<Detekt> {
-			finalizedBy(detektReportMergeXml)
 			detektReportMergeXml.configure { input.from(this@withType.xmlReportFile) }
 		}
 	}
