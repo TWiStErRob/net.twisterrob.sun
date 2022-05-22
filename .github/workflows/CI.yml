@@ -59,6 +59,7 @@ jobs:
           violationReportHtml
 
       - name: Publish "Gradle" result and Build Scan URL.
+        if: success() || failure()
         uses: actions/github-script@v6
         with:
           script: |
