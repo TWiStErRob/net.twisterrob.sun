@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
 	implementation(libs.android.gradle)
+	implementation(libs.android.lint.common)
 	implementation(libs.android.cacheFix)
 	implementation(libs.kotlin.plugin)
 	implementation(libs.kotlin.detekt)

@@ -1,5 +1,6 @@
 package net.twisterrob.sun.plugins.tasks
 
+import com.android.utils.SdkUtils
 import io.github.detekt.sarif4k.ArtifactLocation
 import io.github.detekt.sarif4k.ReportingDescriptor
 import io.github.detekt.sarif4k.Result
@@ -60,7 +61,7 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 			"Cannot merge sarifs from different tools:\n$tools"
 		}
 
-		val commonPath = commonSarifPath(sarifs.values)
+		val projectRoot = SdkUtils.fileToUrlString(project.rootDir)
 
 		@Suppress("NestedLambdaShadowedImplicitParameter")
 		val mergedSarif = sarifs.values.first().let {
@@ -71,12 +72,12 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 							// Don't map original, as it might be empty if there are no results in that sarif file.
 							originalURIBaseIDS = mapOf(
 								"%SRCROOT%" to ArtifactLocation(
-									uri = "file://${commonPath}"
+									uri = projectRoot
 								)
 							),
 							results = sarifs.values.flatMap { sarif ->
 								sarif.results.map {
-									it.relocate(sarif, commonPath)
+									it.relocate(sarif, projectRoot)
 								}
 							},
 							tool = it.tool.let {
@@ -103,21 +104,13 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 			// take first instance of each based on the assumption that their IDs are unique.
 			.map { it.value.first() }
 
-	private fun commonSarifPath(sarifs: Collection<SarifSchema210>): String {
-		val paths = sarifs
-			.mapNotNull { it.run.originalURIBaseIDS }
-			.map { it.values.single().uri!!.substringAfter("file://") }
-		return commonParent(paths)
-	}
 
 	@Suppress("NestedLambdaShadowedImplicitParameter")
 	private fun Result.relocate(sarif: SarifSchema210, common: String): Result {
 		// originalURIBaseIDS.uri = file:///P:/projects/workspace/net.twisterrob.sun/feature/configuration/
-		// common = /P:/projects/workspace/net.twisterrob.sun/
+		// common = file:///P:/projects/workspace/net.twisterrob.sun/
 		// modulePath = feature/configuration/
-		val modulePath =
-			sarif.run.originalURIBaseIDS!!.values.single().uri!!.removePrefix("file://")
-				.removePrefix(common)
+		val modulePath = sarif.run.originalURIBaseIDS!!.values.single().uri!!.removePrefix(common)
 		return this.copy(
 			locations = this.locations?.map {
 				it.copy(
@@ -144,23 +137,3 @@ private val SarifSchema210.run: Run
 
 private val SarifSchema210.results: Collection<Result>
 	get() = this.run.results.orEmpty()
-
-/**
- * Input: absolute paths, trailing slash means folder (e.g. /folder/sub/, /folder/file)
- * Output: absolute path with trailing slash
- *
- * On Windows `C:\foo\` should be input as `/C:/foo/`, i.e. the drive is "just a folder".
- * Note: This is how `file://` URIs work.
- */
-internal fun commonParent(paths: List<String>): String =
-	(paths.firstOrNull() ?: "")
-		.split('/')
-		.fold("/") { test, segment ->
-			val prefix = "$test$segment/"
-			// Extra isEmpty check, because .all returns true on empty list.
-			if (paths.isNotEmpty() && paths.all { it.startsWith(prefix) }) {
-				prefix
-			} else {
-				test
-			}
-		}
