@@ -11,6 +11,8 @@ targetSdkVersion = "31"
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
 # TODEL workaround in :app/build.gradle.kts for 194525628 for 7.2+
 agp = "7.2.0"
+lint = "30.2.0"
+
 androidx-test = "1.4.0"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
@@ -32,6 +34,7 @@ twisterrob = "0.14.1"
 [libraries]
 
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+android-lint-common = { module = "com.android.tools:common", version.ref = "lint" }
 android-cacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.5.3" }
 
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.4.1" }
@@ -47,6 +50,7 @@ kotlin-stdlib8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.r
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 kotlin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+kotlin-detekt-sarif = { module = "io.github.detekt.sarif4k:sarif4k", version = "0.0.1" }
 
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }

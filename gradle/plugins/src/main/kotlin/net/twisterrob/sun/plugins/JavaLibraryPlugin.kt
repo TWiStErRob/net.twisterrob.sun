@@ -1,5 +1,6 @@
 package net.twisterrob.sun.plugins
 
+import net.twisterrob.sun.plugins.internal.commonJavaConfig
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply

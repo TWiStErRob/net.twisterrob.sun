@@ -3,9 +3,8 @@ package net.twisterrob.android.content.pref;
 import java.util.*;
 import java.util.Map.Entry;
 
-import android.annotation.*;
+import android.annotation.SuppressLint;
 import android.content.*;
-import android.os.Build;
 
 public abstract class FixedPreferences implements SharedPreferences {
 	private final SharedPreferences prefs;
@@ -32,8 +31,6 @@ public abstract class FixedPreferences implements SharedPreferences {
 		return prefs.getString(composeKey(key), defValue);
 	}
 
-	@SuppressLint("ObsoleteSdkInt") // Keep for history.
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public Set<String> getStringSet(String key, Set<String> defValues) {
 		return prefs.getStringSet(composeKey(key), defValues);
 	}
@@ -91,8 +88,6 @@ public abstract class FixedPreferences implements SharedPreferences {
 			return composeKey(key);
 		}
 
-		@SuppressLint("ObsoleteSdkInt") // Keep for history.
-		@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 		public Editor putStringSet(String key, Set<String> values) {
 			edit.putStringSet(compose(key), values);
 			return this;

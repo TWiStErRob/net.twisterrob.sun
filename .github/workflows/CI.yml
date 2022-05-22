@@ -24,7 +24,7 @@ jobs:
       - name: Set up Android SDK.
         uses: android-actions/setup-android@v2
 
-      - name: Install Android SDK components
+      - name: Set up Android SDK components.
         run: |
           # Uninstall NDK, because it's not used and it emits a warning:
           # Warning: Observed package id 'ndk;21.4.7075529' in inconsistent location '/usr/local/lib/android/sdk/ndk-bundle' (Expected '/usr/local/lib/android/sdk/ndk/21.4.7075529')
@@ -43,46 +43,45 @@ jobs:
       - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v3
 
-      - name: Build & Verify project.
+      - name: Build & Verify project using Gradle.
         run: >
           ./gradlew
           --no-daemon
           --no-build-cache
           --stacktrace
+          --continue
           assemble
           check
+          detektReportMergeSarif
+          detektReportMergeXml
+          lintReportMergeSarif
           violationReportHtml
-          violationCountFile
 
-      - name: Upload "Lint Results".
+      - name: Upload "Lint Results" artifact.
         if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
-          name: Lint Results HTMLs
+          name: Lint Results
           path: |
             ${{ github.workspace }}/**/build/reports/lint-results*.html
             ${{ github.workspace }}/build/reports/violations.*
+            ${{ github.workspace }}/build/reports/lint/merge-*.*
 
-      - name: Fail if there are violations
+      - name: Publish "Code scanning results / Android Lint".
+        uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
-        run: |
-          count=$(cat "${{ github.workspace }}/build/reports/violations.count")
-          if [[ "$count" != "0" ]]; then
-            echo "There were $count violations"
-            exit 1
-          else
-            echo "No violations found."
-            exit 0
-          fi
+        with:
+          # merge-debug.sarif and merge-release.sarif in the folder.
+          sarif_file: ${{ github.workspace }}/build/reports/lint/
 
-      - name: Upload "Unit Test Results".
+      - name: Upload "Unit Test Results" artifact.
         if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           name: Unit Test Results
           path: ${{ github.workspace }}/**/build/reports/tests/*/
 
-      - name: Publish Unit Test Results
+      - name: Publish "Unit Results" check suite and "Unit Test Results" comment.
         if: success() || failure()
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:
@@ -92,7 +91,7 @@ jobs:
           test_changes_limit: 0
           files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
-      - name: Upload "Detekt Results".
+      - name: Upload "Detekt Results" artifact.
         if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
@@ -101,32 +100,8 @@ jobs:
             ${{ github.workspace }}/**/build/reports/detekt/detekt.*
             ${{ github.workspace }}/build/reports/detekt/merge.*
 
-      - name: Fail if Detekt is missing merged report or has warnings.
-        if: success() || failure()
-        run: |
-          mergedReport=build/reports/detekt/merge.xml
-          if [ ! -f "${mergedReport}" ]; then # -f: Path exists and is regular file.
-            echo "Detekt report file '${mergedReport}' does not exist."
-            exit 2
-          fi
-          count=$(grep --count '<file name=' "${mergedReport}" || true) 
-          if [ $count != 0 ]; then 
-            echo "There were $count Detekt failures in '${mergedReport}'."
-            exit 3
-          fi
-
-      - name: Publish Detekt Results
+      - name: Publish "Code scanning results / detekt".
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:
-          checkout_path: ${{ github.workspace }}
           sarif_file: ${{ github.workspace }}/build/reports/detekt/merge.sarif
-
-      - name: Fail if Detekt is missing Sarif report for publishing on GitHub.
-        if: success() || failure()
-        run: |
-          mergedReport=build/reports/detekt/merge.sarif
-          if [ ! -f "${mergedReport}" ]; then # -f: Path exists and is regular file.
-            echo "Detekt report file '${mergedReport}' does not exist."
-            exit 2
-          fi

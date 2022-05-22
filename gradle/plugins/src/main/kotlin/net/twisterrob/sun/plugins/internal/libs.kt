@@ -1,4 +1,4 @@
-package net.twisterrob.sun.plugins
+package net.twisterrob.sun.plugins.internal
 
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project

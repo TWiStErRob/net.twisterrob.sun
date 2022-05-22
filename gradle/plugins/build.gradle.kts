@@ -5,15 +5,25 @@ plugins {
 
 dependencies {
 	implementation(libs.android.gradle)
+	implementation(libs.android.lint.common)
 	implementation(libs.android.cacheFix)
 	implementation(libs.kotlin.plugin)
 	implementation(libs.kotlin.detekt)
+	implementation(libs.kotlin.detekt.sarif)
+	implementation(libs.twisterrob.quality)
+	implementation(libs.twisterrob.convention)
 
 	// TODEL hack from https://github.com/gradle/gradle/issues/15383#issuecomment-779893192 (there are more parts to this)
 	implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+
+	testImplementation(libs.test.junit4)
 }
 
 gradlePlugin {
+	plugins.register("project-module-root") {
+		id = "project-module-root"
+		implementationClass = "net.twisterrob.sun.plugins.RootPlugin"
+	}
 	plugins.register("project-module-android-library") {
 		id = "project-module-android-library"
 		implementationClass = "net.twisterrob.sun.plugins.AndroidLibraryPlugin"
