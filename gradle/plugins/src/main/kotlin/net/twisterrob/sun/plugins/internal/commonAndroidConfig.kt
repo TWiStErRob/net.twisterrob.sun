@@ -7,8 +7,8 @@ import net.twisterrob.gradle.android.androidComponents
 import net.twisterrob.gradle.internal.android.unwrapCast
 import net.twisterrob.sun.plugins.tasks.MergeLintSarifReportsTask
 import org.gradle.api.Project
+import org.gradle.configurationcache.extensions.capitalized
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
 
 internal fun Project.commonAndroidConfig() {
@@ -28,14 +28,24 @@ internal fun Project.commonAndroidConfig() {
 			baseline = rootProject.file("config/lint/baseline/lint_baseline-${projectSlug}.xml")
 
 			sarifReport = true
-			val lintReportMergeSarif =
-				rootProject.tasks.named<MergeLintSarifReportsTask>("lintReportMergeSarif")
-			tasks.withType<AndroidLintTask>().all { finalizedBy(lintReportMergeSarif) }
 			androidComponents.onVariants { variant ->
+				val mergeTask =
+					rootProject.tasks.maybeRegister<MergeLintSarifReportsTask>("lintReportMergeSarif${variant.name.capitalized()}") {
+						mergedSarifFile.set(project.layout.buildDirectory.file("reports/lint/merge-${variant.name}.sarif"))
+					}
+
 				val sarifProvider = variant.artifacts
 					.unwrapCast<com.android.build.api.artifact.impl.ArtifactsImpl>()
 					.get(com.android.build.gradle.internal.scope.InternalArtifactType.LINT_SARIF_REPORT)
-				lintReportMergeSarif.configure { sarifFiles.from(sarifProvider) }
+				mergeTask.configure { sarifFiles.from(sarifProvider) }
+
+				// Always re-run merging when lint was executed.
+				tasks.withType<AndroidLintTask>().all {
+					afterEvaluate {
+						// In onVariants the AndroidVariantTask.variantName is not assigned yet.
+						if (this@all.variantName == variant.name) finalizedBy(mergeTask)
+					}
+				}
 			}
 		}
 	}

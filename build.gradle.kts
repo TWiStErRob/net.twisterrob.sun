@@ -21,10 +21,6 @@ tasks.register<io.gitlab.arturbosch.detekt.report.ReportMergeTask>("detektReport
 	output.set(rootProject.buildDir.resolve("reports/detekt/merge.xml"))
 }
 
-tasks.register<net.twisterrob.sun.plugins.tasks.MergeLintSarifReportsTask>("lintReportMergeSarif") {
-	mergedSarifFile.set(rootProject.buildDir.resolve("reports/lint/merge.sarif"))
-}
-
 tasks.register("check") {
 	description = "Delegate task for checking included builds too."
 	dependsOn(gradle.includedBuild("plugins").task(":check"))
