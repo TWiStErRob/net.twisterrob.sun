@@ -70,7 +70,7 @@ jobs:
               sha: context.sha,
               state: "success",
               context: "Gradle",
-              description: "${{ steps.gradle.outputs.result }}"
+              description: "${{ steps.gradle.outputs.result }}",
               target_url: "${{ steps.gradle.outputs.build-scan-url }}"
             });
 
