@@ -87,6 +87,12 @@ gradleEnterprise {
 	buildScan {
 		termsOfServiceUrl = "https://gradle.com/terms-of-service"
 		termsOfServiceAgree = "yes"
+		buildScanPublished {
+			// https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+			if (System.getenv("GITHUB_ACTIONS") == "true") {
+				println("::set-output name=build-scan-url::${this@buildScanPublished.buildScanUri}")
+			}
+		}
 	}
 }
 
