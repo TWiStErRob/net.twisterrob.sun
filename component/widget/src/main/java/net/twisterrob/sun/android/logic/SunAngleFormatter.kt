@@ -20,8 +20,8 @@ internal class SunAngleFormatter @Inject constructor() {
 		positiveSuffix = ""
 		minimumIntegerDigits = 0
 		maximumIntegerDigits = 0
-		minimumFractionDigits = @Suppress("MagicNumber") 4
-		maximumFractionDigits = @Suppress("MagicNumber") 4
+		minimumFractionDigits = 4
+		maximumFractionDigits = 4
 	}
 
 	fun formatFraction(angle: Double): Result {
