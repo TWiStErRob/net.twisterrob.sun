@@ -51,7 +51,6 @@ jobs:
           --no-build-cache
           --stacktrace
           --continue
-          --scan
           assemble
           check
           detektReportMergeSarif
