@@ -84,8 +84,8 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:
-          checkout_path: ${{ github.workspace }}
-          sarif_file: ${{ github.workspace }}/build/reports/lint/merge-debug.sarif
+          # merge-debug.sarif and merge-release.sarif in the folder.
+          sarif_file: ${{ github.workspace }}/build/reports/lint/
 
       - name: Publish "Code scanning results / Android Lint" (Release).
         uses: github/codeql-action/upload-sarif@v2
@@ -138,5 +138,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:
-          checkout_path: ${{ github.workspace }}
           sarif_file: ${{ github.workspace }}/build/reports/detekt/merge.sarif
