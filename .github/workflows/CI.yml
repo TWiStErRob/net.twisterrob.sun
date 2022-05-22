@@ -79,12 +79,19 @@ jobs:
             exit 0
           fi
 
-      - name: Publish "Code scanning results / Android Lint".
+      - name: Publish "Code scanning results / Android Lint" (Debug).
         uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:
           checkout_path: ${{ github.workspace }}
-          sarif_file: ${{ github.workspace }}/build/reports/lint/merge.sarif
+          sarif_file: ${{ github.workspace }}/build/reports/lint/merge-debug.sarif
+
+      - name: Publish "Code scanning results / Android Lint" (Release).
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          checkout_path: ${{ github.workspace }}
+          sarif_file: ${{ github.workspace }}/build/reports/lint/merge-release.sarif
 
       - name: Upload "Unit Test Results" artifact.
         if: success() || failure()
