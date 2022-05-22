@@ -58,14 +58,15 @@ jobs:
           violationReportHtml
           violationCountFile
 
-      - name: Upload "Lint Results HTMLs" artifact.
+      - name: Upload "Lint Results" artifact.
         if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
-          name: Lint Results HTMLs
+          name: Lint Results
           path: |
             ${{ github.workspace }}/**/build/reports/lint-results*.html
             ${{ github.workspace }}/build/reports/violations.*
+            ${{ github.workspace }}/build/reports/lint/merge-*.*
 
       - name: Fail if there are violations
         if: success() || failure()
