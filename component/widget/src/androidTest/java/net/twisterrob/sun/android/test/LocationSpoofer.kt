@@ -90,15 +90,17 @@ class LocationSpoofer(
 	private fun disableBuiltInProviders() {
 		locationManager.allProviders.forEach { provider ->
 			/**
-			 *  Cannot mock the passive provider
-			 *    at android.location.ILocationManager$Stub$Proxy.addTestProvider(ILocationManager.java:2652)
-			 *    at android.location.LocationManager.addTestProvider(LocationManager.java:2032)
-			 *    at android.location.LocationManager.addTestProvider(LocationManager.java:2007)
-			 *    ... 30 trimmed
-			 *  Caused by: android.os.RemoteException: Remote stack trace:
-			 *    at com.android.server.location.provider.PassiveLocationProviderManager.setMockProvider(PassiveLocationProviderManager.java:49)
-			 *    at com.android.server.location.LocationManagerService.addTestProvider(LocationManagerService.java:1314)
-			 *    at android.location.ILocationManager$Stub.onTransact(ILocationManager.java:1215)
+			 * ```
+			 * Cannot mock the passive provider
+			 *   at android.location.ILocationManager$Stub$Proxy.addTestProvider(ILocationManager.java:2652)
+			 *   at android.location.LocationManager.addTestProvider(LocationManager.java:2032)
+			 *   at android.location.LocationManager.addTestProvider(LocationManager.java:2007)
+			 *   ... 30 trimmed
+			 * Caused by: android.os.RemoteException: Remote stack trace:
+			 *   at com.android.server.location.provider.PassiveLocationProviderManager.setMockProvider(PassiveLocationProviderManager.java:49)
+			 *   at com.android.server.location.LocationManagerService.addTestProvider(LocationManagerService.java:1314)
+			 *   at android.location.ILocationManager$Stub.onTransact(ILocationManager.java:1215)
+			 * ```
 			 */
 			if (provider != LocationManager.PASSIVE_PROVIDER) {
 				locationManager.addTestProvider(provider, locationManager.getProviderProperties(provider)!!)
@@ -113,6 +115,7 @@ class LocationSpoofer(
 		}
 	}
 
+	@Suppress("UnusedPrivateMember")
 	private fun diagnostics() {
 		val providers = locationManager.allProviders.joinToString(separator = "\n") {
 			"$it(${locationManager.isProviderEnabled(it)}):${locationManager.getProviderProperties(it).toString()}"

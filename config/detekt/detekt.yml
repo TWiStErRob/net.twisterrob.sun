@@ -3,3 +3,9 @@ style:
     max: 3
   MaxLineLength:
     excludeCommentStatements: true
+  WildcardImport:
+    excludes: [ ]
+
+potential-bugs:
+  UnsafeCallOnNullableType:
+    active: false
