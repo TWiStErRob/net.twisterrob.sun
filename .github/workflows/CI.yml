@@ -44,18 +44,35 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build & Verify project using Gradle.
+        id: gradle
         run: >
           ./gradlew
           --no-daemon
           --no-build-cache
           --stacktrace
           --continue
+          --scan
           assemble
           check
           detektReportMergeSarif
           detektReportMergeXml
           lintReportMergeSarif
           violationReportHtml
+
+      - name: Publish "Gradle" result and Build Scan URL.
+        if: success() || failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: "${{ steps.gradle.outputs.result-success }}" == "true" ? "success" : "failure",
+              context: "CI / Build & Verify / Gradle",
+              description: "${{ steps.gradle.outputs.result-text }}",
+              target_url: "${{ steps.gradle.outputs.build-scan-url }}"
+            });
 
       - name: Upload "Lint Results" artifact.
         if: success() || failure()
