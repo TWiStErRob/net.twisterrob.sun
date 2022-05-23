@@ -67,13 +67,19 @@ internal fun Project.commonJavaConfig() {
 		val detektReportMergeSarif =
 			rootProject.tasks.named<ReportMergeTask>("detektReportMergeSarif")
 		tasks.withType<Detekt> {
-			detektReportMergeSarif.configure { input.from(this@withType.sarifReportFile) }
+			detektReportMergeSarif.configure {
+				mustRunAfter(this@withType)
+				input.from(this@withType.sarifReportFile)
+			}
 		}
 
 		val detektReportMergeXml =
 			rootProject.tasks.named<ReportMergeTask>("detektReportMergeXml")
 		tasks.withType<Detekt> {
-			detektReportMergeXml.configure { input.from(this@withType.xmlReportFile) }
+			detektReportMergeXml.configure {
+				mustRunAfter(this@withType)
+				input.from(this@withType.xmlReportFile) 
+			}
 		}
 	}
 }

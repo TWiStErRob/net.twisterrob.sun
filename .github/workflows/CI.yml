@@ -54,6 +54,9 @@ jobs:
           --scan
           assemble
           check
+          detekt
+          detektMain
+          detektTest
           detektReportMergeSarif
           detektReportMergeXml
           lintReportMergeSarif
