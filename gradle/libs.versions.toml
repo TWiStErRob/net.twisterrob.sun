@@ -11,7 +11,7 @@ targetSdkVersion = "31"
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
 # TODEL workaround in :app/build.gradle.kts for 194525628 for 7.2+
 agp = "7.2.1"
-lint = "30.2.0"
+lint = "30.2.1"
 
 androidx-test = "1.4.0"
 
