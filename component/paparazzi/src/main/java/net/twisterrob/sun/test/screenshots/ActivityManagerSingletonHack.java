@@ -76,7 +76,8 @@ public class ActivityManagerSingletonHack extends ExternalResource {
 				});
 	}
 
-	private static void clearFinal(Field field) throws NoSuchFieldException, IllegalAccessException {
+	private static void clearFinal(@NonNull Field field)
+			throws NoSuchFieldException, IllegalAccessException {
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
 		modifiersField.setAccessible(true);
 		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
