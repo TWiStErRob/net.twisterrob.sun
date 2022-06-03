@@ -1,79 +1,58 @@
-package net.twisterrob.sun.test.screenshots;
+package net.twisterrob.sun.test.screenshots
 
-import java.util.concurrent.Callable;
+import android.content.Context
+import android.content.res.Resources
+import android.util.TypedValue
+import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.FrameLayout.LayoutParams
+import androidx.annotation.Px
+import app.cash.paparazzi.Paparazzi
+import org.junit.rules.RuleChain
+import org.junit.rules.TestRule
+import org.junit.runner.Description
+import org.junit.runners.model.Statement
 
-import org.junit.rules.RuleChain;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
+class PaparazziCoat : TestRule {
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.util.TypedValue;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
+	private val paparazzi: Paparazzi = createPaparazzi()
 
-import com.android.ide.common.rendering.api.SessionParams.RenderingMode;
+	override fun apply(base: Statement, description: Description): Statement =
+		RuleChain
+			.emptyRuleChain()
+			.around(paparazzi)
+			.around(AllowCreatingRemoteViewsHack(paparazzi::context))
+			.around(ActivityManagerSingletonHack())
+			.around(ActivityTaskManagerSingletonHack())
+			.apply(base, description)
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Px;
-import app.cash.paparazzi.DeviceConfig;
-import app.cash.paparazzi.EnvironmentKt;
-import app.cash.paparazzi.Paparazzi;
+	val context: Context
+		get() = paparazzi.context
 
-public class PaparazziCoat implements TestRule {
-
-	private final @NonNull Paparazzi paparazzi;
-
-	public PaparazziCoat() {
-		this.paparazzi = PaparazziCoat.createPaparazzi();
+	fun snapshot(view: View) {
+		paparazzi.snapshot(view)
 	}
 
-	@Override public @NonNull Statement apply(@NonNull Statement base, @NonNull Description description) {
-		return RuleChain
-				.emptyRuleChain()
-				.around(paparazzi)
-				.around(new AllowCreatingRemoteViewsHack(new Callable<Context>() {
-					@Override public Context call() {
-						return paparazzi.getContext();
-					}
-				}))
-				.around(new ActivityManagerSingletonHack())
-				.around(new ActivityTaskManagerSingletonHack())
-				.apply(base, description);
+	fun snapshotWithSize(view: View, width: Float, height: Float) {
+		val parent: ViewGroup = FrameLayout(view.context)
+		val widthPx = dipToPix(view.context.resources, width)
+		val heightPx = dipToPix(view.context.resources, height)
+		parent.layoutParams = LayoutParams(widthPx.toInt(), heightPx.toInt())
+		parent.addView(view)
+		snapshot(parent)
 	}
 
-	public @NonNull Context getContext() {
-		return paparazzi.getContext();
-	}
+	@Px
+	private fun dipToPix(resources: Resources, value: Float): Float =
+		TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
 
-	public void snapshot(@NonNull View view) {
-		paparazzi.snapshot(view);
-	}
+	companion object {
 
-	public void snapshotWithSize(@NonNull View view, float width, float height) {
-		ViewGroup parent = new FrameLayout(view.getContext());
-		float widthPx = dipToPix(view.getContext().getResources(), width);
-		float heightPx = dipToPix(view.getContext().getResources(), height);
-		parent.setLayoutParams(new LayoutParams((int)widthPx, (int)heightPx));
-		parent.addView(view);
-		snapshot(parent);
-	}
-
-	private @Px float dipToPix(@NonNull Resources resources, float value) {
-		return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.getDisplayMetrics());
-	}
-
-	public static @NonNull Paparazzi createPaparazzi() {
-		return new Paparazzi(
-				EnvironmentKt.detectEnvironment(),
-				DeviceConfig.NEXUS_5,
-				"AppTheme.ScreenshotTest",
-				RenderingMode.NORMAL,
-				true,
-				0.0
-		);
+		fun createPaparazzi(): Paparazzi =
+			Paparazzi(
+				theme = "AppTheme.ScreenshotTest",
+				maxPercentDifference = 0.0,
+			)
 	}
 }
