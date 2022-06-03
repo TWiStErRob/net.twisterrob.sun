@@ -22,8 +22,6 @@ class PaparazziPlugin : Plugin<Project> {
 		}
 
 		target.tasks.withType<Test>().configureEach {
-			// TODEL https://github.com/cashapp/paparazzi/issues/305
-			maxHeapSize = "1G"
 			useJUnit {
 				if (project.property("net.twisterrob.build.screenshot-tests").toString().toBoolean()) {
 					includeCategories(
