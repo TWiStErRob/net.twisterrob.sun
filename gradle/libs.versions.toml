@@ -27,7 +27,7 @@ dagger = "2.42"
 # Changelog (4.x): https://github.com/mockito/mockito/releases
 mockito = "4.6.1"
 
-paparazzi = "0.9.3"
+paparazzi = "1.0.0"
 
 twisterrob = "0.14.1"
 
