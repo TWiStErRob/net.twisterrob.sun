@@ -29,6 +29,8 @@ public class ActivityManagerSingletonHack extends ExternalResource {
 	private static final Field IActivityManagerSingleton;
 
 	static {
+		//noinspection RedundantSuppression false positive.
+		//noinspection TryWithIdenticalCatches lint:NewApi Multi-catch with these reflection exceptions requires API level 19 (current min is 14) because they get compiled to the common but new super type ReflectiveOperationException. As a workaround either create individual catch statements, or catch Exception.
 		try {
 			IActivityManagerSingleton = ActivityManager.class.getDeclaredField("IActivityManagerSingleton");
 			IActivityManagerSingleton.setAccessible(true);
