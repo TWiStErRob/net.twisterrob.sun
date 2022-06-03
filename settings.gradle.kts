@@ -9,7 +9,6 @@ include(":component:core")
 include(":component:widget")
 include(":component:states")
 include(":component:lib")
-include(":component:awt-hack")
 include(":component:paparazzi")
 include(":component:theme")
 
