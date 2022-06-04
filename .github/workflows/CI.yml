@@ -98,12 +98,12 @@ jobs:
           name: Unit Test Results
           path: ${{ github.workspace }}/**/build/reports/tests/*/
 
-      - name: Publish "Unit Results" check suite and "Unit Test Results" comment.
+      - name: Publish "Unit Results" check suite.
         if: success() || failure()
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:
           check_name: "🔔 Test: Unit Results"
-          comment_title: Unit Test Results
+          comment_mode: off
           report_individual_runs: true
           test_changes_limit: 0
           files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
