@@ -5,7 +5,6 @@ import android.app.ActivityManager
 import android.app.IActivityManager
 import android.util.Singleton
 import org.junit.rules.ExternalResource
-import org.mockito.Mockito
 import java.lang.reflect.Field
 import java.lang.reflect.Proxy
 
@@ -56,7 +55,7 @@ class ActivityManagerSingletonHack : ExternalResource() {
 		backup = IActivityManagerSingleton.get(null)
 		IActivityManagerSingleton.set(null, object : Singleton<IActivityManager>() {
 			override fun create(): IActivityManager =
-				Mockito.mock(IActivityManager::class.java)
+				mockActivityManager()
 		})
 	}
 
