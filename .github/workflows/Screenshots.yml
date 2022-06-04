@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   record-base:
-    name: 📸 Record ${{ github.event.pull_request.base.ref }} Screenshots
+    name: 📸 Record ${{ github.event.pull_request.base.ref }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -49,10 +49,26 @@ jobs:
           ./gradlew
           --no-daemon
           --no-build-cache
-          --continue
           --stacktrace
+          --continue
+          --scan
           recordPaparazziDebug
           -Pnet.twisterrob.build.screenshot-tests=true
+
+      - name: Publish "Gradle" result and Build Scan URL.
+        if: success() || failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: "${{ steps.gradle.outputs.result-success }}" == "true" ? "success" : "failure",
+              context: "Screenshot Tests / Record / Gradle",
+              description: "${{ steps.gradle.outputs.result-text }}",
+              target_url: "${{ steps.gradle.outputs.build-scan-url }}"
+            });
 
       - name: Upload "Screenshot Golden Values" artifact.
         if: success()
@@ -72,19 +88,19 @@ jobs:
             ${{ github.workspace }}/**/build/reports/paparazzi/
             ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
-      - name: Publish "Screenshot Record Results" check suite and "Screenshot Record Results" comment.
+      - name: Publish "Screenshot Record Results" check suite.
         if: success() || failure()
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:
           check_name: "🔔 Test: Screenshot Record Results"
-          comment_title: Screenshot Record Results
+          comment_mode: off
           report_individual_runs: true
           test_changes_limit: 0
           files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
   verify-pr:
     needs: record-base
-    name: 🧪 Screenshot Tests
+    name: 🧪 Verify ${{ github.event.pull_request.head.ref }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -128,10 +144,26 @@ jobs:
           ./gradlew
           --no-daemon
           --no-build-cache
-          --continue
           --stacktrace
+          --continue
+          --scan
           verifyPaparazziDebug
           -Pnet.twisterrob.build.screenshot-tests=true
+
+      - name: Publish "Gradle" result and Build Scan URL.
+        if: success() || failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: "${{ steps.gradle.outputs.result-success }}" == "true" ? "success" : "failure",
+              context: "Screenshot Tests / Verify / Gradle",
+              description: "${{ steps.gradle.outputs.result-text }}",
+              target_url: "${{ steps.gradle.outputs.build-scan-url }}"
+            });
 
       - name: Upload "Screenshot Test Results" artifact.
         if: success() || failure()
@@ -146,12 +178,12 @@ jobs:
             ${{ github.workspace }}/**/out/failures/delta-*.png
             ${{ github.workspace }}/**/out/failures/*.png
 
-      - name: Publish "Screenshot Verify Results" check suite and "Screenshot Verify Results" comment.
+      - name: Publish "Screenshot Verify Results" check suite.
         if: success() || failure()
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:
           check_name: "🔔 Test: Screenshot Verify Results"
-          comment_title: Screenshot Verify Results
+          comment_mode: off
           report_individual_runs: true
           test_changes_limit: 0
           files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
