@@ -91,7 +91,7 @@ gradleEnterprise {
 			buildScanPublished {
 				println("::set-output name=build-scan-url::${this@buildScanPublished.buildScanUri}")
 			}
-			gradle.addBuildListener(object: BuildAdapter() {
+			gradle.addBuildListener(object : BuildAdapter() {
 				@Deprecated("Won't work with configuration caching.")
 				override fun buildFinished(result: BuildResult) {
 					println("::set-output name=result-success::${result.failure == null}")
@@ -116,10 +116,11 @@ fun Settings.enableFeaturePreviewQuietly(name: String, summary: String) {
 		.get(null)
 
 	@Suppress("UNCHECKED_CAST")
-	val features: MutableSet<String> = org.gradle.internal.featurelifecycle.LoggingIncubatingFeatureHandler::class.java
-		.getDeclaredField("features")
-		.apply { isAccessible = true }
-		.get(logger) as MutableSet<String>
+	val features: MutableSet<String> =
+		org.gradle.internal.featurelifecycle.LoggingIncubatingFeatureHandler::class.java
+			.getDeclaredField("features")
+			.apply { isAccessible = true }
+			.get(logger) as MutableSet<String>
 
 	features.add(summary)
 }
