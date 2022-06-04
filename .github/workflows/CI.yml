@@ -63,9 +63,9 @@ jobs:
         if: success() || failure()
         uses: actions/github-script@v6
         with:
-          debug: ${{ env.ACTIONS_STEP_DEBUG }}
+          debug: true
           script: |
-            github.rest.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.sha,
