@@ -63,12 +63,13 @@ jobs:
         if: success() || failure()
         uses: actions/github-script@v6
         with:
+          debug: true
           script: |
-            github.rest.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.sha,
-              state: "${{ steps.gradle.outputs.result-success }}" == "true" ? "success" : "failure",
+              state: "${{ steps.gradle.outputs.result-success }}" === "true" ? "success" : "failure",
               context: "CI / Build & Verify / Gradle",
               description: "${{ steps.gradle.outputs.result-text }}",
               target_url: "${{ steps.gradle.outputs.build-scan-url }}"
