@@ -18,9 +18,9 @@ class PaparazziCoat : TestRule {
 		RuleChain
 			.emptyRuleChain()
 			.around(paparazzi)
-			.around(AllowCreatingRemoteViewsHack(paparazzi::context))
-			.around(ActivityManagerSingletonHack())
-			.around(ActivityTaskManagerSingletonHack())
+			.around(PendingIntentBroadcast_ActivityManagerSingletonHack())
+//			.around(AllowCreatingRemoteViewsHack(paparazzi::context)) // STOPSHIP
+//			.around(ActivityTaskManagerSingletonHack()) // STOPSHIP
 			.apply(base, description)
 
 	val context: Context
@@ -47,6 +47,7 @@ class PaparazziCoat : TestRule {
 				theme = "AppTheme.ScreenshotTest",
 				maxPercentDifference = 0.0,
 				renderExtensions = extensions,
+				appCompatEnabled = false,
 			)
 	}
 }

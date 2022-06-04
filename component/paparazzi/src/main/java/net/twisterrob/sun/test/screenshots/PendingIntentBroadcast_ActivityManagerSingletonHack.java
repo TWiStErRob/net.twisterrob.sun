@@ -19,12 +19,13 @@ import androidx.annotation.Nullable;
  * Fixes the following exception during Paparazzi screenshot tests.
  * <pre>
  * java.lang.NullPointerException
- * 	at android.app.PendingIntent.getBroadcastAsUser(PendingIntent.java:572)
- * 	at android.app.PendingIntent.getBroadcast(PendingIntent.java:555)
- * 	at net.twisterrob.sun.android.logic.SunAngleWidgetUpdater.createRefreshIntent(SunAngleWidgetUpdater.java:240)
+ *     at android.app.PendingIntent.getBroadcastAsUser(PendingIntent.java:649)
+ *     at android.app.PendingIntent.getBroadcast(PendingIntent.java:632)
+ *     at net.twisterrob.sun.android.logic.SunAngleWidgetView.createRefreshIntent(SunAngleWidgetView.java:187)
+ *     at net.twisterrob.sun.android.logic.SunAngleWidgetView.createUpdateViews(SunAngleWidgetView.java:82)
  * </pre>
  */
-public class ActivityManagerSingletonHack extends ExternalResource {
+public class PendingIntentBroadcast_ActivityManagerSingletonHack extends ExternalResource {
 
 	private static final Field IActivityManagerSingleton;
 
