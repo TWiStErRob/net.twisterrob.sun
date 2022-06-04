@@ -1,7 +1,5 @@
 package net.twisterrob.sun.android;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Calendar;
 
 import org.junit.Before;
@@ -9,32 +7,18 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+import org.mockito.Mockito;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
-import android.os.Bundle;
-import android.view.Display;
+import android.location.LocationManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.WindowManagerImpl;
 import android.widget.SeekBar;
 
 import com.google.testing.junit.testparameterinjector.TestParameterInjector;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import net.twisterrob.sun.algo.SunSearchResults;
 import net.twisterrob.sun.algo.SunSearchResults.Moment;
@@ -44,6 +28,7 @@ import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.configuration.R;
 import net.twisterrob.sun.test.screenshots.PaparazziCoat;
 import net.twisterrob.sun.test.screenshots.ScreenshotTest;
+import net.twisterrob.sun.test.screenshots.UsableActivityHackKt;
 
 @RunWith(TestParameterInjector.class)
 @Category(ScreenshotTest.class)
@@ -55,10 +40,19 @@ public class SunAngleWidgetConfigurationScreenshotTest {
 	private @NonNull SunAngleWidgetConfiguration sut;
 
 	@Before
-	public void setUp() throws Throwable {
+	public void setUp() {
 		sut = new SunAngleWidgetConfiguration();
+		UsableActivityHackKt.start(
+				sut,
+				paparazzi.getContext(),
+				new Intent(paparazzi.getContext(), SunAngleWidgetConfiguration.class)
+		);
 
-		prepareActivity(sut, overrideWindowService(paparazzi.getContext()), null);
+		// Set up LocationManager to be enabled so the UI doesn't show the red banner.
+		LocationManager service = (LocationManager)sut.getSystemService(Context.LOCATION_SERVICE);
+		Mockito.doReturn(true).when(service).isLocationEnabled();
+
+		// Inflate the views.
 		sut.onCreate(null, null);
 		sut.onPostCreate(null, null);
 	}
@@ -125,82 +119,5 @@ public class SunAngleWidgetConfigurationScreenshotTest {
 		instance.set(Calendar.SECOND, 0);
 		instance.set(Calendar.MILLISECOND, 0);
 		return instance;
-	}
-
-	private static void prepareActivity(
-			@NonNull Activity activity,
-			final @NonNull Context context,
-			@Nullable Bundle savedInstanceState
-	) throws IllegalAccessException, InvocationTargetException {
-		Method attach = null;
-		for (Method method : Activity.class.getDeclaredMethods()) {
-			if (method.getName().equals("attach")) {
-				method.setAccessible(true);
-				attach = method;
-				break;
-			}
-		}
-		if (attach == null) {
-			throw new IllegalStateException("No attach method");
-		}
-		ActivityInfo activityInfo = new ActivityInfo();
-		activityInfo.applicationInfo = new ApplicationInfo();
-		attach.invoke(
-				activity,
-				context,
-				null /*ActivityThread aThread*/,
-				null /*Instrumentation instr*/,
-				null /*IBinder token*/,
-				0 /*int ident*/,
-				new Application() {
-					{
-						attachBaseContext(context);
-					}
-				} /*Application application*/,
-				new Intent(context, SunAngleWidgetConfiguration.class) /*Intent intent*/,
-				activityInfo /*ActivityInfo info*/,
-				null /*CharSequence title*/,
-				null /*Activity parent*/,
-				null /*String id*/,
-				null /*Activity.NonConfigurationInstances lastNonConfigurationInstances*/,
-				null /*Configuration config*/,
-				null /*String referrer*/,
-				null /*IVoiceInteractor voiceInteractor*/,
-				null /*Window window*/,
-				null /*ActivityConfigCallback activityConfigCallback*/,
-				null /*IBinder assistToken*/
-		);
-		activity.setTheme(context.getTheme());
-		activity.onCreate(savedInstanceState, null);
-	}
-
-	private static @NonNull Context overrideWindowService(@NonNull Context context) {
-		WindowManager original = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
-		WindowManager wrapped = wrapAsWindowManagerImpl(original);
-		context = spy(context);
-		doReturn(wrapped).when(context).getSystemService(Context.WINDOW_SERVICE);
-		doReturn(context).when(context).createDisplayContext(ArgumentMatchers.<Display>any());
-		return context;
-	}
-
-	/**
-	 * <pre>
-	 * Caused by: java.lang.ClassCastException: class com.android.layoutlib.bridge.android.view.WindowManagerImpl
-	 * cannot be cast to class android.view.WindowManagerImpl
-	 * (com.android.layoutlib.bridge.android.view.WindowManagerImpl and android.view.WindowManagerImpl are in unnamed module of loader 'app')
-	 * 	at android.view.Window.setWindowManager(Window.java:778)
-	 * 	at android.app.Activity.attach(Activity.java:7750)
-	 * </pre>
-	 */
-	private static @NonNull WindowManager wrapAsWindowManagerImpl(final @NonNull WindowManager wrapped) {
-		return mock(WindowManagerImpl.class, new Answer<Object>() {
-			@Override public Object answer(InvocationOnMock invocation) throws Throwable {
-				if (invocation.getMethod().getDeclaringClass() == WindowManagerImpl.class) {
-					return invocation.callRealMethod();
-				} else {
-					return invocation.getMethod().invoke(wrapped, invocation.getArguments());
-				}
-			}
-		});
 	}
 }

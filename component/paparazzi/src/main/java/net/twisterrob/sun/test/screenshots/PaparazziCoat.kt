@@ -18,9 +18,9 @@ class PaparazziCoat : TestRule {
 		RuleChain
 			.emptyRuleChain()
 			.around(paparazzi)
-			.around(PendingIntentBroadcast_ActivityManagerSingletonHack())
-//			.around(AllowCreatingRemoteViewsHack(paparazzi::context)) // STOPSHIP
-//			.around(ActivityTaskManagerSingletonHack()) // STOPSHIP
+			.around(ActivityManagerSingletonHack())
+			.around(ActivityClientSingletonHack())
+			.around(ActivityTaskManagerSingletonHack())
 			.apply(base, description)
 
 	val context: Context
