@@ -95,11 +95,18 @@ gradleEnterprise {
 				@Deprecated("Won't work with configuration caching.")
 				override fun buildFinished(result: BuildResult) {
 					println("::set-output name=result-success::${result.failure == null}")
-					val resultText = result.failure
-						?.let { "Failed with ${result.failure}" }
-						?: "Successful"
-					println("::set-output name=result-text::${result.action} ${resultText}")
+					println("::set-output name=result-text::${result.action} ${resultText(result.failure)}")
 				}
+
+				private fun resultText(ex: Throwable?): String =
+					when (ex) {
+						null ->
+							"Successful"
+						is org.gradle.internal.exceptions.LocationAwareException ->
+							"Failed: ${ex.message}"
+						else ->
+							"Failed with ${ex}"
+					}
 			})
 		}
 	}
