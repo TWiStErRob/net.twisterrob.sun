@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   record-base:
-    name: 📸 Record ${{ github.event.pull_request.base.ref }}
+    name: 📸 Record
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -44,7 +44,8 @@ jobs:
         with:
           ref: ${{ format('refs/heads/{0}', github.event.pull_request.base.ref) }}
 
-      - name: Record Screenshots
+      - name: Record screenshots golden values for ${{ github.event.pull_request.base.ref }}.
+        id: gradle
         run: >
           ./gradlew
           --no-daemon
@@ -100,7 +101,7 @@ jobs:
 
   verify-pr:
     needs: record-base
-    name: 🧪 Verify ${{ github.event.pull_request.head.ref }}
+    name: 🧪 Verify
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -139,7 +140,8 @@ jobs:
         with:
           name: Screenshot Golden Values
 
-      - name: Run screenshot tests.
+      - name: Run screenshot tests to verify ${{ github.event.pull_request.head.ref }}.
+        id: gradle
         run: >
           ./gradlew
           --no-daemon
