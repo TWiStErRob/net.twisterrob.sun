@@ -5,6 +5,7 @@ import android.app.ActivityManager
 import android.app.IActivityManager
 import android.util.Singleton
 import org.junit.rules.ExternalResource
+import org.mockito.Mockito
 import java.lang.reflect.Field
 import java.lang.reflect.Proxy
 
@@ -55,7 +56,7 @@ class ActivityManagerSingletonHack : ExternalResource() {
 		backup = IActivityManagerSingleton.get(null)
 		IActivityManagerSingleton.set(null, object : Singleton<IActivityManager>() {
 			override fun create(): IActivityManager =
-				mockActivityManager()
+				Mockito.mock(IActivityManager::class.java)
 		})
 	}
 
@@ -88,7 +89,18 @@ class ActivityManagerSingletonHack : ExternalResource() {
 
 /**
  * Workaround because `IActivityManager manager = mock(IActivityManager.class)`
- * throws [IncompatibleClassChangeError].
+ * throws [IncompatibleClassChangeError]:
+ * ```
+ * org.mockito.exceptions.base.MockitoException:
+ * Mockito cannot mock this class: interface android.app.IActivityManager.
+ *
+ * Underlying exception: java.lang.IllegalStateException:
+ * Failed to invoke proxy for public abstract java.lang.reflect.AnnotatedElement[]
+ * net.bytebuddy.description.type.TypeDescription$Generic$AnnotationReader$Delegator$ForLoadedExecutableParameterType$Dispatcher.getAnnotatedParameterTypes(java.lang.Object)
+ *
+ * Caused by: java.lang.IncompatibleClassChangeError:
+ * android.app.ApplicationErrorReport and android.app.ApplicationErrorReport$ParcelableCrashInfo disagree on InnerClasses attribute
+ * ```
  */
 private fun mockActivityManager(): IActivityManager =
 	Proxy.newProxyInstance(
