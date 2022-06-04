@@ -10,6 +10,7 @@ import java.lang.reflect.Field
 
 /**
  * Fixes the following exception during Paparazzi screenshot tests.
+ *
  * Note: this does not happen if the activity theme is already set before calling onCreate.
  * ```
  * java.lang.NullPointerException

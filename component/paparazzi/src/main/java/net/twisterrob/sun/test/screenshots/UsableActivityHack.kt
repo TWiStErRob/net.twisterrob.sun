@@ -51,8 +51,7 @@ private class SystemServiceContextWrapper(baseContext: Context) :
 	@SuppressLint("BlockedPrivateApi")
 	private fun mockSystemService(name: String): Any {
 		services[name]?.let { return it }
-		// REPORT these suppressions are added to val application above.
-		@Suppress("LocalVariableName", "UNCHECKED_CAST")
+		@Suppress("LocalVariableName", "UNCHECKED_CAST", "VariableNaming")
 		val SYSTEM_SERVICE_NAMES =
 			SystemServiceRegistry::class.java
 				.getDeclaredField("SYSTEM_SERVICE_NAMES")
@@ -68,10 +67,12 @@ private class HackingContextWrapper(baseContext: Context) :
 	android.content.ContextWrapper(baseContext) {
 
 	/**
+	 * ```
 	 * Caused by: java.lang.NullPointerException
 	 *     at androidx.appcompat.app.AppCompatDelegateImpl.attachBaseContext2(AppCompatDelegateImpl.java:430)
 	 *     at androidx.appcompat.app.AppCompatActivity.attachBaseContext(AppCompatActivity.java:139)
 	 *     ... 53 more
+	 * ```
 	 */
 	override fun createConfigurationContext(overrideConfiguration: Configuration?): Context =
 		this
@@ -79,23 +80,25 @@ private class HackingContextWrapper(baseContext: Context) :
 	override fun getDisplayNoVerify(): Display? =
 		Mockito.mock(Display::class.java)
 
+	/**
+	 * ```
+	 * java.lang.NullPointerException
+	 *     at androidx.core.app.NavUtils.getParentActivityName(NavUtils.java:263)
+	 *     at androidx.core.app.NavUtils.getParentActivityName(NavUtils.java:220)
+	 *     at androidx.appcompat.app.AppCompatDelegateImpl.onCreate(AppCompatDelegateImpl.java:511)
+	 *     at androidx.appcompat.app.AppCompatActivity$2.onContextAvailable(AppCompatActivity.java:131)
+	 *     at androidx.activity.contextaware.ContextAwareHelper.dispatchOnContextAvailable(ContextAwareHelper.java:99)
+	 *     at androidx.activity.ComponentActivity.onCreate(ComponentActivity.java:320)
+	 *     at androidx.fragment.app.FragmentActivity.onCreate(FragmentActivity.java:249)
+	 *     at net.twisterrob.android.app.WidgetConfigurationActivity.onCreate(WidgetConfigurationActivity.java:25)
+	 *     at net.twisterrob.sun.android.SunAngleWidgetConfiguration.onCreate(SunAngleWidgetConfiguration.java:144)
+	 *     at android.app.Activity.onCreate(Activity.java:1665)
+	 * ```
+	 */
 	override fun getPackageManager(): PackageManager =
 		when (val packageManager = super.getPackageManager()) {
 			is BridgePackageManager -> {
 				Mockito.spy(packageManager).apply {
-					/*
-					 * java.lang.NullPointerException
-					 *     at androidx.core.app.NavUtils.getParentActivityName(NavUtils.java:263)
-					 *     at androidx.core.app.NavUtils.getParentActivityName(NavUtils.java:220)
-					 *     at androidx.appcompat.app.AppCompatDelegateImpl.onCreate(AppCompatDelegateImpl.java:511)
-					 *     at androidx.appcompat.app.AppCompatActivity$2.onContextAvailable(AppCompatActivity.java:131)
-					 *     at androidx.activity.contextaware.ContextAwareHelper.dispatchOnContextAvailable(ContextAwareHelper.java:99)
-					 *     at androidx.activity.ComponentActivity.onCreate(ComponentActivity.java:320)
-					 *     at androidx.fragment.app.FragmentActivity.onCreate(FragmentActivity.java:249)
-					 *     at net.twisterrob.android.app.WidgetConfigurationActivity.onCreate(WidgetConfigurationActivity.java:25)
-					 *     at net.twisterrob.sun.android.SunAngleWidgetConfiguration.onCreate(SunAngleWidgetConfiguration.java:144)
-					 *     at android.app.Activity.onCreate(Activity.java:1665)
-					 */
 					Mockito.doReturn(ActivityInfo()).`when`(this)
 						.getActivityInfo(ArgumentMatchers.any(), ArgumentMatchers.anyInt())
 				}

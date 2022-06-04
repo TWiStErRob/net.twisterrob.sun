@@ -49,6 +49,7 @@ jobs:
           ./gradlew
           --no-daemon
           --no-build-cache
+          --continue
           --stacktrace
           recordPaparazziDebug
           -Pnet.twisterrob.build.screenshot-tests=true
@@ -69,7 +70,7 @@ jobs:
           path: |
             ${{ github.workspace }}/**/build/reports/tests/*/
             ${{ github.workspace }}/**/build/reports/paparazzi/
-            ${{ github.workspace }}/**/build/test-results/*/
+            ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
       - name: Publish "Screenshot Record Results" check suite and "Screenshot Record Results" comment.
         if: success() || failure()
@@ -127,6 +128,7 @@ jobs:
           ./gradlew
           --no-daemon
           --no-build-cache
+          --continue
           --stacktrace
           verifyPaparazziDebug
           -Pnet.twisterrob.build.screenshot-tests=true
@@ -140,7 +142,7 @@ jobs:
           # that's because Paparazzi doesn't generate a report on failure...
           path: |
             ${{ github.workspace }}/**/build/reports/tests/*/
-            ${{ github.workspace }}/**/build/test-results/*/
+            ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
             ${{ github.workspace }}/**/out/failures/delta-*.png
             ${{ github.workspace }}/**/out/failures/*.png
 
