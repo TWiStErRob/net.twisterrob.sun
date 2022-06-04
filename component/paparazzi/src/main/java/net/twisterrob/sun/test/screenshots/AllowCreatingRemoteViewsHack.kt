@@ -1,78 +1,78 @@
-package net.twisterrob.sun.test.screenshots;
+package net.twisterrob.sun.test.screenshots
 
-import java.lang.reflect.Field;
-import java.util.concurrent.Callable;
-
-import org.junit.rules.ExternalResource;
-import org.mockito.Answers;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.withSettings;
-
-import android.app.ActivityThread;
-import android.app.Application;
-import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.annotation.SuppressLint
+import android.app.ActivityThread
+import android.app.Application
+import android.content.Context
+import org.junit.rules.ExternalResource
+import org.mockito.Answers.CALLS_REAL_METHODS
+import org.mockito.Mockito
+import java.lang.reflect.Field
 
 /**
  * Fixes the following exception during Paparazzi screenshot tests.
- * <pre>
+ *
+ * ```
  * java.lang.IllegalStateException: Cannot create remote views out of an aplication.
- * 	at android.widget.RemoteViews.getApplicationInfo(RemoteViews.java:3757)
- * 	at android.widget.RemoteViews.<init>(RemoteViews.java:2212)
- * 	at net.twisterrob.sun.android.logic.SunAngleWidgetUpdater.createUpdateViews(SunAngleWidgetUpdater.java:149)
- * </pre>
+ *     at android.widget.RemoteViews.getApplicationInfo(RemoteViews.java:3757)
+ *     at android.widget.RemoteViews.<init>(RemoteViews.java:2212)
+ *     at net.twisterrob.sun.android.logic.SunAngleWidgetUpdater.createUpdateViews(SunAngleWidgetUpdater.java:149)
+ * ```
  */
-public class AllowCreatingRemoteViewsHack extends ExternalResource {
+class AllowCreatingRemoteViewsHack(
+	private val contextProvider: () -> Context
+) : ExternalResource() {
 
-	private static final @NonNull Field sCurrentActivityThread;
-	private static final @NonNull Field mInitialApplication;
+	private var backup: Any? = null
 
-	static {
-		try {
-			sCurrentActivityThread = ActivityThread.class.getDeclaredField("sCurrentActivityThread");
-			sCurrentActivityThread.setAccessible(true);
-		} catch (NoSuchFieldException e) {
-			throw new IllegalStateException(e);
-		}
-		try {
-			mInitialApplication = ActivityThread.class.getDeclaredField("mInitialApplication");
-			mInitialApplication.setAccessible(true);
-		} catch (NoSuchFieldException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	private final @NonNull Callable<Context> contextProvider;
-
-	private @Nullable Object backup;
-
-	public AllowCreatingRemoteViewsHack(@NonNull Callable<Context> contextProvider) {
-		this.contextProvider = contextProvider;
-	}
-
-	@Override protected void before() throws Throwable {
-		backup = sCurrentActivityThread.get(null);
+	@Throws(IllegalAccessException::class)
+	override fun before() {
+		backup = sCurrentActivityThread.get(null)
 		// Default visible constructor, convoluted way to create instance of it.
-		ActivityThread thread = mock(ActivityThread.class, withSettings()
-				.defaultAnswer(Answers.CALLS_REAL_METHODS)
-				.useConstructor());
-		mInitialApplication.set(thread, new Application() {
-			{
-				attachBaseContext(contextProvider.call());
+		val thread = Mockito.mock(
+			ActivityThread::class.java, Mockito.withSettings()
+				.defaultAnswer(CALLS_REAL_METHODS)
+				.useConstructor()
+		)
+		mInitialApplication.set(thread, object : Application() {
+			init {
+				attachBaseContext(contextProvider())
 			}
-		});
-
-		sCurrentActivityThread.set(null, thread);
+		})
+		sCurrentActivityThread.set(null, thread)
 	}
 
-	@Override protected void after() {
+	override fun after() {
 		try {
-			sCurrentActivityThread.set(null, backup);
-		} catch (IllegalAccessException e) {
-			throw new IllegalStateException("Cannot restore original state", e);
+			sCurrentActivityThread.set(null, backup)
+			backup = null
+		} catch (e: IllegalAccessException) {
+			throw IllegalStateException("Cannot restore original state: $backup", e)
+		}
+	}
+
+	companion object {
+
+		@SuppressLint("DiscouragedPrivateApi")
+		private val sCurrentActivityThread: Field = run {
+			try {
+				ActivityThread::class.java
+					.getDeclaredField("sCurrentActivityThread")
+					.apply { isAccessible = true }
+			} catch (e: NoSuchFieldException) {
+				throw IllegalStateException(e)
+			}
+		}
+
+		@SuppressLint("DiscouragedPrivateApi")
+		private val mInitialApplication: Field = run {
+			try {
+				ActivityThread::class.java
+					.getDeclaredField("mInitialApplication")
+					.apply { isAccessible = true }
+			} catch (e: NoSuchFieldException) {
+				throw IllegalStateException(e)
+			}
 		}
 	}
 }
