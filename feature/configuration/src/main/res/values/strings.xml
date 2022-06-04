@@ -8,7 +8,7 @@
 	<string name="message_selected_angle_above">The widget will show the current angle and the time range when the Sun is above %1$.0f°.</string>
 	<string name="message_selected_angle_below">The widget will show the current angle and the time range when the Sun is below %1$.0f°.</string>
 	<string name="cd_selected_angle">Visualization of selected angle threshold</string>
-	<string name="config_done">Save </string>
+	<string name="config_done">Save Settings</string>
 	<string name="config_title">Sun Widget Settings</string>
 
 	<string name="pref_showPartOfDay_title">Show Part of Day</string>
