@@ -1,0 +1,155 @@
+name: Screenshot Tests
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+concurrency:
+  group: ${{ format('screenshot-{0}', github.event.pull_request.head.ref) }}
+  cancel-in-progress: true
+jobs:
+  record-base:
+    name: 📸 Record ${{ github.event.pull_request.base.ref }} Screenshots
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Set up JDK 11.
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Set up Android SDK.
+        uses: android-actions/setup-android@v2
+
+      - name: Set up Android SDK components.
+        run: |
+          # Uninstall NDK, because it's not used and it emits a warning:
+          # Warning: Observed package id 'ndk;21.4.7075529' in inconsistent location '/usr/local/lib/android/sdk/ndk-bundle' (Expected '/usr/local/lib/android/sdk/ndk/21.4.7075529')
+          echo sdkmanager --uninstall "ndk;21.4.7075529"
+          sdkmanager --uninstall "ndk;21.4.7075529"
+
+          # The following are already done by setup-android@v2 action:
+          # sdkmanager --install "cmdline-tools;latest"
+          # sdkmanager --install "tools"
+          # sdkmanager --install "platform-tools"
+
+          # Install Android API used to build the project.
+          echo sdkmanager --install "platforms;android-31"
+          sdkmanager --install "platforms;android-31"
+
+      - name: Checkout ${{ github.event.pull_request.base.ref }} branch in ${{ github.repository }} repository.
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ format('refs/heads/{0}', github.event.pull_request.base.ref) }}
+
+      - name: Record Screenshots
+        run: >
+          ./gradlew
+          --no-daemon
+          --no-build-cache
+          --stacktrace
+          recordPaparazziDebug
+          -Pnet.twisterrob.build.screenshot-tests=true
+
+      - name: Upload "Screenshot Golden Values" artifact.
+        if: success()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Screenshot Golden Values
+          path: |
+            ${{ github.workspace }}/**/src/test/snapshots/images/*.png
+
+      - name: Upload "Screenshot Record Results" artifact.
+        if: success() || failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Screenshot Record Results
+          path: |
+            ${{ github.workspace }}/**/build/reports/tests/*/
+            ${{ github.workspace }}/**/build/reports/paparazzi/
+            ${{ github.workspace }}/**/build/test-results/*/
+
+      - name: Publish "Screenshot Record Results" check suite and "Screenshot Record Results" comment.
+        if: success() || failure()
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          check_name: "🔔 Test: Screenshot Record Results"
+          comment_title: Screenshot Record Results
+          report_individual_runs: true
+          test_changes_limit: 0
+          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+
+  verify-pr:
+    needs: record-base
+    name: 🧪 Screenshot Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Set up JDK 11.
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Set up Android SDK.
+        uses: android-actions/setup-android@v2
+
+      - name: Set up Android SDK components.
+        run: |
+          # Uninstall NDK, because it's not used and it emits a warning:
+          # Warning: Observed package id 'ndk;21.4.7075529' in inconsistent location '/usr/local/lib/android/sdk/ndk-bundle' (Expected '/usr/local/lib/android/sdk/ndk/21.4.7075529')
+          echo sdkmanager --uninstall "ndk;21.4.7075529"
+          sdkmanager --uninstall "ndk;21.4.7075529"
+
+          # The following are already done by setup-android@v2 action:
+          # sdkmanager --install "cmdline-tools;latest"
+          # sdkmanager --install "tools"
+          # sdkmanager --install "platform-tools"
+
+          # Install Android API used to build the project.
+          echo sdkmanager --install "platforms;android-31"
+          sdkmanager --install "platforms;android-31"
+
+      - name: Checkout ${{ github.event.pull_request.head.ref }} branch in ${{ github.repository }} repository.
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ format('refs/heads/{0}', github.event.pull_request.head.ref) }}
+
+      - name: Download 'Screenshot Golden Values' artifact.
+        uses: actions/download-artifact@v3
+        with:
+          name: Screenshot Golden Values
+
+      - name: Run screenshot tests.
+        run: >
+          ./gradlew
+          --no-daemon
+          --no-build-cache
+          --stacktrace
+          verifyPaparazziDebug
+          -Pnet.twisterrob.build.screenshot-tests=true
+
+      - name: Upload "Screenshot Test Results" artifact.
+        if: success() || failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Screenshot Test Results
+          # Notice that `${{ github.workspace }}/**/build/reports/paparazzi/` folder is not uploaded,
+          # that's because Paparazzi doesn't generate a report on failure...
+          path: |
+            ${{ github.workspace }}/**/build/reports/tests/*/
+            ${{ github.workspace }}/**/build/test-results/*/
+            ${{ github.workspace }}/**/out/failures/delta-*.png
+            ${{ github.workspace }}/**/out/failures/*.png
+
+      - name: Publish "Screenshot Verify Results" check suite and "Screenshot Verify Results" comment.
+        if: success() || failure()
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          check_name: "🔔 Test: Screenshot Verify Results"
+          comment_title: Screenshot Verify Results
+          report_individual_runs: true
+          test_changes_limit: 0
+          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
