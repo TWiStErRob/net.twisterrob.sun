@@ -1,10 +1,15 @@
 package net.twisterrob.sun.test.screenshots
 
 import android.content.Context
+import android.content.res.Resources
+import android.util.TypedValue
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.FrameLayout.LayoutParams
+import androidx.annotation.Dimension
+import androidx.annotation.Px
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
-import app.cash.paparazzi.RenderExtension
 import org.junit.rules.RuleChain
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -15,11 +20,9 @@ class PaparazziCoat(
 	appCompatEnabled: Boolean = true,
 ) : TestRule {
 
-	private val extensions: MutableSet<RenderExtension> = mutableSetOf()
 	private val paparazzi: Paparazzi = createPaparazzi(
 		theme = theme,
 		appCompatEnabled = appCompatEnabled,
-		extensions = extensions
 	)
 
 	override fun apply(base: Statement, description: Description): Statement =
@@ -39,13 +42,13 @@ class PaparazziCoat(
 	}
 
 	fun snapshotWithSize(view: View, width: Float, height: Float) {
-		val extension = ConstrainedSizeRenderExtension(width, height)
-		try {
-			extensions.add(extension)
-			snapshot(view)
-		} finally {
-			extensions.remove(extension)
+		val widthPx = view.context.resources.dipToPix(width)
+		val heightPx = view.context.resources.dipToPix(height)
+		val parent = FrameLayout(view.context).apply {
+			layoutParams = LayoutParams(widthPx.toInt(), heightPx.toInt())
+			addView(view)
 		}
+		snapshot(parent)
 	}
 
 	companion object {
@@ -53,14 +56,18 @@ class PaparazziCoat(
 		private fun createPaparazzi(
 			theme: String,
 			appCompatEnabled: Boolean,
-			extensions: Set<RenderExtension>
 		): Paparazzi =
 			Paparazzi(
 				theme = theme,
 				deviceConfig = DeviceConfig.PIXEL_2.copy(softButtons = false),
 				maxPercentDifference = 0.0,
-				renderExtensions = extensions,
 				appCompatEnabled = appCompatEnabled,
 			)
 	}
 }
+
+@Px
+private fun Resources.dipToPix(
+	@Dimension(unit = Dimension.DP) value: Float,
+): Float =
+	TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, this.displayMetrics)
