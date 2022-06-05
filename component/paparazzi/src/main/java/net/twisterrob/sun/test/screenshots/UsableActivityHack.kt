@@ -81,6 +81,9 @@ private class HackingContextWrapper(baseContext: Context) :
 		Mockito.mock(Display::class.java)
 
 	/**
+	 * Make sure [PackageManager] is returning something from [PackageManager.getActivityInfo]
+	 * as it has a non-null contract.
+	 *
 	 * ```
 	 * java.lang.NullPointerException
 	 *     at androidx.core.app.NavUtils.getParentActivityName(NavUtils.java:263)

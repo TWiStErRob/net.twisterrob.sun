@@ -9,6 +9,9 @@ object SunAngleWidgetPreferences {
 	private const val PREF_NAME = "SunAngleWidget"
 
 	/**
+	 * User defined state of the relation toggle.
+	 * Configurable on the UI and affects widget calculations and UI.
+	 *
 	 * *type*: [String]
 	 * *description*: [ThresholdRelation.name],
 	 * *default*: [ThresholdRelation.ABOVE]
@@ -19,6 +22,9 @@ object SunAngleWidgetPreferences {
 	val DEFAULT_THRESHOLD_RELATION = ThresholdRelation.ABOVE
 
 	/**
+	 * User defined state of the angle.
+	 * Configurable on the UI and affects widget calculations and UI.
+	 *
 	 * *type*: [Double]
 	 * *description*: angle in degrees,
 	 * *default*: [DEFAULT_THRESHOLD_ANGLE]
@@ -27,6 +33,9 @@ object SunAngleWidgetPreferences {
 	const val DEFAULT_THRESHOLD_ANGLE = 0f
 
 	/**
+	 * Developer selection of current angle for debugging with stubbed data.
+	 * Configurable on the UI and affects widget calculations and UI.
+	 *
 	 * *type*: [Double]
 	 * *description*: angle in degrees
 	 * *default*: [DEFAULT_MOCK_ANGLE]
@@ -35,6 +44,9 @@ object SunAngleWidgetPreferences {
 	const val DEFAULT_MOCK_ANGLE = Float.NaN
 
 	/**
+	 * Developer selection of current time for debugging with stubbed data.
+	 * Configurable on the UI and affects widget calculations and UI.
+	 *
 	 * *type*: [Long]
 	 * *description*: [System.currentTimeMillis]
 	 * *default*: [DEFAULT_MOCK_ANGLE]
@@ -43,6 +55,9 @@ object SunAngleWidgetPreferences {
 	const val DEFAULT_MOCK_TIME = 520597560L * 1000
 
 	/**
+	 * User selection of whether to show the last updated time or not.
+	 * Configurable on the UI and affects widget UI.
+	 *
 	 * *type*: [Boolean]
 	 * *description*: true=show
 	 * *default*: [DEFAULT_SHOW_UPDATE_TIME]
@@ -51,6 +66,9 @@ object SunAngleWidgetPreferences {
 	const val DEFAULT_SHOW_UPDATE_TIME = false
 
 	/**
+	 * User selection of whether to show the part of day or not.
+	 * Configurable on the UI and affects widget UI.
+	 *
 	 * *type*: [Boolean]
 	 * *description*: true=show
 	 * *default*: [DEFAULT_SHOW_PART_OF_DAY]
