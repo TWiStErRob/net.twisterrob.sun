@@ -27,6 +27,7 @@ import net.twisterrob.sun.algo.SunSearchResults.SunSearchParams;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.configuration.R;
 import net.twisterrob.sun.test.screenshots.PaparazziCoat;
+import net.twisterrob.sun.test.screenshots.PaparazziFactory;
 import net.twisterrob.sun.test.screenshots.ScreenshotTest;
 import net.twisterrob.sun.test.screenshots.UsableActivityHackKt;
 
@@ -35,7 +36,7 @@ import net.twisterrob.sun.test.screenshots.UsableActivityHackKt;
 public class SunAngleWidgetConfigurationScreenshotTest {
 
 	@Rule
-	public PaparazziCoat paparazzi = new PaparazziCoat("AppTheme", true);
+	public PaparazziCoat paparazzi = new PaparazziCoat(PaparazziFactory.activityPaparazzi());
 
 	private @NonNull SunAngleWidgetConfiguration sut;
 

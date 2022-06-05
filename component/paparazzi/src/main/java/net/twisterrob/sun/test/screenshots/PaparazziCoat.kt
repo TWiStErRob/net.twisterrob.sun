@@ -8,7 +8,6 @@ import android.widget.FrameLayout
 import android.widget.FrameLayout.LayoutParams
 import androidx.annotation.Dimension
 import androidx.annotation.Px
-import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import org.junit.rules.RuleChain
 import org.junit.rules.TestRule
@@ -16,14 +15,8 @@ import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 class PaparazziCoat(
-	theme: String = "AppTheme.ScreenshotTest",
-	appCompatEnabled: Boolean = true,
+	private val paparazzi: Paparazzi,
 ) : TestRule {
-
-	private val paparazzi: Paparazzi = createPaparazzi(
-		theme = theme,
-		appCompatEnabled = appCompatEnabled,
-	)
 
 	override fun apply(base: Statement, description: Description): Statement =
 		RuleChain
@@ -49,20 +42,6 @@ class PaparazziCoat(
 			addView(view)
 		}
 		snapshot(parent)
-	}
-
-	companion object {
-
-		private fun createPaparazzi(
-			theme: String,
-			appCompatEnabled: Boolean,
-		): Paparazzi =
-			Paparazzi(
-				theme = theme,
-				deviceConfig = DeviceConfig.PIXEL_2.copy(softButtons = false),
-				maxPercentDifference = 0.0,
-				appCompatEnabled = appCompatEnabled,
-			)
 	}
 }
 

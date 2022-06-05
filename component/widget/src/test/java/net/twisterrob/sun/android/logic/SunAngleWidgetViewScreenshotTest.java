@@ -29,6 +29,7 @@ import net.twisterrob.sun.algo.SunSearchResults.SunSearchParams;
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.ui.UiStates;
 import net.twisterrob.sun.test.screenshots.PaparazziCoat;
+import net.twisterrob.sun.test.screenshots.PaparazziFactory;
 import net.twisterrob.sun.test.screenshots.ScreenshotTest;
 
 import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_PART_OF_DAY;
@@ -39,7 +40,7 @@ import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_UPD
 public class SunAngleWidgetViewScreenshotTest {
 
 	@Rule
-	public PaparazziCoat paparazzi = new PaparazziCoat("AppTheme.ScreenshotTest", false);
+	public PaparazziCoat paparazzi = new PaparazziCoat(PaparazziFactory.widgetPaparazzi());
 
 	private @NonNull SunAngleWidgetView sut;
 
