@@ -1,3 +1,5 @@
+import groovy.json.JsonOutput.toJson
+
 rootProject.name = "Sun"
 
 enableFeaturePreviewQuietly("TYPESAFE_PROJECT_ACCESSORS", "Type-safe project accessors")
@@ -89,14 +91,17 @@ gradleEnterprise {
 		// https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
 		if (System.getenv("GITHUB_ACTIONS") == "true") {
 			buildScanPublished {
-				println("::set-output name=build-scan-url::${this@buildScanPublished.buildScanUri}")
+				println("::set-output name=build-scan-url::${toJson(this@buildScanPublished.buildScanUri.toString())}")
 			}
 			gradle.addBuildListener(object : BuildAdapter() {
 				@Deprecated("Won't work with configuration caching.")
 				override fun buildFinished(result: BuildResult) {
-					println("::set-output name=result-success::${result.failure == null}")
-					println("::set-output name=result-text::${result.action} ${resultText(result.failure)}")
+					println("::set-output name=result-success::${toJson(result.failure == null)}")
+					println("::set-output name=result-text::${toJson(resultText(result.failure))}")
 				}
+
+				private fun resultText(result: BuildResult): String =
+				    "${result.action} ${resultText(result.failure)}"
 
 				private fun resultText(ex: Throwable?): String =
 					when (ex) {

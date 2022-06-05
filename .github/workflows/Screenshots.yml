@@ -57,7 +57,7 @@ jobs:
           -Pnet.twisterrob.build.screenshot-tests=true
 
       - name: Publish "Gradle" result and Build Scan URL.
-        if: success() || failure()
+        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
         uses: actions/github-script@v6
         with:
           debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
@@ -66,10 +66,10 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.sha,
-              state: "${{ steps.gradle.outputs.result-success }}" === "true" ? "success" : "failure",
+              state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
               context: "Screenshot Tests / Record / Gradle",
-              description: "${{ steps.gradle.outputs.result-text }}",
-              target_url: "${{ steps.gradle.outputs.build-scan-url }}"
+              description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
+              target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
             });
 
       - name: Upload "Screenshot Golden Values" artifact.
@@ -154,7 +154,7 @@ jobs:
           -Pnet.twisterrob.build.screenshot-tests=true
 
       - name: Publish "Gradle" result and Build Scan URL.
-        if: success() || failure()
+        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
         uses: actions/github-script@v6
         with:
           debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
@@ -163,10 +163,10 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.sha,
-              state: "${{ steps.gradle.outputs.result-success }}" === "true" ? "success" : "failure",
+              state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
               context: "Screenshot Tests / Verify / Gradle",
-              description: "${{ steps.gradle.outputs.result-text }}",
-              target_url: "${{ steps.gradle.outputs.build-scan-url }}"
+              description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
+              target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
             });
 
       - name: Upload "Screenshot Test Results" artifact.
