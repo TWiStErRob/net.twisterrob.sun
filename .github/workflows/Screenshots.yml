@@ -40,7 +40,7 @@ jobs:
           sdkmanager --install "platforms;android-31"
 
       - name: Checkout ${{ github.event.pull_request.base.ref }} branch in ${{ github.repository }} repository.
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ format('refs/heads/{0}', github.event.pull_request.base.ref) }}
 
@@ -132,7 +132,7 @@ jobs:
           sdkmanager --install "platforms;android-31"
 
       - name: Checkout ${{ github.event.pull_request.head.ref }} branch in ${{ github.repository }} repository.
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ format('refs/heads/{0}', github.event.pull_request.head.ref) }}
 
