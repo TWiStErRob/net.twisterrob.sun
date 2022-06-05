@@ -60,18 +60,19 @@ jobs:
           violationReportHtml
 
       - name: Publish "Gradle" result and Build Scan URL.
-        if: success() || failure()
+        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
         uses: actions/github-script@v6
         with:
+          debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
           script: |
-            github.rest.repos.createCommitStatus({
+            await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.sha,
-              state: "${{ steps.gradle.outputs.result-success }}" == "true" ? "success" : "failure",
+              state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
               context: "CI / Build & Verify / Gradle",
-              description: "${{ steps.gradle.outputs.result-text }}",
-              target_url: "${{ steps.gradle.outputs.build-scan-url }}"
+              description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
+              target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
             });
 
       - name: Upload "Lint Results" artifact.
@@ -98,12 +99,12 @@ jobs:
           name: Unit Test Results
           path: ${{ github.workspace }}/**/build/reports/tests/*/
 
-      - name: Publish "Unit Results" check suite and "Unit Test Results" comment.
+      - name: Publish "Unit Results" check suite.
         if: success() || failure()
         uses: EnricoMi/publish-unit-test-result-action@v1
         with:
           check_name: "🔔 Test: Unit Results"
-          comment_title: Unit Test Results
+          comment_mode: off
           report_individual_runs: true
           test_changes_limit: 0
           files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
