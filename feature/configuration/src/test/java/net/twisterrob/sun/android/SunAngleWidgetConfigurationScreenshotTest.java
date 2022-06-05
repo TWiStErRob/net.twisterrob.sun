@@ -35,7 +35,7 @@ import net.twisterrob.sun.test.screenshots.UsableActivityHackKt;
 public class SunAngleWidgetConfigurationScreenshotTest {
 
 	@Rule
-	public PaparazziCoat paparazzi = new PaparazziCoat();
+	public PaparazziCoat paparazzi = new PaparazziCoat("AppTheme", true);
 
 	private @NonNull SunAngleWidgetConfiguration sut;
 

@@ -39,7 +39,7 @@ import static net.twisterrob.sun.android.SunAngleWidgetPreferences.PREF_SHOW_UPD
 public class SunAngleWidgetViewScreenshotTest {
 
 	@Rule
-	public PaparazziCoat paparazzi = new PaparazziCoat();
+	public PaparazziCoat paparazzi = new PaparazziCoat("AppTheme.ScreenshotTest", false);
 
 	private @NonNull SunAngleWidgetView sut;
 

@@ -2,6 +2,7 @@ package net.twisterrob.sun.test.screenshots
 
 import android.content.Context
 import android.view.View
+import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import app.cash.paparazzi.RenderExtension
 import org.junit.rules.RuleChain
@@ -9,10 +10,17 @@ import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
-class PaparazziCoat : TestRule {
+class PaparazziCoat(
+	theme: String = "AppTheme.ScreenshotTest",
+	appCompatEnabled: Boolean = true,
+) : TestRule {
 
 	private val extensions: MutableSet<RenderExtension> = mutableSetOf()
-	private val paparazzi: Paparazzi = createPaparazzi(extensions)
+	private val paparazzi: Paparazzi = createPaparazzi(
+		theme = theme,
+		appCompatEnabled = appCompatEnabled,
+		extensions = extensions
+	)
 
 	override fun apply(base: Statement, description: Description): Statement =
 		RuleChain
@@ -42,12 +50,17 @@ class PaparazziCoat : TestRule {
 
 	companion object {
 
-		fun createPaparazzi(extensions: Set<RenderExtension>): Paparazzi =
+		private fun createPaparazzi(
+			theme: String,
+			appCompatEnabled: Boolean,
+			extensions: Set<RenderExtension>
+		): Paparazzi =
 			Paparazzi(
-				theme = "AppTheme.ScreenshotTest",
+				theme = theme,
+				deviceConfig = DeviceConfig.PIXEL_2.copy(softButtons = false),
 				maxPercentDifference = 0.0,
 				renderExtensions = extensions,
-				appCompatEnabled = false,
+				appCompatEnabled = appCompatEnabled,
 			)
 	}
 }
