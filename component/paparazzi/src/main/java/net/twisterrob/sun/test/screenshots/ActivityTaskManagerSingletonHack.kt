@@ -32,16 +32,16 @@ class ActivityTaskManagerSingletonHack : ExternalResource() {
 
 	@Throws(IllegalAccessException::class)
 	override fun before() {
-		backup = IActivityTaskManagerSingleton.get(null)
-		IActivityTaskManagerSingleton.set(null, object : Singleton<IActivityTaskManager>() {
+		backup = STATIC[IActivityTaskManagerSingleton]
+		STATIC[IActivityTaskManagerSingleton] = object : Singleton<IActivityTaskManager>() {
 			override fun create(): IActivityTaskManager =
 				Mockito.mock(IActivityTaskManager::class.java)
-		})
+		}
 	}
 
 	override fun after() {
 		try {
-			IActivityTaskManagerSingleton.set(null, backup)
+			STATIC[IActivityTaskManagerSingleton] = backup
 			backup = null
 		} catch (ex: IllegalAccessException) {
 			throw IllegalStateException("Cannot restore original state: ${backup}", ex)

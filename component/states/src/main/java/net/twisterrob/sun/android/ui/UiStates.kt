@@ -12,23 +12,23 @@ class UiStates @Inject constructor() {
 
 	@DrawableRes
 	fun getBackground(state: LightState, time: Calendar): Int =
-		BGs.get(state, time)
+		BGs[state, time]
 
 	@StringRes
 	fun getStateLabel(state: LightState, time: Calendar): Int =
-		STATE_LABELs.get(state, time)
+		STATE_LABELs[state, time]
 
 	@ColorRes
 	fun getStateColor(state: LightState, time: Calendar): Int =
-		STATE_COLORs.get(state, time)
+		STATE_COLORs[state, time]
 
 	@ColorRes
 	fun getUpdateColor(state: LightState, time: Calendar): Int =
-		UPDATE_COLORs.get(state, time)
+		UPDATE_COLORs[state, time]
 
 	@ColorRes
 	fun getAngleColor(state: LightState, time: Calendar): Int =
-		ANGLE_COLORs.get(state, time)
+		ANGLE_COLORs[state, time]
 
 	companion object {
 

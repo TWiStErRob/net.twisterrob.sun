@@ -19,7 +19,7 @@ import java.lang.reflect.Proxy
  *     at net.twisterrob.sun.android.logic.SunAngleWidgetView.createRefreshIntent(SunAngleWidgetView.java:187)
  *     at net.twisterrob.sun.android.logic.SunAngleWidgetView.createUpdateViews(SunAngleWidgetView.java:82)
  * ```
- * 
+ *
  * Paparazzi 1.0.
  * ```
  * java.lang.NullPointerException
@@ -52,16 +52,16 @@ class ActivityManagerSingletonHack : ExternalResource() {
 
 	@Throws(IllegalAccessException::class)
 	override fun before() {
-		backup = IActivityManagerSingleton.get(null)
-		IActivityManagerSingleton.set(null, object : Singleton<IActivityManager>() {
+		backup = STATIC[IActivityManagerSingleton]
+		STATIC[IActivityManagerSingleton] = object : Singleton<IActivityManager>() {
 			override fun create(): IActivityManager =
 				mockActivityManager()
-		})
+		}
 	}
 
 	override fun after() {
 		try {
-			IActivityManagerSingleton.set(null, backup)
+			STATIC[IActivityManagerSingleton] = backup
 			backup = null
 		} catch (e: IllegalAccessException) {
 			throw IllegalStateException("Cannot restore original state: ${backup}", e)

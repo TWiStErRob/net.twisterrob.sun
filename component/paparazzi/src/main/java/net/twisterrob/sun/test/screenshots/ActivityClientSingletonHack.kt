@@ -43,16 +43,13 @@ class ActivityClientSingletonHack : ExternalResource() {
 
 	@Throws(IllegalAccessException::class)
 	override fun before() {
-		backup = mKnownInstance.get(INTERFACE_SINGLETON.get(null))
-		mKnownInstance.set(
-			INTERFACE_SINGLETON.get(null),
-			Mockito.mock(IActivityClientController::class.java)
-		)
+		backup = STATIC[INTERFACE_SINGLETON][mKnownInstance]
+		STATIC[INTERFACE_SINGLETON][mKnownInstance] = Mockito.mock(IActivityClientController::class.java)
 	}
 
 	override fun after() {
 		try {
-			mKnownInstance.set(INTERFACE_SINGLETON.get(null), backup)
+			STATIC[INTERFACE_SINGLETON][mKnownInstance] = backup
 			backup = null
 		} catch (ex: IllegalAccessException) {
 			throw IllegalStateException("Cannot restore original state: ${backup}", ex)
