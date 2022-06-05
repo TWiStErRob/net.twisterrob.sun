@@ -38,7 +38,7 @@ class LocationRetrieverTest {
 		)
 	}
 
-	@Test(timeout = 10000)
+	@Test(timeout = 10_000)
 	fun testLastKnownLocationReturned() {
 		val fakeLocation = locationRule.spoofer.setLocation {
 			latitude = 11.1
@@ -57,7 +57,7 @@ class LocationRetrieverTest {
 		assertEquals(fakeLocation, actualLocation)
 	}
 
-	@Test(timeout = 10000)
+	@Test(timeout = 10_000)
 	fun testFallbackRecordsNewLocation() {
 		var actualLocationReceived = false
 		var actualLocation: Location? = null
@@ -79,7 +79,7 @@ class LocationRetrieverTest {
 		assertEquals(fakeLocation, actualLocation)
 	}
 
-	@Test(timeout = 10000)
+	@Test(timeout = 10_000)
 	fun testFallbackSendsNoLocation() {
 		var actualLocationReceived = false
 		var actualLocation: Location? = null
@@ -97,7 +97,7 @@ class LocationRetrieverTest {
 		assertEquals(null, actualLocation)
 	}
 
-	@Test(timeout = 10000)
+	@Test(timeout = 10_000)
 	fun testFallbackSendsNoLocationEvenIfUpdatedAfterTimeout() {
 		var actualLocationReceived = false
 		var actualLocation: Location? = null

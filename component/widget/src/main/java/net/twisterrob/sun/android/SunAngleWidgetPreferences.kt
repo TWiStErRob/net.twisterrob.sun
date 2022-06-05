@@ -49,10 +49,15 @@ object SunAngleWidgetPreferences {
 	 *
 	 * *type*: [Long]
 	 * *description*: [System.currentTimeMillis]
-	 * *default*: [DEFAULT_MOCK_ANGLE]
+	 * *default*: [DEFAULT_MOCK_TIME]
 	 */
 	const val PREF_MOCK_TIME = "mockTime"
-	const val DEFAULT_MOCK_TIME = 520597560L * 1000
+
+	/**
+	 * Default hard-coded current time for debugging for consistent behavior.
+	 * Value is Tue Jul 01 1986 10:26:00 GMT+0000.
+	 */
+	const val DEFAULT_MOCK_TIME = 520_597_560L * 1000
 
 	/**
 	 * User selection of whether to show the last updated time or not.
