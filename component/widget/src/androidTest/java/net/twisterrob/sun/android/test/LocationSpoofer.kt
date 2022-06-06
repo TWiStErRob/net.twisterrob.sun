@@ -10,8 +10,10 @@ import android.os.Binder
 import android.os.Build
 import android.os.SystemClock
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.core.content.getSystemService
 import androidx.test.platform.app.InstrumentationRegistry
+import org.jetbrains.annotations.TestOnly
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -115,8 +117,13 @@ class LocationSpoofer(
 		}
 	}
 
-	@Suppress("UnusedPrivateMember")
-	private fun diagnostics() {
+	/**
+	 * Debug-only code, call to see what providers would return.
+	 */
+	@Suppress("unused")
+	@VisibleForTesting
+	@TestOnly
+	fun diagnostics() {
 		val providers = locationManager.allProviders.joinToString(separator = "\n") {
 			"$it(${locationManager.isProviderEnabled(it)}):${locationManager.getProviderProperties(it).toString()}"
 		}
@@ -127,7 +134,8 @@ class LocationSpoofer(
 		val bestProvider = locationManager.getBestProvider(criteria, true) ?: LocationManager.PASSIVE_PROVIDER
 		val last = locationManager.getLastKnownLocation(bestProvider)
 		val lastPassive = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
-		println(bestProvider + "->" + last.toString() + "\npassive->" + lastPassive + "\n" + providers)
+		@Suppress("ForbiddenMethodCall", "NullableToStringCall")
+		println("${bestProvider}->${last}\npassive->${lastPassive}\n${providers}")
 	}
 }
 

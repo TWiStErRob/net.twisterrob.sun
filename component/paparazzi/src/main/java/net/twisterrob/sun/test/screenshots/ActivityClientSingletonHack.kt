@@ -52,6 +52,7 @@ class ActivityClientSingletonHack : ExternalResource() {
 			STATIC[INTERFACE_SINGLETON][mKnownInstance] = backup
 			backup = null
 		} catch (ex: IllegalAccessException) {
+			@Suppress("NullableToStringCall") // Exactly what I want.
 			throw IllegalStateException("Cannot restore original state: ${backup}", ex)
 		}
 	}

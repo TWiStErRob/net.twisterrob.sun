@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.Application
 import android.app.SystemServiceRegistry
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -14,11 +15,12 @@ import com.android.layoutlib.bridge.android.BridgePackageManager
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 
-@SuppressLint("NewApi")
 fun Activity.start(baseContext: Context, intent: Intent? = null) {
 	val application = object : Application() {
 		init {
 			attachBaseContext(
+				@Suppress("UnnecessaryLet")
+				// Nesting constructors doesn't scale, this chains well.
 				baseContext
 					.let(::SystemServiceContextWrapper)
 					.let(::HackingContextWrapper)
@@ -29,11 +31,15 @@ fun Activity.start(baseContext: Context, intent: Intent? = null) {
 			this
 	}
 	this.attach(application, intent)
+	@SuppressLint("NewApi")
 	this.theme = application.theme
 }
 
-private class SystemServiceContextWrapper(baseContext: Context) :
-	android.content.ContextWrapper(baseContext) {
+private class SystemServiceContextWrapper(
+	baseContext: Context
+) : ContextWrapper(baseContext) {
+
+	val services: MutableMap<String, Any> = mutableMapOf()
 
 	override fun getSystemService(name: String): Any =
 		try {
@@ -46,25 +52,35 @@ private class SystemServiceContextWrapper(baseContext: Context) :
 			}
 		}
 
-	val services: MutableMap<String, Any> = mutableMapOf()
-
-	@SuppressLint("BlockedPrivateApi")
 	private fun mockSystemService(name: String): Any {
 		services[name]?.let { return it }
-		@Suppress("LocalVariableName", "UNCHECKED_CAST", "VariableNaming")
-		val SYSTEM_SERVICE_NAMES =
-			SystemServiceRegistry::class.java
-				.getDeclaredField("SYSTEM_SERVICE_NAMES")
-				.apply { isAccessible = true }
-				.get(null) as Map<Class<*>, String>
-		val serviceClass = SYSTEM_SERVICE_NAMES.toMap().entries.single { it.value == name }.key
+		val serviceClass = getSystemServiceClass(name)
 		//println("Falling back to mock ${serviceClass} for system service ${name}.")
 		return Mockito.mock(serviceClass).also { services[name] = it }
 	}
+
+	private fun getSystemServiceClass(name: String): Class<*> =
+		SYSTEM_SERVICE_NAMES.toMap().entries.single { it.value == name }.key
+
+	companion object {
+
+		val SYSTEM_SERVICE_NAMES: Map<Class<*>, String>
+			get() {
+				@Suppress("LocalVariableName", "VariableNaming")
+				@SuppressLint("BlockedPrivateApi")
+				val SYSTEM_SERVICE_NAMES = SystemServiceRegistry::class.java
+					.getDeclaredField("SYSTEM_SERVICE_NAMES")
+					.apply { isAccessible = true }
+
+				@Suppress("UNCHECKED_CAST")
+				return STATIC[SYSTEM_SERVICE_NAMES] as Map<Class<*>, String>
+			}
+	}
 }
 
-private class HackingContextWrapper(baseContext: Context) :
-	android.content.ContextWrapper(baseContext) {
+private class HackingContextWrapper(
+	baseContext: Context
+) : ContextWrapper(baseContext) {
 
 	/**
 	 * ```
@@ -99,14 +115,15 @@ private class HackingContextWrapper(baseContext: Context) :
 	 * ```
 	 */
 	override fun getPackageManager(): PackageManager =
+		@Suppress("UseIfInsteadOfWhen")
 		when (val packageManager = super.getPackageManager()) {
-			is BridgePackageManager -> {
+			is BridgePackageManager ->
 				Mockito.spy(packageManager).apply {
 					Mockito.doReturn(ActivityInfo()).`when`(this)
 						.getActivityInfo(ArgumentMatchers.any(), ArgumentMatchers.anyInt())
 				}
-			}
-			else -> packageManager
+			else ->
+				packageManager
 		}
 }
 

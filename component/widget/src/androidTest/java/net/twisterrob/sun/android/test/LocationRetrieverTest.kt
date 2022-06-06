@@ -26,7 +26,7 @@ class LocationRetrieverTest {
 	fun setUp() {
 		sut = LocationRetriever(ApplicationProvider.getApplicationContext()).apply {
 			// Need to disable PROVIDER_PASSIVE, because it cannot be overridden as a testProvider.
-			checkPassive = false
+			isPassiveProviderPreferred = false
 		}
 
 		locationRule.spoofer.setProvider(
@@ -44,28 +44,28 @@ class LocationRetrieverTest {
 			latitude = 11.1
 			longitude = 22.2
 		}
-		var actualLocationReceived = false
+		var isActualLocationReceived = false
 		var actualLocation: Location? = null
 		InstrumentationRegistry.getInstrumentation().runOnMainSync {
-			sut.get {
-				actualLocation = it
-				actualLocationReceived = true
+			sut.get { location ->
+				actualLocation = location
+				isActualLocationReceived = true
 			}
 		}
 
-		assertTrue(actualLocationReceived)
+		assertTrue(isActualLocationReceived)
 		assertEquals(fakeLocation, actualLocation)
 	}
 
 	@Test(timeout = 10_000)
 	fun testFallbackRecordsNewLocation() {
-		var actualLocationReceived = false
+		var isActualLocationReceived = false
 		var actualLocation: Location? = null
 		val blocker = CountDownLatch(1)
 		InstrumentationRegistry.getInstrumentation().runOnMainSync {
-			sut.get {
-				actualLocation = it
-				actualLocationReceived = true
+			sut.get { location ->
+				actualLocation = location
+				isActualLocationReceived = true
 				blocker.countDown()
 			}
 		}
@@ -75,37 +75,37 @@ class LocationRetrieverTest {
 		}
 		blocker.await(100, TimeUnit.MILLISECONDS)
 
-		assertTrue(actualLocationReceived)
+		assertTrue(isActualLocationReceived)
 		assertEquals(fakeLocation, actualLocation)
 	}
 
 	@Test(timeout = 10_000)
 	fun testFallbackSendsNoLocation() {
-		var actualLocationReceived = false
+		var isActualLocationReceived = false
 		var actualLocation: Location? = null
 		val blocker = CountDownLatch(1)
 		InstrumentationRegistry.getInstrumentation().runOnMainSync {
-			sut.get(100) {
-				actualLocation = it
-				actualLocationReceived = true
+			sut.get(100) { location ->
+				actualLocation = location
+				isActualLocationReceived = true
 				blocker.countDown()
 			}
 		}
 		sleep(2 * 100L)
 
-		assertTrue(actualLocationReceived)
+		assertTrue(isActualLocationReceived)
 		assertEquals(null, actualLocation)
 	}
 
 	@Test(timeout = 10_000)
 	fun testFallbackSendsNoLocationEvenIfUpdatedAfterTimeout() {
-		var actualLocationReceived = false
+		var isActualLocationReceived = false
 		var actualLocation: Location? = null
 		val blocker = CountDownLatch(1)
 		InstrumentationRegistry.getInstrumentation().runOnMainSync {
-			sut.get(100) {
-				actualLocation = it
-				actualLocationReceived = true
+			sut.get(100) { location ->
+				actualLocation = location
+				isActualLocationReceived = true
 				blocker.countDown()
 			}
 		}
@@ -116,7 +116,7 @@ class LocationRetrieverTest {
 		}
 		sleep(100L)
 
-		assertTrue(actualLocationReceived)
+		assertTrue(isActualLocationReceived)
 		assertEquals(null, actualLocation)
 	}
 

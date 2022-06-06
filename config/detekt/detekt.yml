@@ -96,6 +96,8 @@ naming:
     forbiddenName: []
   FunctionMaxLength:
     active: true
+    ignoreAnnotated:
+      - 'Test'
     maximumFunctionNameLength: 30
   FunctionMinLength:
     active: true
@@ -162,6 +164,8 @@ potential-bugs:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     ignoreOnClassesPattern: ''
+    ignoreAnnotated:
+      - 'javax.inject.Inject'
   MapGetWithNotNullAssertionOperator:
     active: true
   MissingPackageDeclaration:

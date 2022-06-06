@@ -44,6 +44,7 @@ class ActivityTaskManagerSingletonHack : ExternalResource() {
 			STATIC[IActivityTaskManagerSingleton] = backup
 			backup = null
 		} catch (ex: IllegalAccessException) {
+			@Suppress("NullableToStringCall") // Exactly what I want.
 			throw IllegalStateException("Cannot restore original state: ${backup}", ex)
 		}
 	}

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation
 
+@Suppress("BooleanPropertyNaming") // DEFAULT_* constants, TODEL https://github.com/detekt/detekt/issues/4920
 object SunAngleWidgetPreferences {
 
 	private const val PREF_NAME = "SunAngleWidget"
