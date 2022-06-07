@@ -11,8 +11,8 @@ import javax.inject.Inject
 
 class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 
-	@Inject lateinit var updater: SunAngleWidgetUpdater
-	@Inject lateinit var locations: LocationRetriever
+	@Inject internal lateinit var updater: SunAngleWidgetUpdater
+	@Inject internal lateinit var locations: LocationRetriever
 
 	override fun onReceive(context: Context, intent: Intent) {
 		DaggerWidgetComponent.factory().create(context).inject(this)

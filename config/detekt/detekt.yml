@@ -1,50 +1,89 @@
 config:
+  # If a property in the configuration is deprecated, that'll fail Detekt execution.
   warningsAsErrors: true
+
 processors:
+  # Blanket disable processors as they are not used.
+  # Stats would show up in HTML report, but since that's not mergeable it has little value per module.
   active: false
+
 console-reports:
-  active: true
   exclude:
+    # Disabled because I don't want to see what kind of reports are generate every time I run detekt.
     - 'NotificationReport'
+    # Disabled because it's very verbose. 
     - 'FindingsReport'
+    # Disabled because it's very verbose, even more so than FindingsReport.
     - 'FileBasedFindingsReport'
-#    - 'LiteFindingsReport'
+    # Enabled, because this gives enough context to see the problems.
+    #- 'LiteFindingsReport'
+
 
 comments:
+
   AbsentOrWrongFileLicense:
+    # I don't use licences on top of each file.
     active: false
+
   CommentOverPrivateFunction:
+    # Disabled as I don't agree with it, if a function needs docs, it needs docs. Visibility doesn't change that.
     active: false
+
   CommentOverPrivateProperty:
+    # Disabled as I don't agree with it, if a function needs docs, it needs docs. Visibility doesn't change that.
     active: false
+
   UndocumentedPublicClass:
+    # Disabled as this is not a public library. For now it's not even all in Kotlin.
     active: false
+
   UndocumentedPublicFunction:
+    # Disabled as this is not a public library. For now it's not even all in Kotlin.
     active: false
+
   UndocumentedPublicProperty:
+    # Disabled as this is not a public library. For now it's not even all in Kotlin.
     active: false
+
 
 naming:
+
   FunctionMaxLength:
     ignoreAnnotated:
-      - 'Test'
+      # Test names in JUnit 4 are ok to be long as they're likely sentences.
+      - 'org.junit.Test'
+      # Test names in JUnit 5 are ok to be long as they're likely sentences.
+      - 'org.junit.jupiter.api.Test'
+
 
 potential-bugs:
+
   LateinitUsage:
     ignoreAnnotated:
+      # It's ok to use `@Inject internal lateinit var daggerInjected: Something`.
       - 'javax.inject.Inject'
+
   UnsafeCallOnNullableType:
+    # Disabled, because sometimes it's ok to just bang something.
     active: false
 
+
 style:
+
   ReturnCount:
+    # Default 2 is not enough, usually a single guard and a condition simply violates this.
     max: 3
+
   NoTabs:
     # I'm a tab guy, I don't pay for space in advance.
     active: false
+
   MaxLineLength:
+    # It's unavoidable to have some long lines when stacktraces or links are added as comments.
     excludeCommentStatements: true
+
   WildcardImport:
-    # Enforce no wildcards in test code too.
+    # Enforce no wildcards of any kind in production and test code.
     excludes: [ ]
+    # No exceptions, the defaults in Kotlin have some historical reasons, but they're more confusing than useful.
     excludeImports: [ ]
