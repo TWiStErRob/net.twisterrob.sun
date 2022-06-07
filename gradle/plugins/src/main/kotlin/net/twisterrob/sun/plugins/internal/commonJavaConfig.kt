@@ -43,7 +43,8 @@ internal fun Project.commonJavaConfig() {
 		val detekt = this@commonJavaConfig.extensions.getByName<DetektExtension>("detekt")
 		detekt.apply {
 			ignoreFailures = true
-			buildUponDefaultConfig = true
+			// TODEL https://github.com/detekt/detekt/issues/4926
+			buildUponDefaultConfig = false
 			allRules = true
 			//debug = true
 			config = rootProject.files("config/detekt/detekt.yml")
