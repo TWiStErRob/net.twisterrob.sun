@@ -62,6 +62,10 @@ potential-bugs:
     ignoreAnnotated:
       # It's ok to use `@Inject internal lateinit var daggerInjected: Something`.
       - 'javax.inject.Inject'
+    # Enforce this for production and test code.
+    excludes: [ ]
+    # Disable it on test classes.
+    ignoreOnClassesPattern: '.*Test$'
 
   UnsafeCallOnNullableType:
     # Disabled, because sometimes it's ok to just bang something.

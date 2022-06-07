@@ -25,6 +25,8 @@ class LocationSpoofer(
 
 	private val locationManager = context.getSystemService<LocationManager>()!!
 
+	@Suppress("LateinitUsage")
+	// It expresses the logic well, it'll be set up later in the lifecycle.
 	private lateinit var testProvider: String
 
 	fun initialize() {
