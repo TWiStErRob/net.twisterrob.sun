@@ -65,6 +65,7 @@ potential-bugs:
     # Enforce this for production and test code.
     excludes: [ ]
     # Disable it on test classes.
+    # TODO replace with something more specific  https://github.com/detekt/detekt/issues/4930
     ignoreOnClassesPattern: '.*Test$'
 
   UnsafeCallOnNullableType:
