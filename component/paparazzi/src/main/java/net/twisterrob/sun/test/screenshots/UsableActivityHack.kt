@@ -60,6 +60,7 @@ private class SystemServiceContextWrapper(
 	}
 
 	private fun getSystemServiceClass(name: String): Class<*> =
+		// Note: need to use .toMap on a already-Map, because ArrayMap has problems with iteration on entries.
 		SYSTEM_SERVICE_NAMES.toMap().entries.single { it.value == name }.key
 
 	companion object {
