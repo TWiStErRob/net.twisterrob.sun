@@ -80,12 +80,12 @@ class LocationSpoofer(
 			checkOp(AppOpsManager.OPSTR_MOCK_LOCATION, context.packageName)
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && AppOpsManager.MODE_ALLOWED != ops.checkMock()) {
-			Log.d("LocationSpoofer", "Setting up ${context.packageName} to be able to do MOCK_LOCATION operations.")
+			Log.d(TAG, "Setting up ${context.packageName} to be able to do MOCK_LOCATION operations.")
 			InstrumentationRegistry.getInstrumentation().uiAutomation
 				.executeShellCommand("appops set ${context.packageName} android:mock_location allow")
-			Log.d("LocationSpoofer", "Waiting a second to let the system wake up.")
+			Log.d(TAG, "Waiting a second to let the system wake up.")
 			busyWait(5000, 100) { ops.checkMock() == AppOpsManager.MODE_ALLOWED }
-			Log.d("LocationSpoofer", "Should have MOCK_LOCATION now.")
+			Log.d(TAG, "Should have MOCK_LOCATION now.")
 			assertEquals(AppOpsManager.MODE_ALLOWED, ops.checkMock())
 		}
 		assertTrue(locationManager.isLocationEnabled)
@@ -138,6 +138,11 @@ class LocationSpoofer(
 		val lastPassive = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
 		@Suppress("ForbiddenMethodCall", "NullableToStringCall")
 		println("${bestProvider}->${last}\npassive->${lastPassive}\n${providers}")
+	}
+
+	companion object {
+
+		private const val TAG: String = "LocationSpoofer"
 	}
 }
 
