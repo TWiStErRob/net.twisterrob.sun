@@ -6,7 +6,7 @@ import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation
 
 object SunAngleWidgetPreferences {
 
-	private const val PREF_NAME = "SunAngleWidget"
+	private const val PREF_NAME: String = "SunAngleWidget"
 
 	/**
 	 * User defined state of the relation toggle.
