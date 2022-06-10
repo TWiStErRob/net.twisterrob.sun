@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation
 
-@Suppress("BooleanPropertyNaming") // DEFAULT_* constants, TODEL https://github.com/detekt/detekt/issues/4920
 object SunAngleWidgetPreferences {
 
 	private const val PREF_NAME = "SunAngleWidget"
@@ -69,6 +68,7 @@ object SunAngleWidgetPreferences {
 	 * *default*: [DEFAULT_SHOW_UPDATE_TIME]
 	 */
 	const val PREF_SHOW_UPDATE_TIME: String = "showLastUpdateTime"
+	@Suppress("BooleanPropertyNaming") // TODEL https://github.com/detekt/detekt/issues/4920
 	const val DEFAULT_SHOW_UPDATE_TIME: Boolean = false
 
 	/**
@@ -80,6 +80,7 @@ object SunAngleWidgetPreferences {
 	 * *default*: [DEFAULT_SHOW_PART_OF_DAY]
 	 */
 	const val PREF_SHOW_PART_OF_DAY: String = "showPartOfDay"
+	@Suppress("BooleanPropertyNaming") // TODEL https://github.com/detekt/detekt/issues/4920
 	const val DEFAULT_SHOW_PART_OF_DAY: Boolean = true
 
 	@JvmStatic
