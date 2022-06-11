@@ -127,8 +127,6 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: ${{ github.workspace }}/build/reports/detekt/merge.sarif
-    outputs:
-      gradle: ${{ steps.gradle.outcome }}
 
   record-base:
     name: 📸 Screenshot Tests / Record
@@ -243,16 +241,6 @@ jobs:
       - build
       # Need to run after recording base branch golden values to compare against them.
       - record-base
-    # Complex condition: only execute when it will yield relevant results
-    # - success() || failure():
-    #   needs.build may fail because of unit or static checks, so let's try anyway when gradle is good.
-    # - needs.build.outputs.gradle == 'success':
-    #   this is what is a deal-breaker, if Gradle build fails, that means compilation or bigger issue.
-    #   it is very likely that Gradle build executing Screenshot test verification will fail too.
-    # - needs.record-base.result == 'success':
-    #   due to previous part of the condition failure from needs.record-base is not propagated properly,
-    #   so have to check manually: failure() would allow a failed needs.record, but we don't want to execute then.
-    if: (success() || failure()) && needs.record-base.result == 'success' && needs.build.outputs.gradle == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
