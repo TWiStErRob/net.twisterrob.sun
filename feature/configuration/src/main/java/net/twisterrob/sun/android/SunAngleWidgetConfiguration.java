@@ -415,7 +415,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		);
 	}
 
-	
+	@SuppressLint("StringFormatInvalid")
 	void updateUI(@NonNull SunSearchResults results) {
 		ThresholdRelation rel = getCurrentRelation();
 		float angle = getCurrentThresholdAngle();

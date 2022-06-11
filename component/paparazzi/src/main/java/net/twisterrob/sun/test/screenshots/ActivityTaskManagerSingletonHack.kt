@@ -44,14 +44,14 @@ class ActivityTaskManagerSingletonHack : ExternalResource() {
 			STATIC[IActivityTaskManagerSingleton] = backup
 			backup = null
 		} catch (ex: IllegalAccessException) {
-			 // Exactly what I want.
+			@Suppress("NullableToStringCall") // Exactly what I want.
 			throw IllegalStateException("Cannot restore original state: ${backup}", ex)
 		}
 	}
 
 	companion object {
 
-		
+		@SuppressLint("DiscouragedPrivateApi")
 		private val IActivityTaskManagerSingleton: Field = run {
 			try {
 				ActivityTaskManager::class.java

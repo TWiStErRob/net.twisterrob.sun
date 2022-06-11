@@ -155,7 +155,7 @@ public class SunAngleWidgetViewScreenshotTest {
 	/**
 	 * @see net.twisterrob.sun.android.preview.R.array.widget_size_preset
 	 */
-	
+	@SuppressWarnings("JavadocReference")
 	enum Preset {
 		Nice_Preview("Nice Preview", 72, 86),
 		Galaxy_S4("Galaxy S4", 84, 105),

@@ -16,7 +16,7 @@ internal fun Project.commonAndroidConfig() {
 	commonJavaConfig()
 	// TODO https://github.com/gradle/android-cache-fix-gradle-plugin/issues/215
 	//apply(plugin = "org.gradle.android.cache-fix")
-	
+	@Suppress("UnstableApiUsage")
 	extensions.configure<BaseExtension> {
 		this as CommonExtension<*, *, *, *>
 		compileSdk = libs.versions.compileSdkVersion.get().toInt()

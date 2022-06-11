@@ -75,7 +75,7 @@ public abstract class FixedPreferences implements SharedPreferences {
 	protected class FixedPreferencesEditor implements Editor {
 		private final SharedPreferences.Editor edit;
 
-		
+		@SuppressLint("CommitPrefEdits")
 		public FixedPreferencesEditor() {
 			this.edit = prefs.edit();
 		}

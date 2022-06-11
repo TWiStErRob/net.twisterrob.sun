@@ -6,11 +6,11 @@ import java.lang.reflect.Modifier
 internal val STATIC: Any? = null
 
 internal operator fun Any?.get(field: Field): Any? =
-	 // Helper exists to solve exactly this.
+	@Suppress("ExplicitCollectionElementAccessMethod") // Helper exists to solve exactly this.
 	field.get(this)
 
 internal operator fun Any?.set(field: Field, value: Any?) {
-	 // Helper exists to solve exactly this.
+	@Suppress("ExplicitCollectionElementAccessMethod") // Helper exists to solve exactly this.
 	field.set(this, value)
 }
 

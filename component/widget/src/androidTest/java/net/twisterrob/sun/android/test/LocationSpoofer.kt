@@ -25,7 +25,7 @@ class LocationSpoofer(
 
 	private val locationManager = context.getSystemService<LocationManager>()!!
 
-	
+	@Suppress("LateinitUsage")
 	// It expresses the logic well, it'll be set up later in the lifecycle.
 	private lateinit var testProvider: String
 
@@ -122,7 +122,7 @@ class LocationSpoofer(
 	/**
 	 * Debug-only code, call to see what providers would return.
 	 */
-	
+	@Suppress("unused")
 	@VisibleForTesting
 	@TestOnly
 	fun diagnostics() {
@@ -136,7 +136,7 @@ class LocationSpoofer(
 		val bestProvider = locationManager.getBestProvider(criteria, true) ?: LocationManager.PASSIVE_PROVIDER
 		val last = locationManager.getLastKnownLocation(bestProvider)
 		val lastPassive = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
-		
+		@Suppress("ForbiddenMethodCall", "NullableToStringCall")
 		println("${bestProvider}->${last}\npassive->${lastPassive}\n${providers}")
 	}
 

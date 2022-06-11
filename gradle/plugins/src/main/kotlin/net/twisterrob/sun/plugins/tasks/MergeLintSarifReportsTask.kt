@@ -63,7 +63,7 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 
 		val projectRoot = SdkUtils.fileToUrlString(project.rootDir)
 
-		
+		@Suppress("NestedLambdaShadowedImplicitParameter")
 		val mergedSarif = sarifs.values.first().let {
 			it.copy(
 				runs = listOf(
@@ -105,7 +105,7 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 			.map { it.value.first() }
 
 
-	
+	@Suppress("NestedLambdaShadowedImplicitParameter")
 	private fun Result.relocate(sarif: SarifSchema210, common: String): Result {
 		// originalURIBaseIDS.uri = file:///P:/projects/workspace/net.twisterrob.sun/feature/configuration/
 		// common = file:///P:/projects/workspace/net.twisterrob.sun/

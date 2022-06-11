@@ -52,14 +52,14 @@ class ActivityClientSingletonHack : ExternalResource() {
 			STATIC[INTERFACE_SINGLETON][mKnownInstance] = backup
 			backup = null
 		} catch (ex: IllegalAccessException) {
-			 // Exactly what I want.
+			@Suppress("NullableToStringCall") // Exactly what I want.
 			throw IllegalStateException("Cannot restore original state: ${backup}", ex)
 		}
 	}
 
 	companion object {
 
-		
+		@SuppressLint("BlockedPrivateApi")
 		private val INTERFACE_SINGLETON: Field = run {
 			try {
 				ActivityClient::class.java
@@ -72,7 +72,7 @@ class ActivityClientSingletonHack : ExternalResource() {
 			}
 		}
 
-		
+		@SuppressLint("PrivateApi", "BlockedPrivateApi")
 		private val mKnownInstance: Field = run {
 			try {
 				Class.forName("android.app.ActivityClient\$ActivityClientControllerSingleton")

@@ -172,7 +172,7 @@ public class SunAngleWidgetView {
 			Class<?> SAWC = Class.forName("net.twisterrob.sun.android.SunAngleWidgetConfiguration");
 			Intent configIntent = new Intent(context, SAWC);
 			configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-			 // New flag shouldn't cause a problem in older versions.
+			@SuppressLint("InlinedApi") // New flag shouldn't cause a problem in older versions.
 			int flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
 			return PendingIntent.getActivity(context, appWidgetId, configIntent, flags);
 		} catch (ClassNotFoundException e) {
@@ -182,7 +182,7 @@ public class SunAngleWidgetView {
 
 	private static @NonNull PendingIntent createRefreshIntent(@NonNull Context context, int appWidgetId) {
 		Intent intent = WidgetHelpers.createUpdateIntent(context, SunAngleWidgetProvider.class, appWidgetId);
-		 // New flag shouldn't cause a problem in older versions.
+		@SuppressLint("InlinedApi") // New flag shouldn't cause a problem in older versions.
 		int flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
 		return PendingIntent.getBroadcast(context, appWidgetId, intent, flags);
 	}
