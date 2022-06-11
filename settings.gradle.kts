@@ -97,7 +97,7 @@ gradleEnterprise {
 				@Deprecated("Won't work with configuration caching.")
 				override fun buildFinished(result: BuildResult) {
 					println("::set-output name=result-success::${toJson(result.failure == null)}")
-					println("::set-output name=result-text::${toJson(resultText(result.failure))}")
+					println("::set-output name=result-text::${toJson(resultText(result))}")
 				}
 
 				private fun resultText(result: BuildResult): String =

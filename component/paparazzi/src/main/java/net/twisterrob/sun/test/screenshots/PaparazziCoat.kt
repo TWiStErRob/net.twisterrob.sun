@@ -18,6 +18,9 @@ class PaparazziCoat(
 	private val paparazzi: Paparazzi,
 ) : TestRule {
 
+	val context: Context
+		get() = paparazzi.context
+
 	override fun apply(base: Statement, description: Description): Statement =
 		RuleChain
 			.emptyRuleChain()
@@ -26,9 +29,6 @@ class PaparazziCoat(
 			.around(ActivityClientSingletonHack())
 			.around(ActivityTaskManagerSingletonHack())
 			.apply(base, description)
-
-	val context: Context
-		get() = paparazzi.context
 
 	fun snapshot(view: View) {
 		paparazzi.snapshot(view)

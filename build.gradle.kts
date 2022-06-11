@@ -1,4 +1,4 @@
-@Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage") // TODEL Gradle 7.x
+@Suppress("DSL_SCOPE_VIOLATION") // TODEL Gradle 7.x
 plugins {
 	id("project-module-root")
 	alias(libs.plugins.android.app) apply false

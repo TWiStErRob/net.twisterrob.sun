@@ -47,13 +47,13 @@ public class SunGradientShaderFactory extends ShapeDrawable.ShaderFactory {
 				@SuppressWarnings({"PointlessArithmeticExpression", "UnaryPlus", "UnnecessaryUnaryMinus"})
 				float[] degrees = {
 						// day (top half circle, left to right)
-						0,
+						0 * m,
 						3 * m,
 						6 * m,
 						90, // day peak
 						180 - +6 * m,
 						180 - +3 * m,
-						180 - +0,
+						180 - +0 * m,
 						// night (bottom half circle, right to left)
 						180 - -6 * m,
 						180 - -12 * m,
@@ -63,7 +63,7 @@ public class SunGradientShaderFactory extends ShapeDrawable.ShaderFactory {
 						360 + -12 * m,
 						360 + -6 * m,
 						// back to horizon
-						360 + 0
+						360 + 0 * m,
 				};
 				this.percentages = reverseInPlace(toPercentageInverseRadialInPlace(degrees));
 				break;
@@ -79,7 +79,7 @@ public class SunGradientShaderFactory extends ShapeDrawable.ShaderFactory {
 						horizon,
 						half,
 						top, // to have a shorter gradient
-						top
+						top,
 				};
 				@SuppressWarnings({"UnaryPlus"})
 				float[] degrees = {

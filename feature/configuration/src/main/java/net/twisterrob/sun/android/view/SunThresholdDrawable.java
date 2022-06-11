@@ -103,7 +103,7 @@ public class SunThresholdDrawable extends Drawable {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "RedundantSuppression"}) // Not redundant, needed for javac.
 	public int getOpacity() {
 		return PixelFormat.TRANSLUCENT;
 	}

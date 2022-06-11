@@ -7,7 +7,6 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
 
-@Suppress("RemoveExplicitTypeArguments")
 inline fun <reified T : Task> TaskContainer.maybeRegister(
 	taskName: String,
 	noinline configuration: T.() -> Unit
@@ -15,5 +14,6 @@ inline fun <reified T : Task> TaskContainer.maybeRegister(
 	try {
 		named<T>(taskName)
 	} catch (ex: UnknownTaskException) {
+		@Suppress("RemoveExplicitTypeArguments")
 		register<T>(taskName, configuration)
 	}

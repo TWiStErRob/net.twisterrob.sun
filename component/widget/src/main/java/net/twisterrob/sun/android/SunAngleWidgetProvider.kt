@@ -11,8 +11,8 @@ import javax.inject.Inject
 
 class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 
-	@Inject lateinit var updater: SunAngleWidgetUpdater
-	@Inject lateinit var locations: LocationRetriever
+	@Inject internal lateinit var updater: SunAngleWidgetUpdater
+	@Inject internal lateinit var locations: LocationRetriever
 
 	override fun onReceive(context: Context, intent: Intent) {
 		DaggerWidgetComponent.factory().create(context).inject(this)
@@ -39,6 +39,9 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 	}
 
 	private fun updateAll(location: Location?, appWidgetIds: IntArray) {
+		@Suppress("LoopToCallChain")
+		// Keeping it as for loop as the alternative would hide the side-effect and mislead.
+		// Suggestions welcome!
 		for (appWidgetId in appWidgetIds) {
 			if (!updater.update(appWidgetId, location)) {
 				Log.w(TAG, "${this}.update(${appWidgetId}) failed.")

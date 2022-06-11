@@ -98,7 +98,6 @@ public class SunSearchResults {
 		}
 
 		@Override
-		@SuppressWarnings("CloneDoesntDeclareCloneNotSupportedException")
 		public SunSearchParams clone() {
 			try {
 				return (SunSearchParams)super.clone();

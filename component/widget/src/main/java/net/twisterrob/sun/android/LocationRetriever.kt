@@ -23,7 +23,7 @@ class LocationRetriever @Inject constructor(
 ) {
 
 	@set:VisibleForTesting
-	var checkPassive: Boolean = true
+	var isPassiveProviderPreferred: Boolean = true
 
 	private interface LocationUpdate {
 
@@ -36,7 +36,7 @@ class LocationRetriever @Inject constructor(
 	fun get(timeout: Long = Long.MAX_VALUE, block: (Location?) -> Unit) {
 		val locationManager = context.getSystemService<LocationManager>()!!
 		locationManager.getLocation(object : LocationUpdate {
-			lateinit var timeoutThread: Thread
+			private var timeoutThread: Thread? = null
 
 			override fun noLocation() {
 				block(null)
@@ -60,9 +60,8 @@ class LocationRetriever @Inject constructor(
 			}
 
 			override fun newLocation(location: Location) {
-				if (::timeoutThread.isInitialized) {
-					timeoutThread.interrupt()
-				}
+				timeoutThread?.interrupt()
+				timeoutThread = null
 				block(location)
 			}
 		})
@@ -84,7 +83,7 @@ class LocationRetriever @Inject constructor(
 			callback.noLocation()
 			return
 		}
-		if (checkPassive) {
+		if (isPassiveProviderPreferred) {
 			// The passive provider doesn't seem to work with coarse permission only.
 			this.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)?.let { location ->
 				if (Log.isLoggable(TAG, Log.VERBOSE)) {

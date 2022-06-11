@@ -38,7 +38,7 @@ internal class SunAngleFormatter @Inject constructor() {
 	fun formatTime3(time: Date): CharSequence =
 		time3.format(time)
 
-	internal class Result(
+	data class Result(
 		@JvmField
 		val angle: String,
 		@JvmField

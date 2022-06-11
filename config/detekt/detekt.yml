@@ -1,5 +1,170 @@
+config:
+  # If a property in the configuration is deprecated, that'll fail Detekt execution.
+  warningsAsErrors: true
+
+processors:
+  # Blanket disable processors as they are not used.
+  # Stats would show up in HTML report, but since that's not mergeable it has little value per module.
+  active: false
+
+console-reports:
+  exclude:
+    # Disabled because I don't want to see what kind of reports are generate every time I run detekt.
+    - 'NotificationReport'
+    # Disabled because it's very verbose. 
+    - 'FindingsReport'
+    # Disabled because it's very verbose, even more so than FindingsReport.
+    - 'FileBasedFindingsReport'
+    # Enabled, because this gives enough context to see the problems.
+    #- 'LiteFindingsReport'
+
+
+comments:
+
+  AbsentOrWrongFileLicense:
+    # I don't use licences on top of each file.
+    active: false
+
+  CommentOverPrivateFunction:
+    # Disabled as I don't agree with it, if a function needs docs, it needs docs. Visibility doesn't change that.
+    active: false
+
+  CommentOverPrivateProperty:
+    # Disabled as I don't agree with it, if a function needs docs, it needs docs. Visibility doesn't change that.
+    active: false
+
+  KDocReferencesNonPublicProperty:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+  UndocumentedPublicClass:
+    # Disabled as this is not a public library. For now it's not even all in Kotlin.
+    active: false
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+  UndocumentedPublicFunction:
+    # Disabled as this is not a public library. For now it's not even all in Kotlin.
+    active: false
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+  UndocumentedPublicProperty:
+    # Disabled as this is not a public library. For now it's not even all in Kotlin.
+    active: false
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+
+complexity:
+
+  StringLiteralDuplication:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+    # Be stricter than defaults.
+    excludeStringsWithLessThan5Characters: false
+
+  TooManyFunctions:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+
+exceptions:
+
+  InstanceOfCheckForException:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+  ThrowingExceptionsWithoutMessageOrCause:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+  TooGenericExceptionCaught:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+
+naming:
+
+  FunctionNaming:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+  FunctionMaxLength:
+    ignoreAnnotated:
+      # Test names in JUnit 4 are ok to be long as they're likely sentences.
+      - 'org.junit.Test'
+      # Test names in JUnit 5 are ok to be long as they're likely sentences.
+      - 'org.junit.jupiter.api.Test'
+
+
+performance:
+
+  ForEachOnRange:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+  SpreadOperator:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+
+potential-bugs:
+
+  LateinitUsage:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+    # Disable it on test classes.
+    # TODO replace with something more specific  https://github.com/detekt/detekt/issues/4930
+    ignoreOnClassesPattern: '.*Test$'
+    ignoreAnnotated:
+      # It's ok to use `@Inject internal lateinit var daggerInjected: Something`.
+      - 'javax.inject.Inject'
+
+  UnsafeCallOnNullableType:
+    # Disabled, because sometimes it's ok to just bang something.
+    active: false
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+
 style:
-  ReturnCount:
-    max: 3
+
+  ForbiddenPublicDataClass:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+  LibraryCodeMustSpecifyReturnType:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+    ignoreAnnotated:
+      - 'org.junit.Rule'
+
+  LibraryEntitiesShouldNotBePublic:
+    # Disabled, as it flags all public classes.
+    # Intent of this check is unclear: how can a library without public exist?
+    active: false
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+  NoTabs:
+    # I'm a tab guy, I don't pay for space in advance.
+    active: false
+
+    #MagicNumber:
+    # Keep original configuration, and exclude tests.
+    #excludes: [ ]
+
   MaxLineLength:
+    # It's unavoidable to have some long lines when stacktraces or links are added as comments.
     excludeCommentStatements: true
+
+  ReturnCount:
+    # Default 2 is not enough, usually a single guard and a condition simply violates this.
+    max: 3
+
+  WildcardImport:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+    # No exceptions, the defaults in Kotlin have some historical reasons, but they're more confusing than useful.
+    excludeImports: [ ]

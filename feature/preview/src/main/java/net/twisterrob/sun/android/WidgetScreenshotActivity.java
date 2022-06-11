@@ -211,10 +211,13 @@ public class WidgetScreenshotActivity extends Activity {
 						+ " (exists: " + storageDir.exists() + ", dir: " + storageDir.isDirectory() + ")");
 			}
 			File file = File.createTempFile(timeStamp, ".png", storageDir);
-			@SuppressWarnings("resource")
 			OutputStream stream = new FileOutputStream(file);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-			stream.close();
+			//noinspection TryFinallyCanBeTryWithResources
+			try {
+				bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+			} finally {
+				stream.close();
+			}
 
 			Uri contentUri = FileProvider.getUriForFile(context, context.getString(R.string.app_package), file);
 
