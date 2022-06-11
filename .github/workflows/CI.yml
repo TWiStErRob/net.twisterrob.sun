@@ -1,6 +1,6 @@
 name: CI
 on:
-  push:
+  push
 
 concurrency:
   # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    name: "🔨 Build & Verify"
+    name: 🔨 Build & Verify
     runs-on: ubuntu-latest
     # A local build took 20 seconds, CI takes 3 minutes with setup.
     # Because it's cloud, give it a bit of a buffer and constrain.
@@ -127,17 +127,19 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: ${{ github.workspace }}/build/reports/detekt/merge.sarif
+    outputs:
+      gradle: ${{ steps.gradle.outcome }}
 
   record-base:
-    name: "📸 Screenshot Tests: Record"
+    name: 📸 Screenshot Tests / Record
     # Don't execute on master, as it'll just verify against itself.
     if: github.ref != 'refs/heads/master'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
-        uses: 8BitJonny/gh-get-current-pr@2.0.0
         id: current_pr
+        uses: 8BitJonny/gh-get-current-pr@2.0.0
         with:
           # TODEL https://github.com/8BitJonny/gh-get-current-pr/pull/83
           github-token: ${{ github.token }}
@@ -201,7 +203,7 @@ jobs:
               repo: context.repo.repo,
               sha: context.sha,
               state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
-              context: "Screenshot Tests / Record / Gradle",
+              context: "CI / Screenshot Tests / Record / Gradle",
               description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
               target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
             });
@@ -235,10 +237,22 @@ jobs:
           files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
   verify-pr:
-    name: "🧪 Screenshot Tests: Verify"
+    name: 🧪 Screenshot Tests / Verify
     needs:
+      # If build fails, there's not much point in running screenshot tests.
       - build
+      # Need to run after recording base branch golden values to compare against them.
       - record-base
+    # Complex condition: only execute when it will yield relevant results
+    # - success() || failure():
+    #   needs.build may fail because of unit or static checks, so let's try anyway when gradle is good.
+    # - needs.build.outputs.gradle == 'success':
+    #   this is what is a deal-breaker, if Gradle build fails, that means compilation or bigger issue.
+    #   it is very likely that Gradle build executing Screenshot test verification will fail too.
+    # - needs.record-base.result == 'success':
+    #   due to previous part of the condition failure from needs.record-base is not propagated properly,
+    #   so have to check manually: failure() would allow a failed needs.record, but we don't want to execute then.
+    if: (success() || failure()) && needs.record-base.result == 'success' && needs.build.outputs.gradle == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -313,7 +327,7 @@ jobs:
               repo: context.repo.repo,
               sha: context.sha,
               state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
-              context: "Screenshot Tests / Verify / Gradle",
+              context: "CI / Screenshot Tests / Verify / Gradle",
               description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
               target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
             });
