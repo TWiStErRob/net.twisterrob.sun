@@ -135,8 +135,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: "Ref: ${{ github.ref }}"
-        run: true
+      - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
+        uses: 8BitJonny/gh-get-current-pr@2.0.0
+        id: current_pr
+        with:
+          # TODEL https://github.com/8BitJonny/gh-get-current-pr/pull/83
+          github-token: ${{ github.token }}
+
+      - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
+        id: pull_request
+        run: |
+          # Simulate github.event.pull_request.base.ref on push trigger.
+          echo "::set-output name=base_ref::${{ fromJSON(steps.current_pr.outputs.pr).base.ref }}"
 
       - name: Set up JDK 11.
         uses: actions/setup-java@v3
@@ -163,12 +173,12 @@ jobs:
           echo sdkmanager --install "platforms;android-31"
           sdkmanager --install "platforms;android-31"
 
-      - name: Checkout ${{ github.event.pull_request.base.ref }} branch in ${{ github.repository }} repository.
+      - name: Checkout ${{ steps.pull_request.outputs.base_ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v3
         with:
-          ref: ${{ format('refs/heads/{0}', github.event.pull_request.base.ref) }}
+          ref: ${{ format('refs/heads/{0}', steps.pull_request.outputs.base_ref) }}
 
-      - name: Record screenshots golden values for ${{ github.event.pull_request.base.ref }}.
+      - name: Record screenshots golden values for ${{ steps.pull_request.outputs.base_ref }}.
         id: gradle
         run: >
           ./gradlew
@@ -232,6 +242,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
+        uses: 8BitJonny/gh-get-current-pr@2.0.0
+        id: current_pr
+        with:
+          # TODEL https://github.com/8BitJonny/gh-get-current-pr/pull/83
+          github-token: ${{ github.token }}
+
+      - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
+        id: pull_request
+        run: |
+          # Simulate github.event.pull_request.head.ref on push trigger.
+          echo "::set-output name=head_ref::${{ fromJSON(steps.current_pr.outputs.pr).head.ref }}"
+
       - name: Set up JDK 11.
         uses: actions/setup-java@v3
         with:
@@ -257,17 +280,17 @@ jobs:
           echo sdkmanager --install "platforms;android-31"
           sdkmanager --install "platforms;android-31"
 
-      - name: Checkout ${{ github.event.pull_request.head.ref }} branch in ${{ github.repository }} repository.
+      - name: Checkout ${{ steps.pull_request.outputs.head_ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v3
         with:
-          ref: ${{ format('refs/heads/{0}', github.event.pull_request.head.ref) }}
+          ref: ${{ format('refs/heads/{0}', steps.pull_request.outputs.head_ref) }}
 
       - name: Download 'Screenshot Golden Values' artifact.
         uses: actions/download-artifact@v3
         with:
           name: Screenshot Golden Values
 
-      - name: Run screenshot tests to verify ${{ github.event.pull_request.head.ref }}.
+      - name: Run screenshot tests to verify ${{ steps.pull_request.outputs.head_ref }}.
         id: gradle
         run: >
           ./gradlew
