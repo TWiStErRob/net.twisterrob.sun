@@ -1,6 +1,7 @@
 name: CI
 on:
   push
+
 concurrency:
   # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
   # On master, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
@@ -126,3 +127,218 @@ jobs:
         if: success() || failure()
         with:
           sarif_file: ${{ github.workspace }}/build/reports/detekt/merge.sarif
+
+  record-base:
+    name: 📸 Screenshot Tests / Record
+    # Don't execute on master, as it'll just verify against itself.
+    if: github.ref != 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
+        id: current_pr
+        uses: 8BitJonny/gh-get-current-pr@2.0.0
+        with:
+          # TODEL https://github.com/8BitJonny/gh-get-current-pr/pull/83
+          github-token: ${{ github.token }}
+
+      - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
+        id: pull_request
+        run: |
+          # Simulate github.event.pull_request.base.ref on push trigger.
+          echo "::set-output name=base_ref::${{ fromJSON(steps.current_pr.outputs.pr).base.ref }}"
+
+      - name: Set up JDK 11.
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Set up Android SDK.
+        uses: android-actions/setup-android@v2
+
+      - name: Set up Android SDK components.
+        run: |
+          # Uninstall NDK, because it's not used and it emits a warning:
+          # Warning: Observed package id 'ndk;21.4.7075529' in inconsistent location '/usr/local/lib/android/sdk/ndk-bundle' (Expected '/usr/local/lib/android/sdk/ndk/21.4.7075529')
+          echo sdkmanager --uninstall "ndk;21.4.7075529"
+          sdkmanager --uninstall "ndk;21.4.7075529"
+
+          # The following are already done by setup-android@v2 action:
+          # sdkmanager --install "cmdline-tools;latest"
+          # sdkmanager --install "tools"
+          # sdkmanager --install "platform-tools"
+
+          # Install Android API used to build the project.
+          echo sdkmanager --install "platforms;android-31"
+          sdkmanager --install "platforms;android-31"
+
+      - name: Checkout ${{ steps.pull_request.outputs.base_ref }} branch in ${{ github.repository }} repository.
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ format('refs/heads/{0}', steps.pull_request.outputs.base_ref) }}
+
+      - name: Record screenshots golden values for ${{ steps.pull_request.outputs.base_ref }}.
+        id: gradle
+        run: >
+          ./gradlew
+          --no-daemon
+          --no-build-cache
+          --stacktrace
+          --continue
+          --scan
+          recordPaparazziDebug
+          -Pnet.twisterrob.build.screenshot-tests=true
+
+      - name: Publish "Gradle" result and Build Scan URL.
+        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
+        uses: actions/github-script@v6
+        with:
+          debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
+              context: "CI / Screenshot Tests / Record / Gradle",
+              description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
+              target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
+            });
+
+      - name: Upload "Screenshot Golden Values" artifact.
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Screenshot Golden Values
+          path: |
+            ${{ github.workspace }}/**/src/test/snapshots/images/*.png
+
+      - name: Upload "Screenshot Record Results" artifact.
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Screenshot Record Results
+          path: |
+            ${{ github.workspace }}/**/build/reports/tests/*/
+            ${{ github.workspace }}/**/build/reports/paparazzi/
+            ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+
+      - name: Publish "Screenshot Record Results" check suite.
+        if: success() || failure()
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          check_name: "🔔 Test: Screenshot Record Results"
+          comment_mode: off
+          report_individual_runs: true
+          test_changes_limit: 0
+          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+
+  verify-pr:
+    name: 🧪 Screenshot Tests / Verify
+    needs:
+      # If build fails, there's not much point in running screenshot tests.
+      - build
+      # Need to run after recording base branch golden values to compare against them.
+      - record-base
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
+        uses: 8BitJonny/gh-get-current-pr@2.0.0
+        id: current_pr
+        with:
+          # TODEL https://github.com/8BitJonny/gh-get-current-pr/pull/83
+          github-token: ${{ github.token }}
+
+      - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
+        id: pull_request
+        run: |
+          # Simulate github.event.pull_request.head.ref on push trigger.
+          echo "::set-output name=head_ref::${{ fromJSON(steps.current_pr.outputs.pr).head.ref }}"
+
+      - name: Set up JDK 11.
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Set up Android SDK.
+        uses: android-actions/setup-android@v2
+
+      - name: Set up Android SDK components.
+        run: |
+          # Uninstall NDK, because it's not used and it emits a warning:
+          # Warning: Observed package id 'ndk;21.4.7075529' in inconsistent location '/usr/local/lib/android/sdk/ndk-bundle' (Expected '/usr/local/lib/android/sdk/ndk/21.4.7075529')
+          echo sdkmanager --uninstall "ndk;21.4.7075529"
+          sdkmanager --uninstall "ndk;21.4.7075529"
+
+          # The following are already done by setup-android@v2 action:
+          # sdkmanager --install "cmdline-tools;latest"
+          # sdkmanager --install "tools"
+          # sdkmanager --install "platform-tools"
+
+          # Install Android API used to build the project.
+          echo sdkmanager --install "platforms;android-31"
+          sdkmanager --install "platforms;android-31"
+
+      - name: Checkout ${{ steps.pull_request.outputs.head_ref }} branch in ${{ github.repository }} repository.
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ format('refs/heads/{0}', steps.pull_request.outputs.head_ref) }}
+
+      - name: Download 'Screenshot Golden Values' artifact.
+        uses: actions/download-artifact@v3
+        with:
+          name: Screenshot Golden Values
+
+      - name: Run screenshot tests to verify ${{ steps.pull_request.outputs.head_ref }}.
+        id: gradle
+        run: >
+          ./gradlew
+          --no-daemon
+          --no-build-cache
+          --stacktrace
+          --continue
+          --scan
+          verifyPaparazziDebug
+          -Pnet.twisterrob.build.screenshot-tests=true
+
+      - name: Publish "Gradle" result and Build Scan URL.
+        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
+        uses: actions/github-script@v6
+        with:
+          debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
+          script: |
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
+              context: "CI / Screenshot Tests / Verify / Gradle",
+              description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
+              target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
+            });
+
+      - name: Upload "Screenshot Test Results" artifact.
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: Screenshot Test Results
+          # Notice that `${{ github.workspace }}/**/build/reports/paparazzi/` folder is not uploaded,
+          # that's because Paparazzi doesn't generate a report on failure...
+          path: |
+            ${{ github.workspace }}/**/build/reports/tests/*/
+            ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+            ${{ github.workspace }}/**/out/failures/delta-*.png
+            ${{ github.workspace }}/**/out/failures/*.png
+
+      - name: Publish "Screenshot Verify Results" check suite.
+        if: success() || failure()
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        with:
+          check_name: "🔔 Test: Screenshot Verify Results"
+          comment_mode: off
+          report_individual_runs: true
+          test_changes_limit: 0
+          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
