@@ -88,7 +88,7 @@ gradleEnterprise {
 	buildScan {
 		termsOfServiceUrl = "https://gradle.com/terms-of-service"
 		termsOfServiceAgree = "yes"
-		// https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+		// TODO how to use net.twisterrob.sun.plugins.isCI? 
 		if (System.getenv("GITHUB_ACTIONS") == "true") {
 			buildScanPublished {
 				println("::set-output name=build-scan-url::${toJson(this@buildScanPublished.buildScanUri.toString())}")

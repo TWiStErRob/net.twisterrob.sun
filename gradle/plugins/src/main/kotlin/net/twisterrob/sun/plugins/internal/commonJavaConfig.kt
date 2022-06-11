@@ -3,9 +3,11 @@ package net.twisterrob.sun.plugins.internal
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
+import net.twisterrob.sun.plugins.isCI
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
@@ -83,5 +85,8 @@ internal fun Project.commonJavaConfig() {
 				input.from(this@withType.xmlReportFile) 
 			}
 		}
+	}
+	tasks.withType<Test>().configureEach {
+		ignoreFailures = isCI
 	}
 }
