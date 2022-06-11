@@ -34,6 +34,7 @@ public abstract class SeasonFormulaTest {
 
 	@Test
 	public void testDeclinationEquinox() {
+		fail("test unit failure");
 		Calendar springEquinox = (Calendar)SPRING_EQUINOX.clone();
 		Calendar autumnEquinox = (Calendar)AUTUMN_EQUINOX.clone();
 

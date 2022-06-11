@@ -39,7 +39,7 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 	}
 
 	private fun updateAll(location: Location?, appWidgetIds: IntArray) {
-		@Suppress("LoopToCallChain")
+		
 		// Keeping it as for loop as the alternative would hide the side-effect and mislead.
 		// Suggestions welcome!
 		for (appWidgetId in appWidgetIds) {

@@ -19,7 +19,7 @@ fun Activity.start(baseContext: Context, intent: Intent? = null) {
 	val application = object : Application() {
 		init {
 			attachBaseContext(
-				@Suppress("UnnecessaryLet")
+				
 				// Nesting constructors doesn't scale, this chains well.
 				baseContext
 					.let(::SystemServiceContextWrapper)
@@ -31,7 +31,7 @@ fun Activity.start(baseContext: Context, intent: Intent? = null) {
 			this
 	}
 	this.attach(application, intent)
-	@SuppressLint("NewApi")
+	
 	this.theme = application.theme
 }
 
@@ -67,8 +67,8 @@ private class SystemServiceContextWrapper(
 
 		val SYSTEM_SERVICE_NAMES: Map<Class<*>, String>
 			get() {
-				@Suppress("LocalVariableName", "VariableNaming")
-				@SuppressLint("BlockedPrivateApi")
+				
+				
 				val SYSTEM_SERVICE_NAMES = SystemServiceRegistry::class.java
 					.getDeclaredField("SYSTEM_SERVICE_NAMES")
 					.apply { isAccessible = true }
@@ -116,7 +116,7 @@ private class HackingContextWrapper(
 	 * ```
 	 */
 	override fun getPackageManager(): PackageManager =
-		@Suppress("UseIfInsteadOfWhen")
+		
 		when (val packageManager = super.getPackageManager()) {
 			is BridgePackageManager ->
 				Mockito.spy(packageManager).apply {

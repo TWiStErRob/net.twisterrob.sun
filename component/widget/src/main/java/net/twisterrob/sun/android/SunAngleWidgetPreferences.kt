@@ -69,7 +69,7 @@ object SunAngleWidgetPreferences {
 	 */
 	const val PREF_SHOW_UPDATE_TIME: String = "showLastUpdateTime"
 
-	@Suppress("BooleanPropertyNaming") // TODEL https://github.com/detekt/detekt/issues/4920
+	 // TODEL https://github.com/detekt/detekt/issues/4920
 	const val DEFAULT_SHOW_UPDATE_TIME: Boolean = false
 
 	/**
@@ -82,7 +82,7 @@ object SunAngleWidgetPreferences {
 	 */
 	const val PREF_SHOW_PART_OF_DAY: String = "showPartOfDay"
 
-	@Suppress("BooleanPropertyNaming") // TODEL https://github.com/detekt/detekt/issues/4920
+	 // TODEL https://github.com/detekt/detekt/issues/4920
 	const val DEFAULT_SHOW_PART_OF_DAY: Boolean = true
 
 	@JvmStatic

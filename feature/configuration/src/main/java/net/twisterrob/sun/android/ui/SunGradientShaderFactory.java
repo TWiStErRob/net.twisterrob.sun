@@ -44,7 +44,7 @@ public class SunGradientShaderFactory extends ShapeDrawable.ShaderFactory {
 						// back to horizon
 						horizon
 				);
-				@SuppressWarnings({"PointlessArithmeticExpression", "UnaryPlus", "UnnecessaryUnaryMinus"})
+				
 				float[] degrees = {
 						// day (top half circle, left to right)
 						0 * m,
@@ -81,7 +81,7 @@ public class SunGradientShaderFactory extends ShapeDrawable.ShaderFactory {
 						top, // to have a shorter gradient
 						top,
 				};
-				@SuppressWarnings({"UnaryPlus"})
+				
 				float[] degrees = {
 						// night (bottom to top)
 						-90,
