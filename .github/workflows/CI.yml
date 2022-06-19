@@ -137,10 +137,7 @@ jobs:
     steps:
       - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
         id: current_pr
-        uses: 8BitJonny/gh-get-current-pr@2.0.0
-        with:
-          # TODEL https://github.com/8BitJonny/gh-get-current-pr/pull/83
-          github-token: ${{ github.token }}
+        uses: 8BitJonny/gh-get-current-pr@2.1.0
 
       - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
         id: pull_request
@@ -245,11 +242,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
-        uses: 8BitJonny/gh-get-current-pr@2.0.0
+        uses: 8BitJonny/gh-get-current-pr@2.1.0
         id: current_pr
-        with:
-          # TODEL https://github.com/8BitJonny/gh-get-current-pr/pull/83
-          github-token: ${{ github.token }}
 
       - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
         id: pull_request
