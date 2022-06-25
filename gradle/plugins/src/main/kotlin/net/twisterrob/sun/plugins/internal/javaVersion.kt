@@ -1,7 +1,7 @@
 package net.twisterrob.sun.plugins.internal
 
 import org.gradle.api.JavaVersion
-import org.gradle.api.Project
+import org.gradle.accessors.dm.LibrariesForLibs.VersionAccessors
 
-internal val Project.javaVersion: JavaVersion
-	get() = JavaVersion.toVersion(libs.versions.java.get())
+internal val VersionAccessors.javaVersion: JavaVersion
+	get() = JavaVersion.toVersion(java.get())

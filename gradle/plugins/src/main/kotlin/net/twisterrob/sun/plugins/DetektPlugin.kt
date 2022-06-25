@@ -4,6 +4,7 @@ import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 import net.twisterrob.sun.plugins.internal.javaVersion
+import net.twisterrob.sun.plugins.internal.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByName
@@ -31,7 +32,7 @@ class DetektPlugin : Plugin<Project> {
 
 				project.tasks.withType<Detekt>().configureEach {
 					// Target version of the generated JVM bytecode. It is used for type resolution.
-					jvmTarget = project.javaVersion.toString()
+					jvmTarget = project.libs.versions.javaVersion.toString()
 					reports {
 						html.required.set(true) // human
 						xml.required.set(true) // checkstyle

@@ -12,8 +12,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 internal fun Project.commonJavaConfig() {
 	plugins.apply(DetektPlugin::class)
 	tasks.withType<JavaCompile> {
-		sourceCompatibility = javaVersion.toString()
-		targetCompatibility = javaVersion.toString()
+		sourceCompatibility = libs.versions.javaVersion.toString()
+		targetCompatibility = libs.versions.javaVersion.toString()
 		options.compilerArgs = options.compilerArgs + listOf(
 			// Enable all warnings during compilation.
 			"-Xlint:all",
@@ -32,7 +32,7 @@ internal fun Project.commonJavaConfig() {
 	}
 	tasks.withType<KotlinCompile> {
 		kotlinOptions {
-			jvmTarget = javaVersion.toString()
+			jvmTarget = libs.versions.javaVersion.toString()
 			allWarningsAsErrors = true
 		}
 	}
