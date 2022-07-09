@@ -111,7 +111,7 @@ jobs:
           comment_mode: off
           report_individual_runs: true
           test_changes_limit: 0
-          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+          junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
       - name: Upload "Detekt Results" artifact.
         if: success() || failure()
@@ -229,7 +229,7 @@ jobs:
           comment_mode: off
           report_individual_runs: true
           test_changes_limit: 0
-          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+          junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
   verify-pr:
     name: 🧪 Screenshot Tests / Verify
@@ -335,4 +335,4 @@ jobs:
           comment_mode: off
           report_individual_runs: true
           test_changes_limit: 0
-          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+          junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
