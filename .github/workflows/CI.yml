@@ -105,13 +105,13 @@ jobs:
 
       - name: Publish "Unit Results" check suite.
         if: success() || failure()
-        uses: EnricoMi/publish-unit-test-result-action@v1
+        uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           check_name: "🔔 Test: Unit Results"
           comment_mode: off
           report_individual_runs: true
           test_changes_limit: 0
-          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+          junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
       - name: Upload "Detekt Results" artifact.
         if: success() || failure()
@@ -223,13 +223,13 @@ jobs:
 
       - name: Publish "Screenshot Record Results" check suite.
         if: success() || failure()
-        uses: EnricoMi/publish-unit-test-result-action@v1
+        uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           check_name: "🔔 Test: Screenshot Record Results"
           comment_mode: off
           report_individual_runs: true
           test_changes_limit: 0
-          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+          junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
   verify-pr:
     name: 🧪 Screenshot Tests / Verify
@@ -329,10 +329,10 @@ jobs:
 
       - name: Publish "Screenshot Verify Results" check suite.
         if: success() || failure()
-        uses: EnricoMi/publish-unit-test-result-action@v1
+        uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           check_name: "🔔 Test: Screenshot Verify Results"
           comment_mode: off
           report_individual_runs: true
           test_changes_limit: 0
-          files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+          junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
