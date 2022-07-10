@@ -69,12 +69,12 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 				runs = listOf(
 					it.run.let {
 						it.copy(
-							// Don't map original, as it might be empty if there are no results in that sarif file.
-							originalURIBaseIDS = mapOf(
-								"%SRCROOT%" to ArtifactLocation(
-									uri = projectRoot
-								)
-							),
+							originalURIBaseIDS = newSrcRoot(projectRoot) +
+								merge(sarifs.values.map {
+									it.run.originalURIBaseIDS
+										.orEmpty()
+										.filterKeys { it != "%SRCROOT%" }
+								}),
 							results = sarifs.values.flatMap { sarif ->
 								sarif.results.map {
 									it.relocate(sarif, projectRoot)
@@ -94,6 +94,30 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 		}
 		output.writeText(SarifSerializer.toJson(mergedSarif))
 	}
+
+	private fun newSrcRoot(projectRoot: String?): Map<String, ArtifactLocation> =
+		// Don't map original, as it might be empty if there are no results in that sarif file.
+		mapOf(
+			"%SRCROOT%" to ArtifactLocation(
+				uri = projectRoot
+			)
+		)
+
+	private fun merge(originalUriBaseIds: List<Map<String, ArtifactLocation>>): Map<String, ArtifactLocation> =
+		originalUriBaseIds.fold(emptyMap()) { merged, originalURIBaseIDS ->
+			val mismatched = originalURIBaseIDS
+				.filterKeys { it in merged }
+				.filter { (key, value) -> merged[key] != value }
+			if (mismatched.isNotEmpty()) {
+				error(
+					"Cannot merge sarifs with different originalURIBaseIDS:\n" +
+						mismatched.entries.joinToString(separator = "\n") { (key, value) ->
+							"${key}: mismatch between two values:\n\t${merged[key]}\n\t${value}"
+						}
+				)
+			}
+			merged + originalURIBaseIDS
+		}
 
 	private fun mergeRules(sarifs: Collection<SarifSchema210>): List<ReportingDescriptor> =
 		sarifs
