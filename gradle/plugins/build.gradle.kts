@@ -17,6 +17,7 @@ dependencies {
 	implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
 	testImplementation(libs.test.junit4)
+	testImplementation(libs.test.jsonAssert)
 }
 
 gradlePlugin {

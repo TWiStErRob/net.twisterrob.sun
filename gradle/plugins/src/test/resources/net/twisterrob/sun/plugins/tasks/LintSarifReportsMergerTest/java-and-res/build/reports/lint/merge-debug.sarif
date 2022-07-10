@@ -1,0 +1,150 @@
+{
+	"$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+	"version": "2.1.0",
+	"runs": [
+		{
+			"originalUriBaseIds": {
+				"%SRCROOT%": {
+					"uri": "file:///C:/Users/TWiStEr/AppData/Local/Temp/junit1980686240488665316/module/"
+				}
+			},
+			"results": [
+				{
+					"fixes": [
+					],
+					"locations": [
+						{
+							"physicalLocation": {
+								"artifactLocation": {
+									"uri": "file:///P:/projects/workspace/net.twisterrob.sun/component/states/src/main/res/values/colors.xml",
+									"uriBaseId": "%SRCROOT%"
+								},
+								"contextRegion": {
+									"endLine": 7,
+									"snippet": {
+										"text": "\n\t<color name=\"invalid\">#f66</color>\n\t<color name=\"invalid_light\">#fdd</color>\n"
+									},
+									"startLine": 2
+								},
+								"region": {
+									"charLength": 20,
+									"charOffset": 104,
+									"endColumn": 29,
+									"endLine": 4,
+									"snippet": {
+										"text": "name=\"invalid_light\""
+									},
+									"startColumn": 9,
+									"startLine": 4
+								}
+							}
+						}
+					],
+					"message": {
+						"markdown": "The resource `R.color.invalid_light` appears to be unused",
+						"text": "The resource R.color.invalid_light appears to be unused"
+					},
+					"partialFingerprints": {
+						"sourceContext/v1": "8bb0059327d1c488"
+					},
+					"ruleId": "UnusedResources",
+					"ruleIndex": 0
+				},
+				{
+					"fixes": [
+					],
+					"locations": [
+						{
+							"physicalLocation": {
+								"artifactLocation": {
+									"uri": "file:///P:/projects/workspace/net.twisterrob.sun/component/widget/src/main/java/net/twisterrob/sun/android/logic/SunAngleWidgetView.java",
+									"uriBaseId": "%SRCROOT%"
+								},
+								"contextRegion": {
+									"endLine": 178,
+									"snippet": {
+										"text": "\t\t\tIntent configIntent = new Intent(context, SAWC);\n\t\t\tconfigIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);\n\t\t\tint flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;\n\t\t\treturn PendingIntent.getActivity(context, appWidgetId, configIntent, flags);"
+									},
+									"startLine": 173
+								},
+								"region": {
+									"charLength": 28,
+									"charOffset": 7328,
+									"endColumn": 80,
+									"endLine": 175,
+									"snippet": {
+										"text": "PendingIntent.FLAG_IMMUTABLE"
+									},
+									"startColumn": 52,
+									"startLine": 175
+								}
+							}
+						}
+					],
+					"message": {
+						"markdown": "Field requires API level 23 (current min is 14): `android.app.PendingIntent#FLAG_IMMUTABLE`",
+						"text": "Field requires API level 23 (current min is 14): android.app.PendingIntent#FLAG_IMMUTABLE"
+					},
+					"partialFingerprints": {
+						"sourceContext/v1": "f8c3baae43bd05f0"
+					},
+					"ruleId": "InlinedApi",
+					"ruleIndex": 0
+				}
+			],
+			"tool": {
+				"driver": {
+					"fullDescription": {
+						"text": "Static analysis originally for Android source code but now performing general analysis"
+					},
+					"fullName": "Android Lint (in gradle)",
+					"informationUri": "https://developer.android.com/studio/write/lint",
+					"language": "en-US",
+					"name": "Android Lint",
+					"organization": "Google",
+					"rules": [
+						{
+							"defaultConfiguration": {
+								"level": "warning",
+								"rank": 80.0
+							},
+							"fullDescription": {
+								"text": "Unused resources make applications larger and slow down builds.\n\nThe unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.\n\nYou can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+							},
+							"id": "UnusedResources",
+							"properties": {
+								"tags": [
+									"Performance"
+								]
+							},
+							"shortDescription": {
+								"text": "Unused resources"
+							}
+						},
+						{
+							"defaultConfiguration": {
+								"level": "warning",
+								"rank": 50.0
+							},
+							"fullDescription": {
+								"markdown": "This check scans through all the Android API field references in the application and flags certain constants, such as static final integers and Strings, which were introduced in later versions. These will actually be copied into the class files rather than being referenced, which means that the value is available even when running on older devices. In some cases that's fine, and in other cases it can result in a runtime crash or incorrect behavior. It depends on the context, so consider the code carefully and decide whether it's safe and can be suppressed or whether the code needs to be guarded.\n\nIf you really want to use this API and don't need to support older devices just set the `minSdkVersion` in your `build.gradle` or `AndroidManifest.xml` files.\n\nIf your code is **deliberately** accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the `@TargetApi` annotation specifying the local minimum SDK to apply, such as `@TargetApi(11)`, such that this check considers 11 rather than your manifest file's minimum SDK as the required API level.",
+								"text": "This check scans through all the Android API field references in the application and flags certain constants, such as static final integers and Strings, which were introduced in later versions. These will actually be copied into the class files rather than being referenced, which means that the value is available even when running on older devices. In some cases that's fine, and in other cases it can result in a runtime crash or incorrect behavior. It depends on the context, so consider the code carefully and decide whether it's safe and can be suppressed or whether the code needs to be guarded.\n\nIf you really want to use this API and don't need to support older devices just set the minSdkVersion in your build.gradle or AndroidManifest.xml files.\n\nIf your code is deliberately accessing newer APIs, and you have ensured (e.g. with conditional execution) that this code will only ever be called on a supported platform, then you can annotate your class or method with the @TargetApi annotation specifying the local minimum SDK to apply, such as @TargetApi(11), such that this check considers 11 rather than your manifest file's minimum SDK as the required API level."
+							},
+							"id": "InlinedApi",
+							"properties": {
+								"tags": [
+									"Correctness"
+								]
+							},
+							"shortDescription": {
+								"text": "Using inlined constants on older versions"
+							}
+						}
+					],
+					"semanticVersion": "7.2.1",
+					"version": "7.2.1"
+				}
+			}
+		}
+	]
+}

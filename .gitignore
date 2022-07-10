@@ -7,7 +7,14 @@
 
 # Gradle
 .gradle/
-build/
+/build/
+/buildSrc/build/
+/app/build/
+/feature/*/build/
+/feature/*/androidTest/build/
+/component/*/build/
+/component/*/androidTest/build/
+/gradle/plugins/build/
 
 # Android
 /project.properties

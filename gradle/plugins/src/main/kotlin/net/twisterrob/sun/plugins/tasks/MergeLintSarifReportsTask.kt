@@ -104,7 +104,6 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 			// take first instance of each based on the assumption that their IDs are unique.
 			.map { it.value.first() }
 
-
 	@Suppress("NestedLambdaShadowedImplicitParameter")
 	private fun Result.relocate(sarif: SarifSchema210, common: String): Result {
 		// originalURIBaseIDS.uri = file:///P:/projects/workspace/net.twisterrob.sun/feature/configuration/
