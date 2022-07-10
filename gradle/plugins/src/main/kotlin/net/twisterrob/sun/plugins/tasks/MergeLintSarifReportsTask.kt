@@ -149,8 +149,12 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 							artifactLocation = it.artifactLocation?.let {
 								it.copy(
 									uri = it.uri?.let { uri ->
-										// uri = src/main/java/net/twisterrob/android/app/WidgetConfigurationActivity.java
-										modulePath + uri
+										if (it.uriBaseID == "SRCROOT") {
+											// uri = src/main/java/net/twisterrob/android/app/WidgetConfigurationActivity.java
+											modulePath + uri
+										} else {
+											uri
+										}
 									}
 								)
 							}
