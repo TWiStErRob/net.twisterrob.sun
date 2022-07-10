@@ -6,13 +6,9 @@ import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import org.skyscreamer.jsonassert.Customization
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
-import org.skyscreamer.jsonassert.RegularExpressionValueMatcher
-import org.skyscreamer.jsonassert.comparator.CustomComparator
 import java.io.File
-import java.io.InputStream
 
 /**
  * @see MergeLintSarifReportsTask.merge
@@ -26,13 +22,14 @@ class LintSarifReportsMergerTest {
 
 	@Test fun `merge two files from different modules`() {
 		val project = ProjectBuilder.builder().withProjectDir(temp.newFolder("module")).build()
-		val input1 = temp.newFileWithFolder("component/states/build/reports/lint-results-debug.sarif")
-			.also { it.fromTestResource("java-and-res/input1-states.sarif") }
-			.also { it.replace("file:///P:/projects/workspace/net.twisterrob.sun/", project)}
-		val input2 = temp.newFileWithFolder("component/widget/build/reports/lint-results-debug.sarif")
-			.also { it.fromTestResource("java-and-res/input2-widget.sarif") }
-			.also { it.replace("file:///P:/projects/workspace/net.twisterrob.sun/", project)}
-		val output = temp.newFileWithFolder("build/reports/lint/merge-debug.sarif")
+		val testRes = project.createTestResourceLoader(
+			"file:///P:/projects/workspace/net.twisterrob.sun/"
+		)
+		val input1 = temp.newFiles("component/states/build/reports/lint-results-debug.sarif")
+			.also { it.writeText(testRes.load("java-and-res/input1-states.sarif")) }
+		val input2 = temp.newFiles("component/widget/build/reports/lint-results-debug.sarif")
+			.also { it.writeText(testRes.load("java-and-res/input2-widget.sarif")) }
+		val output = temp.newFiles("build/reports/lint/merge-debug.sarif")
 
 		val task = project.tasks.create<MergeLintSarifReportsTask>("merge") {
 			sarifFiles.from(input1, input2)
@@ -43,8 +40,7 @@ class LintSarifReportsMergerTest {
 
 		JSONAssert.assertEquals(
 			"Comparing ${output} to ${"java-and-res/merged.sarif"}",
-			fromTestResource("java-and-res/merged.sarif")
-				.replace("file:///P:/projects/workspace/net.twisterrob.sun/", project),
+			testRes.load("java-and-res/merged.sarif"),
 			output.readText(),
 			JSONCompareMode.STRICT,
 		)
@@ -52,14 +48,14 @@ class LintSarifReportsMergerTest {
 
 	@Test fun `merge two files with multiple base URIs`() {
 		val project = ProjectBuilder.builder().withProjectDir(temp.newFolder("module")).build()
-		val input1 = temp.newFileWithFolder("feature/preview/build/reports/lint-results-debug.sarif")
-			.also { it.fromTestResource("merge-multi-src/input1-preview.sarif") }
-			.also { it.replace("file:///home/runner/work/net.twisterrob.sun/net.twisterrob.sun/", project)}
-		val input2 = temp.newFileWithFolder("feature/configuration/build/reports/lint-results-debug.sarif")
-			.also { it.fromTestResource("merge-multi-src/input2-configuration.sarif") }
-			.also { it.replace("file:///home/runner/work/net.twisterrob.sun/net.twisterrob.sun/", project)}
-		val output = temp.newFileWithFolder("build/reports/lint/merge-debug.sarif")
-//			.also { it.replace("file:///home/runner/work/net.twisterrob.sun/net.twisterrob.sun/", project)}
+		val testRes = project.createTestResourceLoader(
+			"file:///home/runner/work/net.twisterrob.sun/net.twisterrob.sun/"
+		)
+		val input1 = temp.newFiles("feature/preview/build/reports/lint-results-debug.sarif")
+			.also { it.writeText(testRes.load("merge-multi-src/input1-preview.sarif")) }
+		val input2 = temp.newFiles("feature/configuration/build/reports/lint-results-debug.sarif")
+			.also { it.writeText(testRes.load("merge-multi-src/input2-configuration.sarif")) }
+		val output = temp.newFiles("build/reports/lint/merge-debug.sarif")
 
 		val task = project.tasks.create<MergeLintSarifReportsTask>("merge") {
 			sarifFiles.from(input1, input2)
@@ -70,42 +66,35 @@ class LintSarifReportsMergerTest {
 
 		JSONAssert.assertEquals(
 			"Comparing ${output} to ${"merge-multi-src/merged.sarif"}",
-			fromTestResource("merge-multi-src/merged.sarif")
-				.replace("file:///home/runner/work/net.twisterrob.sun/net.twisterrob.sun/", project),
+			testRes.load("merge-multi-src/merged.sarif"),
 			output.readText(),
 			JSONCompareMode.STRICT,
 		)
 	}
 }
 
-private fun File.fromTestResource(relativePath: String) {
-	testResource(relativePath).use { from ->
-		this.outputStream().use { to ->
-			from.copyTo(to)
-		}
-	}
+private fun Project.createTestResourceLoader(hardcodedPath: String): ResourceLoader =
+	ResourceLoader(
+		hardcodedPath,
+		rootDir.toURI().toString().replaceFirst("file:/", "file:///")
+	)
+
+private class ResourceLoader(
+	private val hardcodedPath: String,
+	private val testProjectRoot: String
+) {
+
+	fun load(path: String): String =
+		LintSarifReportsMergerTest::class.java
+			.getResourceAsStream("LintSarifReportsMergerTest/$path")!!
+			.use { it.reader().readText() }
+			.replace(hardcodedPath, testProjectRoot)
 }
 
-private fun fromTestResource(relativePath: String): String =
-	testResource(relativePath).use { it.reader().readText() }
-
-private fun testResource(relativePath: String): InputStream =
-	LintSarifReportsMergerTest::class.java
-		.getResourceAsStream("LintSarifReportsMergerTest/$relativePath")!!
-
-private fun TemporaryFolder.newFileWithFolder(path: String): File {
+private fun TemporaryFolder.newFiles(path: String): File {
 	val folders = path.split("/", "\\").dropLast(1)
 	if (folders.isNotEmpty()) {
 		newFolder(*folders.toTypedArray())
 	}
 	return newFile(path)
-}
-
-private fun File.replace(hardcodedPath: String, project: Project) {
-	this.writeText(this.readText().replace(hardcodedPath, project))
-}
-
-private fun String.replace(hardcodedPath: String, project: Project): String {
-	val root = project.rootDir.toURI().toString().replaceFirst("file:/", "file:///")
-	return this.replace(hardcodedPath, root)
 }

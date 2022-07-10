@@ -138,9 +138,6 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 		assert(srcRoot != modulePath) {
 			"Assumption that it's a submodule failed: srcRoot=$srcRoot, common=$common"
 		}
-		println(sarif.run.originalURIBaseIDS)
-		println(common)
-		println(modulePath)
 		return this.copy(
 			locations = this.locations?.map {
 				it.copy(
@@ -149,7 +146,7 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 							artifactLocation = it.artifactLocation?.let {
 								it.copy(
 									uri = it.uri?.let { uri ->
-										if (it.uriBaseID == "SRCROOT") {
+										if (it.uriBaseID == "%SRCROOT%") {
 											// uri = src/main/java/net/twisterrob/android/app/WidgetConfigurationActivity.java
 											modulePath + uri
 										} else {
