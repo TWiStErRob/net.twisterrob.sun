@@ -5,7 +5,7 @@
 		{
 			"originalUriBaseIds": {
 				"%SRCROOT%": {
-					"uri": "file:///C:/Users/TWiStEr/AppData/Local/Temp/junit1980686240488665316/module/"
+					"uri": "file:///P:/projects/workspace/net.twisterrob.sun/"
 				}
 			},
 			"results": [
@@ -16,7 +16,7 @@
 						{
 							"physicalLocation": {
 								"artifactLocation": {
-									"uri": "file:///P:/projects/workspace/net.twisterrob.sun/component/states/src/main/res/values/colors.xml",
+									"uri": "component/states/src/main/res/values/colors.xml",
 									"uriBaseId": "%SRCROOT%"
 								},
 								"contextRegion": {
@@ -57,7 +57,7 @@
 						{
 							"physicalLocation": {
 								"artifactLocation": {
-									"uri": "file:///P:/projects/workspace/net.twisterrob.sun/component/widget/src/main/java/net/twisterrob/sun/android/logic/SunAngleWidgetView.java",
+									"uri": "component/widget/src/main/java/net/twisterrob/sun/android/logic/SunAngleWidgetView.java",
 									"uriBaseId": "%SRCROOT%"
 								},
 								"contextRegion": {

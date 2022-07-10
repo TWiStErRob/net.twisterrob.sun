@@ -109,11 +109,14 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 		// originalURIBaseIDS.uri = file:///P:/projects/workspace/net.twisterrob.sun/feature/configuration/
 		// common = file:///P:/projects/workspace/net.twisterrob.sun/
 		// modulePath = feature/configuration/
-		val baseUris = sarif.run.originalURIBaseIDS!!
-		require(baseUris.size == 1) {
-			"Sarif file has multiple base uris: ${baseUris}."
+		val srcRoot = sarif.run.originalURIBaseIDS!!["%SRCROOT%"]!!.uri!!
+		val modulePath = srcRoot.removePrefix(common)
+		assert(srcRoot != modulePath) {
+			"Assumption that it's a submodule failed: srcRoot=$srcRoot, common=$common"
 		}
-		val modulePath = baseUris.values.single().uri!!.removePrefix(common)
+		println(sarif.run.originalURIBaseIDS)
+		println(common)
+		println(modulePath)
 		return this.copy(
 			locations = this.locations?.map {
 				it.copy(
