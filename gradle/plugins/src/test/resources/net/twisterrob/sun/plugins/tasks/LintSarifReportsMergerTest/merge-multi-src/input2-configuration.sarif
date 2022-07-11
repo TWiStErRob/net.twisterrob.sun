@@ -1,0 +1,75 @@
+{
+	"$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+	"version": "2.1.0",
+	"runs": [
+		{
+			"tool": {
+				"driver": {
+					"name": "Android Lint",
+					"fullName": "Android Lint (in gradle)",
+					"version": "7.2.1",
+					"semanticVersion": "7.2.1",
+					"organization": "Google",
+					"informationUri": "https://developer.android.com/studio/write/lint",
+					"fullDescription": {
+						"text": "Static analysis originally for Android source code but now performing general analysis"
+					},
+					"language": "en-US",
+					"rules": [
+						{
+							"id": "InvalidPackage",
+							"shortDescription": {
+								"text": "Package not included in Android"
+							},
+							"fullDescription": {
+								"text": "This check scans through libraries looking for calls to APIs that are not included in Android.\n\nWhen you create Android projects, the classpath is set up such that you can only access classes in the API packages that are included in Android. However, if you add other projects to your libs/ folder, there is no guarantee that those .jar files were built with an Android specific classpath, and in particular, they could be accessing unsupported APIs such as java.applet.\n\nThis check scans through library jars and looks for references to API packages that are not included in Android and flags these. This is only an error if your code calls one of the library classes which wind up referencing the unsupported package."
+							},
+							"defaultConfiguration": {
+								"level": "error",
+								"rank": 50
+							},
+							"properties": {
+								"tags": [
+									"Correctness"
+								]
+							}
+						}
+					]
+				}
+			},
+			"originalUriBaseIds": {
+				"%SRCROOT%": {
+					"uri": "file:///home/runner/work/net.twisterrob.sun/net.twisterrob.sun/feature/configuration/"
+				},
+				"USER_HOME": {
+					"uri": "file:///home/runner/work/net.twisterrob.sun/net.twisterrob.sun/feature/configuration/"
+				}
+			},
+			"results": [
+				{
+					"ruleId": "InvalidPackage",
+					"ruleIndex": 0,
+					"message": {
+						"text": "Invalid package reference in org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm; not included in Android: java.lang.instrument. Referenced from kotlinx.coroutines.debug.AgentPremain.",
+						"markdown": "Invalid package reference in org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm; not included in Android: `java.lang.instrument`. Referenced from `kotlinx.coroutines.debug.AgentPremain`."
+					},
+					"locations": [
+						{
+							"physicalLocation": {
+								"artifactLocation": {
+									"uriBaseId": "USER_HOME",
+									"uri": ".gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.6.1/97fd74ccf54a863d221956ffcd21835e168e2aaa/kotlinx-coroutines-core-jvm-1.6.1.jar"
+								},
+								"region": {
+									"byteOffset": 0
+								}
+							}
+						}
+					],
+					"partialFingerprints": {
+					}
+				}
+			]
+		}
+	]
+}

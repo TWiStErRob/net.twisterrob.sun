@@ -85,9 +85,9 @@ jobs:
         with:
           name: Lint Results
           path: |
-            ${{ github.workspace }}/**/build/reports/lint-results*.html
-            ${{ github.workspace }}/build/reports/violations.*
+            ${{ github.workspace }}/**/build/reports/lint-results*.*
             ${{ github.workspace }}/build/reports/lint/merge-*.*
+            ${{ github.workspace }}/build/reports/violations.*
 
       - name: Publish "Code scanning results / Android Lint".
         uses: github/codeql-action/upload-sarif@v2

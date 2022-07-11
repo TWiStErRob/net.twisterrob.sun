@@ -1,0 +1,90 @@
+{
+	"$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+	"version": "2.1.0",
+	"runs": [
+		{
+			"tool": {
+				"driver": {
+					"name": "Android Lint",
+					"fullName": "Android Lint (in gradle)",
+					"version": "7.2.1",
+					"semanticVersion": "7.2.1",
+					"organization": "Google",
+					"informationUri": "https://developer.android.com/studio/write/lint",
+					"fullDescription": {
+						"text": "Static analysis originally for Android source code but now performing general analysis"
+					},
+					"language": "en-US",
+					"rules": [
+						{
+							"id": "UnusedResources",
+							"shortDescription": {
+								"text": "Unused resources"
+							},
+							"fullDescription": {
+								"text": "Unused resources make applications larger and slow down builds.\n\nThe unused resource check can ignore tests. If you want to include resources that are only referenced from tests, consider packaging them in a test source set instead.\n\nYou can include test sources in the unused resource check by setting the system property lint.unused-resources.include-tests=true, and to exclude them (usually for performance reasons), use lint.unused-resources.exclude-tests=true."
+							},
+							"defaultConfiguration": {
+								"level": "warning",
+								"rank": 80
+							},
+							"properties": {
+								"tags": [
+									"Performance"
+								]
+							}
+						}
+					]
+				}
+			},
+			"originalUriBaseIds": {
+				"%SRCROOT%": {
+					"uri": "file:///P:/projects/workspace/net.twisterrob.sun/component/states/"
+				}
+			},
+			"results": [
+				{
+					"ruleId": "UnusedResources",
+					"ruleIndex": 0,
+					"message": {
+						"text": "The resource R.color.invalid_light appears to be unused",
+						"markdown": "The resource `R.color.invalid_light` appears to be unused"
+					},
+					"locations": [
+						{
+							"physicalLocation": {
+								"artifactLocation": {
+									"uriBaseId": "%SRCROOT%",
+									"uri": "src/main/res/values/colors.xml"
+								},
+								"region": {
+									"startLine": 4,
+									"startColumn": 9,
+									"endLine": 4,
+									"endColumn": 29,
+									"charOffset": 104,
+									"charLength": 20,
+									"snippet": {
+										"text": "name=\"invalid_light\""
+									}
+								},
+								"contextRegion": {
+									"startLine": 2,
+									"endLine": 7,
+									"snippet": {
+										"text": "\n\t<color name=\"invalid\">#f66</color>\n\t<color name=\"invalid_light\">#fdd</color>\n"
+									}
+								}
+							}
+						}
+					],
+					"fixes": [
+					],
+					"partialFingerprints": {
+						"sourceContext/v1": "8bb0059327d1c488"
+					}
+				}
+			]
+		}
+	]
+}
