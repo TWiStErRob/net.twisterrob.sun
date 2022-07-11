@@ -152,7 +152,7 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 		// modulePath = feature/configuration/
 		val srcRoot = sarif.run.originalURIBaseIDS!!["%SRCROOT%"]!!.uri!!
 		val modulePath = srcRoot.removePrefix(common)
-		assert(srcRoot != modulePath) {
+		check(srcRoot != modulePath) {
 			"Assumption that it's a submodule failed: srcRoot=$srcRoot, common=$common"
 		}
 		return this.copy(
