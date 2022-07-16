@@ -46,46 +46,6 @@ internal fun Project.commonJavaConfig() {
 		val project = this@commonJavaConfig
 		val detekt = project.extensions.getByName<DetektExtension>("detekt")
 		detekt.apply {
-			toolVersion = "main-SNAPSHOT"
-			project.configurations.configureEach {
-				if (name == "detekt") {
-					resolutionStrategy {
-						failOnNonReproducibleResolution()
-						eachDependency {
-							if (requested.group == "io.gitlab.arturbosch.detekt" && requested.version == "main-SNAPSHOT") {
-								useVersion(
-									when (requested.name) {
-										"detekt-cli" -> "main-20220711.191117-734"
-										"detekt-parser" -> "main-20220711.191117-733"
-										"detekt-tooling" -> "main-20220711.191117-731"
-										"detekt-api" -> "main-20220711.191117-737"
-										"detekt-psi-utils" -> "main-20220711.191117-733"
-										"detekt-core" -> "main-20220711.191117-737"
-										"detekt-utils" -> "main-20220711.191117-391"
-										"detekt-metrics" -> "main-20220711.191117-734"
-										"detekt-report-html",
-										"detekt-report-txt",
-										"detekt-report-xml",
-										"detekt-report-sarif" -> "main-20220711.191117-731"
-										"detekt-report-md" -> "main-20220711.191117-60"
-										"detekt-rules",
-										"detekt-rules-complexity",
-										"detekt-rules-coroutines",
-										"detekt-rules-documentation",
-										"detekt-rules-empty",
-										"detekt-rules-errorprone",
-										"detekt-rules-exceptions",
-										"detekt-rules-naming",
-										"detekt-rules-performance",
-										"detekt-rules-style" -> "main-20220711.191117-731"
-										else -> error("Unpinned module: ${requested}")
-									}
-								)
-							}
-						}
-					}
-				}
-			}
 			ignoreFailures = true
 			// TODEL https://github.com/detekt/detekt/issues/4926
 			buildUponDefaultConfig = false
