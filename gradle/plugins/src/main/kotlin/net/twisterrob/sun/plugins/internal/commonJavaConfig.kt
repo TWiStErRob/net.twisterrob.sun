@@ -42,7 +42,8 @@ internal fun Project.commonJavaConfig() {
 	}
 	plugins.apply("io.gitlab.arturbosch.detekt")
 	plugins.withId("io.gitlab.arturbosch.detekt") {
-		val detekt = this@commonJavaConfig.extensions.getByName<DetektExtension>("detekt")
+		val project = this@commonJavaConfig
+		val detekt = project.extensions.getByName<DetektExtension>("detekt")
 		detekt.apply {
 			ignoreFailures = true
 			// TODEL https://github.com/detekt/detekt/issues/4926
@@ -82,7 +83,7 @@ internal fun Project.commonJavaConfig() {
 		tasks.withType<Detekt> {
 			detektReportMergeXml.configure {
 				mustRunAfter(this@withType)
-				input.from(this@withType.xmlReportFile) 
+				input.from(this@withType.xmlReportFile)
 			}
 		}
 	}
