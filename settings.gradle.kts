@@ -21,17 +21,6 @@ dependencyResolutionManagement {
 	repositories {
 		google()
 		mavenCentral()
-		maven("https://oss.sonatype.org/content/repositories/snapshots/") {
-			name = "Sonatype: SNAPSHOTs"
-			content {
-				includeVersionByRegex("""^io\.gitlab\.arturbosch\.detekt$""", ".*", """.*-SNAPSHOT$""")
-				includeVersionByRegex("""^io\.gitlab\.arturbosch\.detekt$""", ".*", """.*-\d{8}\.\d{6}-\d+$""")
-			}
-			mavenContent {
-				// This doesn't allow using specific snapshot, so using versionRegex above.
-				//snapshotsOnly()
-			}
-		}
 	}
 }
 
