@@ -1,5 +1,5 @@
 plugins {
-	id("org.gradle.kotlin.kotlin-dsl") version "2.1.7" // see appliedKotlinDslPluginsVersion
+	`kotlin-dsl` // id("org.gradle.kotlin.kotlin-dsl") but with automatic appliedKotlinDslPluginsVersion.
 	id("java-gradle-plugin")
 }
 
