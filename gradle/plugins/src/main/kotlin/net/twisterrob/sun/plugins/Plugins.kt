@@ -3,6 +3,7 @@ package net.twisterrob.sun.plugins
 import net.twisterrob.sun.plugins.internal.AndroidLintSarifMergePlugin
 import net.twisterrob.sun.plugins.internal.AndroidPlugin
 import net.twisterrob.sun.plugins.internal.DetektPlugin
+import net.twisterrob.sun.plugins.internal.DetektReportMergePlugin
 import net.twisterrob.sun.plugins.internal.JavaVersionPlugin
 import net.twisterrob.sun.plugins.internal.StrictCompilationPlugin
 import org.gradle.api.Plugin
@@ -47,6 +48,7 @@ class AndroidLibraryPlugin : Plugin<Project> {
 
 private fun commonJavaPlugins(target: Project) {
 	target.plugins.apply(DetektPlugin::class)
+	target.plugins.apply(DetektReportMergePlugin::class)
 	target.plugins.apply(JavaVersionPlugin::class)
 	target.plugins.apply(StrictCompilationPlugin::class)
 }

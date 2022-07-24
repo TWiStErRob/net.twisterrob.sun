@@ -14,13 +14,6 @@ buildscript {
 	configurations.classpath.get().resolutionStrategy.cacheChangingModulesFor(0, "seconds") // -SNAPSHOT
 }
 
-tasks.register<io.gitlab.arturbosch.detekt.report.ReportMergeTask>("detektReportMergeSarif") {
-	output.set(rootProject.buildDir.resolve("reports/detekt/merge.sarif"))
-}
-tasks.register<io.gitlab.arturbosch.detekt.report.ReportMergeTask>("detektReportMergeXml") {
-	output.set(rootProject.buildDir.resolve("reports/detekt/merge.xml"))
-}
-
 tasks.register("lintReportMergeSarif") {
 	// Placeholder task for lifecycle hooking in CI. Will have dependencies from other projects.
 }
