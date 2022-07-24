@@ -8,7 +8,7 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-class StrictCompilationPlugin: Plugin<Project> {
+class StrictCompilationPlugin : Plugin<Project> {
 
 	override fun apply(project: Project) {
 		project.tasks.withType<JavaCompile> {

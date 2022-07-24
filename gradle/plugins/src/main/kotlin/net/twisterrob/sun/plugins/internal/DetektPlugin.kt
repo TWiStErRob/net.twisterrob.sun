@@ -1,10 +1,8 @@
-package net.twisterrob.sun.plugins
+package net.twisterrob.sun.plugins.internal
 
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
-import net.twisterrob.sun.plugins.internal.javaVersion
-import net.twisterrob.sun.plugins.internal.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByName
