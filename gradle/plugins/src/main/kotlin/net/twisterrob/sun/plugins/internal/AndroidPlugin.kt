@@ -3,7 +3,7 @@ package net.twisterrob.sun.plugins.internal
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class AndroidPlugin : Plugin<Project> {
+internal class AndroidPlugin : Plugin<Project> {
 
 	override fun apply(project: Project) {
 		@Suppress("UnstableApiUsage")

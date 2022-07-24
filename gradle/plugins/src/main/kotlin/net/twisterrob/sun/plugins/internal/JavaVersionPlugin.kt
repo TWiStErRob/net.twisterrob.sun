@@ -9,7 +9,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-class JavaVersionPlugin : Plugin<Project> {
+internal class JavaVersionPlugin : Plugin<Project> {
 
 	override fun apply(project: Project) {
 		val javaVersion = project.libs.versions.javaVersion

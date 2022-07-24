@@ -11,7 +11,7 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 import org.gradle.configurationcache.extensions.capitalized
 
-class AndroidLintSarifMergePlugin : Plugin<Project> {
+internal class AndroidLintSarifMergePlugin : Plugin<Project> {
 
 	override fun apply(project: Project) {
 		project.android {

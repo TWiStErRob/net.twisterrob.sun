@@ -7,7 +7,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
 
-class DetektReportMergePlugin : Plugin<Project> {
+internal class DetektReportMergePlugin : Plugin<Project> {
 
 	override fun apply(project: Project) {
 		configureSarif(project)

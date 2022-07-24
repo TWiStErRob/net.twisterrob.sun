@@ -25,17 +25,17 @@ import java.io.File
  * @see io.gitlab.arturbosch.detekt.report.SarifReportMerger
  */
 @CacheableTask
-abstract class MergeLintSarifReportsTask : DefaultTask() {
+public abstract class MergeLintSarifReportsTask : DefaultTask() {
 
 	@get:InputFiles
 	@get:PathSensitive(PathSensitivity.RELATIVE)
-	abstract val sarifFiles: ConfigurableFileCollection
+	public abstract val sarifFiles: ConfigurableFileCollection
 
 	@get:OutputFile
-	abstract val mergedSarifFile: RegularFileProperty
+	public abstract val mergedSarifFile: RegularFileProperty
 
 	@TaskAction
-	fun merge() {
+	private fun merge() {
 		val inputs = sarifFiles.files
 		logger.info("Inputs")
 		logger.info(inputs.joinToString(separator = "\n") { "${it.absolutePath} (exists=${it.exists()})" })

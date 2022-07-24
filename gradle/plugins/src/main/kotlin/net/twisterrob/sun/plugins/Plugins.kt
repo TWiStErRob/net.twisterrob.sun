@@ -10,14 +10,14 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 
-class RootPlugin : Plugin<Project> {
+public class RootPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
 		// Dummy plugin, does nothing, except make all the classes available to the build.gradle.kts.
 	}
 }
 
-class JavaLibraryPlugin : Plugin<Project> {
+public class JavaLibraryPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
 		target.apply(plugin = "net.twisterrob.java-library")
@@ -26,7 +26,7 @@ class JavaLibraryPlugin : Plugin<Project> {
 	}
 }
 
-class AndroidAppPlugin : Plugin<Project> {
+public class AndroidAppPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
 		target.apply(plugin = "net.twisterrob.android-app")
@@ -36,7 +36,7 @@ class AndroidAppPlugin : Plugin<Project> {
 	}
 }
 
-class AndroidLibraryPlugin : Plugin<Project> {
+public class AndroidLibraryPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
 		target.apply(plugin = "net.twisterrob.android-library")

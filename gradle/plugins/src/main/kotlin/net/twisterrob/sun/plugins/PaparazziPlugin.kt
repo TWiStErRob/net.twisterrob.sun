@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
 
-class PaparazziPlugin : Plugin<Project> {
+public class PaparazziPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
 		target.apply(plugin = "app.cash.paparazzi")

@@ -5,7 +5,7 @@ import com.android.build.gradle.BaseExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-fun Project.android(block: CommonExtension<*, *, *, *>.() -> Unit) {
+internal fun Project.android(block: CommonExtension<*, *, *, *>.() -> Unit) {
 	project.extensions.configure<BaseExtension> {
 		block(this as CommonExtension<*, *, *, *>)
 	}

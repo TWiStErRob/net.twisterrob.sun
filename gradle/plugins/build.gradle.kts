@@ -20,6 +20,10 @@ dependencies {
 	testImplementation(libs.test.jsonAssert)
 }
 
+kotlin {
+	explicitApi()
+}
+
 gradlePlugin {
 	plugins.register("project-module-root") {
 		id = "project-module-root"
