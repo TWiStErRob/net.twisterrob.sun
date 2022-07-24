@@ -6,6 +6,7 @@ import net.twisterrob.gradle.internal.android.unwrapCast
 import net.twisterrob.sun.plugins.tasks.MergeLintSarifReportsTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 import org.gradle.configurationcache.extensions.capitalized
@@ -17,15 +18,19 @@ class AndroidLintSarifMergePlugin : Plugin<Project> {
 			lint {
 				@Suppress("UnstableApiUsage")
 				sarifReport = true
-				wireLintReportMergeSarif(project)
 			}
 		}
+		wireLintReportMergeSarif(project)
 	}
 }
 
 private fun wireLintReportMergeSarif(project: Project) {
 	val rootProject = project.rootProject
-	val lintReportMergeSarif = rootProject.tasks.named("lintReportMergeSarif")
+	val lintReportMergeSarif =
+		rootProject.tasks.maybeRegister<Task>("lintReportMergeSarif") {
+			// Placeholder task for lifecycle hooking in CI. Will have dependencies from other projects.
+		}
+
 	project.androidComponents.onVariants { variant ->
 		val lintReportMergeSarifVariant =
 			rootProject.tasks.maybeRegister<MergeLintSarifReportsTask>("lintReportMergeSarif${variant.name.capitalized()}") {

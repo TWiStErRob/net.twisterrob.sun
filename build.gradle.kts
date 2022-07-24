@@ -14,10 +14,6 @@ buildscript {
 	configurations.classpath.get().resolutionStrategy.cacheChangingModulesFor(0, "seconds") // -SNAPSHOT
 }
 
-tasks.register("lintReportMergeSarif") {
-	// Placeholder task for lifecycle hooking in CI. Will have dependencies from other projects.
-}
-
 tasks.register("check") {
 	description = "Delegate task for checking included builds too."
 	dependsOn(gradle.includedBuild("plugins").task(":check"))
