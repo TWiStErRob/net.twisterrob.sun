@@ -29,8 +29,6 @@ class DetektPlugin : Plugin<Project> {
 				parallel = true
 
 				project.tasks.withType<Detekt>().configureEach {
-					// Target version of the generated JVM bytecode. It is used for type resolution.
-					jvmTarget = project.libs.versions.javaVersion.toString()
 					reports {
 						html.required.set(true) // human
 						xml.required.set(true) // checkstyle
