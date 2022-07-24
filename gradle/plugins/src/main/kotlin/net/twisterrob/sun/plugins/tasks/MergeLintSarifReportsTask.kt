@@ -35,7 +35,7 @@ public abstract class MergeLintSarifReportsTask : DefaultTask() {
 	public abstract val mergedSarifFile: RegularFileProperty
 
 	@TaskAction
-	private fun merge() {
+	internal fun merge() {
 		val inputs = sarifFiles.files
 		logger.info("Inputs")
 		logger.info(inputs.joinToString(separator = "\n") { "${it.absolutePath} (exists=${it.exists()})" })
