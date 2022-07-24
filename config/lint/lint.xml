@@ -8,12 +8,20 @@
 	<issue id="SyntheticAccessor" severity="ignore" />
 
 	<issue id="UnusedResources">
+
 		<!-- Used by *ScreenshotTest via PaparazziCoat. -->
 		<ignore regexp="`R.style.AppTheme_ScreenshotTest`" />
 
 		<!-- Auto-generated -->
 		<ignore regexp="R\.bool\.in_prod" />
 		<ignore regexp="R\.bool\.in_test" />
+
+	</issue>
+
+	<issue id="InvalidPackage">
+
+		<!-- Using coroutines-android which transitively depends on coroutines-core-jvm. -->
+		<ignore regexp="^Invalid package reference in org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm; not included in Android: `java.lang.instrument`. Referenced from `kotlinx.coroutines.debug.AgentPremain`.$" />
 
 	</issue>
 

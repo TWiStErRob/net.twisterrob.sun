@@ -3,9 +3,11 @@ package net.twisterrob.sun.plugins.internal
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
+import net.twisterrob.sun.plugins.isCI
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
@@ -40,7 +42,8 @@ internal fun Project.commonJavaConfig() {
 	}
 	plugins.apply("io.gitlab.arturbosch.detekt")
 	plugins.withId("io.gitlab.arturbosch.detekt") {
-		val detekt = this@commonJavaConfig.extensions.getByName<DetektExtension>("detekt")
+		val project = this@commonJavaConfig
+		val detekt = project.extensions.getByName<DetektExtension>("detekt")
 		detekt.apply {
 			ignoreFailures = true
 			// TODEL https://github.com/detekt/detekt/issues/4926
@@ -80,8 +83,11 @@ internal fun Project.commonJavaConfig() {
 		tasks.withType<Detekt> {
 			detektReportMergeXml.configure {
 				mustRunAfter(this@withType)
-				input.from(this@withType.xmlReportFile) 
+				input.from(this@withType.xmlReportFile)
 			}
 		}
+	}
+	tasks.withType<Test>().configureEach {
+		ignoreFailures = isCI
 	}
 }

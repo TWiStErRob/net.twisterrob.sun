@@ -69,12 +69,7 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 				runs = listOf(
 					it.run.let {
 						it.copy(
-							// Don't map original, as it might be empty if there are no results in that sarif file.
-							originalURIBaseIDS = mapOf(
-								"%SRCROOT%" to ArtifactLocation(
-									uri = projectRoot
-								)
-							),
+							originalURIBaseIDS = mergeOriginalURIBaseIDS(sarifs, projectRoot),
 							results = sarifs.values.flatMap { sarif ->
 								sarif.results.map {
 									it.relocate(sarif, projectRoot)
@@ -95,6 +90,52 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 		output.writeText(SarifSerializer.toJson(mergedSarif))
 	}
 
+	private fun mergeOriginalURIBaseIDS(
+		sarifs: Map<File, SarifSchema210>,
+		projectRoot: String
+	): Map<String, ArtifactLocation> {
+		val srcRoot =
+			mapOf(
+				"%SRCROOT%" to ArtifactLocation(
+					uri = projectRoot
+				)
+			)
+		val userHome =
+			if ("USER_HOME" in sarifs.values.flatMap { it.run.originalURIBaseIDS.orEmpty().keys })
+				mapOf(
+					"USER_HOME" to ArtifactLocation(
+						uri = projectRoot
+					)
+				)
+			else
+				emptyMap()
+
+		val merged = sarifs
+			.values
+			.map { sarif ->
+				sarif.run.originalURIBaseIDS
+					.orEmpty()
+					.filterKeys { it != "%SRCROOT%" }
+					.filterKeys { it != "USER_HOME" }
+			}
+			.fold<Map<String, ArtifactLocation>, Map<String, ArtifactLocation>>(emptyMap()) { merged, originalURIBaseIDS ->
+				val mismatched = originalURIBaseIDS
+					.filterKeys { it in merged }
+					.filter { (key, value) -> merged[key] != value }
+				if (mismatched.isNotEmpty()) {
+					error(
+						"Cannot merge sarifs with different originalURIBaseIDS:\n" +
+							mismatched.entries.joinToString(separator = "\n") { (key, value) ->
+								"${key}: mismatch between two values:\n\t${merged[key]}\n\t${value}"
+							}
+					)
+				}
+				merged + originalURIBaseIDS
+			}
+
+		return srcRoot + userHome + merged
+	}
+
 	private fun mergeRules(sarifs: Collection<SarifSchema210>): List<ReportingDescriptor> =
 		sarifs
 			// Flatten all the rules into one list.
@@ -104,13 +145,16 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 			// take first instance of each based on the assumption that their IDs are unique.
 			.map { it.value.first() }
 
-
 	@Suppress("NestedLambdaShadowedImplicitParameter")
 	private fun Result.relocate(sarif: SarifSchema210, common: String): Result {
 		// originalURIBaseIDS.uri = file:///P:/projects/workspace/net.twisterrob.sun/feature/configuration/
 		// common = file:///P:/projects/workspace/net.twisterrob.sun/
 		// modulePath = feature/configuration/
-		val modulePath = sarif.run.originalURIBaseIDS!!.values.single().uri!!.removePrefix(common)
+		val srcRoot = sarif.run.originalURIBaseIDS!!["%SRCROOT%"]!!.uri!!
+		val modulePath = srcRoot.removePrefix(common)
+		check(srcRoot != modulePath) {
+			"Assumption that it's a submodule failed: srcRoot=$srcRoot, common=$common"
+		}
 		return this.copy(
 			locations = this.locations?.map {
 				it.copy(
@@ -119,8 +163,12 @@ abstract class MergeLintSarifReportsTask : DefaultTask() {
 							artifactLocation = it.artifactLocation?.let {
 								it.copy(
 									uri = it.uri?.let { uri ->
-										// uri = src/main/java/net/twisterrob/android/app/WidgetConfigurationActivity.java
-										modulePath + uri
+										if (it.uriBaseID == "%SRCROOT%") {
+											// uri = src/main/java/net/twisterrob/android/app/WidgetConfigurationActivity.java
+											modulePath + uri
+										} else {
+											uri
+										}
 									}
 								)
 							}
