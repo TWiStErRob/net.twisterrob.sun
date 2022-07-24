@@ -1,10 +1,8 @@
 package net.twisterrob.sun.plugins.internal
 
-import net.twisterrob.sun.plugins.isCI
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
-import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -32,9 +30,6 @@ internal class StrictCompilationPlugin : Plugin<Project> {
 			kotlinOptions {
 				allWarningsAsErrors = true
 			}
-		}
-		project.tasks.withType<Test>().configureEach {
-			ignoreFailures = isCI
 		}
 	}
 }

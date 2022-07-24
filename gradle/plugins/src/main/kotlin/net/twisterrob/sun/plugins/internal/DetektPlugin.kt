@@ -10,7 +10,6 @@ internal class DetektPlugin : Plugin<Project> {
 	override fun apply(project: Project) {
 		project.plugins.apply("io.gitlab.arturbosch.detekt")
 		project.detekt {
-			ignoreFailures = true
 			// TODEL https://github.com/detekt/detekt/issues/4926
 			buildUponDefaultConfig = false
 			allRules = true
