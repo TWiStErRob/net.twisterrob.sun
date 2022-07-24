@@ -21,7 +21,6 @@ private fun Project.configureSarif() {
 	}
 	tasks.withType<Detekt>().configureEach {
 		reports {
-			xml.required.set(true) // Github Code Scanning
 			// https://sarifweb.azurewebsites.net
 			sarif.required.set(true) // Github Code Scanning
 		}
