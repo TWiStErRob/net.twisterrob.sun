@@ -38,7 +38,7 @@ private fun Project.configureSarif() {
 private fun Project.configureXML() {
 	tasks.withType<Detekt>().configureEach {
 		reports {
-			xml.required.set(true) // Github Code Scanning
+			xml.required.set(true)
 		}
 	}
 	rootProject.tasks.maybeRegister<ReportMergeTask>("detektReportMergeXml") {
