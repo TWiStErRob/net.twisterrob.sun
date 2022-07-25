@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 internal class StrictCompilationPlugin : Plugin<Project> {
 
 	override fun apply(project: Project) {
-		project.tasks.withType<JavaCompile> {
+		project.tasks.withType<JavaCompile>().configureEach {
 			options.compilerArgs = options.compilerArgs + listOf(
 				// Enable all warnings during compilation.
 				"-Xlint:all",
@@ -26,7 +26,7 @@ internal class StrictCompilationPlugin : Plugin<Project> {
 				"-Werror"
 			)
 		}
-		project.tasks.withType<KotlinCompile> {
+		project.tasks.withType<KotlinCompile>().configureEach {
 			kotlinOptions {
 				allWarningsAsErrors = true
 			}
