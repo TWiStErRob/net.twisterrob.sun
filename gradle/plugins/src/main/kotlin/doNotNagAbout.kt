@@ -3,7 +3,7 @@
  * stack traces and warnings, which means that even with some warnings,
  * it's possible to use org.gradle.warning.mode=fail.
  */
-fun doNotNagAbout(message: String) {
+public fun doNotNagAbout(message: String) {
 	val logger: Any = org.gradle.internal.deprecation.DeprecationLogger::class.java
 		.getDeclaredField("DEPRECATED_FEATURE_HANDLER")
 		.apply { isAccessible = true }
