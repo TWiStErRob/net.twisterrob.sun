@@ -34,7 +34,7 @@ private fun wireLintReportMergeSarif(project: Project) {
 	project.androidComponents.onVariants { variant ->
 		val lintReportMergeSarifVariant =
 			rootProject.tasks.maybeRegister<MergeLintSarifReportsTask>("lintReportMergeSarif${variant.name.capitalized()}") {
-				mergedSarifFile.set(project.layout.buildDirectory.file("reports/lint/merge-${variant.name}.sarif"))
+				mergedSarifFile.set(this.project.layout.buildDirectory.file("reports/lint/merge-${variant.name}.sarif"))
 			}
 		// Will result in multiple dependencies to the same task, but there's no other way.
 		// If this was in register's configuration block,
