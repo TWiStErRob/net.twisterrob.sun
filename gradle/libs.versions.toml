@@ -12,8 +12,8 @@ targetSdkVersion = "31"
 # TODEL workaround in :app/build.gradle.kts for 194525628 for 7.2+
 # TODO remove IncrementalTaskInputs warning about IncrementalTask.taskAction$gradle_core for 7.3
 # https://issuetracker.google.com/issues/218478028 is fixed for 7.3
-agp = "7.2.1"
-lint = "30.2.1"
+agp = "7.2.2"
+lint = "30.2.2"
 
 androidx-test = "1.4.0"
 
