@@ -25,12 +25,12 @@ private fun Project.configureSarif() {
 			sarif.required.set(true) // Github Code Scanning
 		}
 	}
-	val detektReportMergeSarif =
-		rootProject.tasks.named<ReportMergeTask>("detektReportMergeSarif")
-	tasks.withType<Detekt> {
-		detektReportMergeSarif.configure {
-			mustRunAfter(this@withType)
-			input.from(this@withType.sarifReportFile)
+	rootProject.tasks.named<ReportMergeTask>("detektReportMergeSarif") {
+		val detektReportMergeTask = this@named
+		tasks.withType<Detekt> {
+			val detektReportingTask = this@withType
+			detektReportMergeTask.mustRunAfter(detektReportingTask)
+			detektReportMergeTask.input.from(detektReportingTask.sarifReportFile)
 		}
 	}
 }
@@ -44,12 +44,12 @@ private fun Project.configureXML() {
 	rootProject.tasks.maybeRegister<ReportMergeTask>("detektReportMergeXml") {
 		output.set(rootProject.buildDir.resolve("reports/detekt/merge.xml"))
 	}
-	val detektReportMergeXml =
-		rootProject.tasks.named<ReportMergeTask>("detektReportMergeXml")
-	tasks.withType<Detekt> {
-		detektReportMergeXml.configure {
-			mustRunAfter(this@withType)
-			input.from(this@withType.xmlReportFile)
+	rootProject.tasks.named<ReportMergeTask>("detektReportMergeXml") {
+		val detektReportMergeTask = this@named
+		tasks.withType<Detekt> {
+			val detektReportingTask = this@withType
+			detektReportMergeTask.mustRunAfter(detektReportingTask)
+			detektReportMergeTask.input.from(detektReportingTask.xmlReportFile)
 		}
 	}
 }
