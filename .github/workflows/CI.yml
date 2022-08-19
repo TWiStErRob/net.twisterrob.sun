@@ -33,8 +33,8 @@ jobs:
           # sdkmanager --install "platform-tools"
 
           # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-31"
-          sdkmanager --install "platforms;android-31"
+          echo sdkmanager --install "platforms;android-32"
+          sdkmanager --install "platforms;android-32"
 
       - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v3
@@ -157,8 +157,8 @@ jobs:
           # sdkmanager --install "platform-tools"
 
           # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-31"
-          sdkmanager --install "platforms;android-31"
+          echo sdkmanager --install "platforms;android-32"
+          sdkmanager --install "platforms;android-32"
 
       - name: Checkout ${{ steps.pull_request.outputs.base_ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v3
@@ -258,8 +258,8 @@ jobs:
           # sdkmanager --install "platform-tools"
 
           # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-31"
-          sdkmanager --install "platforms;android-31"
+          echo sdkmanager --install "platforms;android-32"
+          sdkmanager --install "platforms;android-32"
 
       - name: Checkout ${{ steps.pull_request.outputs.head_ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v3
