@@ -62,6 +62,7 @@ pluginManagement {
 		eachPlugin {
 			// REPORT requested.version is null when using plugins {} block just above on Gradle 6.9.1.
 			when (requested.id.id) {
+				"net.twisterrob.settings",
 				"net.twisterrob.root",
 				"net.twisterrob.vcs",
 				"net.twisterrob.java",
@@ -82,6 +83,7 @@ pluginManagement {
 
 plugins {
 	id("com.gradle.enterprise") version "3.11.2"
+	id("net.twisterrob.settings") version "0.15.fix223_settings-SNAPSHOT"
 }
 
 gradleEnterprise {
