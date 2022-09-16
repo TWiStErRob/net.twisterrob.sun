@@ -9,3 +9,6 @@ dependencies {
 	implementation(libs.androidx.activity)
 	implementation(libs.androidx.fragment)
 }
+android {
+	namespace = "net.twisterrob.sun.preview"
+}

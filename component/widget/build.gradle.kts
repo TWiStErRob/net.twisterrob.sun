@@ -24,3 +24,6 @@ dependencies {
 	androidTestImplementation(libs.test.androidx.core)
 	androidTestImplementation(libs.test.androidx.runner)
 }
+android {
+	namespace = "net.twisterrob.sun.android.widget"
+}
