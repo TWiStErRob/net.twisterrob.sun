@@ -1,4 +1,4 @@
-package net.twisterrob.sun.android
+package net.twisterrob.sun.app
 
 import android.app.Application
 

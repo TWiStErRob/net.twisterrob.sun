@@ -11,7 +11,6 @@ dependencies {
 }
 
 android {
-	namespace = "net.twisterrob.sun.android"
 	defaultConfig {
 		applicationId = "net.twisterrob.sun"
 		targetSdk = libs.versions.targetSdkVersion.get().toInt()
