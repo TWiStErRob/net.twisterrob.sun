@@ -22,5 +22,4 @@ android {
 	buildFeatures {
 		buildConfig = true
 	}
-	namespace = "net.twisterrob.sun.configuration"
 }
