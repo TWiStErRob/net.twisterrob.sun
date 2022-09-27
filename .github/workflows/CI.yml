@@ -132,7 +132,7 @@ jobs:
     steps:
       - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
         id: current_pr
-        uses: 8BitJonny/gh-get-current-pr@2.1.1
+        uses: 8BitJonny/gh-get-current-pr@2.1.2
 
       - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
         id: pull_request
@@ -232,7 +232,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
-        uses: 8BitJonny/gh-get-current-pr@2.1.1
+        uses: 8BitJonny/gh-get-current-pr@2.1.2
         id: current_pr
 
       - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
