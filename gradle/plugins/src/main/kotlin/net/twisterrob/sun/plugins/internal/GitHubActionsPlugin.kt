@@ -14,7 +14,7 @@ internal class GitHubActionsPlugin : Plugin<Project> {
 		}
 		project.plugins.withId("io.gitlab.arturbosch.detekt") {
 			project.detekt {
-				ignoreFailures = true
+				ignoreFailures = isCI
 			}
 		}
 	}
