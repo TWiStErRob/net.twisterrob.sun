@@ -34,8 +34,8 @@ import net.twisterrob.sun.algo.SunSearchResults.ThresholdRelation;
 import net.twisterrob.sun.android.SunAngleWidgetProvider;
 import net.twisterrob.sun.android.logic.SunAngleFormatter.Result;
 import net.twisterrob.sun.android.ui.UiStates;
-import net.twisterrob.sun.android.widget.R;
 import net.twisterrob.sun.model.LightState;
+import net.twisterrob.sun.widget.R;
 
 import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_SHOW_PART_OF_DAY;
 import static net.twisterrob.sun.android.SunAngleWidgetPreferences.DEFAULT_SHOW_UPDATE_TIME;

@@ -1,7 +1,7 @@
 package net.twisterrob.sun.android.ui;
 
-import net.twisterrob.sun.android.states.R;
 import net.twisterrob.sun.model.LightStateMap;
+import net.twisterrob.sun.states.R;
 
 import static net.twisterrob.sun.model.LightState.*;
 

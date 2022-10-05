@@ -444,11 +444,13 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 		if (belowMin) {
 			message.setTextColor(MINIMUM_COLOR);
-			message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle, getString(R.string.time_2_none)));
+			String invalid = getString(R.string.warning_invalid_time_placeholder);
+			message.setText(getString(R.string.warning_minimum, results.minimum.angle, angle, invalid));
 		}
 		if (aboveMax) {
 			message.setTextColor(MAXIMUM_COLOR);
-			message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle, getString(R.string.time_2_none)));
+			String invalid = getString(R.string.warning_invalid_time_placeholder);
+			message.setText(getString(R.string.warning_maximum, results.maximum.angle, angle, invalid));
 		}
 		LocationState state = permissions.currentState();
 		switch (state) {

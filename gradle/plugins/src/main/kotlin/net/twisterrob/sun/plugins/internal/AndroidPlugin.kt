@@ -8,6 +8,7 @@ internal class AndroidPlugin : Plugin<Project> {
 	override fun apply(project: Project) {
 		@Suppress("UnstableApiUsage")
 		project.android {
+			namespace = "net.twisterrob.sun.${project.name}"
 			compileSdk = project.libs.versions.compileSdkVersion.get().toInt()
 			defaultConfig {
 				minSdk = project.libs.versions.minSdkVersion.get().toInt()
