@@ -355,6 +355,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	 * inspiration from android.text.Html#startImage and end of StringBlock#applyStyles
 	 * possibilities are limitless, for example: getKey() is "string" and text.replace(...)
 	 */
+	@SuppressLint("DiscouragedApi") // Alternative is to use a ConstraintLayout and many texts.
 	private @NonNull CharSequence getHelpText(@StringRes int annotatedTextID) {
 		Resources res = getResources();
 
