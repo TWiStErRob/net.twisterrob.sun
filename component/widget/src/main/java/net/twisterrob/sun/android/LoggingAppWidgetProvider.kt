@@ -55,7 +55,7 @@ open class LoggingAppWidgetProvider protected constructor() : AppWidgetProvider(
 		context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, newOptions: Bundle?
 	) {
 		if (Log.isLoggable(tag, Log.VERBOSE)) {
-			newOptions?.get(null) // force unparcel
+			newOptions?.keySet() // force unparcel
 			Log.v(tag, "$this.onAppWidgetOptionsChanged(${appWidgetId}, ${newOptions})")
 		}
 		super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
