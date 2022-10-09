@@ -134,6 +134,10 @@ jobs:
         id: current_pr
         uses: 8BitJonny/gh-get-current-pr@2.1.2
 
+      - name: "Stop if PR is not determined."
+        if: steps.current_pr.outputs.number == null
+        run: exit 1
+
       - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
         id: pull_request
         run: |
