@@ -3,7 +3,7 @@
 java = "1.8"
 
 # TODO When changing this, update CI too (platforms;android-xx).
-compileSdkVersion = "32"
+compileSdkVersion = "33"
 minSdkVersion = "14"
 targetSdkVersion = "32"
 
