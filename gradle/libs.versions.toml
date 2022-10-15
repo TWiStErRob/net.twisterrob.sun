@@ -60,7 +60,7 @@ test-paparazzi = { module = "app.cash.paparazzi:paparazzi", version.ref = "papar
 test-junit4 = { module = "junit:junit", version = "4.13.2" }
 test-truth = { module = "com.google.truth:truth", version = "1.1.3" }
 test-mockito = { module = "org.mockito:mockito-inline", version.ref = "mockito" }
-test-paramInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.8" }
+test-paramInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.9" }
 test-jsonAssert = { module = "org.skyscreamer:jsonassert", version.ref = "test-jsonAssert" }
 
 test-androidx-core = { module = "androidx.test:core", version.ref = "androidx.test" }
