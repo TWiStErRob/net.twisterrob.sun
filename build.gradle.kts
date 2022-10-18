@@ -6,7 +6,7 @@ plugins {
 	alias(libs.plugins.android.app) apply false
 	alias(libs.plugins.kotlin.android) apply false
 	alias(libs.plugins.paparazzi) apply false
-	id("net.twisterrob.root")
+	id(libs.plugins.twisterrob.root.get().pluginId)
 	alias(libs.plugins.twisterrob.quality)
 	alias(libs.plugins.kotlin.detekt) apply false
 }
