@@ -92,7 +92,7 @@ gradleEnterprise {
 		if (System.getenv("GITHUB_ACTIONS") == "true") {
 			val setOutput = File(System.getenv("GITHUB_OUTPUT"))
 			buildScanPublished {
-				setOutput.appendText("build-scan-url=${toJson(this@buildScanPublished.buildScanUri.toString())}")
+				setOutput.appendText("build-scan-url=${toJson(buildScanUri.toString())}")
 				setOutput.appendText("something=else\n")
 			}
 			gradle.addBuildListener(object : BuildAdapter() {
