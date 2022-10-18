@@ -64,16 +64,6 @@ pluginManagement {
 			// REPORT requested.version is null when using plugins {} block just above on Gradle 6.9.1.
 			when (requested.id.id) {
 				"net.twisterrob.settings" -> {
-					useModule("net.twisterrob.gradle:twister-convention-settings:${requested.version}")
-				}
-				"net.twisterrob.root",
-				"net.twisterrob.vcs",
-				"net.twisterrob.java",
-				"net.twisterrob.java-library",
-				"net.twisterrob.kotlin",
-				"net.twisterrob.android-app",
-				"net.twisterrob.android-lib",
-				"net.twisterrob.android-test" -> {
 					useModule("net.twisterrob.gradle:twister-convention-plugins:${requested.version}")
 				}
 				"net.twisterrob.quality" -> {
@@ -87,6 +77,7 @@ pluginManagement {
 plugins {
 	id("com.gradle.enterprise") version "3.11.2"
 	id("net.twisterrob.settings") version "0.15-SNAPSHOT"
+	id("com.android.application") version "7.3.1" apply false
 }
 
 gradleEnterprise {
