@@ -1,3 +1,5 @@
+import net.twisterrob.gradle.doNotNagAbout
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODEL Gradle 7.x
 plugins {
 	id("project-module-root")
