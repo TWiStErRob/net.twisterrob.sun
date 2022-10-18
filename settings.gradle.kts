@@ -90,14 +90,15 @@ gradleEnterprise {
 		termsOfServiceAgree = "yes"
 		// TODO how to use net.twisterrob.sun.plugins.isCI? 
 		if (System.getenv("GITHUB_ACTIONS") == "true") {
+			val setOutput = File(System.getenv("GITHUB_OUTPUT"))
 			buildScanPublished {
-				println("::set-output name=build-scan-url::${toJson(this@buildScanPublished.buildScanUri.toString())}")
+				setOutput.appendText("build-scan-url=${toJson(this@buildScanPublished.buildScanUri.toString())}\n")
 			}
 			gradle.addBuildListener(object : BuildAdapter() {
 				@Deprecated("Won't work with configuration caching.")
 				override fun buildFinished(result: BuildResult) {
-					println("::set-output name=result-success::${toJson(result.failure == null)}")
-					println("::set-output name=result-text::${toJson(resultText(result))}")
+					setOutput.appendText("result-success=${toJson(result.failure == null)}\n")
+					setOutput.appendText("result-text=${toJson(resultText(result))}\n")
 				}
 
 				private fun resultText(result: BuildResult): String =
