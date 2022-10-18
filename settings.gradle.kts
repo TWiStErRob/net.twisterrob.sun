@@ -98,7 +98,7 @@ gradleEnterprise {
 			}
 
 			buildScanPublished {
-				setOutput("build-scan-url", buildScanUri)
+				setOutput("build-scan-url", buildScanUri.toASCIIString())
 			}
 			gradle.addBuildListener(object : BuildAdapter() {
 				@Deprecated("Won't work with configuration caching.")
