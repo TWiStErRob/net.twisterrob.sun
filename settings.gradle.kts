@@ -91,9 +91,16 @@ gradleEnterprise {
 		// TODO how to use net.twisterrob.sun.plugins.isCI? 
 		if (System.getenv("GITHUB_ACTIONS") == "true") {
 			val setOutput = File(System.getenv("GITHUB_OUTPUT"))
+			println("File (${System.getenv("GITHUB_OUTPUT")}: ${setOutput.absolutePath}")
 			buildScanPublished {
+				println("Before")
+				println(setOutput.readText())
 				setOutput.appendText("build-scan-url=${toJson(buildScanUri.toString())}")
+				println("Halfway")
+				println(setOutput.readText())
 				setOutput.appendText("something=else\n")
+				println("After")
+				println(setOutput.readText())
 			}
 			gradle.addBuildListener(object : BuildAdapter() {
 				@Deprecated("Won't work with configuration caching.")
