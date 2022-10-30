@@ -22,6 +22,12 @@ dependencies {
 
 kotlin {
 	explicitApi()
+	target.compilations.configureEach {
+		kotlinOptions {
+			verbose = true
+			allWarningsAsErrors = true
+		}
+	}
 }
 
 gradlePlugin {
