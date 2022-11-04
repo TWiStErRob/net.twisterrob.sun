@@ -38,6 +38,9 @@ jobs:
 
       - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v3
+        
+      - name: Validate Gradle Wrapper JARs.
+        uses: gradle/wrapper-validation-action@v1
 
       - name: Build & Verify project using Gradle.
         id: gradle
@@ -178,6 +181,9 @@ jobs:
         with:
           ref: ${{ format('refs/heads/{0}', needs.pull_request.outputs.base_ref) }}
 
+      - name: Validate Gradle Wrapper JARs.
+        uses: gradle/wrapper-validation-action@v1
+
       - name: Record screenshots golden values for ${{ needs.pull_request.outputs.base_ref }}.
         id: gradle
         run: >
@@ -270,6 +276,9 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ format('refs/heads/{0}', needs.pull_request.outputs.head_ref) }}
+
+      - name: Validate Gradle Wrapper JARs.
+        uses: gradle/wrapper-validation-action@v1
 
       - name: Download 'Screenshot Golden Values' artifact.
         uses: actions/download-artifact@v3
