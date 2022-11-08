@@ -15,7 +15,7 @@ lint = "30.3.1"
 androidx-test = "1.4.0"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
-kotlin = "1.7.20"
+kotlin = "1.7.21"
 
 detekt = "1.21.0"
 
