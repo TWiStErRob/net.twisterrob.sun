@@ -4,7 +4,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.targets
 
 internal class StrictCompilationPlugin : Plugin<Project> {
 
@@ -26,9 +27,13 @@ internal class StrictCompilationPlugin : Plugin<Project> {
 				"-Werror"
 			)
 		}
-		project.tasks.withType<KotlinCompile>().configureEach {
-			kotlinOptions {
-				allWarningsAsErrors = true
+		// Note: this is not lazy, [targets] may be a [DomainObjectCollection].
+		project.kotlinExtension.targets.forEach { target ->
+			target.compilations.configureEach {
+				kotlinOptions {
+					verbose = true
+					allWarningsAsErrors = true
+				}
 			}
 		}
 	}
