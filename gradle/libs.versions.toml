@@ -17,7 +17,7 @@ androidx-test = "1.4.0"
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "1.7.21"
 
-detekt = "1.21.0"
+detekt = "1.22.0"
 
 dagger = "2.44.2"
 
