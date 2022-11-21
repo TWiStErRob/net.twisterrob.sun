@@ -1,5 +1,6 @@
 package net.twisterrob.sun.plugins.internal
 
+import io.gitlab.arturbosch.detekt.CONFIGURATION_DETEKT_PLUGINS
 import io.gitlab.arturbosch.detekt.Detekt
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -9,6 +10,9 @@ internal class DetektPlugin : Plugin<Project> {
 
 	override fun apply(project: Project) {
 		project.plugins.apply("io.gitlab.arturbosch.detekt")
+		project.dependencies.apply {
+			add(CONFIGURATION_DETEKT_PLUGINS, project.libs.kotlin.detekt.libraries)
+		}
 		project.detekt {
 			// TODEL https://github.com/detekt/detekt/issues/4926
 			buildUponDefaultConfig = false

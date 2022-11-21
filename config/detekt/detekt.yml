@@ -84,6 +84,26 @@ exceptions:
     excludes: [ ]
 
 
+libraries:
+  
+  ForbiddenPublicDataClass:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+  LibraryCodeMustSpecifyReturnType:
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+    ignoreAnnotated:
+      - 'org.junit.Rule'
+
+  LibraryEntitiesShouldNotBePublic:
+    # Disabled, as it flags all public classes.
+    # Intent of this check is unclear: how can a library without public exist?
+    active: false
+    # Enforce for production and test code. This negates the excludes in default config.
+    excludes: [ ]
+
+
 naming:
 
   FunctionNaming:
@@ -129,23 +149,6 @@ potential-bugs:
 
 
 style:
-
-  ForbiddenPublicDataClass:
-    # Enforce for production and test code. This negates the excludes in default config.
-    excludes: [ ]
-
-  LibraryCodeMustSpecifyReturnType:
-    # Enforce for production and test code. This negates the excludes in default config.
-    excludes: [ ]
-    ignoreAnnotated:
-      - 'org.junit.Rule'
-
-  LibraryEntitiesShouldNotBePublic:
-    # Disabled, as it flags all public classes.
-    # Intent of this check is unclear: how can a library without public exist?
-    active: false
-    # Enforce for production and test code. This negates the excludes in default config.
-    excludes: [ ]
 
   NoTabs:
     # I'm a tab guy, I don't pay for space in advance.
