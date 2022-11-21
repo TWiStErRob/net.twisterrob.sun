@@ -17,7 +17,7 @@ androidx-test = "1.4.0"
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "1.7.21"
 
-detekt = "1.21.0"
+detekt = "1.22.0"
 
 dagger = "2.44.2"
 
@@ -54,6 +54,7 @@ kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 
 kotlin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 kotlin-detekt-sarif = { module = "io.github.detekt.sarif4k:sarif4k", version = "0.2.0" }
+kotlin-detekt-libraries = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
 
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
