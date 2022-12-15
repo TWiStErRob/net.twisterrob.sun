@@ -1,6 +1,6 @@
 [versions]
 
-java = "1.8"
+java = "11"
 
 # TODO When changing this, update CI too (platforms;android-xx).
 compileSdkVersion = "33"

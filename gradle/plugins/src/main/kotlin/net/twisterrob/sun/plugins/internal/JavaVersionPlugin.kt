@@ -33,4 +33,4 @@ internal class JavaVersionPlugin : Plugin<Project> {
 }
 
 private val VersionAccessors.javaVersion: JavaVersion
-	get() = JavaVersion.toVersion(java.get())
+	get() = JavaVersion.toVersion(this.java.get())
