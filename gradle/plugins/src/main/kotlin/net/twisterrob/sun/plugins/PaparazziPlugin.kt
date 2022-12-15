@@ -12,7 +12,7 @@ import org.gradle.kotlin.dsl.withType
 public class PaparazziPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
-		target.apply(plugin = "dev.chrisbanes.paparazzi")
+		target.apply(plugin = "app.cash.paparazzi")
 		target.dependencies {
 			"testImplementation"(target.project(":component:paparazzi"))
 		}

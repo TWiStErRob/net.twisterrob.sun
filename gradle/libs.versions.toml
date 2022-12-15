@@ -26,9 +26,7 @@ dagger = "2.44.2"
 # Changelog (4.x and 5.x): https://github.com/mockito/mockito/releases
 mockito = "5.0.0"
 
-# TODEL when https://github.com/cashapp/paparazzi/issues/604 gets published,
-# we don't need https://github.com/chrisbanes/paparazzi/pull/2 any more.
-paparazzi = "1.1.0-sdk33-alpha04"
+paparazzi = "1.1.0"
 
 test-jsonAssert = "1.5.1"
 
@@ -59,10 +57,7 @@ kotlin-detekt-libraries = { module = "io.gitlab.arturbosch.detekt:detekt-rules-l
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
-test-paparazzi = { module = "dev.chrisbanes.paparazzi:paparazzi", version.ref = "paparazzi" }
-# TODEL Waiting for https://github.com/cashapp/paparazzi/issues/604
-# Listed to get a renovate notification when paparazzi is updated.
-test-paparazzi-original = { module = "dev.chrisbanes.paparazzi:paparazzi", version = "1.1.0" }
+test-paparazzi = { module = "app.cash.paparazzi:paparazzi", version.ref = "paparazzi" }
 test-junit4 = { module = "junit:junit", version = "4.13.2" }
 test-truth = { module = "com.google.truth:truth", version = "1.1.3" }
 test-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
@@ -83,7 +78,7 @@ twisterrob-quality = { module = "net.twisterrob.gradle:twister-quality", version
 
 android-app = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-paparazzi = { id = "dev.chrisbanes.paparazzi", version.ref = "paparazzi" }
+paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 twisterrob-root = { id = "net.twisterrob.root", version.ref = "twisterrob" }
 twisterrob-quality = { id = "net.twisterrob.quality", version.ref = "twisterrob" }
 kotlin-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
