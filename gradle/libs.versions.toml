@@ -26,7 +26,7 @@ dagger = "2.44.2"
 # Changelog (4.x and 5.x): https://github.com/mockito/mockito/releases
 mockito = "5.0.0"
 
-paparazzi = "1.1.0"
+paparazzi = "1.2.0-SNAPSHOT"
 
 test-jsonAssert = "1.5.1"
 
