@@ -24,7 +24,7 @@ dagger = "2.44.2"
 # Artifacts: https://mvnrepository.com/artifact/org.mockito/mockito-core
 # Changelog (1.x, 2.x and 3.x): https://github.com/mockito/mockito/blob/main/doc/release-notes/official.md
 # Changelog (4.x): https://github.com/mockito/mockito/releases
-mockito = "4.10.0"
+mockito = "4.11.0"
 
 # TODEL when https://github.com/cashapp/paparazzi/issues/604 gets published,
 # we don't need https://github.com/chrisbanes/paparazzi/pull/2 any more.
