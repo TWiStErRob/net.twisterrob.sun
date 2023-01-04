@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
 	implementation(libs.android.gradle)
+	// To have access to com.android.utils.SdkUtils.
 	implementation(libs.android.lint.common)
 	implementation(libs.android.cacheFix)
 	implementation(libs.kotlin.plugin)
