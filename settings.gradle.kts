@@ -85,7 +85,7 @@ pluginManagement {
 }
 
 plugins {
-	id("com.gradle.enterprise") version "3.12.1"
+	id("com.gradle.enterprise") version "3.12.2"
 	id("net.twisterrob.settings") version "0.15-SNAPSHOT"
 }
 
