@@ -50,3 +50,17 @@ doNotNagAbout(
 		"See https://docs.gradle.org/${gradleVersion}/userguide/viewing_debugging_dependencies.html#sub:resolving-unsafe-configuration-resolution-errors for more details."
 )
 // endregion
+
+// TODEL https://issuetracker.google.com/issues/247906487
+if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.startsWith("7.")) {
+	val loggerFactory: org.slf4j.ILoggerFactory = org.slf4j.LoggerFactory.getILoggerFactory()
+	val addNoOpLogger: java.lang.reflect.Method = loggerFactory.javaClass
+		.getDeclaredMethod("addNoOpLogger", String::class.java)
+		.apply {
+			isAccessible = true
+		}
+	addNoOpLogger(loggerFactory, "com.android.build.api.component.impl.MutableListBackedUpWithListProperty")
+	addNoOpLogger(loggerFactory, "com.android.build.api.component.impl.MutableMapBackedUpWithMapProperty")
+} else {
+	error("AGP major version changed, review hack.")
+}
