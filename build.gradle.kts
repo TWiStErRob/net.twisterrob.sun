@@ -1,7 +1,4 @@
-import com.android.Version
 import net.twisterrob.gradle.doNotNagAbout
-import org.slf4j.ILoggerFactory
-import java.lang.reflect.Method
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODEL Gradle 7.x
 plugins {
@@ -55,9 +52,9 @@ doNotNagAbout(
 // endregion
 
 // TODEL https://issuetracker.google.com/issues/247906487
-if (Version.ANDROID_GRADLE_PLUGIN_VERSION.startsWith("7.")) {
-	val loggerFactory: ILoggerFactory = org.slf4j.LoggerFactory.getILoggerFactory()
-	val addNoOpLogger: Method = loggerFactory.javaClass
+if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.startsWith("7.")) {
+	val loggerFactory: org.slf4j.ILoggerFactory = org.slf4j.LoggerFactory.getILoggerFactory()
+	val addNoOpLogger: java.lang.reflect.Method = loggerFactory.javaClass
 		.getDeclaredMethod("addNoOpLogger", String::class.java)
 		.apply {
 			isAccessible = true
