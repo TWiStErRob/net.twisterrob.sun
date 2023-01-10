@@ -28,7 +28,7 @@ mockito = "4.11.0"
 
 # TODEL when https://github.com/cashapp/paparazzi/issues/604 gets published,
 # we don't need https://github.com/chrisbanes/paparazzi/pull/2 any more.
-paparazzi = "1.1.0-sdk33-alpha03"
+paparazzi = "1.1.0-sdk33-alpha04"
 
 test-jsonAssert = "1.5.1"
 
