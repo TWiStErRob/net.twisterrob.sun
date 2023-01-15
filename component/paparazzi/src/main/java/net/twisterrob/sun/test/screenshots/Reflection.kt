@@ -18,6 +18,7 @@ internal operator fun Any?.set(field: Field, value: Any?) {
 internal fun Field.clearFinal() {
 	// Java 8-17 compatible version of: Field::class.java.getDeclaredField("modifiers")
 	// Idea: https://stackoverflow.com/a/69418150/253468
+	@Suppress("UnnecessaryLet") // TODEL https://github.com/detekt/detekt/issues/5701
 	Class::class.java
 		.getDeclaredMethod("getDeclaredFields0", Boolean::class.javaPrimitiveType)
 		.apply { isAccessible = true }
