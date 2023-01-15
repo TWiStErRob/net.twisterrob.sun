@@ -14,20 +14,6 @@ plugins {
 buildscript {
 	// Substitute for lack of settings.gradle's pluginManagement.resolutionStrategy.cacheChangingModulesFor.
 	configurations.classpath.get().resolutionStrategy.cacheChangingModulesFor(0, "seconds") // -SNAPSHOT
-	
-	// TODEL once https://github.com/cashapp/paparazzi/pull/648 gets merged or AGP 7.4 released.
-	configurations.classpath.configure {
-		resolutionStrategy { 
-			eachDependency { 
-				if (requested.version == "30.4.0-rc01") {
-					useVersion("30.3.1")
-				}
-				if (requested.version == "7.4.0-rc01") {
-					useVersion("7.3.1")
-				}
-			}
-		}
-	}
 }
 
 tasks.register("check") {
