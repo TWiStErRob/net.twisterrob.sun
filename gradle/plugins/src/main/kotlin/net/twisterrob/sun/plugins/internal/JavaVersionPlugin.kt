@@ -13,9 +13,12 @@ internal class JavaVersionPlugin : Plugin<Project> {
 
 	override fun apply(project: Project) {
 		val javaVersion = project.libs.versions.javaVersion
-		project.tasks.withType<JavaCompile>().configureEach {
-			sourceCompatibility = javaVersion.toString()
-			targetCompatibility = javaVersion.toString()
+		// TODEL this is coming from my plugin, it forces sourceCompatibility to 7
+		project.afterEvaluate {
+			project.tasks.withType<JavaCompile>().configureEach {
+				sourceCompatibility = javaVersion.toString()
+				targetCompatibility = javaVersion.toString()
+			}
 		}
 		project.tasks.withType<KotlinCompile>().configureEach {
 			kotlinOptions {

@@ -34,8 +34,8 @@ public class PaparazziPlugin : Plugin<Project> {
 					)
 				}
 			}
+			// Hide the huge yellow WARNINGs:
 			jvmArgs(
-				// Hide the huge yellow WARNING:
 				// > An illegal reflective access operation has occurred
 				// > Illegal reflective access by net.twisterrob.sun.test.screenshots.ClearFinalKt
 				// (file:/P:/projects/workspace/net.twisterrob.sun/component/paparazzi/build/libs/paparazzi.jar)
@@ -47,6 +47,15 @@ public class PaparazziPlugin : Plugin<Project> {
 				// > Use --illegal-access=warn to enable warnings of further illegal reflective access operations
 				// > All illegal access operations will be denied in a future release
 				"--add-opens", "java.base/java.lang.reflect=ALL-UNNAMED",
+
+				// > An illegal reflective access operation has occurred
+				// > Illegal reflective access by net.twisterrob.sun.test.screenshots.ReflectionKt
+				// (file:/P:/projects/workspace/net.twisterrob.sun/component/paparazzi/build/libs/paparazzi.jar)
+				// to method java.lang.Class.getDeclaredFields0(boolean)
+				// > Please consider reporting this to the maintainers of net.twisterrob.sun.test.screenshots.ReflectionKt
+				// > Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+				// > All illegal access operations will be denied in a future release
+				"--add-opens", "java.base/java.lang=ALL-UNNAMED",
 			)
 		}
 	}
