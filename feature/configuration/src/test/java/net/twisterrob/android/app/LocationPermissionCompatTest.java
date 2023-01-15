@@ -1,7 +1,11 @@
 package net.twisterrob.android.app;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.function.BinaryOperator;
+import java.util.function.Predicate;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,7 +71,24 @@ public class LocationPermissionCompatTest {
 	private static void setAPIVersion(int version) {
 		try {
 			//noinspection JavaReflectionMemberAccess works on JVM, where it matters for Unit tests.
-			Field modifiers = Field.class.getDeclaredField("modifiers");
+			Method getDeclaredFields0 =
+					Class.class.getDeclaredMethod("getDeclaredFields0", boolean.class);
+			getDeclaredFields0.setAccessible(true);
+			Field[] fieldFields = (Field[])getDeclaredFields0.invoke(Field.class, false);
+			@SuppressWarnings({"OptionalGetWithoutIsPresent", "Since15", "ConstantConditions"})
+			Field modifiers = Arrays
+					.stream(fieldFields)
+					.filter(new Predicate<Field>() {
+						@Override public boolean test(Field f) {
+							return f.getName().equals("modifiers");
+						}
+					})
+					.reduce(new BinaryOperator<Field>() {
+						@Override public Field apply(Field u, Field v) {
+							throw new IllegalStateException("More than one 'modifier' field found");
+						}
+					})
+					.get();
 			modifiers.setAccessible(true);
 			Field SDK_INT = android.os.Build.VERSION.class.getDeclaredField("SDK_INT");
 			SDK_INT.setAccessible(true);

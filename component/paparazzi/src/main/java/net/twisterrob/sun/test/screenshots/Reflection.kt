@@ -16,8 +16,16 @@ internal operator fun Any?.set(field: Field, value: Any?) {
 
 @Throws(NoSuchFieldException::class, IllegalAccessException::class)
 internal fun Field.clearFinal() {
-	Field::class.java
-		.getDeclaredField("modifiers")
+	// Java 8-17 compatible version of: Field::class.java.getDeclaredField("modifiers")
+	// Idea: https://stackoverflow.com/a/69418150/253468
+	@Suppress("UnnecessaryLet") // TODEL https://github.com/detekt/detekt/issues/5701
+	Class::class.java
+		.getDeclaredMethod("getDeclaredFields0", Boolean::class.javaPrimitiveType)
+		.apply { isAccessible = true }
+		.invoke(Field::class.java, false)
+		.let { @Suppress("UNCHECKED_CAST") (it as Array<Field>) }
+		.single { it.name == "modifiers" }
+		// Then clear the final modifier.
 		.apply { isAccessible = true }
 		.setInt(this, this.modifiers and Modifier.FINAL.inv())
 }
