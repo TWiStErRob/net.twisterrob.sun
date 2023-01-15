@@ -131,7 +131,7 @@ private class HackingContextWrapper(
 	 * [ServiceInfo.metaData] needs to be non-null to prevent NPE at 882.
 	 */
 	override fun getPackageManager(): PackageManager =
-		@Suppress("UseIfInsteadOfWhen")
+		@Suppress("UseIfInsteadOfWhen", "NestedScopeFunctions")
 		when (val packageManager = super.getPackageManager()) {
 			is BridgePackageManager ->
 				Mockito.spy(packageManager).apply {
