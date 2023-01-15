@@ -9,7 +9,9 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.pm.ServiceInfo
 import android.content.res.Configuration
+import android.os.Bundle
 import android.view.Display
 import com.android.layoutlib.bridge.android.BridgePackageManager
 import org.mockito.ArgumentMatchers
@@ -98,9 +100,9 @@ private class HackingContextWrapper(
 		Mockito.mock(Display::class.java)
 
 	/**
-	 * Make sure [PackageManager] is returning something from [PackageManager.getActivityInfo]
-	 * as it has a non-null contract.
+	 * Make sure [PackageManager] is returning something as most methods have a non-null contract.
 	 *
+	 * Return something from [PackageManager.getActivityInfo] to make sure appcompat:1.4.2 works:
 	 * ```
 	 * java.lang.NullPointerException
 	 *     at androidx.core.app.NavUtils.getParentActivityName(NavUtils.java:263)
@@ -114,6 +116,19 @@ private class HackingContextWrapper(
 	 *     at net.twisterrob.sun.android.SunAngleWidgetConfiguration.onCreate(SunAngleWidgetConfiguration.java:144)
 	 *     at android.app.Activity.onCreate(Activity.java:1665)
 	 * ```
+	 *
+	 * Return something from [PackageManager.getServiceInfo] to make sure appcompat:1.6.0 works:
+	 * ```
+	 * java.lang.NullPointerException
+	 *     at androidx.appcompat.app.AppCompatDelegate.isAutoStorageOptedIn(AppCompatDelegate.java:872/882)
+	 *     at androidx.appcompat.app.AppCompatDelegateImpl.attachBaseContext2(AppCompatDelegateImpl.java:403)
+	 *     at androidx.appcompat.app.AppCompatActivity.attachBaseContext(AppCompatActivity.java:141)
+	 *     at android.app.Activity.attach(Activity.java:7940)
+	 *     at net.twisterrob.sun.test.screenshots.UsableActivityHackKt.attach(UsableActivityHack.kt:147)
+	 *     at net.twisterrob.sun.test.screenshots.UsableActivityHackKt.start(UsableActivityHack.kt:34)
+	 *     at net.twisterrob.sun.android.SunAngleWidgetConfigurationScreenshotTest.setUp(.java:46)
+	 * ```
+	 * [ServiceInfo.metaData] needs to be non-null to prevent NPE at 882.
 	 */
 	override fun getPackageManager(): PackageManager =
 		@Suppress("UseIfInsteadOfWhen")
@@ -122,6 +137,8 @@ private class HackingContextWrapper(
 				Mockito.spy(packageManager).apply {
 					Mockito.doReturn(ActivityInfo()).`when`(this)
 						.getActivityInfo(ArgumentMatchers.any(), ArgumentMatchers.anyInt())
+					Mockito.doReturn(ServiceInfo().apply { metaData = Bundle() }).`when`(this)
+						.getServiceInfo(ArgumentMatchers.any(), ArgumentMatchers.anyInt())
 				}
 			else ->
 				packageManager
