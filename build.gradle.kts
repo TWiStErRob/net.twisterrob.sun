@@ -49,6 +49,13 @@ doNotNagAbout(
 		"This behaviour has been deprecated and is scheduled to be removed in Gradle 8.0. " +
 		"See https://docs.gradle.org/${gradleVersion}/userguide/viewing_debugging_dependencies.html#sub:resolving-unsafe-configuration-resolution-errors for more details."
 )
+// Android Studio 2022.1.1 (Electric Eel)
+@Suppress("MaxLineLength")
+doNotNagAbout(
+	"The org.gradle.util.GUtil type has been deprecated. " +
+		"This is scheduled to be removed in Gradle 9.0. " +
+		"Consult the upgrading guide for further information: https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_7.html#org_gradle_util_reports_deprecations"
+)
 // endregion
 
 // TODEL https://issuetracker.google.com/issues/247906487
