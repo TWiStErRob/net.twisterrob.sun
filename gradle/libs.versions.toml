@@ -33,7 +33,7 @@ paparazzi = "1.1.0-sdk33-alpha04"
 test-jsonAssert = "1.5.1"
 
 # TODEL JavaVersionPlugin afterEvaluate hack when updated to 0.15 final
-twisterrob = "0.15-SNAPSHOT"
+twisterrob = "0.15.java-SNAPSHOT"
 
 [libraries]
 
