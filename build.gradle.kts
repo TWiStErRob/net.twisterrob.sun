@@ -51,8 +51,8 @@ doNotNagAbout(
 )
 // endregion
 
-if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION == "7.4.0") {
-	// TODEL https://issuetracker.google.com/issues/264177800
+// TODEL https://issuetracker.google.com/issues/264177800
+if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION < "7.4.1") {
 	@Suppress("MaxLineLength")
 	doNotNagAbout(
 		"The Report.destination property has been deprecated. " +
