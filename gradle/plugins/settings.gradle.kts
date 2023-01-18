@@ -17,13 +17,6 @@ dependencyResolutionManagement {
 				//snapshotsOnly()
 			}
 		}
-		maven("https://oss.sonatype.org/content/repositories/snapshots/") {
-			name = "Sonatype: SNAPSHOTs"
-			mavenContent {
-				includeGroup("app.cash.paparazzi")
-				snapshotsOnly()
-			}
-		}
 	}
 	versionCatalogs {
 		create("libs") {
