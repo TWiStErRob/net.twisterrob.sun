@@ -30,7 +30,7 @@ paparazzi = "1.2.0"
 
 test-jsonAssert = "1.5.1"
 
-twisterrob = "0.15-SNAPSHOT"
+twisterrob = "0.15"
 
 [libraries]
 
