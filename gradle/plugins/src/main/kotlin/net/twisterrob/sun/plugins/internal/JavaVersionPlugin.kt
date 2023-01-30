@@ -13,12 +13,23 @@ internal class JavaVersionPlugin : Plugin<Project> {
 
 	override fun apply(project: Project) {
 		val javaVersion = project.libs.versions.javaVersion
-		// TODEL this is coming from my plugin, it forces sourceCompatibility to 7
-		project.afterEvaluate {
-			project.tasks.withType<JavaCompile>().configureEach {
-				sourceCompatibility = javaVersion.toString()
-				targetCompatibility = javaVersion.toString()
+		project.androidOptional {
+			// TODEL Explicitly specify Java version because https://issuetracker.google.com/issues/260059413
+			// > > Task :app:compileDebugKotlin
+			// > 'compileDebugJavaWithJavac' task (current target is 1.8) and
+			// > 'compileDebugKotlin' task (current target is 11)
+			// > jvm target compatibility should be set to the same Java version.
+			// > By default will become an error since Gradle 8.0+!
+			// > Read more: https://kotl.in/gradle/jvm/target-validation
+			// > Consider using JVM toolchain: https://kotl.in/gradle/jvm/toolchain
+			compileOptions {
+				sourceCompatibility = javaVersion
+				targetCompatibility = javaVersion
 			}
+		}
+		project.tasks.withType<JavaCompile>().configureEach {
+			sourceCompatibility = javaVersion.toString()
+			targetCompatibility = javaVersion.toString()
 		}
 		project.tasks.withType<KotlinCompile>().configureEach {
 			kotlinOptions {
@@ -33,4 +44,4 @@ internal class JavaVersionPlugin : Plugin<Project> {
 }
 
 private val VersionAccessors.javaVersion: JavaVersion
-	get() = JavaVersion.toVersion(java.get())
+	get() = JavaVersion.toVersion(this.java.get())

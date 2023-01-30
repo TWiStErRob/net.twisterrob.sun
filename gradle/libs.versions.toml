@@ -1,6 +1,6 @@
 [versions]
 
-java = "1.8"
+java = "11"
 
 # TODO When changing this, update CI too (platforms;android-xx).
 compileSdkVersion = "33"
@@ -24,22 +24,19 @@ dagger = "2.44.2"
 # Artifacts: https://mvnrepository.com/artifact/org.mockito/mockito-core
 # Changelog (1.x, 2.x and 3.x): https://github.com/mockito/mockito/blob/main/doc/release-notes/official.md
 # Changelog (4.x and 5.x): https://github.com/mockito/mockito/releases
-mockito = "5.0.0"
+mockito = "5.1.0"
 
-# TODEL when https://github.com/cashapp/paparazzi/issues/604 gets published,
-# we don't need https://github.com/chrisbanes/paparazzi/pull/2 any more.
-paparazzi = "1.1.0-sdk33-alpha04"
+paparazzi = "1.2.0"
 
 test-jsonAssert = "1.5.1"
 
-# TODEL JavaVersionPlugin afterEvaluate hack when updated to 0.15 final
-twisterrob = "0.15-SNAPSHOT"
+twisterrob = "0.15"
 
 [libraries]
 
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 android-lint-common = { module = "com.android.tools:common", version.ref = "lint" }
-android-cacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.6.2" }
+android-cacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.6.3" }
 
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.0" }
 androidx-activity = { module = "androidx.activity:activity", version = "1.6.1" }
@@ -60,10 +57,7 @@ kotlin-detekt-libraries = { module = "io.gitlab.arturbosch.detekt:detekt-rules-l
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
-test-paparazzi = { module = "dev.chrisbanes.paparazzi:paparazzi", version.ref = "paparazzi" }
-# TODEL Waiting for https://github.com/cashapp/paparazzi/issues/604
-# Listed to get a renovate notification when paparazzi is updated.
-test-paparazzi-original = { module = "dev.chrisbanes.paparazzi:paparazzi", version = "1.1.0" }
+test-paparazzi = { module = "app.cash.paparazzi:paparazzi", version.ref = "paparazzi" }
 test-junit4 = { module = "junit:junit", version = "4.13.2" }
 test-truth = { module = "com.google.truth:truth", version = "1.1.3" }
 test-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
@@ -84,7 +78,7 @@ twisterrob-quality = { module = "net.twisterrob.gradle:twister-quality", version
 
 android-app = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-paparazzi = { id = "dev.chrisbanes.paparazzi", version.ref = "paparazzi" }
+paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 twisterrob-root = { id = "net.twisterrob.root", version.ref = "twisterrob" }
 twisterrob-quality = { id = "net.twisterrob.quality", version.ref = "twisterrob" }
 kotlin-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
