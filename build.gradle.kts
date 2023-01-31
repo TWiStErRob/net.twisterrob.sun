@@ -21,7 +21,7 @@ tasks.register("check") {
 	dependsOn(gradle.includedBuild("plugins").task(":check"))
 }
 
-val gradleVersion: String = GradleVersion.current().baseVersion.version
+val gradleVersion: String = GradleVersion.current().version
 
 // region Gradle Sync warnings
 // Currently with Gradle 7.5.1 only these 3 warnings show up.
