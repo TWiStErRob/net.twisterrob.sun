@@ -24,7 +24,7 @@ tasks.register("check") {
 val gradleVersion: String = GradleVersion.current().version
 
 // TODEL Gradle sync in AS EE 2022.1.1 https://youtrack.jetbrains.com/issue/IDEA-301430, fixed in AS Giraffe.
-if (System.getProperty("idea.version") < "2022.3") {
+if (System.getProperty("idea.version") ?: "" < "2022.3") {
 	@Suppress("MaxLineLength")
 	doNotNagAbout(
 		"The org.gradle.util.GUtil type has been deprecated. " +
