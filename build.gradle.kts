@@ -57,20 +57,6 @@ doNotNagAbout(
 	"at org.jetbrains.plugins.gradle.tooling.util.SourceSetCachedFinder.createArtifactsMap"
 )
 
-// TODEL https://issuetracker.google.com/issues/264177800
-if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION < "7.4.1") {
-	@Suppress("MaxLineLength")
-	doNotNagAbout(
-		"The Report.destination property has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Please use the outputLocation property instead. " +
-			"See https://docs.gradle.org/${gradleVersion}/dsl/org.gradle.api.reporting.Report.html#org.gradle.api.reporting.Report:destination for more details.",
-		"at com.android.build.gradle.tasks.factory.AndroidUnitTest\$CreationAction.configure"
-	)
-} else {
-	error("AGP version changed, please remove hack.")
-}
-
 // TODEL https://issuetracker.google.com/issues/247906487
 if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.startsWith("7.")) {
 	val loggerFactory: org.slf4j.ILoggerFactory = org.slf4j.LoggerFactory.getILoggerFactory()
