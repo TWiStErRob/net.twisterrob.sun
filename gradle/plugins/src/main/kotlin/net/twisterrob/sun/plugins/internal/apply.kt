@@ -5,5 +5,5 @@ import org.gradle.api.provider.Provider
 import org.gradle.plugin.use.PluginDependency
 
 internal fun PluginContainer.apply(plugin: Provider<PluginDependency>) {
-	apply(plugin.get().pluginId)
+	this.apply(plugin.get().pluginId)
 }

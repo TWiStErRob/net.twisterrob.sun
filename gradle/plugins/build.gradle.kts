@@ -14,7 +14,7 @@ dependencies {
 	implementation(libs.twisterrob.quality)
 	implementation(libs.twisterrob.convention)
 
-	// TODEL hack from https://github.com/gradle/gradle/issues/15383#issuecomment-779893192 (there are more parts to this)
+	// TODEL https://github.com/gradle/gradle/issues/15383
 	implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
 	testImplementation(libs.test.junit4)

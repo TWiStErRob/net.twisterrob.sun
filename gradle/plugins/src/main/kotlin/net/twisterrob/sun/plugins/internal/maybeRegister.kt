@@ -12,8 +12,8 @@ internal inline fun <reified T : Task> TaskContainer.maybeRegister(
 	noinline configuration: T.() -> Unit
 ): TaskProvider<T> =
 	try {
-		named<T>(taskName)
+		this.named<T>(taskName)
 	} catch (ex: UnknownTaskException) {
 		@Suppress("RemoveExplicitTypeArguments")
-		register<T>(taskName, configuration)
+		this.register<T>(taskName, configuration)
 	}
