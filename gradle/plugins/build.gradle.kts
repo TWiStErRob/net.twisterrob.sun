@@ -15,7 +15,7 @@ dependencies {
 	implementation(libs.twisterrob.convention)
 
 	// TODEL https://github.com/gradle/gradle/issues/15383
-	implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+	implementation(files(libs::class.java.superclass.protectionDomain.codeSource.location))
 
 	testImplementation(libs.test.junit4)
 	testImplementation(libs.test.jsonAssert)
