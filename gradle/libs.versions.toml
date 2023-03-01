@@ -36,7 +36,7 @@ twisterrob = "0.15"
 
 android-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 android-lint-common = { module = "com.android.tools:common", version.ref = "lint" }
-android-cacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.6.5" }
+android-cacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.7.0" }
 
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
 androidx-activity = { module = "androidx.activity:activity", version = "1.6.1" }
