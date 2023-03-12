@@ -4,9 +4,9 @@ on:
 
 concurrency:
   # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
-  # On master, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
+  # On main, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
   # More info: https://stackoverflow.com/a/68422069/253468:
-  group: ${{ github.ref == 'refs/heads/master' && format('ci-master-{0}', github.sha) || format('ci-{0}', github.ref) }}
+  group: ${{ github.ref == 'refs/heads/main' && format('ci-main-{0}', github.sha) || format('ci-{0}', github.ref) }}
   cancel-in-progress: true
 jobs:
   build:
@@ -128,8 +128,8 @@ jobs:
 
   pull_request:
     name: Find PR
-    # Don't execute on master, it'll never be PR'd.
-    if: github.ref != 'refs/heads/master' && (success() || failure())
+    # Don't execute on main, it'll never be PR'd.
+    if: github.ref != 'refs/heads/main' && (success() || failure())
     runs-on: ubuntu-latest
     timeout-minutes: 1
     outputs:
@@ -151,8 +151,8 @@ jobs:
   record-base:
     name: 📸 Screenshot Tests / Record
     needs: pull_request
-    # Don't execute on master, as it'll just verify against itself.
-    if: github.ref != 'refs/heads/master' && needs.pull_request.outputs.found == 'true'
+    # Don't execute on main, as it'll just verify against itself.
+    if: github.ref != 'refs/heads/main' && needs.pull_request.outputs.found == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
