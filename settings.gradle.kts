@@ -1,5 +1,6 @@
 import groovy.json.JsonOutput.toJson
 import net.twisterrob.gradle.settings.enableFeaturePreviewQuietly
+import net.twisterrob.gradle.doNotNagAbout
 
 rootProject.name = "Sun"
 
@@ -44,49 +45,12 @@ pluginManagement {
 				includeGroup("io.gitlab.arturbosch.detekt")
 			}
 		}
-		maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-			name = "Sonatype 01: SNAPSHOTs"
-			content {
-				includeVersionByRegex("""^net\.twisterrob\.gradle$""", ".*", """.*-SNAPSHOT$""")
-				includeVersionByRegex("""^net\.twisterrob\.gradle$""", ".*", """.*-\d{8}\.\d{6}-\d+$""")
-			}
-			mavenContent {
-				// This doesn't allow using specific snapshot, so using versionRegex above.
-				//snapshotsOnly()
-			}
-		}
-	}
-	resolutionStrategy {
-		// Not possible here, see root build.gradle.
-		//cacheChangingModulesFor(0, "seconds") // -SNAPSHOT
-
-		eachPlugin {
-			// REPORT requested.version is null when using plugins {} block just above on Gradle 6.9.1.
-			when (requested.id.id) {
-				"net.twisterrob.settings" -> {
-					useModule("net.twisterrob.gradle:twister-convention-settings:${requested.version}")
-				}
-				"net.twisterrob.root",
-				"net.twisterrob.vcs",
-				"net.twisterrob.java",
-				"net.twisterrob.java-library",
-				"net.twisterrob.kotlin",
-				"net.twisterrob.android-app",
-				"net.twisterrob.android-lib",
-				"net.twisterrob.android-test" -> {
-					useModule("net.twisterrob.gradle:twister-convention-plugins:${requested.version}")
-				}
-				"net.twisterrob.quality" -> {
-					useModule("net.twisterrob.gradle:twister-quality:${requested.version}")
-				}
-			}
-		}
 	}
 }
 
 plugins {
 	id("com.gradle.enterprise") version "3.12.4"
-	id("net.twisterrob.settings") version "0.15-SNAPSHOT"
+	id("net.twisterrob.gradle.plugin.settings") version "0.15.1"
 }
 
 gradleEnterprise {
@@ -128,3 +92,39 @@ gradleEnterprise {
 		}
 	}
 }
+
+val gradleVersion: String = GradleVersion.current().version
+
+// TODEL Gradle sync in AS EE 2022.1.1 https://youtrack.jetbrains.com/issue/IDEA-301430, fixed in AS Giraffe.
+if ((System.getProperty("idea.version") ?: "") < "2022.3") {
+	@Suppress("MaxLineLength")
+	doNotNagAbout(
+		"The org.gradle.util.GUtil type has been deprecated. " +
+			"This is scheduled to be removed in Gradle 9.0. " +
+			"Consult the upgrading guide for further information: " +
+			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_7.html#org_gradle_util_reports_deprecations",
+		"at org.jetbrains.plugins.gradle.tooling.builder.ExternalProjectBuilderImpl\$_getSourceSets_closure"
+	)
+} else {
+	error("Android Studio version changed, please remove hack.")
+}
+
+// TODEL Gradle sync in AS EE 2022.1.1 https://youtrack.jetbrains.com/issue/IDEA-306975, maybe fixed in AS H.
+@Suppress("MaxLineLength")
+doNotNagAbout(
+	"The AbstractArchiveTask.archivePath property has been deprecated. " +
+		"This is scheduled to be removed in Gradle 9.0. " +
+		"Please use the archiveFile property instead. " +
+		"See https://docs.gradle.org/${gradleVersion}/dsl/org.gradle.api.tasks.bundling.AbstractArchiveTask.html#org.gradle.api.tasks.bundling.AbstractArchiveTask:archivePath for more details.",
+	"at org.jetbrains.plugins.gradle.tooling.builder.ExternalProjectBuilderImpl\$_getSourceSets_closure"
+)
+
+// TODEL Gradle sync in AS EE 2022.1.1 https://youtrack.jetbrains.com/issue/IDEA-306975, maybe fixed in AS H.
+@Suppress("MaxLineLength")
+doNotNagAbout(
+	"The AbstractArchiveTask.archivePath property has been deprecated. " +
+		"This is scheduled to be removed in Gradle 9.0. " +
+		"Please use the archiveFile property instead. " +
+		"See https://docs.gradle.org/${gradleVersion}/dsl/org.gradle.api.tasks.bundling.AbstractArchiveTask.html#org.gradle.api.tasks.bundling.AbstractArchiveTask:archivePath for more details.",
+	"at org.jetbrains.plugins.gradle.tooling.util.SourceSetCachedFinder.createArtifactsMap"
+)

@@ -30,7 +30,7 @@ paparazzi = "1.2.0"
 
 test-jsonAssert = "1.5.1"
 
-twisterrob = "0.15"
+twisterrob = "0.15.1"
 
 [libraries]
 
@@ -79,6 +79,6 @@ twisterrob-quality = { module = "net.twisterrob.gradle:twister-quality", version
 android-app = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
-twisterrob-root = { id = "net.twisterrob.root", version.ref = "twisterrob" }
-twisterrob-quality = { id = "net.twisterrob.quality", version.ref = "twisterrob" }
+twisterrob-root = { id = "net.twisterrob.gradle.plugin.root", version.ref = "twisterrob" }
+twisterrob-quality = { id = "net.twisterrob.gradle.plugin.quality", version.ref = "twisterrob" }
 kotlin-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
