@@ -21,8 +21,8 @@ public class RootPlugin : Plugin<Project> {
 public class JavaLibraryPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
-		target.apply(plugin = "net.twisterrob.java-library")
-		target.apply(plugin = "net.twisterrob.kotlin")
+		target.plugins.apply("net.twisterrob.gradle.plugin.java-library")
+		target.plugins.apply("net.twisterrob.gradle.plugin.kotlin")
 		commonJavaPlugins(target)
 	}
 }
@@ -30,8 +30,8 @@ public class JavaLibraryPlugin : Plugin<Project> {
 public class AndroidAppPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
-		target.apply(plugin = "net.twisterrob.android-app")
-		target.apply(plugin = "net.twisterrob.kotlin")
+		target.plugins.apply("net.twisterrob.gradle.plugin.android-app")
+		target.plugins.apply("net.twisterrob.gradle.plugin.kotlin")
 		commonJavaPlugins(target)
 		commonAndroidPlugins(target)
 	}
@@ -40,8 +40,8 @@ public class AndroidAppPlugin : Plugin<Project> {
 public class AndroidLibraryPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
-		target.apply(plugin = "net.twisterrob.android-library")
-		target.apply(plugin = "net.twisterrob.kotlin")
+		target.plugins.apply("net.twisterrob.gradle.plugin.android-library")
+		target.plugins.apply("net.twisterrob.gradle.plugin.kotlin")
 		commonJavaPlugins(target)
 		commonAndroidPlugins(target)
 	}
