@@ -44,49 +44,12 @@ pluginManagement {
 				includeGroup("io.gitlab.arturbosch.detekt")
 			}
 		}
-		maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-			name = "Sonatype 01: SNAPSHOTs"
-			content {
-				includeVersionByRegex("""^net\.twisterrob\.gradle$""", ".*", """.*-SNAPSHOT$""")
-				includeVersionByRegex("""^net\.twisterrob\.gradle$""", ".*", """.*-\d{8}\.\d{6}-\d+$""")
-			}
-			mavenContent {
-				// This doesn't allow using specific snapshot, so using versionRegex above.
-				//snapshotsOnly()
-			}
-		}
-	}
-	resolutionStrategy {
-		// Not possible here, see root build.gradle.
-		//cacheChangingModulesFor(0, "seconds") // -SNAPSHOT
-
-		eachPlugin {
-			// REPORT requested.version is null when using plugins {} block just above on Gradle 6.9.1.
-			when (requested.id.id) {
-				"net.twisterrob.settings" -> {
-					useModule("net.twisterrob.gradle:twister-convention-settings:${requested.version}")
-				}
-				"net.twisterrob.root",
-				"net.twisterrob.vcs",
-				"net.twisterrob.java",
-				"net.twisterrob.java-library",
-				"net.twisterrob.kotlin",
-				"net.twisterrob.android-app",
-				"net.twisterrob.android-lib",
-				"net.twisterrob.android-test" -> {
-					useModule("net.twisterrob.gradle:twister-convention-plugins:${requested.version}")
-				}
-				"net.twisterrob.quality" -> {
-					useModule("net.twisterrob.gradle:twister-quality:${requested.version}")
-				}
-			}
-		}
 	}
 }
 
 plugins {
 	id("com.gradle.enterprise") version "3.12.4"
-	id("net.twisterrob.settings") version "0.15-SNAPSHOT"
+	id("net.twisterrob.gradle.plugin.settings") version "0.15.1"
 }
 
 gradleEnterprise {
