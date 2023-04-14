@@ -1,6 +1,6 @@
 [versions]
 
-java = "11"
+java = "17"
 
 # TODO When changing this, update CI too (platforms;android-xx).
 compileSdkVersion = "33"
@@ -9,8 +9,8 @@ targetSdkVersion = "32"
 
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
-agp = "7.4.2"
-lint = "30.4.2"
+agp = "8.0.0"
+lint = "31.0.0"
 
 androidx-test = "1.4.0"
 
