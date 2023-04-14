@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODEL https://github.com/gradle/gradle/issues/22797
 plugins {
 	id("project-module-root")
 	alias(libs.plugins.android.app) apply false
