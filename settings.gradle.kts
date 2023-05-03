@@ -49,7 +49,7 @@ pluginManagement {
 }
 
 plugins {
-	id("com.gradle.enterprise") version "3.13"
+	id("com.gradle.enterprise") version "3.13.1"
 	id("net.twisterrob.gradle.plugin.settings") version "0.15.1"
 }
 
