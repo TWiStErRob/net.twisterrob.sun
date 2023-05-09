@@ -12,7 +12,8 @@ targetSdkVersion = "32"
 agp = "8.0.1"
 lint = "31.0.1"
 
-androidx-test = "1.5.2"
+androidx-test-core = "1.5.0"
+androidx-test-runner = "1.5.2"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "1.8.21"
@@ -64,8 +65,8 @@ test-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 test-paramInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.11" }
 test-jsonAssert = { module = "org.skyscreamer:jsonassert", version.ref = "test-jsonAssert" }
 
-test-androidx-core = { module = "androidx.test:core", version.ref = "androidx.test" }
-test-androidx-runner = { module = "androidx.test:runner", version.ref = "androidx.test" }
+test-androidx-core = { module = "androidx.test:core", version.ref = "androidx.test-core" }
+test-androidx-runner = { module = "androidx.test:runner", version.ref = "androidx.test-runner" }
 
 # Not actually used, see [twisterrob-root] and [twisterrob-quality]. Only here for Renovate to update them.
 twisterrob-convention = { module = "net.twisterrob.gradle:twister-convention-plugins", version.ref = "twisterrob" }
