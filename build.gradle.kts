@@ -1,5 +1,7 @@
 plugins {
 	id("project-module-root")
+	id("net.twisterrob.gradle.plugin.root")
+	id("net.twisterrob.gradle.plugin.quality")
 }
 
 tasks.register("check") {
