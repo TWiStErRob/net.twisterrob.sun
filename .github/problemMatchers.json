@@ -16,15 +16,6 @@
 					"line": 4
 				}
 			]
-		},
-		{
-			"owner": "agp-simple",
-			"pattern": [
-				{
-					"regexp": "^WARNING: (.*)$",
-					"message": 1
-				}
-			]
 		}
 	]
 }
