@@ -9,7 +9,14 @@ import net.twisterrob.sun.plugins.internal.JavaVersionPlugin
 import net.twisterrob.sun.plugins.internal.StrictCompilationPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.apply
+
+public class SettingsPlugin : Plugin<Settings> {
+	override fun apply(target: Settings) {
+		// Dummy plugin, does nothing, except make all the classes available to the settings.gradle.kts.
+	}
+}
 
 public class RootPlugin : Plugin<Project> {
 

@@ -16,8 +16,6 @@ include(":component:lib")
 include(":component:paparazzi")
 include(":component:theme")
 
-includeBuild("gradle/plugins")
-
 dependencyResolutionManagement {
 	repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 	repositories {
@@ -27,6 +25,7 @@ dependencyResolutionManagement {
 }
 
 pluginManagement {
+	includeBuild("gradle/plugins")
 	repositories {
 		google {
 			content {
@@ -51,6 +50,7 @@ pluginManagement {
 plugins {
 	id("com.gradle.enterprise") version "3.13.2"
 	id("net.twisterrob.gradle.plugin.settings") version "0.15.1"
+	id("project-settings")
 }
 
 gradleEnterprise {
