@@ -107,7 +107,7 @@ if ((System.getProperty("idea.version") ?: "") < "2022.3") {
 		"at org.jetbrains.plugins.gradle.tooling.builder.ExternalProjectBuilderImpl\$_getSourceSets_closure"
 	)
 } else {
-	error("Android Studio version changed, please remove hack.")
+	logger.warn("WARNING: Android Studio version changed, please remove hack.", Throwable("Stacktrace"))
 }
 
 // TODEL Gradle sync in AS EE 2022.1.1 https://youtrack.jetbrains.com/issue/IDEA-306975, maybe fixed in AS H.
@@ -210,7 +210,7 @@ if ((System.getProperty("idea.version") ?: "") < "2023.1") {
 		"at org.jetbrains.plugins.gradle.tooling.util.JavaPluginUtil."
 	)
 } else {
-	error("Android Studio version changed, please review hack.")
+	logger.warn("WARNING: Android Studio version changed, please review hack.", Throwable("Stacktrace"))
 }
 
 // TODEL Gradle 8.2 sync in AS FL https://youtrack.jetbrains.com/issue/IDEA-320307, maybe fixed in AS HH, probably I.
@@ -323,5 +323,5 @@ if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION < "8.1.0") {
 		"at com.android.build.gradle.tasks.MergeSourceSetFolders.doTaskAction(MergeSourceSetFolders.kt:123)"
 	)
 } else {
-	error("AGP version changed, please review hack.")
+	logger.warn("WARNING: AGP version changed, please review hack.", Throwable("Stacktrace"))
 }
