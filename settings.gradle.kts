@@ -212,6 +212,12 @@ if ((System.getProperty("idea.version") ?: "") < "2023.1") {
 } else {
 	logger.warn("WARNING: Android Studio version changed, please review hack.", Throwable("Stacktrace"))
 }
+logger.warn("WARNING: Android Studio version changed, please review hack.", Throwable("Stacktrace"))
+
+
+println("Separate something")
+
+logger.warn("WARNING: Another warning.")
 
 // TODEL Gradle 8.2 sync in AS FL https://youtrack.jetbrains.com/issue/IDEA-320307, maybe fixed in AS HH, probably I.
 @Suppress("MaxLineLength")
