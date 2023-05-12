@@ -11,9 +11,18 @@
 					"regexp": "^java.lang.Throwable: Stacktrace$"
 				},
 				{
-					"regexp": "^ *at (.*)\\.(.*)\\((.*?):(\\d+)\\)$",
+					"regexp": "^\\s*at (.*)\\.(.*)\\((.*?):(\\d+)\\)$",
 					"file": 3,
 					"line": 4
+				}
+			]
+		},
+		{
+			"owner": "agp-simple",
+			"pattern": [
+				{
+					"regexp": "^WARNING: (.*)$",
+					"message": 1
 				}
 			]
 		}
