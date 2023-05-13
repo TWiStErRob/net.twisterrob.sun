@@ -13,6 +13,7 @@ dependencies {
 	implementation(libs.kotlin.detekt.sarif)
 	implementation(libs.twisterrob.quality)
 	implementation(libs.twisterrob.convention)
+	implementation(libs.test.paparazziGradle)
 
 	// TODEL https://github.com/gradle/gradle/issues/15383
 	implementation(files(libs::class.java.superclass.protectionDomain.codeSource.location))
@@ -51,5 +52,9 @@ gradlePlugin {
 	plugins.register("project-feature-paparazzi") {
 		id = "project-feature-paparazzi"
 		implementationClass = "net.twisterrob.sun.plugins.PaparazziPlugin"
+	}
+	plugins.register("project-settings") {
+		id = "project-settings"
+		implementationClass = "net.twisterrob.sun.plugins.SettingsPlugin"
 	}
 }

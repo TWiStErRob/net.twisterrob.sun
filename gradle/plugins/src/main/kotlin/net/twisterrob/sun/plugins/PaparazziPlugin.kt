@@ -1,7 +1,5 @@
 package net.twisterrob.sun.plugins
 
-import net.twisterrob.sun.plugins.internal.libs
-import net.twisterrob.sun.plugins.internal.apply
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Delete
@@ -13,7 +11,7 @@ import org.gradle.kotlin.dsl.withType
 public class PaparazziPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
-		target.plugins.apply(target.libs.plugins.paparazzi)
+		target.plugins.apply("app.cash.paparazzi")
 		target.dependencies {
 			"testImplementation"(target.project(":component:paparazzi"))
 		}
