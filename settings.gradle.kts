@@ -54,13 +54,11 @@ plugins {
 	id("project-settings")
 }
 
-
 gradleEnterprise {
 	buildScan {
 		termsOfServiceUrl = "https://gradle.com/terms-of-service"
 		termsOfServiceAgree = "yes"
-		// TODO how to use net.twisterrob.sun.plugins.isCI? 
-		if (System.getenv("GITHUB_ACTIONS") == "true") {
+		if (isCI) {
 			fun setOutput(name: String, value: Any?) {
 				// Using `appendText` to make sure out outputs are not cleared.
 				// Using `\n` to make sure further outputs are correct.
