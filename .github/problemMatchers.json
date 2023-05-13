@@ -1,24 +1,7 @@
 {
 	"problemMatcher": [
 		{
-			"owner": "agp-stack",
-			"pattern": [
-				{
-					"regexp": "^WARNING: (.*)$",
-					"message": 1
-				},
-				{
-					"regexp": "^java.lang.Throwable: Stacktrace$"
-				},
-				{
-					"regexp": "^\\s*at (.*)\\.(.*)\\((.*?):(\\d+)\\)$",
-					"file": 3,
-					"line": 4
-				}
-			]
-		},
-		{
-			"owner": "agp-simple",
+			"owner": "agp",
 			"pattern": [
 				{
 					"regexp": "^WARNING: (.*)$",
