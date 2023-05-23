@@ -52,7 +52,7 @@ kotlin-stdlib8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.r
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 kotlin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
-kotlin-detekt-sarif = { module = "io.github.detekt.sarif4k:sarif4k", version = "0.3.0" }
+kotlin-detekt-sarif = { module = "io.github.detekt.sarif4k:sarif4k", version = "0.4.0" }
 kotlin-detekt-libraries = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
 
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
