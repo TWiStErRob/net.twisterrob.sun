@@ -18,7 +18,7 @@ internal class DetektPlugin : Plugin<Project> {
 			buildUponDefaultConfig = false
 			allRules = true
 			//debug = true
-			config = project.rootProject.files("config/detekt/detekt.yml")
+			config.setFrom(project.rootProject.file("config/detekt/detekt.yml"))
 			baseline = project.rootProject.file("config/detekt/detekt-baseline-${project.name}.xml")
 			basePath = project.rootProject.projectDir.absolutePath
 
