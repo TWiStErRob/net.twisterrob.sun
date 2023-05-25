@@ -23,6 +23,7 @@ internal fun Field.clearFinal() {
 		.getDeclaredMethod("getDeclaredFields0", Boolean::class.javaPrimitiveType)
 		.apply { isAccessible = true }
 		.invoke(Field::class.java, false)
+		.let { it ?: error("getDeclaredFields0 returned null") }
 		.let { @Suppress("UNCHECKED_CAST") (it as Array<Field>) }
 		.single { it.name == "modifiers" }
 		// Then clear the final modifier.

@@ -13,7 +13,7 @@ internal class SunAngleFormatter @Inject constructor() {
 
 	private val time2: DateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 	private val time3: DateFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-	private val fraction: DecimalFormat = (NumberFormat.getInstance() as DecimalFormat).apply {
+	private val fraction: DecimalFormat = NumberFormat.getInstance().asDecimal().apply {
 		negativePrefix = ""
 		negativeSuffix = ""
 		positivePrefix = ""
@@ -45,3 +45,6 @@ internal class SunAngleFormatter @Inject constructor() {
 		val fraction: String
 	)
 }
+
+private fun NumberFormat.asDecimal(): DecimalFormat =
+	this as DecimalFormat
