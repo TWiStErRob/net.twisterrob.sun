@@ -102,10 +102,12 @@ class ActivityManagerSingletonHack : ExternalResource() {
  * android.app.ApplicationErrorReport and android.app.ApplicationErrorReport$ParcelableCrashInfo disagree on InnerClasses attribute
  * ```
  */
-private fun mockActivityManager(): IActivityManager =
-	Proxy.newProxyInstance(
+private fun mockActivityManager(): IActivityManager {
+	val instance = Proxy.newProxyInstance(
 		IActivityManager::class.java.classLoader,
 		arrayOf<Class<*>>(IActivityManager::class.java)
 	) { _, _, _ ->
 		null
-	} as IActivityManager
+	}
+	return (instance ?: error("Proxy created for IActivityManager is null")) as IActivityManager
+}

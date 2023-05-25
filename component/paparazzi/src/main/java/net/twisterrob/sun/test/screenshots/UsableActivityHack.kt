@@ -76,7 +76,7 @@ private class SystemServiceContextWrapper(
 					.apply { isAccessible = true }
 
 				@Suppress("UNCHECKED_CAST")
-				return STATIC[SYSTEM_SERVICE_NAMES] as Map<Class<*>, String>
+				return (STATIC[SYSTEM_SERVICE_NAMES] ?: error("SYSTEM_SERVICE_NAMES is null")) as Map<Class<*>, String>
 			}
 	}
 }
