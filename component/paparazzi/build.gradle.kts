@@ -4,6 +4,13 @@ plugins {
 
 dependencies {
 	api(libs.test.paparazzi)
+	api(libs.guava.jre) {
+		// TODEL This can be removed once Paparazzi 1.3.0 is used. 
+		because(
+			"Help paparazzi transitively select the -jre flavor instead of -android. "
+				+ "See https://github.com/cashapp/paparazzi/issues/906."
+		)
+	}
 	api(libs.test.junit4)
 	api(libs.test.mockito)
 	api(libs.test.paramInjector)
