@@ -17,7 +17,7 @@ internal class DetektReportMergePlugin : Plugin<Project> {
 
 private fun Project.configureSarif() {
 	rootProject.tasks.maybeRegister<ReportMergeTask>("detektReportMergeSarif") {
-		output.set(rootProject.buildDir.resolve("reports/detekt/merge.sarif"))
+		output.set(rootProject.layout.buildDirectory.file("reports/detekt/merge.sarif"))
 	}
 	tasks.withType<Detekt>().configureEach {
 		reports {
@@ -42,7 +42,7 @@ private fun Project.configureXML() {
 		}
 	}
 	rootProject.tasks.maybeRegister<ReportMergeTask>("detektReportMergeXml") {
-		output.set(rootProject.buildDir.resolve("reports/detekt/merge.xml"))
+		output.set(rootProject.layout.buildDirectory.file("reports/detekt/merge.xml"))
 	}
 	rootProject.tasks.named<ReportMergeTask>("detektReportMergeXml") {
 		val detektReportMergeTask = this@named
