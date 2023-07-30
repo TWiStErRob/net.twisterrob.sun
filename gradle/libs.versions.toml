@@ -18,7 +18,7 @@ androidx-test-runner = "1.5.2"
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "1.9.0"
 
-detekt = "1.23.0"
+detekt = "1.23.1"
 
 dagger = "2.47"
 
