@@ -38,12 +38,14 @@ import android.widget.TimePicker;
 import static android.appwidget.AppWidgetManager.*;
 import static android.view.ViewGroup.LayoutParams.*;
 
+import androidx.annotation.AnyThread;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.annotation.UiThread;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Consumer;
 import androidx.core.view.ViewCompat;
@@ -395,6 +397,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	}
 
 	@SuppressLint("StringFormatInvalid")
+	@UiThread
 	void updateUI(@NonNull SunSearchResults results) {
 		ThresholdRelation rel = getCurrentRelation();
 		float angle = getCurrentThresholdAngle();
@@ -510,7 +513,14 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		return sun;
 	}
 
+	@AnyThread
 	protected void update(@Nullable Location loc) {
+		SunSearchResults results = calculateResults(loc);
+		updateUI(results);
+		lastResults = results;
+	}
+
+	private static @NonNull SunSearchResults calculateResults(@Nullable Location loc) {
 		SunSearchResults results = null;
 		if (loc != null) {
 			SunSearchParams params = new SunSearchParams(loc.getLatitude(), loc.getLongitude(), Calendar.getInstance());
@@ -519,8 +529,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		if (results == null) {
 			results = SunSearchResults.unknown();
 		}
-		updateUI(results);
-		this.lastResults = results;
+		return results;
 	}
 
 	@Override protected void onPreferencesSave(@NonNull SharedPreferences.Editor edit) {
@@ -581,7 +590,12 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		private final @NonNull Consumer<Location> update;
 		private boolean cancelled = false;
 
-		LocationUpdater(@NonNull Context context, int appWidgetId, @NonNull Consumer</*@Nullable*/ Location> update) {
+		LocationUpdater(
+				@NonNull Context context,
+				int appWidgetId,
+				@AnyThread
+				@NonNull Consumer</*@Nullable*/ Location> update
+		) {
 			this.updater = new LocationRetriever(context);
 			this.appWidgetId = appWidgetId;
 			this.update = update;
@@ -596,6 +610,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 
 		@Override
+		@AnyThread
 		public Unit invoke(@Nullable Location location) {
 			if (Log.isLoggable("Sun", Log.VERBOSE)) {
 				Log.v("Sun", this + ".onLocationChanged(" + location + ")");

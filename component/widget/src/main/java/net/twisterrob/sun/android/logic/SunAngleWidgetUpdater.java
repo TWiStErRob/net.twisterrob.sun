@@ -11,6 +11,7 @@ import android.location.Location;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.AnyThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -46,6 +47,7 @@ public class SunAngleWidgetUpdater {
 		this.calculator = calculator;
 	}
 
+	@AnyThread
 	public boolean update(int appWidgetId, @Nullable Location location) {
 		if (Log.isLoggable("Sun", Log.VERBOSE)) {
 			Log.v("Sun", "update(" + appWidgetId + "," + location + ")");
