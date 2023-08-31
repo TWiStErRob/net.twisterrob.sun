@@ -17,6 +17,8 @@ import android.graphics.drawable.shapes.RectShape;
 import android.location.*;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.*;
 import android.text.style.*;
 import android.util.Log;
@@ -516,8 +518,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	@AnyThread
 	protected void update(@Nullable Location loc) {
 		SunSearchResults results = calculateResults(loc);
-		updateUI(results);
-		lastResults = results;
+		new Handler(Looper.getMainLooper()).post(() -> {
+			updateUI(results);
+			lastResults = results;
+		});
 	}
 
 	private static @NonNull SunSearchResults calculateResults(@Nullable Location loc) {
