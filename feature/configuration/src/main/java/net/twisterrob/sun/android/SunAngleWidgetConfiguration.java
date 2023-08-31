@@ -22,11 +22,9 @@ import android.text.style.*;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
-import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
@@ -99,16 +97,14 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					new AlertDialog.Builder(SunAngleWidgetConfiguration.this)
 							.setTitle(R.string.no_location_foreground_rationale_title)
 							.setMessage(R.string.no_location_foreground_rationale)
-							.setPositiveButton(R.string.no_location_foreground_rationale_ok, new DialogInterface.OnClickListener() {
-								@Override public void onClick(DialogInterface dialog, int which) {
-									continuation.retry();
-								}
-							})
-							.setNegativeButton(R.string.no_location_foreground_rationale_cancel, new DialogInterface.OnClickListener() {
-								@Override public void onClick(DialogInterface dialog, int which) {
-									continuation.cancel();
-								}
-							})
+							.setPositiveButton(
+									R.string.no_location_foreground_rationale_ok,
+									(dialog, which) -> continuation.retry()
+							)
+							.setNegativeButton(
+									R.string.no_location_foreground_rationale_cancel,
+									(dialog, which) -> continuation.cancel()
+							)
 							.show();
 				}
 
@@ -116,16 +112,14 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					new AlertDialog.Builder(SunAngleWidgetConfiguration.this)
 							.setTitle(R.string.no_location_background_rationale_title)
 							.setMessage(getString(R.string.no_location_background_rationale, getBackgroundLabelCompat()))
-							.setPositiveButton(R.string.no_location_background_rationale_ok, new DialogInterface.OnClickListener() {
-								@Override public void onClick(DialogInterface dialog, int which) {
-									continuation.retry();
-								}
-							})
-							.setNegativeButton(R.string.no_location_background_rationale_cancel, new DialogInterface.OnClickListener() {
-								@Override public void onClick(DialogInterface dialog, int which) {
-									continuation.cancel();
-								}
-							})
+							.setPositiveButton(
+									R.string.no_location_background_rationale_ok,
+									(dialog, which) -> continuation.retry()
+							)
+							.setNegativeButton(
+									R.string.no_location_background_rationale_cancel,
+									(dialog, which) -> continuation.cancel()
+							)
 							.show();
 				}
 
@@ -155,11 +149,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		((ImageView)findViewById(R.id.visualization)).setImageDrawable(sun);
 		ViewCompat.setBackground(findViewById(R.id.angle_background), createSunStrip());
 
-		findViewById(R.id.btn_ok).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				finishCommit();
-			}
-		});
+		findViewById(R.id.btn_ok).setOnClickListener(v -> finishCommit());
 
 		angle = findViewById(R.id.angle);
 		angle.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -178,18 +168,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		});
 
 		relation = findViewById(R.id.thresholdRelation);
-		relation.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				updateUI(lastResults);
-			}
-		});
+		relation.setOnCheckedChangeListener((buttonView, isChecked) -> updateUI(lastResults));
 
 		preset = findViewById(R.id.preset);
-		findViewById(R.id.preset_label).setOnClickListener(new OnClickListener() {
-			@Override public void onClick(View v) {
-				preset.performClick();
-			}
-		});
+		findViewById(R.id.preset_label).setOnClickListener(v -> preset.performClick());
 		preset.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override public void onItemSelected(AdapterView<?> list, View view, int position, long id) {
 				if (position != mapping.length - 1) {
@@ -461,11 +443,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				warningText.setText(R.string.no_location_enabled_guide);
 				warningAction.setVisibility(intentOpener.canOpenLocationSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_enabled_guide_action);
-				warningAction.setOnClickListener(new OnClickListener() {
-					@Override public void onClick(View v) {
-						intentOpener.openLocationSettings();
-					}
-				});
+				warningAction.setOnClickListener(v -> intentOpener.openLocationSettings());
 				break;
 			}
 			case COARSE_DENIED:
@@ -476,11 +454,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				warningText.setText(getString(R.string.no_location_foreground_guide, getBackgroundLabelCompat()));
 				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_foreground_guide_action);
-				warningAction.setOnClickListener(new OnClickListener() {
-					@Override public void onClick(View v) {
-						intentOpener.openAppSettings();
-					}
-				});
+				warningAction.setOnClickListener(v -> intentOpener.openAppSettings());
 				break;
 			}
 			case BACKGROUND_DENIED: {
@@ -489,11 +463,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				warningText.setText(getString(R.string.no_location_background_guide, getBackgroundLabelCompat()));
 				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_background_guide_action);
-				warningAction.setOnClickListener(new OnClickListener() {
-					@Override public void onClick(View v) {
-						intentOpener.openAppSettings();
-					}
-				});
+				warningAction.setOnClickListener(v -> intentOpener.openAppSettings());
 				break;
 			}
 			case ALL_GRANTED: {
@@ -505,11 +475,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					warningText.setText(R.string.no_location_no_fix);
 					warningAction.setVisibility(intentOpener.canOpenAMapsApp() ? View.VISIBLE : View.GONE);
 					warningAction.setText(R.string.no_location_no_fix_action);
-					warningAction.setOnClickListener(new OnClickListener() {
-						@Override public void onClick(View v) {
-							intentOpener.openAMapsApp();
-						}
-					});
+					warningAction.setOnClickListener(v -> intentOpener.openAMapsApp());
 				}
 				break;
 			}
