@@ -188,11 +188,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 			}
 		});
 
-		locationUpdater = new LocationUpdater(getApplicationContext(), getAppWidgetId(), new Consumer<Location>() {
-			@Override public void accept(@Nullable Location location) {
-				update(location);
-			}
-		});
+		locationUpdater = new LocationUpdater(getApplicationContext(), getAppWidgetId(), this::update);
 
 		if (savedInstanceState == null) {
 			permissions.executeWithPermissions();
