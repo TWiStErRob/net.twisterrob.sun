@@ -406,24 +406,20 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		boolean belowMin = angle <= results.minimum.angle;
 		boolean aboveMax = angle >= results.maximum.angle;
 		switch (rel) {
-			case ABOVE:
+			case ABOVE -> {
 				sun.setMaximumEdge(aboveMax);
 				sun.setMinimumEdge(!belowMin);
-				break;
-			case BELOW:
+			}
+			case BELOW -> {
 				sun.setMaximumEdge(!aboveMax);
 				sun.setMinimumEdge(belowMin);
-				break;
+			}
 		}
 		sun.setMinMax((float)results.minimum.angle, (float)results.maximum.angle);
 		message.setTextColor(foregroundColor(this));
 		switch (rel) {
-			case ABOVE:
-				message.setText(getString(R.string.message_selected_angle_above, angle));
-				break;
-			case BELOW:
-				message.setText(getString(R.string.message_selected_angle_below, angle));
-				break;
+			case ABOVE -> message.setText(getString(R.string.message_selected_angle_above, angle));
+			case BELOW -> message.setText(getString(R.string.message_selected_angle_below, angle));
 		}
 		if (belowMin) {
 			message.setTextColor(MINIMUM_COLOR);
@@ -437,17 +433,15 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 		}
 		LocationState state = permissions.currentState();
 		switch (state) {
-			case LOCATION_DISABLED: {
+			case LOCATION_DISABLED -> {
 				warning.setVisibility(View.VISIBLE);
 				warningTitle.setText(R.string.no_location_enabled_guide_title);
 				warningText.setText(R.string.no_location_enabled_guide);
 				warningAction.setVisibility(intentOpener.canOpenLocationSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_enabled_guide_action);
 				warningAction.setOnClickListener(v -> intentOpener.openLocationSettings());
-				break;
 			}
-			case COARSE_DENIED:
-			case FINE_DENIED: {
+			case COARSE_DENIED, FINE_DENIED -> {
 				warning.setVisibility(View.VISIBLE);
 				warningTitle.setText(R.string.no_location_foreground_guide_title);
 				// lint:StringFormatInvalid the %1 param is meant for API 29+ version of this string.
@@ -455,18 +449,16 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_foreground_guide_action);
 				warningAction.setOnClickListener(v -> intentOpener.openAppSettings());
-				break;
 			}
-			case BACKGROUND_DENIED: {
+			case BACKGROUND_DENIED -> {
 				warning.setVisibility(View.VISIBLE);
 				warningTitle.setText(R.string.no_location_background_guide_title);
 				warningText.setText(getString(R.string.no_location_background_guide, getBackgroundLabelCompat()));
 				warningAction.setVisibility(intentOpener.canOpenAppSettings() ? View.VISIBLE : View.GONE);
 				warningAction.setText(R.string.no_location_background_guide_action);
 				warningAction.setOnClickListener(v -> intentOpener.openAppSettings());
-				break;
 			}
-			case ALL_GRANTED: {
+			case ALL_GRANTED -> {
 				if (results.params.hasLocation()) {
 					warning.setVisibility(View.GONE);
 				} else {
@@ -477,10 +469,10 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 					warningAction.setText(R.string.no_location_no_fix_action);
 					warningAction.setOnClickListener(v -> intentOpener.openAMapsApp());
 				}
-				break;
 			}
-			default:
+			default -> {
 				throw new InternalError("Unexpected location state: " + state);
+			}
 		}
 	}
 
