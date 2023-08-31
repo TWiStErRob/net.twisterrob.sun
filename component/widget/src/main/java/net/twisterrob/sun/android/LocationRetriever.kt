@@ -7,6 +7,7 @@ import android.location.Criteria
 import android.location.Location
 import android.location.LocationManager
 import android.util.Log
+import androidx.annotation.AnyThread
 import androidx.annotation.RequiresPermission
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
@@ -33,7 +34,8 @@ class LocationRetriever @Inject constructor(
 		fun noLocationButRequesting(fallback: LocationListenerCompat)
 	}
 
-	fun get(timeout: Long = Long.MAX_VALUE, block: (Location?) -> Unit) {
+	@AnyThread
+	fun get(timeout: Long = Long.MAX_VALUE, @AnyThread block: (Location?) -> Unit) {
 		val locationManager = context.getSystemService<LocationManager>()!!
 		locationManager.getLocation(object : LocationUpdate {
 			private var timeoutThread: Thread? = null

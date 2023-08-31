@@ -5,10 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.util.Log
+import androidx.annotation.AnyThread
+import androidx.annotation.MainThread
 import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater
 import java.util.Locale
 import javax.inject.Inject
 
+@MainThread
 class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 
 	@Inject internal lateinit var updater: SunAngleWidgetUpdater
@@ -38,6 +41,7 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 		}
 	}
 
+	@AnyThread
 	private fun updateAll(location: Location?, appWidgetIds: IntArray) {
 		@Suppress("LoopToCallChain")
 		// Keeping it as for loop as the alternative would hide the side-effect and mislead.
