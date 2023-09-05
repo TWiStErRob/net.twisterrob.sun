@@ -37,7 +37,7 @@ jobs:
           sdkmanager --install "platforms;android-33"
 
       - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Register problem matchers.
         run: echo "::add-matcher::.github/problemMatchers.json"
@@ -180,7 +180,7 @@ jobs:
           sdkmanager --install "platforms;android-33"
 
       - name: Checkout ${{ needs.pull_request.outputs.base_ref }} branch in ${{ github.repository }} repository.
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ format('refs/heads/{0}', needs.pull_request.outputs.base_ref) }}
 
@@ -276,7 +276,7 @@ jobs:
           sdkmanager --install "platforms;android-33"
 
       - name: Checkout ${{ needs.pull_request.outputs.head_ref }} branch in ${{ github.repository }} repository.
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ format('refs/heads/{0}', needs.pull_request.outputs.head_ref) }}
 
