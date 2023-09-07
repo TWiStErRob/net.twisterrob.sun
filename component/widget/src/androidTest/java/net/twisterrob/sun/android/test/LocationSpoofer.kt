@@ -2,7 +2,6 @@ package net.twisterrob.sun.android.test
 
 import android.app.AppOpsManager
 import android.content.Context
-import android.location.Criteria
 import android.location.Location
 import android.location.LocationManager
 import android.location.provider.ProviderProperties
@@ -13,6 +12,7 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.getSystemService
 import androidx.test.platform.app.InstrumentationRegistry
+import net.twisterrob.sun.android.getBestProvider
 import org.jetbrains.annotations.TestOnly
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -129,11 +129,7 @@ class LocationSpoofer(
 		val providers = locationManager.allProviders.joinToString(separator = "\n") {
 			"$it(${locationManager.isProviderEnabled(it)}):${locationManager.getProviderProperties(it).toString()}"
 		}
-		val criteria = Criteria().apply {
-			accuracy = Criteria.ACCURACY_COARSE
-			powerRequirement = Criteria.POWER_LOW
-		}
-		val bestProvider = locationManager.getBestProvider(criteria, true) ?: LocationManager.PASSIVE_PROVIDER
+		val bestProvider = locationManager.getBestProvider() ?: LocationManager.PASSIVE_PROVIDER
 		val last = locationManager.getLastKnownLocation(bestProvider)
 		val lastPassive = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
 		@Suppress("ForbiddenMethodCall", "NullableToStringCall")

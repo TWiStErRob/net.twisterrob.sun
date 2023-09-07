@@ -33,8 +33,8 @@ jobs:
           # sdkmanager --install "platform-tools"
 
           # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-33"
-          sdkmanager --install "platforms;android-33"
+          echo sdkmanager --install "platforms;android-34"
+          sdkmanager --install "platforms;android-34"
 
       - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v4
@@ -176,8 +176,8 @@ jobs:
           # sdkmanager --install "platform-tools"
 
           # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-33"
-          sdkmanager --install "platforms;android-33"
+          echo sdkmanager --install "platforms;android-34"
+          sdkmanager --install "platforms;android-34"
 
       - name: Checkout ${{ needs.pull_request.outputs.base_ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v4
@@ -272,8 +272,8 @@ jobs:
           # sdkmanager --install "platform-tools"
 
           # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-33"
-          sdkmanager --install "platforms;android-33"
+          echo sdkmanager --install "platforms;android-34"
+          sdkmanager --install "platforms;android-34"
 
       - name: Checkout ${{ needs.pull_request.outputs.head_ref }} branch in ${{ github.repository }} repository.
         uses: actions/checkout@v4
@@ -326,8 +326,8 @@ jobs:
           path: |
             ${{ github.workspace }}/**/build/reports/tests/*/
             ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
-            ${{ github.workspace }}/**/out/failures/delta-*.png
-            ${{ github.workspace }}/**/out/failures/*.png
+            ${{ github.workspace }}/**/build/paparazzi/failures/delta-*.png
+            ${{ github.workspace }}/**/build/paparazzi/failures/*.png
 
       - name: Publish "Screenshot Verify Results" check suite.
         if: success() || failure()

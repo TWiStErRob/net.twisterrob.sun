@@ -16,11 +16,6 @@ public class PaparazziPlugin : Plugin<Project> {
 			"testImplementation"(target.project(":component:paparazzi"))
 		}
 
-		// TODEL workaround for https://github.com/cashapp/paparazzi/issues/446
-		target.tasks.named<Delete>("clean") {
-			delete(project.file("out/failures"))
-		}
-
 		target.tasks.withType<Test>().configureEach {
 			useJUnit {
 				if (project.property("net.twisterrob.build.screenshot-tests").toString().toBoolean()) {
