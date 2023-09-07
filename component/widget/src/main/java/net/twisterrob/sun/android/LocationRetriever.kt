@@ -3,7 +3,6 @@ package net.twisterrob.sun.android
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
-import android.location.Criteria
 import android.location.Location
 import android.location.LocationManager
 import android.util.Log
@@ -95,11 +94,13 @@ class LocationRetriever @Inject constructor(
 				return
 			}
 		}
-		val criteria = Criteria().apply {
-			accuracy = Criteria.ACCURACY_COARSE
-			powerRequirement = Criteria.POWER_LOW
+		@Suppress("DEPRECATION") // TODEL https://github.com/TWiStErRob/net.twisterrob.sun/issues/302
+		val criteria = android.location.Criteria().apply {
+			accuracy = android.location.Criteria.ACCURACY_COARSE
+			powerRequirement = android.location.Criteria.POWER_LOW
 		}
-		val provider = this.getBestProvider(criteria, true) ?: LocationManager.PASSIVE_PROVIDER
+		val provider = @Suppress("DEPRECATION") this.getBestProvider(criteria, true)
+			?: LocationManager.PASSIVE_PROVIDER
 		this.getLastKnownLocation(provider)?.let { location ->
 			if (Log.isLoggable(TAG, Log.VERBOSE)) {
 				Log.v(TAG, "${this} found cached location in best (${criteria}) provider: ${provider}, $location")
