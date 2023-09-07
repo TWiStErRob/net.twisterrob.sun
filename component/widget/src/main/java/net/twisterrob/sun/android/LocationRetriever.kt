@@ -94,16 +94,10 @@ class LocationRetriever @Inject constructor(
 				return
 			}
 		}
-		@Suppress("DEPRECATION") // TODEL https://github.com/TWiStErRob/net.twisterrob.sun/issues/302
-		val criteria = android.location.Criteria().apply {
-			accuracy = android.location.Criteria.ACCURACY_COARSE
-			powerRequirement = android.location.Criteria.POWER_LOW
-		}
-		val provider = @Suppress("DEPRECATION") this.getBestProvider(criteria, true)
-			?: LocationManager.PASSIVE_PROVIDER
+		val provider = this.getBestProvider() ?: LocationManager.PASSIVE_PROVIDER
 		this.getLastKnownLocation(provider)?.let { location ->
 			if (Log.isLoggable(TAG, Log.VERBOSE)) {
-				Log.v(TAG, "${this} found cached location in best (${criteria}) provider: ${provider}, $location")
+				Log.v(TAG, "${this} found cached location in best provider: ${provider}, $location")
 			}
 			callback.cachedLocation(location)
 			return
@@ -146,4 +140,13 @@ class LocationRetriever @Inject constructor(
 
 		private const val TAG = "Sun"
 	}
+}
+
+@Suppress("DEPRECATION") // TODEL https://github.com/TWiStErRob/net.twisterrob.sun/issues/302
+internal fun LocationManager.getBestProvider(): String? {
+	val criteria = android.location.Criteria().apply {
+		accuracy = android.location.Criteria.ACCURACY_COARSE
+		powerRequirement = android.location.Criteria.POWER_LOW
+	}
+	return getBestProvider(criteria, true)
 }
