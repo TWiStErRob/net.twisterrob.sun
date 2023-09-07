@@ -326,8 +326,8 @@ jobs:
           path: |
             ${{ github.workspace }}/**/build/reports/tests/*/
             ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
-            ${{ github.workspace }}/**/out/failures/delta-*.png
-            ${{ github.workspace }}/**/out/failures/*.png
+            ${{ github.workspace }}/**/build/paparazzi/failures/delta-*.png
+            ${{ github.workspace }}/**/build/paparazzi/failures/*.png
 
       - name: Publish "Screenshot Verify Results" check suite.
         if: success() || failure()
