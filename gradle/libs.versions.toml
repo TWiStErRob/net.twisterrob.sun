@@ -58,8 +58,6 @@ kotlin-detekt-libraries = { module = "io.gitlab.arturbosch.detekt:detekt-rules-l
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
-guava-jre = { module = "com.google.guava:guava", version = "32.0.1-jre" }
-
 test-paparazzi = { module = "app.cash.paparazzi:paparazzi", version.ref = "paparazzi" }
 test-paparazziGradle = { module = "app.cash.paparazzi:app.cash.paparazzi.gradle.plugin", version.ref = "paparazzi" }
 test-junit4 = { module = "junit:junit", version = "4.13.2" }
