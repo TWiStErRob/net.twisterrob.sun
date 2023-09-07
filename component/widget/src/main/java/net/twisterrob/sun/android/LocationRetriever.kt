@@ -142,8 +142,9 @@ class LocationRetriever @Inject constructor(
 	}
 }
 
+// REPORT should be internal, but it's a compile error in androidTest, friends/associateWith not set in AGP?
 @Suppress("DEPRECATION") // TODEL https://github.com/TWiStErRob/net.twisterrob.sun/issues/302
-internal fun LocationManager.getBestProvider(): String? {
+fun LocationManager.getBestProvider(): String? {
 	val criteria = android.location.Criteria().apply {
 		accuracy = android.location.Criteria.ACCURACY_COARSE
 		powerRequirement = android.location.Criteria.POWER_LOW

@@ -12,6 +12,7 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.getSystemService
 import androidx.test.platform.app.InstrumentationRegistry
+import net.twisterrob.sun.android.getBestProvider
 import org.jetbrains.annotations.TestOnly
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
