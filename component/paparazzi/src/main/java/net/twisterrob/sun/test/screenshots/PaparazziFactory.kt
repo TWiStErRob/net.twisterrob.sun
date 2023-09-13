@@ -36,6 +36,7 @@ fun activityPaparazzi(): Paparazzi =
 
 /**
  * See https://github.com/cashapp/paparazzi/issues/1025#issuecomment-1654065507.
+ * TODO when changing this, update also `android.compileSdk` build.gradle.
  */
 private fun env(): Environment =
 	detectEnvironment().run {
