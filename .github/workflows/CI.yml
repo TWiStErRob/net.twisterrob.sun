@@ -1,340 +1,38 @@
-name: CI
+name: "CI"
+
 on:
   push
 
 concurrency:
-  # Documentation suggests ${{ github.head_ref }}, but that's only available on pull_request/pull_request_target triggers, so using ${{ github.ref }}.
-  # On main, we want all builds to complete even if merging happens faster to make it easier to discover at which point something broke.
-  # More info: https://stackoverflow.com/a/68422069/253468:
+  # See https://github.com/TWiStErRob/github-workflows/blob/main/snippets/cancel-pr-ci-on-push.yml
   group: ${{ github.ref == 'refs/heads/main' && format('ci-main-{0}', github.sha) || format('ci-{0}', github.ref) }}
   cancel-in-progress: true
+
 jobs:
+  validate:
+    name: "🦺 Validation"
+    uses: TWiStErRob/github-workflows/.github/workflows/validate.yml@v1
+
   build:
-    name: 🔨 Build & Verify
-    runs-on: ubuntu-latest
-    # A local build took 20 seconds, CI takes 3 minutes with setup.
-    # Because it's cloud, give it a bit of a buffer and constrain.
-    timeout-minutes: 10
-    steps:
-      - name: Set up JDK 17.
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: 17
+    name: "🔨 Build & Verify"
+    uses: ./.github/workflows/CI-build.yml
+    needs:
+      - validate
 
-      - name: Set up Android SDK.
-        uses: android-actions/setup-android@v2
-
-      - name: Set up Android SDK components.
-        run: |
-          # The following are already done by setup-android@v2 action:
-          # sdkmanager --install "cmdline-tools;latest"
-          # sdkmanager --install "tools"
-          # sdkmanager --install "platform-tools"
-
-          # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-34"
-          sdkmanager --install "platforms;android-34"
-
-      - name: Checkout ${{ github.ref }} branch in ${{ github.repository }} repository.
-        uses: actions/checkout@v4
-
-      - name: Register problem matchers.
-        run: echo "::add-matcher::.github/problemMatchers.json"
-
-      - name: Validate Gradle Wrapper JARs.
-        uses: gradle/wrapper-validation-action@v1
-
-      - name: Build & Verify project using Gradle.
-        id: gradle
-        run: >
-          ./gradlew
-          --no-daemon
-          --no-build-cache
-          --stacktrace
-          --continue
-          --scan
-          assemble
-          check
-          detekt
-          detektMain
-          detektTest
-          detektReportMergeSarif
-          detektReportMergeXml
-          lintReportMergeSarif
-          violationReportHtml
-
-      - name: Publish "Gradle" result and Build Scan URL.
-        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
-        uses: actions/github-script@v6
-        with:
-          debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
-              context: "CI / Build & Verify / Gradle",
-              description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
-              target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
-            });
-
-      - name: Upload "Lint Results" artifact.
-        if: success() || failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Lint Results
-          path: |
-            ${{ github.workspace }}/**/build/reports/lint-results*.*
-            ${{ github.workspace }}/build/reports/lint/merge-*.*
-            ${{ github.workspace }}/build/reports/violations.*
-
-      - name: Publish "Code scanning results / Android Lint".
-        uses: github/codeql-action/upload-sarif@v2
-        if: success() || failure()
-        with:
-          # merge-debug.sarif and merge-release.sarif in the folder.
-          sarif_file: ${{ github.workspace }}/build/reports/lint/
-
-      - name: Upload "Unit Test Results" artifact.
-        if: success() || failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Unit Test Results
-          path: ${{ github.workspace }}/**/build/reports/tests/*/
-
-      - name: Publish "Unit Results" check suite.
-        if: success() || failure()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          check_name: "🔔 Test: Unit Results"
-          comment_mode: off
-          report_individual_runs: true
-          test_changes_limit: 0
-          junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
-
-      - name: Upload "Detekt Results" artifact.
-        if: success() || failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Detekt Results
-          path: |
-            ${{ github.workspace }}/**/build/reports/detekt/detekt.*
-            ${{ github.workspace }}/build/reports/detekt/merge.*
-
-      - name: Publish "Code scanning results / detekt".
-        uses: github/codeql-action/upload-sarif@v2
-        if: success() || failure()
-        with:
-          sarif_file: ${{ github.workspace }}/build/reports/detekt/merge.sarif
-
-  pull_request:
-    name: Find PR
+  prepare:
+    name: "Prepare"
+    uses: ./.github/workflows/CI-pr.yml
     # Don't execute on main, it'll never be PR'd.
     if: github.ref != 'refs/heads/main' && (success() || failure())
-    runs-on: ubuntu-latest
-    timeout-minutes: 1
-    outputs:
-      found: ${{ steps.current_pr.outputs.number != null }}
-      # Simulate github.event.pull_request.base.ref on push trigger.
-      base_ref: ${{ steps.current_pr.outputs.number != null && fromJSON(steps.current_pr.outputs.pr).base.ref }}
-      base_sha: ${{ steps.current_pr.outputs.number != null && fromJSON(steps.current_pr.outputs.pr).base.sha }}
-      # Simulate github.event.pull_request.head.ref on push trigger.
-      head_ref: ${{ steps.current_pr.outputs.number != null && fromJSON(steps.current_pr.outputs.pr).head.ref }}
-      head_sha: ${{ steps.current_pr.outputs.number != null && fromJSON(steps.current_pr.outputs.pr).head.sha }}
-    steps:
-      - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
-        id: current_pr
-        uses: 8BitJonny/gh-get-current-pr@v2.2.0
 
-      - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
-        run: true
-
-  record-base:
-    name: 📸 Screenshot Tests / Record
-    needs: pull_request
-    # Don't execute on main, as it'll just verify against itself.
-    if: github.ref != 'refs/heads/main' && needs.pull_request.outputs.found == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Set up JDK 17.
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: 17
-
-      - name: Set up Android SDK.
-        uses: android-actions/setup-android@v2
-
-      - name: Set up Android SDK components.
-        run: |
-          # The following are already done by setup-android@v2 action:
-          # sdkmanager --install "cmdline-tools;latest"
-          # sdkmanager --install "tools"
-          # sdkmanager --install "platform-tools"
-
-          # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-34"
-          sdkmanager --install "platforms;android-34"
-
-      - name: Checkout ${{ needs.pull_request.outputs.base_ref }} branch in ${{ github.repository }} repository.
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ format('refs/heads/{0}', needs.pull_request.outputs.base_ref) }}
-
-      - name: Validate Gradle Wrapper JARs.
-        uses: gradle/wrapper-validation-action@v1
-
-      - name: Record screenshots golden values for ${{ needs.pull_request.outputs.base_ref }}.
-        id: gradle
-        run: >
-          ./gradlew
-          --no-daemon
-          --no-build-cache
-          --stacktrace
-          --continue
-          --scan
-          recordPaparazziDebug
-          -Pnet.twisterrob.build.screenshot-tests=true
-
-      - name: Publish "Gradle" result and Build Scan URL.
-        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
-        uses: actions/github-script@v6
-        with:
-          debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
-              context: "CI / Screenshot Tests / Record / Gradle",
-              description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
-              target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
-            });
-
-      - name: Upload "Screenshot Golden Values" artifact.
-        if: success()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Screenshot Golden Values
-          path: |
-            ${{ github.workspace }}/**/src/test/snapshots/images/*.png
-
-      - name: Upload "Screenshot Record Results" artifact.
-        if: success() || failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Screenshot Record Results
-          path: |
-            ${{ github.workspace }}/**/build/reports/tests/*/
-            ${{ github.workspace }}/**/build/reports/paparazzi/
-            ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
-
-      - name: Publish "Screenshot Record Results" check suite.
-        if: success() || failure()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          check_name: "🔔 Test: Screenshot Record Results"
-          comment_mode: off
-          report_individual_runs: true
-          test_changes_limit: 0
-          junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
-
-  verify-pr:
-    name: 🧪 Screenshot Tests / Verify
+  screenshot:
+    name: "📷 Screenshot Tests"
+    uses: ./.github/workflows/CI-screenshot.yml
+    with:
+      base_ref: ${{ needs.prepare.outputs.base_ref }}
+      head_ref: ${{ needs.prepare.outputs.head_ref }}
     needs:
-      # If build fails, there's not much point in running screenshot tests.
-      - build
-      # Need to run after recording base branch golden values to compare against them.
-      - record-base
-      - pull_request
-    if: needs.pull_request.outputs.found == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Set up JDK 17.
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: 17
-
-      - name: Set up Android SDK.
-        uses: android-actions/setup-android@v2
-
-      - name: Set up Android SDK components.
-        run: |
-          # The following are already done by setup-android@v2 action:
-          # sdkmanager --install "cmdline-tools;latest"
-          # sdkmanager --install "tools"
-          # sdkmanager --install "platform-tools"
-
-          # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-34"
-          sdkmanager --install "platforms;android-34"
-
-      - name: Checkout ${{ needs.pull_request.outputs.head_ref }} branch in ${{ github.repository }} repository.
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ format('refs/heads/{0}', needs.pull_request.outputs.head_ref) }}
-
-      - name: Validate Gradle Wrapper JARs.
-        uses: gradle/wrapper-validation-action@v1
-
-      - name: Download 'Screenshot Golden Values' artifact.
-        uses: actions/download-artifact@v3
-        with:
-          name: Screenshot Golden Values
-
-      - name: Run screenshot tests to verify ${{ needs.pull_request.outputs.head_ref }}.
-        id: gradle
-        run: >
-          ./gradlew
-          --no-daemon
-          --no-build-cache
-          --stacktrace
-          --continue
-          --scan
-          verifyPaparazziDebug
-          -Pnet.twisterrob.build.screenshot-tests=true
-
-      - name: Publish "Gradle" result and Build Scan URL.
-        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
-        uses: actions/github-script@v6
-        with:
-          debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
-          script: |
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
-              context: "CI / Screenshot Tests / Verify / Gradle",
-              description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
-              target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
-            });
-
-      - name: Upload "Screenshot Test Results" artifact.
-        if: success() || failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: Screenshot Test Results
-          # Notice that `${{ github.workspace }}/**/build/reports/paparazzi/` folder is not uploaded,
-          # that's because Paparazzi doesn't generate a report on failure...
-          path: |
-            ${{ github.workspace }}/**/build/reports/tests/*/
-            ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
-            ${{ github.workspace }}/**/build/paparazzi/failures/delta-*.png
-            ${{ github.workspace }}/**/build/paparazzi/failures/*.png
-
-      - name: Publish "Screenshot Verify Results" check suite.
-        if: success() || failure()
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          check_name: "🔔 Test: Screenshot Verify Results"
-          comment_mode: off
-          report_individual_runs: true
-          test_changes_limit: 0
-          junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
+      - validate
+      - prepare
+    # Don't execute on main, as it'll just verify against itself.
+    if: github.ref != 'refs/heads/main' && needs.prepare.outputs.found == 'true'
