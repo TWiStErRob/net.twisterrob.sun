@@ -1,0 +1,28 @@
+name: "Find PR"
+
+on:
+  workflow_call
+
+jobs:
+
+  pull_request:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+
+    outputs:
+      found: ${{ steps.current_pr.outputs.number != null }}
+      # Simulate github.event.pull_request.base.ref on push trigger.
+      base_ref: ${{ steps.current_pr.outputs.number != null && fromJSON(steps.current_pr.outputs.pr).base.ref }}
+      base_sha: ${{ steps.current_pr.outputs.number != null && fromJSON(steps.current_pr.outputs.pr).base.sha }}
+      # Simulate github.event.pull_request.head.ref on push trigger.
+      head_ref: ${{ steps.current_pr.outputs.number != null && fromJSON(steps.current_pr.outputs.pr).head.ref }}
+      head_sha: ${{ steps.current_pr.outputs.number != null && fromJSON(steps.current_pr.outputs.pr).head.sha }}
+
+    steps:
+
+      - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
+        id: current_pr
+        uses: 8BitJonny/gh-get-current-pr@v2.2.0
+
+      - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
+        run: true
