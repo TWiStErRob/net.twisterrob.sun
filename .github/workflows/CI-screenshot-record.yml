@@ -37,9 +37,6 @@ jobs:
         with:
           ref: ${{ format('refs/heads/{0}', needs.pull_request.outputs.base_ref) }}
 
-      - name: "Validate Gradle Wrapper JARs."
-        uses: gradle/wrapper-validation-action@v1
-
       - name: "Record screenshots golden values for ${{ needs.pull_request.outputs.base_ref }}."
         id: gradle
         run: >

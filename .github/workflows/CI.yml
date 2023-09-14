@@ -9,9 +9,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  validate:
+    name: "🦺 Validation"
+    uses: TWiStErRob/github-workflows/.github/workflows/validate.yml@v1
+
   build:
     name: "🔨 Build & Verifz"
     uses: ./.github/workflows/CI-build.yml
+    needs:
+      - validate
 
   pull_request:
     name: "Find PR"
@@ -31,6 +37,7 @@ jobs:
     name: "📸 Screenshot Tests"
     uses: ./.github/workflows/CI-screenshot-verify.yml
     needs:
+      - validate
       # If build fails, there's not much point in running screenshot tests.
       - build
       # Need to run after recording base branch golden values to compare against them.

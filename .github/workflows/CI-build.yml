@@ -40,9 +40,6 @@ jobs:
       - name: "Register problem matchers."
         run: echo "::add-matcher::.github/problemMatchers.json"
 
-      - name: "Validate Gradle Wrapper JARs."
-        uses: gradle/wrapper-validation-action@v1
-
       - name: "Build & Verify project using Gradle."
         id: gradle
         run: >

@@ -37,9 +37,6 @@ jobs:
         with:
           ref: ${{ format('refs/heads/{0}', needs.pull_request.outputs.head_ref) }}
 
-      - name: "Validate Gradle Wrapper JARs."
-        uses: gradle/wrapper-validation-action@v1
-
       - name: "Download 'Screenshot Golden Values' artifact."
         uses: actions/download-artifact@v3
         with:
