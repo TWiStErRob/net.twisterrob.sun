@@ -19,20 +19,20 @@ jobs:
     needs:
       - validate
 
-  pull_request:
-    name: "Find PR"
+  prepare:
+    name: "Prepare"
     uses: ./.github/workflows/CI-pr.yml
     # Don't execute on main, it'll never be PR'd.
     if: github.ref != 'refs/heads/main' && (success() || failure())
 
   screenshot:
-    name: "📸 Screenshot Tests"
+    name: "📷 Screenshot Tests"
     uses: ./.github/workflows/CI-screenshot.yml
     with:
-      base_ref: ${{ needs.pull_request.outputs.base_ref }}
-      head_ref: ${{ needs.pull_request.outputs.head_ref }}
+      base_ref: ${{ needs.prepare.outputs.base_ref }}
+      head_ref: ${{ needs.prepare.outputs.head_ref }}
     needs:
       - validate
-      - pull_request
+      - prepare
     # Don't execute on main, as it'll just verify against itself.
-    if: github.ref != 'refs/heads/main' && needs.pull_request.outputs.found == 'true'
+    if: github.ref != 'refs/heads/main' && needs.prepare.outputs.found == 'true'

@@ -17,6 +17,7 @@ on:
 jobs:
 
   pull_request:
+    name: "Find PR"
     runs-on: ubuntu-latest
     timeout-minutes: 1
 
