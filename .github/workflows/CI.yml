@@ -14,7 +14,7 @@ jobs:
     uses: TWiStErRob/github-workflows/.github/workflows/validate.yml@v1
 
   build:
-    name: "🔨 Build & Verifz"
+    name: "🔨 Build & Verify"
     uses: ./.github/workflows/CI-build.yml
     needs:
       - validate
@@ -25,22 +25,14 @@ jobs:
     # Don't execute on main, it'll never be PR'd.
     if: github.ref != 'refs/heads/main' && (success() || failure())
 
-  record-base:
+  screenshot:
     name: "📸 Screenshot Tests"
-    uses: ./.github/workflows/CI-screenshot-record.yml
+    uses: ./.github/workflows/CI-screenshot.yml
+    with:
+      base_ref: ${{ needs.pull_request.outputs.base_ref }}
+      head_ref: ${{ needs.pull_request.outputs.head_ref }}
     needs:
+      - validate
       - pull_request
     # Don't execute on main, as it'll just verify against itself.
     if: github.ref != 'refs/heads/main' && needs.pull_request.outputs.found == 'true'
-
-  verify-pr:
-    name: "📸 Screenshot Tests"
-    uses: ./.github/workflows/CI-screenshot-verify.yml
-    needs:
-      - validate
-      # If build fails, there's not much point in running screenshot tests.
-      - build
-      # Need to run after recording base branch golden values to compare against them.
-      - record-base
-      - pull_request
-    if: needs.pull_request.outputs.found == 'true'

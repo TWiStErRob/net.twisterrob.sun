@@ -1,12 +1,24 @@
-name: "📸 Screenshot Tests / Record"
+name: "📷 Screenshot Tests / 📸 Record"
 
 on:
-  workflow_call
+  workflow_call:
+    inputs: 
+
+      ref:
+        description: "The base branch to compare against."
+        type: string
+        required: false
+        default: "main"
+
+      golden_artifact:
+        description: "The name of the artifact containing the golden values for all modules."
+        type: string
+        required: false
+        default: 'Screenshot Golden Values'
 
 jobs:
 
   record:
-    name: "Record"
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -32,12 +44,12 @@ jobs:
           echo sdkmanager --install "platforms;android-34"
           sdkmanager --install "platforms;android-34"
 
-      - name: "Checkout ${{ needs.pull_request.outputs.base_ref }} branch in ${{ github.repository }} repository."
+      - name: "Checkout ${{ inputs.ref }} branch in ${{ github.repository }} repository."
         uses: actions/checkout@v4
         with:
-          ref: ${{ format('refs/heads/{0}', needs.pull_request.outputs.base_ref) }}
+          ref: ${{ format('refs/heads/{0}', inputs.ref) }}
 
-      - name: "Record screenshots golden values for ${{ needs.pull_request.outputs.base_ref }}."
+      - name: "Record screenshots golden values for ${{ inputs.ref }}."
         id: gradle
         run: >
           ./gradlew
@@ -65,11 +77,11 @@ jobs:
               target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
             });
 
-      - name: "Upload 'Screenshot Golden Values' artifact."
+      - name: "Upload '${{ inputs.golden_artifact }}' artifact."
         if: success()
         uses: actions/upload-artifact@v3
         with:
-          name: 'Screenshot Golden Values'
+          name: '${{ inputs.golden_artifact }}'
           path: |
             ${{ github.workspace }}/**/src/test/snapshots/images/*.png
 

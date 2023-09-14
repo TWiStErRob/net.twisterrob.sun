@@ -1,12 +1,24 @@
-name: "🧪 Screenshot Tests / Verify"
+name: "📷 Screenshot Tests / 🧪 Verify"
 
 on:
-  workflow_call
+  workflow_call:
+    inputs:
+
+      ref:
+        description: "The head branch to verify against base."
+        type: string
+        required: true
+
+      golden_artifact:
+        description: "The name of the artifact containing the golden values for all modules."
+        type: string
+        required: false
+        default: 'Screenshot Golden Values'
 
 jobs:
 
   verify:
-    name: "Verify"
+    name: "🧪 Verify"
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -32,17 +44,17 @@ jobs:
           echo sdkmanager --install "platforms;android-34"
           sdkmanager --install "platforms;android-34"
 
-      - name: "Checkout ${{ needs.pull_request.outputs.head_ref }} branch in ${{ github.repository }} repository."
+      - name: "Checkout ${{ inputs.ref }} branch in ${{ github.repository }} repository."
         uses: actions/checkout@v4
         with:
-          ref: ${{ format('refs/heads/{0}', needs.pull_request.outputs.head_ref) }}
+          ref: ${{ format('refs/heads/{0}', inputs.ref) }}
 
-      - name: "Download 'Screenshot Golden Values' artifact."
+      - name: "Download '${{ inputs.golden_artifact }}' artifact."
         uses: actions/download-artifact@v3
         with:
-          name: 'Screenshot Golden Values'
+          name: '${{ inputs.golden_artifact }}'
 
-      - name: "Run screenshot tests to verify ${{ needs.pull_request.outputs.head_ref }}."
+      - name: "Run screenshot tests to verify ${{ inputs.ref }}."
         id: gradle
         run: >
           ./gradlew

@@ -1,7 +1,18 @@
 name: "Find PR"
 
 on:
-  workflow_call
+  workflow_call:
+    outputs:
+      found:
+        value: ${{ jobs.pull_request.outputs.found }}
+      base_ref:
+        value: ${{ jobs.pull_request.outputs.base_ref }}
+      base_sha:
+        value: ${{ jobs.pull_request.outputs.base_sha }}
+      head_ref:
+        value: ${{ jobs.pull_request.outputs.head_ref }}
+      head_sha:
+        value: ${{ jobs.pull_request.outputs.head_sha }}
 
 jobs:
 
