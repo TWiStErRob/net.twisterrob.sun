@@ -20,7 +20,7 @@ kotlin = "1.9.10"
 
 detekt = "1.23.1"
 
-dagger = "2.48"
+dagger = "2.48.1"
 
 # Artifacts: https://mvnrepository.com/artifact/org.mockito/mockito-core
 # Changelog (1.x, 2.x and 3.x): https://github.com/mockito/mockito/blob/main/doc/release-notes/official.md
