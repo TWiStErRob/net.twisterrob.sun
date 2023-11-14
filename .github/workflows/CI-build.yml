@@ -58,7 +58,7 @@ jobs:
 
       - name: "Publish 'Gradle' commit status (with Build Scan URL)."
         if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             await github.rest.repos.createCommitStatus({
