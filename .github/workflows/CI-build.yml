@@ -19,14 +19,11 @@ jobs:
 
       - name: "Set up Android SDK."
         uses: android-actions/setup-android@v3
+        with:
+          log-accepted-android-sdk-licenses: false
 
       - name: "Set up Android SDK components."
         run: |
-          # The following are already done by setup-android@v2 action:
-          # sdkmanager --install "cmdline-tools;latest"
-          # sdkmanager --install "tools"
-          # sdkmanager --install "platform-tools"
-
           # Install Android API used to build the project.
           echo sdkmanager --install "platforms;android-34"
           sdkmanager --install "platforms;android-34"
