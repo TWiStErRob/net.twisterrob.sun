@@ -212,36 +212,3 @@ doNotNagAbout(
 	// There are 4 stack traces coming to this line, ignore them all at once.
 	"at org.jetbrains.plugins.gradle.tooling.util.resolve.DependencyResolverImpl.resolveDependencies(DependencyResolverImpl.java:266)"
 )
-
-// TODEL Gradle 8.2 vs AGP https://issuetracker.google.com/issues/279306626 fixed in 8.2.0-alpha13.
-// Gradle 8.2 M1 added nagging for BuildIdentifier.*, which is not replaced in AGP 8.1.x.
-@Suppress("MaxLineLength")
-if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION < "8.2.0") {
-	doNotNagAbout( // :lintReportDebug, :lintAnalyzeDebug
-		"The BuildIdentifier.isCurrentBuild() method has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Use getBuildPath() to get a unique identifier for the build. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#build_identifier_name_and_current_deprecation",
-		"at com.android.build.gradle.internal.ide.dependencies.BuildMappingUtils.getBuildId(BuildMapping.kt:40)"
-	)
-	doNotNagAbout( // :app:checkReleaseAarMetadata, :app:mergeDebugResources, :app:processDebugMainManifest, :app:processDebugAndroidTestManifest, :app:mergeDebugAssets
-		"The BuildIdentifier.getName() method has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Use getBuildPath() to get a unique identifier for the build. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#build_identifier_name_and_current_deprecation",
-		"at com.android.build.gradle.internal.ide.dependencies.BuildMappingUtils.getIdString(BuildMapping.kt:48)"
-	)
-	doNotNagAbout( // Android Studio Flamingo Sync https://issuetracker.google.com/issues/279306626#comment4
-		"The BuildIdentifier.getName() method has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Use getBuildPath() to get a unique identifier for the build. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#build_identifier_name_and_current_deprecation",
-		"at com.android.build.gradle.internal.ide.dependencies.LibraryServiceImpl\$getProjectInfo\$1.apply(LibraryService.kt:138)"
-	)
-} else {
-	val error: (String) -> Unit = (if (isCI) ::error else logger::warn)
-	error("AGP version changed, please review hack.")
-}
