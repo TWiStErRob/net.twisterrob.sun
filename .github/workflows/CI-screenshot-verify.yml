@@ -80,7 +80,7 @@ jobs:
 
       - name: "Upload 'Screenshot Test Results' artifact."
         if: success() || failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: 'Screenshot Test Results'
           # Notice that `${{ github.workspace }}/**/build/reports/paparazzi/` folder is not uploaded,

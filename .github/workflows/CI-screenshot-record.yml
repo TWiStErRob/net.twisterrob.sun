@@ -76,7 +76,7 @@ jobs:
 
       - name: "Upload '${{ inputs.golden_artifact }}' artifact."
         if: success()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: '${{ inputs.golden_artifact }}'
           path: |
@@ -84,7 +84,7 @@ jobs:
 
       - name: "Upload 'Screenshot Record Results' artifact."
         if: success() || failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: 'Screenshot Record Results'
           path: |
