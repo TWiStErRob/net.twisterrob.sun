@@ -47,7 +47,7 @@ jobs:
           ref: ${{ format('refs/heads/{0}', inputs.ref) }}
 
       - name: "Download '${{ inputs.golden_artifact }}' artifact."
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: '${{ inputs.golden_artifact }}'
 
