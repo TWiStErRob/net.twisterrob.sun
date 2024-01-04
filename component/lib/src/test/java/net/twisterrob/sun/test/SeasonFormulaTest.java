@@ -1,6 +1,7 @@
 package net.twisterrob.sun.test;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import static java.lang.Math.*;
 
@@ -82,7 +83,8 @@ public abstract class SeasonFormulaTest {
 
 	protected static Calendar date(int month, int day) {
 		Calendar result = Calendar.getInstance();
-		result.set(result.get(Calendar.YEAR), month, day, 0, 0, 0);
+		result.setTimeZone(TimeZone.getTimeZone("UT"));
+		result.set(2023, month, day, 0, 0, 0);
 		return result;
 	}
 
