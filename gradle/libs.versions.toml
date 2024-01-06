@@ -62,7 +62,7 @@ dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = 
 test-paparazzi = { module = "app.cash.paparazzi:paparazzi", version.ref = "paparazzi" }
 test-paparazziGradle = { module = "app.cash.paparazzi:app.cash.paparazzi.gradle.plugin", version.ref = "paparazzi" }
 test-junit4 = { module = "junit:junit", version = "4.13.2" }
-test-truth = { module = "com.google.truth:truth", version = "1.1.5" }
+test-truth = { module = "com.google.truth:truth", version = "1.2.0" }
 test-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 test-paramInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.14" }
 test-jsonAssert = { module = "org.skyscreamer:jsonassert", version.ref = "test-jsonAssert" }
