@@ -2,10 +2,8 @@ package net.twisterrob.sun.plugins
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.attributes.java.TargetJvmEnvironment
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.withType
 
 public class PaparazziPlugin : Plugin<Project> {
@@ -14,19 +12,7 @@ public class PaparazziPlugin : Plugin<Project> {
 		target.plugins.apply("app.cash.paparazzi")
 		target.dependencies {
 			"testImplementation"(target.project(":component:paparazzi"))
-		constraints {
-			add("testImplementation", "com.google.guava:guava") {
-				attributes {
-					attribute(
-						TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE,
-						target.objects.named<TargetJvmEnvironment>(TargetJvmEnvironment.STANDARD_JVM)
-					)
-				}
-				because("LayoutLib and sdk-common depend on Guava's -jre published variant." +
-					"See https://github.com/cashapp/paparazzi/issues/906.")
-			}
 		}
-	}
 
 		target.tasks.withType<Test>().configureEach {
 			useJUnit {
