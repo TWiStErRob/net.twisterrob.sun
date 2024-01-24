@@ -9,8 +9,8 @@ targetSdkVersion = "34"
 
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
-agp = "8.2.1"
-lint = "31.2.1"
+agp = "8.2.2"
+lint = "31.2.2"
 
 androidx-test-core = "1.5.0"
 androidx-test-runner = "1.5.2"
