@@ -34,7 +34,7 @@ jobs:
 
       - name: "Determine which PR this commit belongs to, so we can clone its base branch for comparison."
         id: current_pr
-        uses: 8BitJonny/gh-get-current-pr@v2.2.0
+        uses: 8BitJonny/gh-get-current-pr@3.0.0
 
       - name: "Pull Request #${{ steps.current_pr.outputs.number }}"
         run: true
