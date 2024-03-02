@@ -6,13 +6,13 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.findByType
 
-internal fun Project.android(block: CommonExtension<*, *, *, *, *>.() -> Unit) {
+internal fun Project.android(block: CommonExtension<*, *, *, *, *, *>.() -> Unit) {
 	this.extensions.configure<BaseExtension> {
-		block(this as CommonExtension<*, *, *, *, *>)
+		block(this as CommonExtension<*, *, *, *, *, *>)
 	}
 }
 
-internal fun Project.androidOptional(block: CommonExtension<*, *, *, *, *>.() -> Unit) {
+internal fun Project.androidOptional(block: CommonExtension<*, *, *, *, *, *>.() -> Unit) {
 	if (this.extensions.findByType<BaseExtension>() != null) {
 		this.android(block)
 	} else {
