@@ -33,7 +33,7 @@
 		\n<big><b>Hide parts of the widget</b></big>
 		\n<i>Open the Options menu (︙) in the Sun Widget Settings to do so.</i>
 		You can show/hide the <i>Part of The Day</i> and <i>Last Update</i> time displays on the home screen.
-		This is helpful in case your device\'s Launcher App doesn\'t give enough space for the widget, and it looks crammed.
+		This is helpful in case your device’s Launcher App doesn’t give enough space for the widget, and it looks crammed.
 	</string>
 	<string name="config_info_close">@android:string/ok</string>
 
