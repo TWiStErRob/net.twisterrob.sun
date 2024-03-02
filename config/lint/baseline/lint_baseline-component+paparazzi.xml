@@ -105,13 +105,6 @@
 
     <issue
         id="InvalidPackage"
-        message="Invalid package reference in org.mockito:mockito-core; not included in Android: `java.lang.instrument`. Referenced from `org.mockito.internal.creation.bytebuddy.InlineBytecodeGenerator`.">
-        <location
-            file="Z:/caches/gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/5.5.0/1660ec3ce0af7f713af923817b225a37cc5cf965/mockito-core-5.5.0.jar"/>
-    </issue>
-
-    <issue
-        id="InvalidPackage"
         message="Invalid package reference in app.cash.paparazzi:paparazzi; not included in Android: `java.awt.image`. Referenced from `app.cash.paparazzi.HtmlReportWriter`.">
         <location
             file="Z:/caches/gradle/caches/modules-2/files-2.1/app.cash.paparazzi/paparazzi/1.3.1/2f48134f87bf7542ff3adb30a8f150f4dda54afa/paparazzi-1.3.1.jar"/>

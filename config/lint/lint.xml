@@ -23,6 +23,9 @@
 		<!-- Using coroutines-android which transitively depends on coroutines-core-jvm. -->
 		<ignore regexp="^Invalid package reference in org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm; not included in Android: `java.lang.instrument`. Referenced from `kotlinx.coroutines.debug.AgentPremain`.$" />
 
+		<!-- Used in tests only. -->
+		<ignore regexp="^Invalid package reference in org.mockito:mockito-core; not included in Android: `java.lang.instrument`. Referenced from `org.mockito.internal.creation.bytebuddy.InlineBytecodeGenerator`.$" />
+
 	</issue>
 
 </lint>
