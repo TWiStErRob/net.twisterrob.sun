@@ -38,7 +38,7 @@ open class LoggingAppWidgetProvider protected constructor() : AppWidgetProvider(
 	override fun onReceive(context: Context, intent: Intent) {
 		if (Log.isLoggable(tag, Log.VERBOSE)) {
 			intent.getStringExtra(null) // force unparcel
-			Log.v(tag, "$this.onReceive(${intent} (${intent.extras}))")
+			Log.v(tag, "$this.onReceive(${intent} (${intent.extras ?: "no extras"}))")
 		}
 		super.onReceive(context, intent) // delegate to other on*()
 	}
@@ -56,7 +56,7 @@ open class LoggingAppWidgetProvider protected constructor() : AppWidgetProvider(
 	) {
 		if (Log.isLoggable(tag, Log.VERBOSE)) {
 			newOptions?.keySet() // force unparcel
-			Log.v(tag, "$this.onAppWidgetOptionsChanged(${appWidgetId}, ${newOptions})")
+			Log.v(tag, "$this.onAppWidgetOptionsChanged(${appWidgetId}, ${newOptions ?: "no options"})")
 		}
 		super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
 	}
