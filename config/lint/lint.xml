@@ -20,9 +20,27 @@
 
 	<issue id="InvalidPackage">
 
-		<!-- Using coroutines-android which transitively depends on coroutines-core-jvm. -->
-		<ignore regexp="^Invalid package reference in org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm; not included in Android: `java.lang.instrument`. Referenced from `kotlinx.coroutines.debug.AgentPremain`.$" />
+		<!-- Used in tests only. -->
+		<ignore regexp="^Invalid package reference in org.mockito:mockito-core; not included in Android: `java.lang.instrument`. Referenced from `org.mockito.internal.creation.bytebuddy.InlineBytecodeGenerator`.$" />
 
+		<!--
+			Paparazzi reports a of lot of problems in com.android and related namespaces.
+			These are baselined, and need to be regenerated on every Paparazzi upgrade.
+		-->
+
+	</issue>
+
+	<issue id="GradleDependency" severity="ignore">
+		<!-- Project is using Renovate. -->
+		<!-- Example: A newer version of com.android.tools:common than 31.2.2 is available: 31.3.0 -->
+	</issue>
+	<issue id="NewerVersionAvailable" severity="ignore">
+		<!-- Project is using Renovate. -->
+		<!-- Example: A newer version of com.google.dagger:dagger than 2.50 is available: 2.51 -->
+	</issue>
+	<issue id="AndroidGradlePluginVersion" severity="ignore">
+		<!-- Project is using Renovate. -->
+		<!-- Example: A newer version of com.android.tools.build:gradle than 8.2.2 is available: 8.3.0 -->
 	</issue>
 
 </lint>

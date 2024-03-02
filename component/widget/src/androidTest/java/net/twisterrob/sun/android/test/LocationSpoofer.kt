@@ -126,8 +126,10 @@ class LocationSpoofer(
 	@VisibleForTesting
 	@TestOnly
 	fun diagnostics() {
-		val providers = locationManager.allProviders.joinToString(separator = "\n") {
-			"$it(${locationManager.isProviderEnabled(it)}):${locationManager.getProviderProperties(it).toString()}"
+		val providers = locationManager.allProviders.joinToString(separator = "\n") { provider ->
+			val isEnabled = locationManager.isProviderEnabled(provider)
+			val properties = locationManager.getProviderProperties(provider) ?: "no properties"
+			"${provider}(${isEnabled}):${properties}"
 		}
 		val bestProvider = locationManager.getBestProvider() ?: LocationManager.PASSIVE_PROVIDER
 		val last = locationManager.getLastKnownLocation(bestProvider)
