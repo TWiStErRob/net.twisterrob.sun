@@ -71,6 +71,10 @@ jobs:
 
       - name: "Publish 'Gradle' commit status (with Build Scan URL)."
         if: ${{ (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null }}
+        env:
+          RESULT_SUCCESS: ${{ fromJSON(steps.gradle.outputs.result-success) }}
+          RESULT_TEXT: ${{ fromJSON(steps.gradle.outputs.result-text) }}
+          BUILD_SCAN_URL: ${{ fromJSON(steps.gradle.outputs.build-scan-url) }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -78,10 +82,10 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.sha,
-              state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
+              state: process.env.RESULT_SUCCESS === 'true' ? "success" : "failure",
               context: "CI / Build & Verify / Gradle",
-              description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
-              target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
+              description: process.env.RESULT_TEXT,
+              target_url: process.env.BUILD_SCAN_URL,
             });
 
       - name: "Upload 'Lint Results' artifact."
