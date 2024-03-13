@@ -19,7 +19,7 @@ jobs:
 
   build:
     name: "🔨 Build & Verify"
-    uses: ./.github/workflows/CI-build.yml
+    uses: ./.github/workflows/ci-build.yml
     needs:
       - validate
     permissions:
@@ -31,13 +31,13 @@ jobs:
 
   prepare:
     name: "Prepare"
-    uses: ./.github/workflows/CI-pr.yml
+    uses: ./.github/workflows/ci-pr.yml
     # Don't execute on main, it'll never be PR'd.
     if: ${{ github.ref != 'refs/heads/main' && (success() || failure()) }}
 
   screenshot:
     name: "📷 Screenshot Tests"
-    uses: ./.github/workflows/CI-screenshot.yml
+    uses: ./.github/workflows/ci-screenshot.yml
     with:
       base_ref: ${{ needs.prepare.outputs.base_ref }}
       head_ref: ${{ needs.prepare.outputs.head_ref }}

@@ -20,7 +20,7 @@ jobs:
 
   record:
     name: "📸 Record"
-    uses: ./.github/workflows/CI-screenshot-record.yml
+    uses: ./.github/workflows/ci-screenshot-record.yml
     with:
       ref: ${{ inputs.base_ref }}
     permissions:
@@ -30,7 +30,7 @@ jobs:
 
   verify:
     name: "🧪 Verify"
-    uses: ./.github/workflows/CI-screenshot-verify.yml
+    uses: ./.github/workflows/ci-screenshot-verify.yml
     with:
       ref: ${{ inputs.head_ref }}
     needs:
