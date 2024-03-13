@@ -66,9 +66,6 @@ jobs:
       - name: "Publish 'Gradle' commit status (with Build Scan URL)."
         if: ${{ (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null }}
         env:
-          RESULT_SUCCESS_RAW: ${{ steps.gradle.outputs.result-success }}
-          RESULT_TEXT_RAW: ${{ steps.gradle.outputs.result-text }}
-          BUILD_SCAN_URL_RAW: ${{ steps.gradle.outputs.build-scan-url }}
           RESULT_SUCCESS: ${{ fromJSON(steps.gradle.outputs.result-success) }}
           RESULT_TEXT: ${{ fromJSON(steps.gradle.outputs.result-text) }}
           BUILD_SCAN_URL: ${{ fromJSON(steps.gradle.outputs.build-scan-url) }}
