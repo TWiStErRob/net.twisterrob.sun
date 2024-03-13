@@ -23,6 +23,10 @@ jobs:
     uses: ./.github/workflows/CI-screenshot-record.yml
     with:
       ref: ${{ inputs.base_ref }}
+    permissions:
+      contents: read
+      statuses: write
+      checks: write
 
   verify:
     name: "🧪 Verify"
@@ -31,3 +35,7 @@ jobs:
       ref: ${{ inputs.head_ref }}
     needs:
       - record
+    permissions:
+      contents: read
+      statuses: write
+      checks: write

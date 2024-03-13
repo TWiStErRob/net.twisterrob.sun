@@ -8,6 +8,18 @@ jobs:
   build:
     timeout-minutes: 15
 
+    permissions:
+      # actions/checkout
+      contents: read
+      # createCommitStatus
+      statuses: write
+      # EnricoMi/publish-unit-test-result-action
+      checks: write
+      # github/codeql-action/upload-sarif
+      security-events: write
+      # github/codeql-action/upload-sarif in private repositories / internal organizations.
+      actions: read
+
     defaults:
       run:
         shell: bash

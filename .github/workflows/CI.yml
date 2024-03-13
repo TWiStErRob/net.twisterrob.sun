@@ -12,12 +12,22 @@ jobs:
   validate:
     name: "🦺 Validation"
     uses: TWiStErRob/github-workflows/.github/workflows/validate.yml@94f2ec4f96e146200f801fe7e09310c79cb2d2b3 # v2
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
 
   build:
     name: "🔨 Build & Verify"
     uses: ./.github/workflows/CI-build.yml
     needs:
       - validate
+    permissions:
+      contents: read
+      statuses: write
+      checks: write
+      security-events: write
+      actions: read
 
   prepare:
     name: "Prepare"
@@ -36,3 +46,7 @@ jobs:
       - prepare
     # Don't execute on main, as it'll just verify against itself.
     if: ${{ github.ref != 'refs/heads/main' && needs.prepare.outputs.found == 'true' }}
+    permissions:
+      contents: read
+      statuses: write
+      checks: write

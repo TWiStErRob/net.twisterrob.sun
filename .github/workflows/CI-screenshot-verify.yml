@@ -21,6 +21,14 @@ jobs:
     name: "🧪 Verify"
     timeout-minutes: 20
 
+    permissions:
+      # actions/checkout
+      contents: read
+      # createCommitStatus
+      statuses: write
+      # EnricoMi/publish-unit-test-result-action
+      checks: write
+
     defaults:
       run:
         shell: bash

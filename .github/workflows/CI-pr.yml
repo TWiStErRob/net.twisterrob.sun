@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1
 
+    permissions: {}
+
     outputs:
       found: ${{ steps.current-pr.outputs.number != null }}
       # Simulate github.event.pull_request.base.ref on push trigger.
