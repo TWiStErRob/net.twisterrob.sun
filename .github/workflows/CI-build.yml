@@ -6,6 +6,7 @@ on:
 jobs:
 
   build:
+    name: "build"
     timeout-minutes: 15
 
     permissions:
