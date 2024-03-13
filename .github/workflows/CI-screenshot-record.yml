@@ -79,6 +79,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: '${{ inputs.golden_artifact }}'
+          if-no-files-found: error
           path: |
             ${{ github.workspace }}/**/src/test/snapshots/images/*.png
 
@@ -87,6 +88,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: 'Screenshot Record Results'
+          if-no-files-found: error
           path: |
             ${{ github.workspace }}/**/build/reports/tests/*/
             ${{ github.workspace }}/**/build/reports/paparazzi/
@@ -99,5 +101,6 @@ jobs:
           check_name: "🔔 Test: Screenshot Record Results"
           comment_mode: off
           report_individual_runs: true
+          action_fail_on_inconclusive: true
           test_changes_limit: 0
           junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
