@@ -54,7 +54,7 @@ jobs:
           violationReportHtml
 
       - name: "Publish 'Gradle' commit status (with Build Scan URL)."
-        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
+        if: ${{ (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -69,7 +69,7 @@ jobs:
             });
 
       - name: "Upload 'Lint Results' artifact."
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: Lint Results
@@ -80,20 +80,20 @@ jobs:
 
       - name: "Publish 'Android Lint' GitHub Code Scanning analysis."
         uses: github/codeql-action/upload-sarif@v3
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         with:
           # merge-debug.sarif and merge-release.sarif in the folder.
           sarif_file: ${{ github.workspace }}/build/reports/lint/
 
       - name: "Upload 'Unit Test Results' artifact."
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: 'Unit Test Results'
           path: ${{ github.workspace }}/**/build/reports/tests/*/
 
       - name: "Publish '🔔 Test: Unit Results' check suite."
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           check_name: '🔔 Test: Unit Results'
@@ -103,7 +103,7 @@ jobs:
           junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
       - name: "Upload 'Detekt Results' artifact."
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: 'Detekt Results'
@@ -113,6 +113,6 @@ jobs:
 
       - name: "Publish 'detekt' GitHub Code Scanning analysis."
         uses: github/codeql-action/upload-sarif@v3
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         with:
           sarif_file: ${{ github.workspace }}/build/reports/detekt/merge.sarif

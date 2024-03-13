@@ -64,7 +64,7 @@ jobs:
           -Pnet.twisterrob.build.screenshot-tests=true
 
       - name: "Publish 'Gradle' commit status (with Build Scan URL)."
-        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
+        if: ${{ (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -79,7 +79,7 @@ jobs:
             });
 
       - name: "Upload 'Screenshot Test Results' artifact."
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: 'Screenshot Test Results'
@@ -92,7 +92,7 @@ jobs:
             ${{ github.workspace }}/**/build/paparazzi/failures/*.png
 
       - name: "Publish '🔔 Test: Screenshot Verify Results' check suite."
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           check_name: "🔔 Test: Screenshot Verify Results"

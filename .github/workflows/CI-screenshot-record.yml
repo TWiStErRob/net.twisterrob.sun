@@ -60,7 +60,7 @@ jobs:
           -Pnet.twisterrob.build.screenshot-tests=true
 
       - name: "Publish 'Gradle' commit status (with Build Scan URL)."
-        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
+        if: ${{ (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -75,7 +75,7 @@ jobs:
             });
 
       - name: "Upload '${{ inputs.golden_artifact }}' artifact."
-        if: success()
+        if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
           name: '${{ inputs.golden_artifact }}'
@@ -83,7 +83,7 @@ jobs:
             ${{ github.workspace }}/**/src/test/snapshots/images/*.png
 
       - name: "Upload 'Screenshot Record Results' artifact."
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: 'Screenshot Record Results'
@@ -93,7 +93,7 @@ jobs:
             ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
 
       - name: "Publish '🔔 Test: Screenshot Record Results' check suite."
-        if: success() || failure()
+        if: ${{ success() || failure() }}
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           check_name: "🔔 Test: Screenshot Record Results"

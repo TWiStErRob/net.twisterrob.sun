@@ -23,7 +23,7 @@ jobs:
     name: "Prepare"
     uses: ./.github/workflows/CI-pr.yml
     # Don't execute on main, it'll never be PR'd.
-    if: github.ref != 'refs/heads/main' && (success() || failure())
+    if: ${{ github.ref != 'refs/heads/main' && (success() || failure()) }}
 
   screenshot:
     name: "📷 Screenshot Tests"
@@ -35,4 +35,4 @@ jobs:
       - validate
       - prepare
     # Don't execute on main, as it'll just verify against itself.
-    if: github.ref != 'refs/heads/main' && needs.prepare.outputs.found == 'true'
+    if: ${{ github.ref != 'refs/heads/main' && needs.prepare.outputs.found == 'true' }}
