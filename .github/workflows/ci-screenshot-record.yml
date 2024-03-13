@@ -1,13 +1,14 @@
-name: "📷 Screenshot Tests / 🧪 Verify"
+name: "📷 Screenshot Tests / 📸 Record"
 
 on:
   workflow_call:
     inputs:
 
       ref:
-        description: "The head branch to verify against base."
+        description: "The base branch to compare against."
         type: string
-        required: true
+        required: false
+        default: "main"
 
       golden_artifact:
         description: "The name of the artifact containing the golden values for all modules."
@@ -17,11 +18,23 @@ on:
 
 jobs:
 
-  verify:
-    name: "🧪 Verify"
-    runs-on: ubuntu-latest
+  record:
+    name: "📸 Record"
     timeout-minutes: 20
 
+    permissions:
+      # actions/checkout
+      contents: read
+      # createCommitStatus
+      statuses: write
+      # EnricoMi/publish-unit-test-result-action
+      checks: write
+
+    defaults:
+      run:
+        shell: bash
+
+    runs-on: ubuntu-latest
     steps:
 
       - name: "Set up JDK 17."
@@ -46,12 +59,7 @@ jobs:
         with:
           ref: ${{ format('refs/heads/{0}', inputs.ref) }}
 
-      - name: "Download '${{ inputs.golden_artifact }}' artifact."
-        uses: actions/download-artifact@v4
-        with:
-          name: '${{ inputs.golden_artifact }}'
-
-      - name: "Run screenshot tests to verify ${{ inputs.ref }}."
+      - name: "Record screenshots golden values for ${{ inputs.ref }}."
         id: gradle
         run: >
           ./gradlew
@@ -60,11 +68,15 @@ jobs:
           --stacktrace
           --continue
           --scan
-          verifyPaparazziDebug
+          recordPaparazziDebug
           -Pnet.twisterrob.build.screenshot-tests=true
 
       - name: "Publish 'Gradle' commit status (with Build Scan URL)."
-        if: (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null
+        if: ${{ (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null }}
+        env:
+          RESULT_SUCCESS: ${{ fromJSON(steps.gradle.outputs.result-success) }}
+          RESULT_TEXT: ${{ fromJSON(steps.gradle.outputs.result-text) }}
+          BUILD_SCAN_URL: ${{ fromJSON(steps.gradle.outputs.build-scan-url) }}
         uses: actions/github-script@v7
         with:
           script: |
@@ -72,31 +84,39 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.sha,
-              state: ${{ toJSON(fromJSON(steps.gradle.outputs.result-success)) }} === true ? "success" : "failure",
-              context: "CI / Screenshot Tests / Verify / Gradle",
-              description: ${{ toJSON(fromJSON(steps.gradle.outputs.result-text)) }},
-              target_url: ${{ toJSON(fromJSON(steps.gradle.outputs.build-scan-url)) }}
+              state: process.env.RESULT_SUCCESS === 'true' ? "success" : "failure",
+              context: "CI / Screenshot Tests / Record / Gradle",
+              description: process.env.RESULT_TEXT,
+              target_url: process.env.BUILD_SCAN_URL,
             });
 
-      - name: "Upload 'Screenshot Test Results' artifact."
-        if: success() || failure()
+      - name: "Upload '${{ inputs.golden_artifact }}' artifact."
+        if: ${{ success() }}
         uses: actions/upload-artifact@v4
         with:
-          name: 'Screenshot Test Results'
-          # Notice that `${{ github.workspace }}/**/build/reports/paparazzi/` folder is not uploaded,
-          # that's because Paparazzi doesn't generate a report on failure...
+          name: '${{ inputs.golden_artifact }}'
+          if-no-files-found: error
+          path: |
+            ${{ github.workspace }}/**/src/test/snapshots/images/*.png
+
+      - name: "Upload 'Screenshot Record Results' artifact."
+        if: ${{ success() || failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'Screenshot Record Results'
+          if-no-files-found: error
           path: |
             ${{ github.workspace }}/**/build/reports/tests/*/
+            ${{ github.workspace }}/**/build/reports/paparazzi/
             ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml
-            ${{ github.workspace }}/**/build/paparazzi/failures/delta-*.png
-            ${{ github.workspace }}/**/build/paparazzi/failures/*.png
 
-      - name: "Publish '🔔 Test: Screenshot Verify Results' check suite."
-        if: success() || failure()
+      - name: "Publish '🔔 Test: Screenshot Record Results' check suite."
+        if: ${{ success() || failure() }}
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
-          check_name: "🔔 Test: Screenshot Verify Results"
+          check_name: "🔔 Test: Screenshot Record Results"
           comment_mode: off
           report_individual_runs: true
+          action_fail_on_inconclusive: true
           test_changes_limit: 0
           junit_files: ${{ github.workspace }}/**/build/test-results/*/TEST-*.xml

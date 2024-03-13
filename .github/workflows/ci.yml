@@ -11,23 +11,33 @@ concurrency:
 jobs:
   validate:
     name: "🦺 Validation"
-    uses: TWiStErRob/github-workflows/.github/workflows/validate.yml@19333c04e57739ec6074b09c6ca09c225c94dc09 # v1
+    uses: TWiStErRob/github-workflows/.github/workflows/validate.yml@94f2ec4f96e146200f801fe7e09310c79cb2d2b3 # v2
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
 
   build:
     name: "🔨 Build & Verify"
-    uses: ./.github/workflows/CI-build.yml
+    uses: ./.github/workflows/ci-build.yml
     needs:
       - validate
+    permissions:
+      contents: read
+      statuses: write
+      checks: write
+      security-events: write
+      actions: read
 
   prepare:
     name: "Prepare"
-    uses: ./.github/workflows/CI-pr.yml
+    uses: ./.github/workflows/ci-pr.yml
     # Don't execute on main, it'll never be PR'd.
-    if: github.ref != 'refs/heads/main' && (success() || failure())
+    if: ${{ github.ref != 'refs/heads/main' && (success() || failure()) }}
 
   screenshot:
     name: "📷 Screenshot Tests"
-    uses: ./.github/workflows/CI-screenshot.yml
+    uses: ./.github/workflows/ci-screenshot.yml
     with:
       base_ref: ${{ needs.prepare.outputs.base_ref }}
       head_ref: ${{ needs.prepare.outputs.head_ref }}
@@ -35,4 +45,8 @@ jobs:
       - validate
       - prepare
     # Don't execute on main, as it'll just verify against itself.
-    if: github.ref != 'refs/heads/main' && needs.prepare.outputs.found == 'true'
+    if: ${{ github.ref != 'refs/heads/main' && needs.prepare.outputs.found == 'true' }}
+    permissions:
+      contents: read
+      statuses: write
+      checks: write
