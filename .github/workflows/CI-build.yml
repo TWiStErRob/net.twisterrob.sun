@@ -6,9 +6,13 @@ on:
 jobs:
 
   build:
-    runs-on: ubuntu-latest
     timeout-minutes: 15
 
+    defaults:
+      run:
+        shell: bash
+
+    runs-on: ubuntu-latest
     steps:
 
       - name: "Set up JDK 17."

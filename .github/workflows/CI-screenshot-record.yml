@@ -2,7 +2,7 @@ name: "📷 Screenshot Tests / 📸 Record"
 
 on:
   workflow_call:
-    inputs: 
+    inputs:
 
       ref:
         description: "The base branch to compare against."
@@ -20,9 +20,13 @@ jobs:
 
   record:
     name: "📸 Record"
-    runs-on: ubuntu-latest
     timeout-minutes: 20
 
+    defaults:
+      run:
+        shell: bash
+
+    runs-on: ubuntu-latest
     steps:
 
       - name: "Set up JDK 17."
