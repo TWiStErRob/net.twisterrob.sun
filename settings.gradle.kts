@@ -39,7 +39,7 @@ pluginManagement {
 		gradlePluginPortal {
 			content {
 				includeGroup("com.gradle")
-				includeGroup("com.gradle.enterprise")
+				includeGroup("com.gradle.develocity")
 				includeGroup("gradle.plugin.org.gradle.android")
 				includeGroup("org.jetbrains.kotlin.android")
 				includeGroup("io.gitlab.arturbosch.detekt")
@@ -49,15 +49,15 @@ pluginManagement {
 }
 
 plugins {
-	id("com.gradle.enterprise") version "3.17"
+	id("com.gradle.develocity") version "3.17"
 	id("net.twisterrob.gradle.plugin.nagging") version "0.16"
 	id("project-settings")
 }
 
-gradleEnterprise {
+develocity {
 	buildScan {
-		termsOfServiceUrl = "https://gradle.com/terms-of-service"
-		termsOfServiceAgree = "yes"
+		termsOfUseUrl = "https://gradle.com/help/legal-terms-of-use"
+		termsOfUseAgree = "yes"
 		if (isCI) {
 			fun setOutput(name: String, value: Any?) {
 				// Using `appendText` to make sure out outputs are not cleared.
