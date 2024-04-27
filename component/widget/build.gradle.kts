@@ -1,6 +1,7 @@
 plugins {
 	id("project-module-android-library")
 	id("project-feature-paparazzi")
+	id("org.jetbrains.kotlin.kapt")
 }
 
 dependencies {
