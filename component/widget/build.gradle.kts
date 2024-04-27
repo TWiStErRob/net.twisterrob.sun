@@ -1,12 +1,12 @@
 plugins {
 	id("project-module-android-library")
 	id("project-feature-paparazzi")
-	id("org.jetbrains.kotlin.kapt")
+	id("com.google.devtools.ksp")
 }
 
 dependencies {
 	implementation(projects.component.core)
-	kapt(libs.dagger.compiler)
+	ksp(libs.dagger.compiler)
 	api(projects.component.lib)
 	implementation(projects.component.states)
 	implementation(projects.component.theme)
