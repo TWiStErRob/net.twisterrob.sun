@@ -9,6 +9,7 @@ dependencies {
 	implementation(libs.android.lint.common)
 	implementation(libs.android.cacheFix)
 	implementation(libs.kotlin.plugin)
+	implementation(libs.kotlin.plugin.ksp)
 	implementation(libs.kotlin.detekt)
 	implementation(libs.kotlin.detekt.sarif)
 	implementation(libs.twisterrob.quality)

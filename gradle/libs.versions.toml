@@ -17,6 +17,7 @@ androidx-test-runner = "1.5.2"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "1.9.23"
+kotlin-ksp = "1.9.23-1.0.20"
 
 detekt = "1.23.6"
 
@@ -51,6 +52,7 @@ kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-stdlib8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-plugin-ksp = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "kotlin-ksp" }
 
 kotlin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 kotlin-detekt-sarif = { module = "io.github.detekt.sarif4k:sarif4k", version = "0.6.0" }
