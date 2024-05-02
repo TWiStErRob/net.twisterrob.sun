@@ -50,7 +50,7 @@ pluginManagement {
 
 plugins {
 	id("com.gradle.develocity") version "3.17.2"
-	id("net.twisterrob.gradle.plugin.nagging") version "0.16"
+	id("net.twisterrob.gradle.plugin.nagging") version "0.17"
 	id("project-settings")
 }
 
