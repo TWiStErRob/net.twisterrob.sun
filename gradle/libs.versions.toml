@@ -29,7 +29,7 @@ dagger = "2.51.1"
 mockito = "5.12.0"
 
 # TODO when upgrading to a version with compileSdk 34 is supported, remove env() method from PaparazziFactory.
-paparazzi = "1.3.3"
+paparazzi = "1.3.4"
 
 test-jsonAssert = "1.5.1"
 
