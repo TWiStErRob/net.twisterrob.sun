@@ -18,7 +18,6 @@ fun widgetPaparazzi(): Paparazzi =
 		appCompatEnabled = false,
 		showSystemUi = false,
 		renderingMode = RenderingMode.SHRINK,
-		environment = env(),
 	)
 
 /**
@@ -31,17 +30,4 @@ fun activityPaparazzi(): Paparazzi =
 		maxPercentDifference = 0.0,
 		appCompatEnabled = true,
 		showSystemUi = true,
-		environment = env(),
 	)
-
-/**
- * See https://github.com/cashapp/paparazzi/issues/1025#issuecomment-1654065507.
- * TODO when changing this, update also `android.compileSdk` build.gradle.
- */
-private fun env(): Environment =
-	detectEnvironment().run {
-		copy(
-			compileSdkVersion = 33,
-			platformDir = platformDir.replace("android-34", "android-33")
-		)
-	}
