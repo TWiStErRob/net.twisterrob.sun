@@ -48,6 +48,12 @@ jobs:
         with:
           log-accepted-android-sdk-licenses: false
 
+      - name: "Set up Android SDK components."
+        run: |
+          # Install Android API used to build the project.
+          echo sdkmanager --install "platforms;android-34"
+          sdkmanager --install "platforms;android-34"
+
       - name: "Checkout ${{ inputs.ref }} branch in ${{ github.repository }} repository."
         uses: actions/checkout@v4
         with:
