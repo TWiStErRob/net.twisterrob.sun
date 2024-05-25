@@ -34,6 +34,7 @@ jobs:
     uses: ./.github/workflows/ci-pr.yml
     # Don't execute on main, it'll never be PR'd.
     if: ${{ github.ref != 'refs/heads/main' && (success() || failure()) }}
+    permissions: {}
 
   screenshot:
     name: "📷 Screenshot Tests"
