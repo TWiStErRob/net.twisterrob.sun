@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: "Set up JDK 17."
+      - name: "Set up JDK for Android SDK."
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
@@ -39,14 +39,14 @@ jobs:
         with:
           log-accepted-android-sdk-licenses: false
 
-      - name: "Set up Android SDK components."
-        run: |
-          # Install Android API used to build the project.
-          echo sdkmanager --install "platforms;android-34"
-          sdkmanager --install "platforms;android-34"
-
       - name: "Checkout ${{ github.ref }} branch in ${{ github.repository }} repository."
         uses: actions/checkout@v4
+
+      - name: "Set up JDK for Project."
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version-file: .java-version
 
       - name: "Register problem matchers."
         run: echo "::add-matcher::.github/problemMatchers.json"
