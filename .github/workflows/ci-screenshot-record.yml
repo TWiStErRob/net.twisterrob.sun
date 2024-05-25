@@ -53,6 +53,9 @@ jobs:
         with:
           ref: ${{ format('refs/heads/{0}', inputs.ref) }}
 
+      - name: "Set up Gradle."
+        uses: gradle/actions/setup-gradle@v3
+
       - name: "Record screenshots golden values for ${{ inputs.ref }}."
         id: gradle
         run: >
