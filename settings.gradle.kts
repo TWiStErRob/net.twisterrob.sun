@@ -1,4 +1,3 @@
-import groovy.json.JsonOutput.toJson
 import net.twisterrob.gradle.settings.enableFeaturePreviewQuietly
 import net.twisterrob.gradle.doNotNagAbout
 import net.twisterrob.sun.plugins.isCI
@@ -61,9 +60,10 @@ develocity {
 		if (isCI) {
 			fun setOutput(name: String, value: Any?) {
 				// Using `appendText` to make sure out outputs are not cleared.
-				// Using `\n` to make sure further outputs are correct.
-				// Using `toJson()` to ensure that any special characters (such as newlines) are escaped.
-				File(System.getenv("GITHUB_OUTPUT")).appendText("${name}=${toJson(value)}\n")
+				// Using `\n` at the end to make sure further outputs are correct.
+				val delimiter = "GITHUB_OUTPUT_SAFE_EOF"
+				File(System.getenv("GITHUB_OUTPUT"))
+					.appendText("${name}<<${delimiter}\n${value}\n${delimiter}\n")
 			}
 
 			buildScanPublished {
