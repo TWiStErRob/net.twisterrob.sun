@@ -107,14 +107,14 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         if: ${{ success() || failure() }}
         with:
-          category: android-lint-debug
+          category: ${{ github.job }}-debug
           sarif_file: ${{ github.workspace }}/build/reports/lint/merge-debug.sarif
 
       - name: "Publish 'Android Lint' GitHub Code Scanning analysis."
         uses: github/codeql-action/upload-sarif@v3
         if: ${{ success() || failure() }}
         with:
-          category: android-lint-release
+          category: ${{ github.job }}-release
           sarif_file: ${{ github.workspace }}/build/reports/lint/merge-release.sarif
 
       - name: "Upload 'Unit Test Results' artifact."
