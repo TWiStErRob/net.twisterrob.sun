@@ -16,6 +16,7 @@ fun widgetPaparazzi(): Paparazzi =
 		appCompatEnabled = false,
 		showSystemUi = false,
 		renderingMode = RenderingMode.SHRINK,
+		useDeviceResolution = true,
 	)
 
 /**
