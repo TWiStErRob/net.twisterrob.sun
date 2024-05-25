@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: "Set up JDK for Android SDK."
+      - name: "Set up JDK 17."
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
@@ -51,12 +51,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ format('refs/heads/{0}', inputs.ref) }}
-
-      - name: "Set up JDK for Project."
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version-file: .java-version
 
       - name: "Set up Gradle."
         uses: gradle/actions/setup-gradle@v3
