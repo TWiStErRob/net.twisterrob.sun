@@ -79,7 +79,7 @@ jobs:
         env:
           RESULT_SUCCESS: ${{ fromJSON(steps.gradle.outputs.result-success) }}
           RESULT_TEXT: ${{ fromJSON(steps.gradle.outputs.result-text) }}
-          BUILD_SCAN_URL: ${{ fromJSON(steps.gradle.outputs.build-scan-url) }}
+          BUILD_SCAN_URL: ${{ steps.gradle.outputs.build-scan-url }}
         uses: actions/github-script@v7
         with:
           script: |
