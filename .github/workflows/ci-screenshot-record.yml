@@ -57,8 +57,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          # TODO `java-version-file: .java-version` after it is on main.
-          java-version: 17
+          java-version-file: .java-version
 
       - name: "Record screenshots golden values for ${{ inputs.ref }}."
         id: gradle
