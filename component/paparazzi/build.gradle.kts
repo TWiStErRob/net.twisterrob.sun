@@ -8,6 +8,3 @@ dependencies {
 	api(libs.test.mockito)
 	api(libs.test.paramInjector)
 }
-
-// See https://github.com/cashapp/paparazzi/issues/1025#issuecomment-1687437843.
-android.compileSdk = 33
