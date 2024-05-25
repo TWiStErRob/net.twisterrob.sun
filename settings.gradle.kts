@@ -1,6 +1,7 @@
 import net.twisterrob.gradle.settings.enableFeaturePreviewQuietly
 import net.twisterrob.gradle.doNotNagAbout
 import net.twisterrob.sun.plugins.isCI
+import java.util.UUID
 
 rootProject.name = "Sun"
 
@@ -61,7 +62,7 @@ develocity {
 			fun setOutput(name: String, value: Any?) {
 				// Using `appendText` to make sure out outputs are not cleared.
 				// Using `\n` at the end to make sure further outputs are correct.
-				val delimiter = "GITHUB_OUTPUT_SAFE_EOF"
+				val delimiter = UUID.randomUUID().toString()
 				File(System.getenv("GITHUB_OUTPUT"))
 					.appendText("${name}<<${delimiter}\n${value}\n${delimiter}\n")
 			}
