@@ -28,4 +28,5 @@ fun activityPaparazzi(): Paparazzi =
 		maxPercentDifference = 0.0,
 		appCompatEnabled = true,
 		showSystemUi = true,
+		useDeviceResolution = true,
 	)
