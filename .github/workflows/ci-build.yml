@@ -45,9 +45,6 @@ jobs:
       - name: "Register problem matchers."
         run: echo "::add-matcher::.github/problemMatchers.json"
 
-      - name: "Set up Gradle."
-        uses: gradle/actions/setup-gradle@v3
-
       - name: "Build & Verify project using Gradle."
         id: gradle
         run: >
