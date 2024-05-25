@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- From API 30 precise location comes into play. -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<string name="no_location_foreground_rationale_title">Precise location required</string>
 	<string name="no_location_foreground_rationale">
@@ -9,7 +9,7 @@
 		\nIt only works if you allow access to precise Location at the next step.
 	</string>
 
-	<string name="no_location_foreground_guide">
+	<string name="no_location_foreground_guide" tools:ignore="StringFormatCount">
 		The widget needs to know your location to calculate the position of the Sun.
 		\n
 		\nPlease give permission to precise Location in the App Settings using the “%1$s“ option.
