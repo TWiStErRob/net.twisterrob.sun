@@ -14,6 +14,13 @@
 
     <issue
         id="InvalidPackage"
+        message="Invalid package reference in library; not included in Android: `javax.xml.stream.util`. Referenced from `com.sun.xml.fastinfoset.stax.events.StAXEventAllocatorBase`.">
+        <location
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.sun.xml.fastinfoset/FastInfoset/1.2.16/4eb6a0adad553bf759ffe86927df6f3b848c8bea/FastInfoset-1.2.16.jar"/>
+    </issue>
+
+    <issue
+        id="InvalidPackage"
         message="Invalid package reference in library; not included in Android: `javax.naming.directory`. Referenced from `org.bouncycastle.cert.dane.fetcher.JndiDANEFetcherFactory`.">
         <location
             file="/home/runner/.gradle/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk15on/1.67/5f48020a2a60a8d6bcbecceca23529d225b28efb/bcpkix-jdk15on-1.67.jar"/>
@@ -30,14 +37,21 @@
         id="InvalidPackage"
         message="Invalid package reference in com.android.tools:common; not included in Android: `javax.management`. Referenced from `com.android.utils.JvmWideVariable`.">
         <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools/common/31.2.2/c4bd098aab97fa95da10c4098c0238437dc1c4ef/common-31.2.2.jar"/>
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools/common/31.4.1/a3d36162774f914b39de529f3093bb74a3ccfe51/common-31.4.1.jar"/>
+    </issue>
+
+    <issue
+        id="InvalidPackage"
+        message="Invalid package reference in com.android.tools:common; not included in Android: `javax.xml.stream`. Referenced from `com.android.utils.XmlUtils`.">
+        <location
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools/common/31.4.1/a3d36162774f914b39de529f3093bb74a3ccfe51/common-31.4.1.jar"/>
     </issue>
 
     <issue
         id="InvalidPackage"
         message="Invalid package reference in library; not included in Android: `java.awt.color`. Referenced from `com.android.ddmlib.RawImage`.">
         <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.ddms/ddmlib/31.2.2/281833d08fbead59de281fc0b0eb2e127e9d7482/ddmlib-31.2.2.jar"/>
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.ddms/ddmlib/31.3.2/df1b44faa9adcb39b21996a64e8d7ac609433ca8/ddmlib-31.3.2.jar"/>
     </issue>
 
     <issue
@@ -63,9 +77,9 @@
 
     <issue
         id="InvalidPackage"
-        message="Invalid package reference in library; not included in Android: `javax.sound.sampled`. Referenced from `org.jcodec.common.SoundUtil`.">
+        message="Invalid package reference in library; not included in Android: `javax.xml.stream.events`. Referenced from `com.sun.xml.bind.v2.runtime.unmarshaller.StAXEventConnector`.">
         <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/org.jcodec/jcodec-javase/0.2.5/924491879d101f60f659c0a26562b3c232f1c59d/jcodec-javase-0.2.5.jar"/>
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/org.glassfish.jaxb/jaxb-runtime/2.3.2/5528bc882ea499a09d720b42af11785c4fc6be2a/jaxb-runtime-2.3.2.jar"/>
     </issue>
 
     <issue
@@ -100,49 +114,49 @@
         id="InvalidPackage"
         message="Invalid package reference in app.cash.paparazzi:layoutlib-native-jdk11; not included in Android: `java.awt.event`. Referenced from `com.android.layoutlib.bridge.impl.RenderSessionImpl`.">
         <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/app.cash.paparazzi/layoutlib-native-jdk11/2023.1.1-a73a761/16383caf954a7b08a6603ae6aa0432a6cf882e02/layoutlib-native-jdk11-2023.1.1-a73a761.jar"/>
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/app.cash.paparazzi/layoutlib-native-jdk11/2023.2.1-6c7316c/c014afcb722192e5cb9c04a5c63afbe071438cef/layoutlib-native-jdk11-2023.2.1-6c7316c.jar"/>
+    </issue>
+
+    <issue
+        id="InvalidPackage"
+        message="Invalid package reference in app.cash.paparazzi:paparazzi; not included in Android: `java.awt.geom`. Referenced from `app.cash.paparazzi.internal.apng.ApngVerifier`.">
+        <location
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/app.cash.paparazzi/paparazzi/1.3.4/9b037e423fb0d666c5b980d8621c9325e4d249e9/paparazzi-1.3.4.jar"/>
     </issue>
 
     <issue
         id="InvalidPackage"
         message="Invalid package reference in app.cash.paparazzi:paparazzi; not included in Android: `java.awt.image`. Referenced from `app.cash.paparazzi.HtmlReportWriter`.">
         <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/app.cash.paparazzi/paparazzi/1.3.3/36059d7b4ffa76cc9d64b864befa11a0c6596569/paparazzi-1.3.3.jar"/>
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/app.cash.paparazzi/paparazzi/1.3.4/9b037e423fb0d666c5b980d8621c9325e4d249e9/paparazzi-1.3.4.jar"/>
     </issue>
 
     <issue
         id="InvalidPackage"
-        message="Invalid package reference in app.cash.paparazzi:paparazzi; not included in Android: `java.awt`. Referenced from `app.cash.paparazzi.Paparazzi`.">
+        message="Invalid package reference in app.cash.paparazzi:paparazzi; not included in Android: `java.awt`. Referenced from `app.cash.paparazzi.PaparazziSdk`.">
         <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/app.cash.paparazzi/paparazzi/1.3.3/36059d7b4ffa76cc9d64b864befa11a0c6596569/paparazzi-1.3.3.jar"/>
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/app.cash.paparazzi/paparazzi/1.3.4/9b037e423fb0d666c5b980d8621c9325e4d249e9/paparazzi-1.3.4.jar"/>
     </issue>
 
     <issue
         id="InvalidPackage"
-        message="Invalid package reference in app.cash.paparazzi:paparazzi; not included in Android: `javax.imageio`. Referenced from `app.cash.paparazzi.HtmlReportWriter`.">
+        message="Invalid package reference in app.cash.paparazzi:paparazzi; not included in Android: `javax.imageio`. Referenced from `app.cash.paparazzi.SnapshotVerifier.newFrameHandler.1`.">
         <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/app.cash.paparazzi/paparazzi/1.3.3/36059d7b4ffa76cc9d64b864befa11a0c6596569/paparazzi-1.3.3.jar"/>
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/app.cash.paparazzi/paparazzi/1.3.4/9b037e423fb0d666c5b980d8621c9325e4d249e9/paparazzi-1.3.4.jar"/>
     </issue>
 
     <issue
         id="InvalidPackage"
         message="Invalid package reference in library; not included in Android: `javax.xml.bind.annotation`. Referenced from `com.android.repository.api.SchemaModule.SchemaModuleVersion`.">
         <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools/repository/31.2.2/31525288e1be940e531a46a4d8392542c66649d9/repository-31.2.2.jar"/>
-    </issue>
-
-    <issue
-        id="InvalidPackage"
-        message="Invalid package reference in com.android.tools:sdk-common; not included in Android: `java.awt.geom`. Referenced from `com.android.ide.common.vectordrawable.EllipseSolver`.">
-        <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools/sdk-common/31.2.2/432fd187a7f19f9670169918c8c01d1af08b70cd/sdk-common-31.2.2.jar"/>
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools/repository/31.3.2/f9d998909029644e8f7cf78cd850138ecf7cfcfd/repository-31.3.2.jar"/>
     </issue>
 
     <issue
         id="InvalidPackage"
         message="Invalid package reference in library; not included in Android: `java.lang.management`. Referenced from `com.android.tools.analytics.CommonMetricsData`.">
         <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.analytics-library/shared/31.2.2/1ee49c37374d86a840c49b82adb94ac33733ee06/shared-31.2.2.jar"/>
+            file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.analytics-library/shared/31.3.2/19dcfacddf50f8e012524b4576dfc6b51bd8b20a/shared-31.3.2.jar"/>
     </issue>
 
     <issue
