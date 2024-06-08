@@ -4,7 +4,7 @@ java = "17"
 
 # TODO When changing this, update CI too (platforms;android-xx).
 compileSdkVersion = "34"
-minSdkVersion = "14"
+minSdkVersion = "19"
 targetSdkVersion = "34"
 
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
