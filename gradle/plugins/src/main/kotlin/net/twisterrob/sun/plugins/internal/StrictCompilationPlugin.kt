@@ -8,7 +8,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
-import org.jetbrains.kotlin.gradle.utils.targets
+import org.jetbrains.kotlin.gradle.utils.forAllTargets
 
 internal class StrictCompilationPlugin : Plugin<Project> {
 
@@ -30,9 +30,8 @@ internal class StrictCompilationPlugin : Plugin<Project> {
 				"-Werror"
 			)
 		}
-		// Note: this is not lazy, [targets] may be a [DomainObjectCollection].
 		@Suppress("INVISIBLE_MEMBER") // https://youtrack.jetbrains.com/issue/KT-68935
-		project.kotlinExtension.targets.forEach { target ->
+		project.kotlinExtension.forAllTargets { target ->
 			target.compilations.configureEach {
 				compileTaskProvider.configure {
 					compilerOptions {
