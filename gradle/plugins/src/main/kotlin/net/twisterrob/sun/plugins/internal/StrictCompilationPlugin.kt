@@ -1,11 +1,14 @@
+@file:Suppress("INVISIBLE_REFERENCE") // https://youtrack.jetbrains.com/issue/KT-68935
+
 package net.twisterrob.sun.plugins.internal
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.targets
+import org.jetbrains.kotlin.gradle.utils.forAllTargets
 
 internal class StrictCompilationPlugin : Plugin<Project> {
 
@@ -27,12 +30,14 @@ internal class StrictCompilationPlugin : Plugin<Project> {
 				"-Werror"
 			)
 		}
-		// Note: this is not lazy, [targets] may be a [DomainObjectCollection].
-		project.kotlinExtension.targets.forEach { target ->
+		@Suppress("INVISIBLE_MEMBER") // https://youtrack.jetbrains.com/issue/KT-68935
+		project.kotlinExtension.forAllTargets { target ->
 			target.compilations.configureEach {
-				kotlinOptions {
-					verbose = true
-					allWarningsAsErrors = true
+				compileTaskProvider.configure {
+					compilerOptions {
+						verbose = true
+						allWarningsAsErrors = true
+					}
 				}
 			}
 		}
