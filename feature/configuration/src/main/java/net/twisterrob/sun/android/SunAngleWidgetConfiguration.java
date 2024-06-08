@@ -151,7 +151,7 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 
 		sun = createSun();
 		((ImageView)findViewById(R.id.visualization)).setImageDrawable(sun);
-		ViewCompat.setBackground(findViewById(R.id.angle_background), createSunStrip());
+		findViewById(R.id.angle_background).setBackground(createSunStrip());
 
 		findViewById(R.id.btn_ok).setOnClickListener(v -> finishCommit());
 
