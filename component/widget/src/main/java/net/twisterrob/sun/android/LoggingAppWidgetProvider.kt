@@ -50,7 +50,6 @@ open class LoggingAppWidgetProvider protected constructor() : AppWidgetProvider(
 		super.onUpdate(context, appWidgetManager, appWidgetIds)
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	override fun onAppWidgetOptionsChanged(
 		context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, newOptions: Bundle?
 	) {
