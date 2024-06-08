@@ -18,6 +18,19 @@
 
 	</issue>
 
+	<issue id="ConvertToWebp">
+
+		<!-- Keep them for consistency among them. -->
+		<ignore path="**/src/main/res/drawable-nodpi/bg_*.jpg" />
+
+		<!-- Keep, because there no size improvement, unless lower quality. -->
+		<ignore path="**/src/main/res/drawable-nodpi/widget_1x1_preview.png" />
+
+		<!-- Keep launcher, until there's an actual change to it. -->
+		<ignore path="**/src/main/res/drawable-xxxhdpi/ic_launcher.png" />
+
+	</issue>
+
 	<issue id="InvalidPackage">
 
 		<!-- Used in tests only. -->
