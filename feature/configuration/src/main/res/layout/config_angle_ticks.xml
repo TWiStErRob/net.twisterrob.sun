@@ -34,7 +34,6 @@
 		android:text="90°"
 		android:drawableEnd="@drawable/tick"
 		android:drawablePadding="12dp"
-		android:drawableRight="@drawable/tick"
 		android:includeFontPadding="false"
 		/>
 
@@ -55,7 +54,6 @@
 		android:text="50°"
 		android:drawableEnd="@drawable/tick"
 		android:drawablePadding="12dp"
-		android:drawableRight="@drawable/tick"
 		android:includeFontPadding="false"
 		/>
 
@@ -76,7 +74,6 @@
 		android:text="0°"
 		android:drawableEnd="@drawable/tick"
 		android:drawablePadding="12dp"
-		android:drawableRight="@drawable/tick"
 		android:includeFontPadding="false"
 		/>
 
@@ -97,7 +94,6 @@
 		android:text="-6°"
 		android:drawableEnd="@drawable/tick"
 		android:drawablePadding="12dp"
-		android:drawableRight="@drawable/tick"
 		android:includeFontPadding="false"
 		/>
 
@@ -118,7 +114,6 @@
 		android:text="-12°"
 		android:drawableEnd="@drawable/tick"
 		android:drawablePadding="12dp"
-		android:drawableRight="@drawable/tick"
 		android:includeFontPadding="false"
 		/>
 
@@ -139,7 +134,6 @@
 		android:text="-18°"
 		android:drawableEnd="@drawable/tick"
 		android:drawablePadding="12dp"
-		android:drawableRight="@drawable/tick"
 		android:includeFontPadding="false"
 		/>
 
@@ -160,7 +154,6 @@
 		android:text="-90°"
 		android:drawableEnd="@drawable/tick"
 		android:drawablePadding="12dp"
-		android:drawableRight="@drawable/tick"
 		android:includeFontPadding="false"
 		/>
 

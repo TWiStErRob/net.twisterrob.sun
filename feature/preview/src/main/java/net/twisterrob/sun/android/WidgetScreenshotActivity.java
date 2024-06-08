@@ -4,13 +4,11 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import android.annotation.*;
 import android.app.Activity;
 import android.appwidget.*;
 import android.content.*;
 import android.graphics.*;
 import android.net.Uri;
-import android.os.Build.*;
 import android.os.Bundle;
 import android.util.*;
 import android.view.*;
@@ -133,15 +131,12 @@ public class WidgetScreenshotActivity extends Activity {
 		return value - 62;
 	}
 
-	@TargetApi(VERSION_CODES.JELLY_BEAN)
 	private void bindWidget(int appWidgetId, ComponentName provider) {
-		if (VERSION_CODES.JELLY_BEAN <= VERSION.SDK_INT) {
-			if (!manager.bindAppWidgetIdIfAllowed(appWidgetId, provider)) {
-				Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
-				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider);
-				startActivityForResult(intent, RESULT_FIRST_USER);
-			}
+		if (!manager.bindAppWidgetIdIfAllowed(appWidgetId, provider)) {
+			Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider);
+			startActivityForResult(intent, RESULT_FIRST_USER);
 		}
 	}
 
@@ -175,7 +170,6 @@ public class WidgetScreenshotActivity extends Activity {
 		updateSize();
 	}
 
-	@TargetApi(VERSION_CODES.JELLY_BEAN)
 	private void updateSize() {
 		if (layout == null || layout.getChildCount() != 1) {
 			return;
@@ -185,13 +179,10 @@ public class WidgetScreenshotActivity extends Activity {
 		layoutParams.width = (int)dipToPix(mapProgress(widthBar.getProgress()));
 		layoutParams.height = (int)dipToPix(mapProgress(heightBar.getProgress()));
 		layoutParams.gravity = Gravity.CENTER;
-		if (VERSION_CODES.JELLY_BEAN <= VERSION.SDK_INT) {
-			// padding is automatically added by AppWidgetHostView, so let's increase the size with the padding
-			Rect padding =
-					AppWidgetHostView.getDefaultPaddingForWidget(getApplicationContext(), getComponentName(), null);
-			layoutParams.width += padding.left + padding.right;
-			layoutParams.height += padding.top + padding.bottom;
-		}
+		// padding is automatically added by AppWidgetHostView, so let's increase the size with the padding
+		Rect padding = AppWidgetHostView.getDefaultPaddingForWidget(getApplicationContext(), getComponentName(), null);
+		layoutParams.width += padding.left + padding.right;
+		layoutParams.height += padding.top + padding.bottom;
 		view.setLayoutParams(layoutParams);
 	}
 

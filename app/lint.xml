@@ -1,3 +1,5 @@
+<!-- Note: this is not the main lint.xml configuration. See /config/lint/lint.xml for that. -->
+
 <lint>
 
 	<issue id="UnusedResources">
