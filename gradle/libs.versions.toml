@@ -12,8 +12,8 @@ targetSdkVersion = "34"
 agp = "8.5.0"
 lint = "31.5.0"
 
-androidx-test-core = "1.6.0"
-androidx-test-runner = "1.6.0"
+androidx-test-core = "1.6.1"
+androidx-test-runner = "1.6.1"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "2.0.0"
