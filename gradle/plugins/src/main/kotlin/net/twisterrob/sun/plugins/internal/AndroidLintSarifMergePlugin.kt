@@ -9,7 +9,6 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
-import org.gradle.configurationcache.extensions.capitalized
 
 internal class AndroidLintSarifMergePlugin : Plugin<Project> {
 
@@ -33,7 +32,7 @@ private fun wireLintReportMergeSarif(project: Project) {
 
 	project.androidComponents.onVariants { variant ->
 		val lintReportMergeSarifVariant =
-			rootProject.tasks.maybeRegister<MergeLintSarifReportsTask>("lintReportMergeSarif${variant.name.capitalized()}") {
+			rootProject.tasks.maybeRegister<MergeLintSarifReportsTask>("lintReportMergeSarif${variant.name.replaceFirstChar { it.uppercase() }}") {
 				mergedSarifFile.set(this.project.layout.buildDirectory.file("reports/lint/merge-${variant.name}.sarif"))
 			}
 		// Will result in multiple dependencies to the same task, but there's no other way.
