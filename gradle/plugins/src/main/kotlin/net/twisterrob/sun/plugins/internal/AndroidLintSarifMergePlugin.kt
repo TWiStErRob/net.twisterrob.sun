@@ -32,7 +32,7 @@ private fun wireLintReportMergeSarif(project: Project) {
 
 	project.androidComponents.onVariants { variant ->
 		val lintReportMergeSarifVariant =
-			rootProject.tasks.maybeRegister<MergeLintSarifReportsTask>("lintReportMergeSarif${variant.name.replaceFirstChar { it.uppercase() }}") {
+			rootProject.tasks.maybeRegister<MergeLintSarifReportsTask>("lintReportMergeSarif${variant.name.replaceFirstChar(Char::uppercase)}") {
 				mergedSarifFile.set(this.project.layout.buildDirectory.file("reports/lint/merge-${variant.name}.sarif"))
 			}
 		// Will result in multiple dependencies to the same task, but there's no other way.
