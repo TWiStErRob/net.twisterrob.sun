@@ -17,7 +17,7 @@ androidx-test-runner = "1.6.1"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "2.0.0"
-kotlin-ksp = "2.0.0-1.0.23"
+kotlin-ksp = "2.0.0-1.0.24"
 
 detekt = "1.23.6"
 
