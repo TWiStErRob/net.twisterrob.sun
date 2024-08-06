@@ -21,7 +21,7 @@ kotlin-ksp = "2.0.0-1.0.24"
 
 detekt = "1.23.6"
 
-dagger = "2.51.1"
+dagger = "2.52"
 
 # Artifacts: https://mvnrepository.com/artifact/org.mockito/mockito-core
 # Changelog (1.x, 2.x and 3.x): https://github.com/mockito/mockito/blob/main/doc/release-notes/official.md
