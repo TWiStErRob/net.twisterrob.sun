@@ -41,7 +41,7 @@ android-lint-common = { module = "com.android.tools:common", version.ref = "lint
 android-cacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "3.0.1" }
 
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
-androidx-activity = { module = "androidx.activity:activity", version = "1.9.1" }
+androidx-activity = { module = "androidx.activity:activity", version = "1.9.2" }
 androidx-fragment = { module = "androidx.fragment:fragment", version = "1.7.1" }
 androidx-annotations = { module = "androidx.annotation:annotation", version = "1.8.2" }
 androidx-constraint = { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
