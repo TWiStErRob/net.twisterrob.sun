@@ -19,7 +19,7 @@ androidx-test-runner = "1.6.2"
 kotlin = "2.0.20"
 kotlin-ksp = "2.0.20-1.0.25"
 
-detekt = "1.23.6"
+detekt = "1.23.7"
 
 dagger = "2.52"
 
