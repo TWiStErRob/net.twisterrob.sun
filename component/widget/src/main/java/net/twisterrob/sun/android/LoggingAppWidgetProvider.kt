@@ -1,11 +1,9 @@
 package net.twisterrob.sun.android
 
-import android.annotation.TargetApi
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import java.util.Locale
@@ -60,7 +58,6 @@ open class LoggingAppWidgetProvider protected constructor() : AppWidgetProvider(
 		super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
 	}
 
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	override fun onRestored(context: Context, oldWidgetIds: IntArray, newWidgetIds: IntArray) {
 		if (Log.isLoggable(tag, Log.VERBOSE)) {
 			Log.v(tag, "$this.onRestored(${oldWidgetIds.contentToString()}, ${newWidgetIds.contentToString()})")
