@@ -65,7 +65,7 @@ test-paparazziGradle = { module = "app.cash.paparazzi:app.cash.paparazzi.gradle.
 test-junit4 = { module = "junit:junit", version = "4.13.2" }
 test-truth = { module = "com.google.truth:truth", version = "1.4.4" }
 test-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
-test-paramInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.17" }
+test-paramInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.18" }
 test-jsonAssert = { module = "org.skyscreamer:jsonassert", version.ref = "test-jsonAssert" }
 
 test-androidx-core = { module = "androidx.test:core", version.ref = "androidx.test-core" }
