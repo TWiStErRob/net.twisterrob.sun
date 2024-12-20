@@ -6,7 +6,8 @@
 !.idea/icon.png
 
 # Gradle
-.gradle/
+/.gradle/
+/.kotlin/
 /build/
 /buildSrc/build/
 /app/build/
@@ -14,6 +15,8 @@
 /feature/*/androidTest/build/
 /component/*/build/
 /component/*/androidTest/build/
+/gradle/plugins/.gradle/
+/gradle/plugins/.kotlin/
 /gradle/plugins/build/
 
 # Android
