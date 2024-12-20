@@ -25,11 +25,9 @@ dependencies {
 
 kotlin {
 	explicitApi()
-	target.compilations.configureEach {
-		kotlinOptions {
-			verbose = true
-			allWarningsAsErrors = true
-		}
+	compilerOptions {
+		verbose = true
+		allWarningsAsErrors = true
 	}
 }
 
