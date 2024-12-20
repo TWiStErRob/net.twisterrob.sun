@@ -95,15 +95,3 @@ develocity {
 }
 
 val gradleVersion: String = GradleVersion.current().version
-
-// TODEL Gradle 8.2 sync in AS FL https://youtrack.jetbrains.com/issue/IDEA-320307, maybe fixed in AS HH, probably I.
-@Suppress("MaxLineLength")
-doNotNagAbout(
-	"The BuildIdentifier.getName() method has been deprecated. " +
-		"This is scheduled to be removed in Gradle 9.0. " +
-		"Use getBuildPath() to get a unique identifier for the build. " +
-		"Consult the upgrading guide for further information: " +
-		"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#build_identifier_name_and_current_deprecation",
-	// There are 4 stack traces coming to this line, ignore them all at once.
-	"at org.jetbrains.plugins.gradle.tooling.util.resolve.DependencyResolverImpl.resolveDependencies(DependencyResolverImpl.java:266)"
-)
