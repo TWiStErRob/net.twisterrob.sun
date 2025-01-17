@@ -2,8 +2,7 @@
 
 java = "17"
 
-# TODO When changing this, update CI too (platforms;android-xx).
-compileSdkVersion = "34"
+compileSdkVersion = "35"
 minSdkVersion = "19"
 targetSdkVersion = "34"
 
