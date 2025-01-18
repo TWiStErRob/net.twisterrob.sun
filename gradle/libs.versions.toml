@@ -3,7 +3,7 @@
 java = "17"
 
 compileSdkVersion = "35"
-minSdkVersion = "19"
+minSdkVersion = "21"
 targetSdkVersion = "34"
 
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
