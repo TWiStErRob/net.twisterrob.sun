@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
 	`kotlin-dsl` // id("org.gradle.kotlin.kotlin-dsl") but with automatic appliedKotlinDslPluginsVersion.
-	id("java-gradle-plugin")
+	id("org.gradle.java-gradle-plugin")
 }
 
 dependencies {
@@ -37,27 +37,27 @@ kotlin {
 }
 
 gradlePlugin {
-	plugins.register("project-module-root") {
+	plugins.register("moduleRoot") {
 		id = "project-module-root"
 		implementationClass = "net.twisterrob.sun.plugins.RootPlugin"
 	}
-	plugins.register("project-module-android-library") {
+	plugins.register("moduleAndroidLibrary") {
 		id = "project-module-android-library"
 		implementationClass = "net.twisterrob.sun.plugins.AndroidLibraryPlugin"
 	}
-	plugins.register("project-module-android-app") {
+	plugins.register("moduleAndroidApp") {
 		id = "project-module-android-app"
 		implementationClass = "net.twisterrob.sun.plugins.AndroidAppPlugin"
 	}
-	plugins.register("project-module-java-library") {
+	plugins.register("moduleJavaLibrary") {
 		id = "project-module-java-library"
 		implementationClass = "net.twisterrob.sun.plugins.JavaLibraryPlugin"
 	}
-	plugins.register("project-feature-paparazzi") {
+	plugins.register("featurePaparazzi") {
 		id = "project-feature-paparazzi"
 		implementationClass = "net.twisterrob.sun.plugins.PaparazziPlugin"
 	}
-	plugins.register("project-settings") {
+	plugins.register("settings") {
 		id = "project-settings"
 		implementationClass = "net.twisterrob.sun.plugins.SettingsPlugin"
 	}
