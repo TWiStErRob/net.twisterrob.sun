@@ -1,5 +1,5 @@
-import net.twisterrob.gradle.settings.enableFeaturePreviewQuietly
 import net.twisterrob.gradle.doNotNagAbout
+import net.twisterrob.gradle.settings.enableFeaturePreviewQuietly
 import net.twisterrob.sun.plugins.isCI
 import java.util.UUID
 
@@ -96,94 +96,31 @@ develocity {
 
 val gradleVersion: String = GradleVersion.current().version
 
-// TODEL Gradle 8.2 sync in AS FL 2022.2.1 / AS GI 2022.3.1 / IDEA 2023.1, fixed in 2023.2.
-// https://youtrack.jetbrains.com/issue/IDEA-320266
-@Suppress("MaxLineLength")
-if ((System.getProperty("idea.version") ?: "") < "2023.3") {
-	doNotNagAbout(
-		"The org.gradle.api.plugins.JavaPluginConvention type has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#java_convention_deprecation",
-		"at org.jetbrains.kotlin.idea.gradleTooling.KotlinTasksPropertyUtilsKt.getPureKotlinSourceRoots(KotlinTasksPropertyUtils.kt:59)"
-	)
-	doNotNagAbout(
-		"The Project.getConvention() method has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#deprecated_access_to_conventions",
-		"at org.jetbrains.kotlin.idea.gradleTooling.KotlinTasksPropertyUtilsKt.getPureKotlinSourceRoots(KotlinTasksPropertyUtils.kt:59)"
-	)
-	doNotNagAbout(
-		"The org.gradle.api.plugins.Convention type has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#deprecated_access_to_conventions",
-		"at org.jetbrains.kotlin.idea.gradleTooling.KotlinTasksPropertyUtilsKt.getPureKotlinSourceRoots(KotlinTasksPropertyUtils.kt:59)"
-	)
-
-	doNotNagAbout(
-		"The Project.getConvention() method has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#deprecated_access_to_conventions",
-		"at org.jetbrains.plugins.gradle.tooling.builder.ProjectExtensionsDataBuilderImpl.buildAll(ProjectExtensionsDataBuilderImpl.groovy:"
-	)
-	doNotNagAbout(
-		"The org.gradle.api.plugins.Convention type has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#deprecated_access_to_conventions",
-		"at org.jetbrains.plugins.gradle.tooling.builder.ProjectExtensionsDataBuilderImpl.buildAll(ProjectExtensionsDataBuilderImpl.groovy:"
-	)
-	doNotNagAbout(
-		"The org.gradle.api.plugins.JavaPluginConvention type has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#java_convention_deprecation",
-		// at org.jetbrains.plugins.gradle.tooling.builder.ExternalProjectBuilderImpl.doBuild(ExternalProjectBuilderImpl.groovy:108)
-		// at org.jetbrains.plugins.gradle.tooling.builder.ExternalProjectBuilderImpl.doBuild(ExternalProjectBuilderImpl.groovy:117)
-		// at org.jetbrains.plugins.gradle.tooling.builder.ExternalProjectBuilderImpl.doBuild(ExternalProjectBuilderImpl.groovy:118)
-		"at org.jetbrains.plugins.gradle.tooling.builder.ExternalProjectBuilderImpl.doBuild(ExternalProjectBuilderImpl.groovy:1"
-	)
-	// No method and line number in stack to match all these:
-	//  * JavaPluginUtil.getJavaPluginConvention(JavaPluginUtil.java:13)
-	//  * JavaPluginUtil.getSourceSetContainer(JavaPluginUtil.java:18)
-	//  * JavaPluginUtil.getSourceSetContainer(JavaPluginUtil.java:19)
-	doNotNagAbout(
-		"The org.gradle.api.plugins.JavaPluginConvention type has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#java_convention_deprecation",
-		"at org.jetbrains.plugins.gradle.tooling.util.JavaPluginUtil."
-	)
-	doNotNagAbout(
-		"The Project.getConvention() method has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#deprecated_access_to_conventions",
-		"at org.jetbrains.plugins.gradle.tooling.util.JavaPluginUtil."
-	)
-	doNotNagAbout(
-		"The org.gradle.api.plugins.Convention type has been deprecated. " +
-			"This is scheduled to be removed in Gradle 9.0. " +
-			"Consult the upgrading guide for further information: " +
-			"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#deprecated_access_to_conventions",
-		"at org.jetbrains.plugins.gradle.tooling.util.JavaPluginUtil."
-	)
-} else {
-	val error: (String) -> Unit = (if (isCI) ::error else logger::warn)
-	error("Android Studio version changed, please review hack.")
-}
-
-// TODEL Gradle 8.2 sync in AS FL https://youtrack.jetbrains.com/issue/IDEA-320307, maybe fixed in AS HH, probably I.
 @Suppress("MaxLineLength")
 doNotNagAbout(
-	"The BuildIdentifier.getName() method has been deprecated. " +
-		"This is scheduled to be removed in Gradle 9.0. " +
-		"Use getBuildPath() to get a unique identifier for the build. " +
-		"Consult the upgrading guide for further information: " +
-		"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#build_identifier_name_and_current_deprecation",
-	// There are 4 stack traces coming to this line, ignore them all at once.
-	"at org.jetbrains.plugins.gradle.tooling.util.resolve.DependencyResolverImpl.resolveDependencies(DependencyResolverImpl.java:266)"
+	Regex(
+		"""The (.+?)RuntimeClasspathCopy configuration has been deprecated for consumption\. """ +
+				Regex.escape(
+					"This will fail with an error in Gradle 9.0. " +
+							"For more information, please refer to " +
+							"https://docs.gradle.org/${gradleVersion}/userguide/declaring_dependencies.html#sec:deprecated-configurations" +
+							" in the Gradle documentation."
+				) +
+				".*"
+	),
+)
+@Suppress("MaxLineLength")
+doNotNagAbout(
+	Regex(
+		"""While resolving configuration '(.+?)RuntimeClasspathCopy', it was also selected as a variant\. """ +
+				Regex.escape(
+					"Configurations should not act as both a resolution root and a variant simultaneously. " +
+							"Depending on the resolved configuration in this manner has been deprecated. " +
+							"This will fail with an error in Gradle 9.0. " +
+							"Be sure to mark configurations meant for resolution as canBeConsumed=false or use the 'resolvable(String)' configuration factory method to create them. " +
+							"Consult the upgrading guide for further information: " +
+							"https://docs.gradle.org/${gradleVersion}/userguide/upgrading_version_8.html#depending_on_root_configuration"
+				) +
+				".*"
+	),
 )
