@@ -16,7 +16,6 @@ internal class AndroidLintSarifMergePlugin : Plugin<Project> {
 	override fun apply(project: Project) {
 		project.android {
 			lint {
-				@Suppress("UnstableApiUsage")
 				sarifReport = true
 			}
 		}
