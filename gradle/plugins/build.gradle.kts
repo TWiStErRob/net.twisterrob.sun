@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 plugins {
 	`kotlin-dsl` // id("org.gradle.kotlin.kotlin-dsl") but with automatic appliedKotlinDslPluginsVersion.
 	id("java-gradle-plugin")
@@ -24,12 +26,10 @@ dependencies {
 }
 
 kotlin {
-	explicitApi()
-	target.compilations.configureEach {
-		kotlinOptions {
-			verbose = true
-			allWarningsAsErrors = true
-		}
+	explicitApi = ExplicitApiMode.Strict
+	compilerOptions {
+		verbose = true
+		allWarningsAsErrors = true
 	}
 }
 
