@@ -40,6 +40,7 @@ pluginManagement {
 			content {
 				includeGroup("com.gradle")
 				includeGroup("com.gradle.develocity")
+				includeGroup("org.gradle.android.cache-fix")
 				includeGroup("gradle.plugin.org.gradle.android")
 				includeGroup("org.jetbrains.kotlin.android")
 				includeGroup("io.gitlab.arturbosch.detekt")

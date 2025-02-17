@@ -6,17 +6,20 @@ plugins {
 }
 
 dependencies {
-	implementation(libs.android.gradle)
 	// To have access to com.android.utils.SdkUtils.
-	implementation(libs.android.lint.common)
-	implementation(libs.android.cacheFix)
-	implementation(libs.kotlin.plugin)
-	implementation(libs.kotlin.plugin.ksp)
-	implementation(libs.kotlin.detekt)
-	implementation(libs.kotlin.detekt.sarif)
-	implementation(libs.twisterrob.quality)
-	implementation(libs.twisterrob.convention)
-	implementation(libs.test.paparazziGradle)
+	implementation(libs.android.lintCommon)
+	implementation(libs.kotlin.detektSarif)
+	implementation(libs.plugins.android.app.asDependency())
+	implementation(libs.plugins.android.cacheFix.asDependency())
+	implementation(libs.plugins.android.lib.asDependency())
+	implementation(libs.plugins.kotlin.android.asDependency())
+	implementation(libs.plugins.kotlin.detekt.asDependency())
+	implementation(libs.plugins.kotlin.jvm.asDependency())
+	implementation(libs.plugins.kotlin.pluginKsp.asDependency())
+	implementation(libs.plugins.paparazzi.asDependency())
+	implementation(libs.plugins.twisterrob.androidApp.asDependency())
+	implementation(libs.plugins.twisterrob.convention.asDependency())
+	implementation(libs.plugins.twisterrob.quality.asDependency())
 
 	// TODEL https://github.com/gradle/gradle/issues/15383
 	implementation(files(libs::class.java.superclass.protectionDomain.codeSource.location))
@@ -59,3 +62,6 @@ gradlePlugin {
 		implementationClass = "net.twisterrob.sun.plugins.SettingsPlugin"
 	}
 }
+
+fun Provider<PluginDependency>.asDependency(): Provider<String> =
+	this.map { "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}" }

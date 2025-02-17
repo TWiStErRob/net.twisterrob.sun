@@ -9,67 +9,75 @@ targetSdkVersion = "34"
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
 agp = "8.8.1"
+agp-cacheFix = "3.0.1"
 lint = "31.8.1"
-
-androidx-test-core = "1.6.1"
-androidx-test-runner = "1.6.2"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "2.1.10"
 kotlin-ksp = "2.1.10-1.0.30"
 
 detekt = "1.23.7"
+detekt-sarif = "0.6.0"
+
+androidx-activity = "1.10.0"
+androidx-annotations = "1.9.1"
+androidx-appcompat = "1.7.0"
+androidx-card = "1.0.0"
+androidx-constraint = "2.2.0"
+androidx-fragment = "1.8.6"
 
 dagger = "2.55"
 
-# Artifacts: https://mvnrepository.com/artifact/org.mockito/mockito-core
-# Changelog (1.x, 2.x and 3.x): https://github.com/mockito/mockito/blob/main/doc/release-notes/official.md
-# Changelog (4.x and 5.x): https://github.com/mockito/mockito/releases
-mockito = "5.15.2"
-
-paparazzi = "1.3.5"
-
+test-androidxCore = "1.6.1"
+test-androidxRunner = "1.6.2"
+test-googleParams = "1.18"
 test-jsonAssert = "1.5.3"
+test-junit4 = "4.13.2"
+test-mockito = "5.15.2"
+test-paparazzi = "1.3.5"
+test-truth = "1.4.4"
 
 twisterrob = "0.17"
 
 [libraries]
 
-android-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-android-lint-common = { module = "com.android.tools:common", version.ref = "lint" }
-android-cacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "3.0.1" }
+android-lintCommon = { module = "com.android.tools:common", version.ref = "lint" }
 
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.0" }
-androidx-activity = { module = "androidx.activity:activity", version = "1.10.0" }
-androidx-fragment = { module = "androidx.fragment:fragment", version = "1.8.6" }
-androidx-annotations = { module = "androidx.annotation:annotation", version = "1.9.1" }
-androidx-constraint = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.0" }
-androidx-card = { module = "androidx.cardview:cardview", version = "1.0.0" }
+androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
+androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-card = { module = "androidx.cardview:cardview", version.ref = "androidx-card" }
+androidx-constraint = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraint" }
+androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidx-fragment" }
 
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-stdlib8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
-kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlin-plugin-ksp = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "kotlin-ksp" }
 
-kotlin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
-kotlin-detekt-sarif = { module = "io.github.detekt.sarif4k:sarif4k", version = "0.6.0" }
-kotlin-detekt-libraries = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
+kotlin-detektSarif = { module = "io.github.detekt.sarif4k:sarif4k", version.ref = "detekt-sarif" }
+kotlin-detektLibraries = { module = "io.gitlab.arturbosch.detekt:detekt-rules-libraries", version.ref = "detekt" }
 
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
-test-paparazzi = { module = "app.cash.paparazzi:paparazzi", version.ref = "paparazzi" }
-test-paparazziGradle = { module = "app.cash.paparazzi:app.cash.paparazzi.gradle.plugin", version.ref = "paparazzi" }
-test-junit4 = { module = "junit:junit", version = "4.13.2" }
-test-truth = { module = "com.google.truth:truth", version = "1.4.4" }
-test-mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
-test-paramInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version = "1.18" }
+test-androidxCore = { module = "androidx.test:core", version.ref = "test-androidxCore" }
+test-androidxRunner = { module = "androidx.test:runner", version.ref = "test-androidxRunner" }
 test-jsonAssert = { module = "org.skyscreamer:jsonassert", version.ref = "test-jsonAssert" }
+test-junit4 = { module = "junit:junit", version.ref = "test-junit4" }
+test-mockito = { module = "org.mockito:mockito-core", version.ref = "test-mockito" }
+test-paparazzi = { module = "app.cash.paparazzi:paparazzi", version.ref = "test-paparazzi" }
+test-paramInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version.ref = "test-googleParams" }
+test-truth = { module = "com.google.truth:truth", version.ref = "test-truth" }
 
-test-androidx-core = { module = "androidx.test:core", version.ref = "androidx.test-core" }
-test-androidx-runner = { module = "androidx.test:runner", version.ref = "androidx.test-runner" }
-
-# Not actually used, see [twisterrob-root] and [twisterrob-quality]. Only here for Renovate to update them.
-twisterrob-convention = { module = "net.twisterrob.gradle:twister-convention-plugins", version.ref = "twisterrob" }
-twisterrob-quality = { module = "net.twisterrob.gradle:twister-quality", version.ref = "twisterrob" }
+[plugins]
+android-app = { id = "com.android.application", version.ref = "agp" }
+android-lib = { id = "com.android.library", version.ref = "agp" }
+android-cacheFix = { id = "org.gradle.android.cache-fix", version.ref = "agp-cacheFix" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin-pluginKsp = { id = "com.google.devtools.ksp", version.ref = "kotlin-ksp" }
+paparazzi = { id = "app.cash.paparazzi", version.ref = "test-paparazzi" }
+twisterrob-androidApp = { id = "net.twisterrob.gradle.plugin.android-app", version.ref = "twisterrob" }
+twisterrob-convention = { id = "net.twisterrob.gradle.plugin.root", version.ref = "twisterrob" }
+twisterrob-quality = { id = "net.twisterrob.gradle.plugin.quality", version.ref = "twisterrob" }

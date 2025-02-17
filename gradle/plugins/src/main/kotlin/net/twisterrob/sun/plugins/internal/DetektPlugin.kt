@@ -11,7 +11,7 @@ internal class DetektPlugin : Plugin<Project> {
 	override fun apply(project: Project) {
 		project.plugins.apply("io.gitlab.arturbosch.detekt")
 		project.dependencies.apply {
-			add(CONFIGURATION_DETEKT_PLUGINS, project.libs.kotlin.detekt.libraries)
+			add(CONFIGURATION_DETEKT_PLUGINS, project.libs.kotlin.detektLibraries)
 		}
 		project.detekt {
 			// TODEL https://github.com/detekt/detekt/issues/4926
