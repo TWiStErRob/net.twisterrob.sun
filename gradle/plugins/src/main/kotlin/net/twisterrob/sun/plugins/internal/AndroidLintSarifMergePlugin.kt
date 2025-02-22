@@ -9,13 +9,13 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
+import org.gradle.kotlin.dsl.assign
 
 internal class AndroidLintSarifMergePlugin : Plugin<Project> {
 
 	override fun apply(project: Project) {
 		project.android {
 			lint {
-				@Suppress("UnstableApiUsage")
 				sarifReport = true
 			}
 		}
@@ -33,7 +33,7 @@ private fun wireLintReportMergeSarif(project: Project) {
 	project.androidComponents.onVariants { variant ->
 		val lintReportMergeSarifVariant =
 			rootProject.tasks.maybeRegister<MergeLintSarifReportsTask>("lintReportMergeSarif${variant.name.replaceFirstChar(Char::uppercase)}") {
-				mergedSarifFile.set(this.project.layout.buildDirectory.file("reports/lint/merge-${variant.name}.sarif"))
+				mergedSarifFile = this.project.layout.buildDirectory.file("reports/lint/merge-${variant.name}.sarif")
 			}
 		// Will result in multiple dependencies to the same task, but there's no other way.
 		// If this was in register's configuration block,

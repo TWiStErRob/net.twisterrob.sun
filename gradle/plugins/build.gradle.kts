@@ -1,20 +1,25 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 plugins {
 	`kotlin-dsl` // id("org.gradle.kotlin.kotlin-dsl") but with automatic appliedKotlinDslPluginsVersion.
-	id("java-gradle-plugin")
+	id("org.gradle.java-gradle-plugin")
 }
 
 dependencies {
-	implementation(libs.android.gradle)
 	// To have access to com.android.utils.SdkUtils.
-	implementation(libs.android.lint.common)
-	implementation(libs.android.cacheFix)
-	implementation(libs.kotlin.plugin)
-	implementation(libs.kotlin.plugin.ksp)
-	implementation(libs.kotlin.detekt)
-	implementation(libs.kotlin.detekt.sarif)
-	implementation(libs.twisterrob.quality)
-	implementation(libs.twisterrob.convention)
-	implementation(libs.test.paparazziGradle)
+	implementation(libs.android.lintCommon)
+	implementation(libs.kotlin.detektSarif)
+	implementation(libs.plugins.android.app.asDependency())
+	implementation(libs.plugins.android.cacheFix.asDependency())
+	implementation(libs.plugins.android.lib.asDependency())
+	implementation(libs.plugins.kotlin.android.asDependency())
+	implementation(libs.plugins.kotlin.detekt.asDependency())
+	implementation(libs.plugins.kotlin.jvm.asDependency())
+	implementation(libs.plugins.kotlin.pluginKsp.asDependency())
+	implementation(libs.plugins.paparazzi.asDependency())
+	implementation(libs.plugins.twisterrob.androidApp.asDependency())
+	implementation(libs.plugins.twisterrob.convention.asDependency())
+	implementation(libs.plugins.twisterrob.quality.asDependency())
 
 	// TODEL https://github.com/gradle/gradle/issues/15383
 	implementation(files(libs::class.java.superclass.protectionDomain.codeSource.location))
@@ -24,38 +29,39 @@ dependencies {
 }
 
 kotlin {
-	explicitApi()
-	target.compilations.configureEach {
-		kotlinOptions {
-			verbose = true
-			allWarningsAsErrors = true
-		}
+	explicitApi = ExplicitApiMode.Strict
+	compilerOptions {
+		verbose = true
+		allWarningsAsErrors = true
 	}
 }
 
 gradlePlugin {
-	plugins.register("project-module-root") {
+	plugins.register("moduleRoot") {
 		id = "project-module-root"
 		implementationClass = "net.twisterrob.sun.plugins.RootPlugin"
 	}
-	plugins.register("project-module-android-library") {
+	plugins.register("moduleAndroidLibrary") {
 		id = "project-module-android-library"
 		implementationClass = "net.twisterrob.sun.plugins.AndroidLibraryPlugin"
 	}
-	plugins.register("project-module-android-app") {
+	plugins.register("moduleAndroidApp") {
 		id = "project-module-android-app"
 		implementationClass = "net.twisterrob.sun.plugins.AndroidAppPlugin"
 	}
-	plugins.register("project-module-java-library") {
+	plugins.register("moduleJavaLibrary") {
 		id = "project-module-java-library"
 		implementationClass = "net.twisterrob.sun.plugins.JavaLibraryPlugin"
 	}
-	plugins.register("project-feature-paparazzi") {
+	plugins.register("featurePaparazzi") {
 		id = "project-feature-paparazzi"
 		implementationClass = "net.twisterrob.sun.plugins.PaparazziPlugin"
 	}
-	plugins.register("project-settings") {
+	plugins.register("settings") {
 		id = "project-settings"
 		implementationClass = "net.twisterrob.sun.plugins.SettingsPlugin"
 	}
 }
+
+fun Provider<PluginDependency>.asDependency(): Provider<String> =
+	this.map { "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}" }
