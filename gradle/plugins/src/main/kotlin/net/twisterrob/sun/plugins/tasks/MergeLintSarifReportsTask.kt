@@ -9,13 +9,17 @@ import io.github.detekt.sarif4k.SarifSchema210
 import io.github.detekt.sarif4k.SarifSerializer
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
+import org.gradle.kotlin.dsl.assign
 import java.io.File
 
 /**
@@ -31,8 +35,19 @@ public abstract class MergeLintSarifReportsTask : DefaultTask() {
 	@get:PathSensitive(PathSensitivity.RELATIVE)
 	public abstract val sarifFiles: ConfigurableFileCollection
 
+	@get:Internal // Not @InputFile, we only care about the path.
+	public abstract val rootDir: DirectoryProperty
+
+	@get:Input
+	internal val rootDirInput: String
+		get() = rootDir.get().asFile.normalize().absolutePath
+
 	@get:OutputFile
 	public abstract val mergedSarifFile: RegularFileProperty
+
+	init {
+		rootDir = project.isolated.rootProject.projectDirectory
+	}
 
 	@TaskAction
 	internal fun merge() {
@@ -43,11 +58,13 @@ public abstract class MergeLintSarifReportsTask : DefaultTask() {
 		val output = mergedSarifFile.get().asFile
 		logger.info("Output = ${output.absolutePath}")
 
-		merge(inputs.filter { it.exists() }, output)
+		val rootDir = rootDir.get().asFile
+
+		merge(inputs.filter { it.exists() }, output, rootDir)
 		logger.lifecycle("Merged SARIF output to ${output.absolutePath}")
 	}
 
-	private fun merge(inputs: Collection<File>, output: File) {
+	private fun merge(inputs: Collection<File>, output: File, rootDir: File) {
 		val sarifs = inputs.associateWith { SarifSerializer.fromJson(it.readText()) }
 
 		val runs = sarifs.mapValues { it.value.runs.size }
@@ -61,7 +78,7 @@ public abstract class MergeLintSarifReportsTask : DefaultTask() {
 			"Cannot merge sarifs from different tools:\n$tools"
 		}
 
-		val projectRoot = SdkUtils.fileToUrlString(project.rootDir)
+		val projectRoot = SdkUtils.fileToUrlString(rootDir)
 
 		@Suppress("NestedLambdaShadowedImplicitParameter")
 		val mergedSarif = sarifs.values.first().let {
