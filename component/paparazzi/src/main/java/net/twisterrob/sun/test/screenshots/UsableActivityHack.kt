@@ -93,9 +93,15 @@ private class HackingContextWrapper(
 	 *     ... 53 more
 	 * ```
 	 */
-	override fun createConfigurationContext(overrideConfiguration: Configuration?): Context =
+	override fun createConfigurationContext(overrideConfiguration: Configuration): Context =
 		this
 
+	/**
+	 * TODO figure out why after https://github.com/cashapp/paparazzi/issues/1861 is resolved.
+	 * Need some Kotlin compiler magic because [Context.getDisplayNoVerify] is `@hide`.
+	 */
+    // Requires -Xdont-warn-on-error-suppression, ERROR_SUPPRESSION is just a marker here.
+	@Suppress("NOTHING_TO_OVERRIDE", "ERROR_SUPPRESSION", "KDocUnresolvedReference")
 	override fun getDisplayNoVerify(): Display? =
 		Mockito.mock(Display::class.java)
 
