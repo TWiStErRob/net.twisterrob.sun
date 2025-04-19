@@ -37,7 +37,7 @@ test-mockito = "5.17.0"
 test-paparazzi = "1.3.5"
 test-truth = "1.4.4"
 
-twisterrob = "0.17"
+twisterrob = "0.18"
 
 [libraries]
 
