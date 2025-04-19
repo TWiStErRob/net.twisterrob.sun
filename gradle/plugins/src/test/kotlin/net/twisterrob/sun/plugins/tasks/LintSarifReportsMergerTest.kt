@@ -1,6 +1,7 @@
 package net.twisterrob.sun.plugins.tasks
 
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.register
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Rule
@@ -33,7 +34,7 @@ class LintSarifReportsMergerTest {
 
 		val task = project.tasks.register<MergeLintSarifReportsTask>("merge") {
 			sarifFiles.from(input1, input2)
-			mergedSarifFile.set(output)
+			mergedSarifFile = output
 		}.get()
 
 		task.merge()
@@ -59,7 +60,7 @@ class LintSarifReportsMergerTest {
 
 		val task = project.tasks.register<MergeLintSarifReportsTask>("merge") {
 			sarifFiles.from(input1, input2)
-			mergedSarifFile.set(output)
+			mergedSarifFile = output
 		}.get()
 
 		task.merge()

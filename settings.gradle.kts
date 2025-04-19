@@ -18,7 +18,7 @@ include(":component:paparazzi")
 include(":component:theme")
 
 dependencyResolutionManagement {
-	repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+	repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
 	repositories {
 		google()
 		mavenCentral()
@@ -40,6 +40,7 @@ pluginManagement {
 			content {
 				includeGroup("com.gradle")
 				includeGroup("com.gradle.develocity")
+				includeGroup("org.gradle.android.cache-fix")
 				includeGroup("gradle.plugin.org.gradle.android")
 				includeGroup("org.jetbrains.kotlin.android")
 				includeGroup("io.gitlab.arturbosch.detekt")
@@ -49,8 +50,8 @@ pluginManagement {
 }
 
 plugins {
-	id("com.gradle.develocity") version "3.19"
-	id("net.twisterrob.gradle.plugin.nagging") version "0.17"
+	id("com.gradle.develocity") version "4.0"
+	id("net.twisterrob.gradle.plugin.nagging") version "0.18"
 	id("project-settings")
 }
 
