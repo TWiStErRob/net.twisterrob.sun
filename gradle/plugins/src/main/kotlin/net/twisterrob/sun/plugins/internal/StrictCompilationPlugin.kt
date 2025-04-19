@@ -1,14 +1,18 @@
-@file:Suppress("INVISIBLE_REFERENCE") // https://youtrack.jetbrains.com/issue/KT-68935
-
 package net.twisterrob.sun.plugins.internal
 
+import org.gradle.api.DomainObjectCollection
+import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinSingleTargetExtension
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
-import org.jetbrains.kotlin.gradle.utils.forAllTargets
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 
 internal class StrictCompilationPlugin : Plugin<Project> {
 
@@ -30,9 +34,8 @@ internal class StrictCompilationPlugin : Plugin<Project> {
 				"-Werror"
 			)
 		}
-		@Suppress("INVISIBLE_MEMBER") // https://youtrack.jetbrains.com/issue/KT-68935
-		project.kotlinExtension.forAllTargets { target ->
-			target.compilations.configureEach {
+		project.kotlinExtension.targets.configureEach {
+			compilations.configureEach {
 				compileTaskProvider.configure {
 					compilerOptions {
 						verbose = true
@@ -43,3 +46,20 @@ internal class StrictCompilationPlugin : Plugin<Project> {
 		}
 	}
 }
+
+/**
+ * Copy of `import org.jetbrains.kotlin.gradle.utils.targets` with adjustments.
+ * See https://youtrack.jetbrains.com/issue/KT-68935.
+ * @see org.jetbrains.kotlin.gradle.utils.targets
+ */
+private val KotlinProjectExtension.targets: DomainObjectCollection<KotlinTarget>
+	get() = when (this) {
+		is KotlinMultiplatformExtension -> targets
+		is KotlinSingleTargetExtension<*> -> project.objects.domainSetOf(target)
+		else -> error("Unexpected 'kotlin' extension ${this}")
+	}
+
+private inline fun <reified T : Any> ObjectFactory.domainSetOf(vararg elements: T): DomainObjectSet<T> =
+	this
+		.domainObjectSet(T::class.java)
+		.apply { addAll(elements.asList()) }
