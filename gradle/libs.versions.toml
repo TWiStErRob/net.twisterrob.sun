@@ -33,7 +33,7 @@ test-androidxRunner = "1.6.2"
 test-googleParams = "1.18"
 test-jsonAssert = "1.5.3"
 test-junit4 = "4.13.2"
-test-mockito = "5.17.0"
+test-mockito = "5.18.0"
 test-paparazzi = "1.3.5"
 test-truth = "1.4.4"
 
