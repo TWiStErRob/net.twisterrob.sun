@@ -13,7 +13,7 @@ agp-cacheFix = "3.0.1"
 lint = "31.10.1"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
-kotlin = "2.1.21"
+kotlin = "2.2.0"
 kotlin-ksp = "2.1.21-2.0.2"
 
 detekt = "1.23.8"
