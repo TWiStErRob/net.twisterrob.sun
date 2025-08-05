@@ -8,9 +8,9 @@ targetSdkVersion = "34"
 
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
-agp = "8.11.1"
+agp = "8.12.0"
 agp-cacheFix = "3.0.1"
-lint = "31.11.1"
+lint = "31.12.0"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "2.2.0"
