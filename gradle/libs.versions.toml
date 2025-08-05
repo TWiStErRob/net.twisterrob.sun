@@ -28,8 +28,8 @@ androidx-fragment = "1.8.8"
 
 dagger = "2.57"
 
-test-androidxCore = "1.6.1"
-test-androidxRunner = "1.6.2"
+test-androidxCore = "1.7.0"
+test-androidxRunner = "1.7.0"
 test-googleParams = "1.18"
 test-jsonAssert = "1.5.3"
 test-junit4 = "4.13.2"
