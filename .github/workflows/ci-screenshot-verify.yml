@@ -48,7 +48,7 @@ jobs:
           log-accepted-android-sdk-licenses: false
 
       - name: "Checkout ${{ inputs.ref }} branch in ${{ github.repository }} repository."
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ format('refs/heads/{0}', inputs.ref) }}
 
