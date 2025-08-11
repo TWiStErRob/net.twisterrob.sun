@@ -40,7 +40,7 @@ jobs:
           log-accepted-android-sdk-licenses: false
 
       - name: "Checkout ${{ github.ref }} branch in ${{ github.repository }} repository."
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Set up JDK for Project."
         uses: actions/setup-java@v4
