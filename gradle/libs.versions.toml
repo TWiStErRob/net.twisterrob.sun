@@ -24,7 +24,7 @@ androidx-annotations = "1.9.1"
 androidx-appcompat = "1.7.1"
 androidx-card = "1.0.0"
 androidx-constraint = "2.2.1"
-androidx-fragment = "1.8.8"
+androidx-fragment = "1.8.9"
 
 dagger = "2.57"
 
