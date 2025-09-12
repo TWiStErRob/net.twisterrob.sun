@@ -30,7 +30,7 @@ dagger = "2.57.1"
 
 test-androidxCore = "1.7.0"
 test-androidxRunner = "1.7.0"
-test-googleParams = "1.18"
+test-googleParams = "1.19"
 test-jsonAssert = "1.5.3"
 test-junit4 = "4.13.2"
 test-mockito = "5.19.0"
