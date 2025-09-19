@@ -2,7 +2,7 @@
 
 java = "17"
 
-compileSdkVersion = "35"
+compileSdkVersion = "36"
 minSdkVersion = "21"
 targetSdkVersion = "34"
 
