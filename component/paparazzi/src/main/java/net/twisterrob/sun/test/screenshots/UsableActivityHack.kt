@@ -76,7 +76,8 @@ private class SystemServiceContextWrapper(
 					.apply { isAccessible = true }
 
 				@Suppress("UNCHECKED_CAST")
-				return (STATIC[SYSTEM_SERVICE_NAMES] ?: error("SYSTEM_SERVICE_NAMES is null")) as Map<Class<*>, String>
+				return (STATIC[SYSTEM_SERVICE_NAMES] ?: error("SYSTEM_SERVICE_NAMES is null"))
+						as Map<Class<*>, String>
 			}
 	}
 }
@@ -100,7 +101,7 @@ private class HackingContextWrapper(
 	 * TODO figure out why after https://github.com/cashapp/paparazzi/issues/1861 is resolved.
 	 * Need some Kotlin compiler magic because [Context.getDisplayNoVerify] is `@hide`.
 	 */
-    // Requires -Xdont-warn-on-error-suppression, ERROR_SUPPRESSION is just a marker here.
+	// Requires -Xdont-warn-on-error-suppression, ERROR_SUPPRESSION is just a marker here.
 	@Suppress("NOTHING_TO_OVERRIDE", "ERROR_SUPPRESSION", "KDocUnresolvedReference")
 	override fun getDisplayNoVerify(): Display? =
 		Mockito.mock(Display::class.java)
