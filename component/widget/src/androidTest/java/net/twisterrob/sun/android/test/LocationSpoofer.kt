@@ -145,7 +145,10 @@ class LocationSpoofer(
 }
 
 private fun AppOpsManager.checkOp(op: String, packageName: String): /*@AppOpsManager.Mode*/ Int =
-	if (Build.VERSION_CODES.Q <= Build.VERSION.SDK_INT) {
+	if (Build.VERSION_CODES.BAKLAVA <= Build.VERSION.SDK_INT) {
+		checkOpNoThrow(op, Binder.getCallingUid(), packageName)
+	} else if (Build.VERSION_CODES.Q <= Build.VERSION.SDK_INT) {
+		@Suppress("DEPRECATION")
 		unsafeCheckOpNoThrow(op, Binder.getCallingUid(), packageName)
 	} else if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
 		@Suppress("DEPRECATION")
