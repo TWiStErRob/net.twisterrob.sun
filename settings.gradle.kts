@@ -40,6 +40,8 @@ pluginManagement {
 			content {
 				includeGroup("com.gradle")
 				includeGroup("com.gradle.develocity")
+				includeGroup("org.gradle.toolchains")
+				includeGroup("org.gradle.toolchains.foojay-resolver-convention")
 				includeGroup("org.gradle.android.cache-fix")
 				includeGroup("gradle.plugin.org.gradle.android")
 				includeGroup("org.jetbrains.kotlin.android")
@@ -50,6 +52,7 @@ pluginManagement {
 }
 
 plugins {
+	id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 	id("com.gradle.develocity") version "4.2"
 	id("net.twisterrob.gradle.plugin.nagging") version "0.18"
 	id("project-settings")
