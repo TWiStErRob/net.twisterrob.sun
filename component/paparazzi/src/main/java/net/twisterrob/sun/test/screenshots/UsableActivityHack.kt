@@ -162,8 +162,11 @@ private fun Activity.attach(
 	intent: Intent?,
 ) {
 	Activity::class.java
+		// Cannot use getDeclaredMethod(name, ...) because some types are hidden.
 		.declaredMethods
-		.single { it.name == "attach" }
+		// API 36 introduced a second attach with 1 more parameter.
+		.filter { it.name == "attach" }
+		.minBy { it.parameterTypes.size }
 		.apply { isAccessible = true }
 		.invoke(
 			this@attach,
