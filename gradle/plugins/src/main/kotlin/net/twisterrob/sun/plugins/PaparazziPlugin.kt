@@ -26,6 +26,8 @@ public class PaparazziPlugin : Plugin<Project> {
 					)
 				}
 			}
+			// Mute logging, TODEL workaround for https://github.com/cashapp/paparazzi/issues/1842
+			systemProperty("java.util.logging.config.class", "net.twisterrob.sun.test.screenshots.PaparazziLoggingConfiguration")
 			// Hide the huge yellow WARNINGs:
 			jvmArgs(
 				// > An illegal reflective access operation has occurred
