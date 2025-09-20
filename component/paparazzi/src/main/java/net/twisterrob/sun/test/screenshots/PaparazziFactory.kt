@@ -28,6 +28,7 @@ fun activityPaparazzi(): Paparazzi =
 		deviceConfig = DeviceConfig.PIXEL_2,
 		maxPercentDifference = 0.0,
 		appCompatEnabled = true,
-		showSystemUi = true,
+		// Should be true, but since edge to edge enforcement (API 35) it just overlaps.
+		showSystemUi = false,
 		useDeviceResolution = true,
 	)
