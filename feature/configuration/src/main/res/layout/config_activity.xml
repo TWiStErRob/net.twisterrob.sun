@@ -8,10 +8,8 @@
 	android:paddingRight="16dp"
 	android:paddingTop="8dp"
 	android:paddingBottom="8dp"
-	android:fitsSystemWindows="true"
 	tools:context="net.twisterrob.sun.android.SunAngleWidgetConfiguration"
 	>
-	<!-- fitsSystemWindows: Companion to WindowCompat.enableEdgeToEdge(window) -->
 
 	<Button
 		android:id="@+id/btn_ok"

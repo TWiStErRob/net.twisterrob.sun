@@ -12,7 +12,6 @@ import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.WindowCompat;
 
 import net.twisterrob.android.widget.WidgetHelpers;
 
@@ -24,7 +23,6 @@ public abstract class WidgetConfigurationActivity extends AppCompatActivity {
 
 	@Override protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		WindowCompat.enableEdgeToEdge(getWindow());
 
 		appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
 		if (Log.isLoggable("WidgetConfiguration", Log.DEBUG)) {
