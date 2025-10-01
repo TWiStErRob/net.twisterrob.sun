@@ -59,7 +59,7 @@ jobs:
           java-version-file: .java-version
 
       - name: "Set up Gradle."
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: "Download '${{ inputs.golden_artifact }}' artifact."
         uses: actions/download-artifact@v5

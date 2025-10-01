@@ -60,7 +60,7 @@ jobs:
           java-version-file: .java-version
 
       - name: "Set up Gradle."
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: "Record screenshots golden values for ${{ inputs.ref }}."
         id: gradle
