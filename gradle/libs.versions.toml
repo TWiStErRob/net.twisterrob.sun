@@ -14,7 +14,7 @@ lint = "31.13.0"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "2.2.20"
-kotlin-ksp = "2.2.20-2.0.3"
+kotlin-ksp = "2.2.20-2.0.4"
 
 detekt = "1.23.8"
 detekt-sarif = "0.6.0"
