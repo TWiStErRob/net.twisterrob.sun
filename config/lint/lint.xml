@@ -55,5 +55,8 @@
 		<!-- Project is using Renovate. -->
 		<!-- Example: A newer version of com.android.tools.build:gradle than 8.2.2 is available: 8.3.0 -->
 	</issue>
+	<issue id="OldTargetApi" severity="ignore">
+		<!-- Pending migration to latest, I'm an active engineer I know it's outdated. -->
+	</issue>
 
 </lint>

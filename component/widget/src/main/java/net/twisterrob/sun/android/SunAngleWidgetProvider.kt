@@ -10,6 +10,7 @@ import androidx.annotation.MainThread
 import net.twisterrob.sun.android.logic.SunAngleWidgetUpdater
 import java.util.Locale
 import javax.inject.Inject
+import androidx.core.content.edit
 
 @MainThread
 class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
@@ -25,7 +26,7 @@ class SunAngleWidgetProvider : LoggingAppWidgetProvider() {
 	override fun onDeleted(context: Context, appWidgetIds: IntArray) {
 		super.onDeleted(context, appWidgetIds)
 		for (appWidgetId in appWidgetIds) {
-			SunAngleWidgetPreferences.getPreferences(context, appWidgetId).edit().clear().apply()
+			SunAngleWidgetPreferences.getPreferences(context, appWidgetId).edit { clear() }
 		}
 	}
 
