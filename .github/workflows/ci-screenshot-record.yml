@@ -95,7 +95,7 @@ jobs:
 
       - name: "Upload '${{ inputs.golden_artifact }}' artifact."
         if: ${{ success() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: '${{ inputs.golden_artifact }}'
           if-no-files-found: error
@@ -104,7 +104,7 @@ jobs:
 
       - name: "Upload 'Screenshot Record Results' artifact."
         if: ${{ success() || failure() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: 'Screenshot Record Results'
           if-no-files-found: error
