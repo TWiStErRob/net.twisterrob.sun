@@ -9,12 +9,12 @@ targetSdkVersion = "35"
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
 agp = "8.13.0"
-agp-cacheFix = "3.0.1"
+agp-cacheFix = "3.0.2"
 lint = "31.13.0"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
-kotlin = "2.2.20"
-kotlin-ksp = "2.2.20-2.0.3"
+kotlin = "2.2.21"
+kotlin-ksp = "2.3.0"
 
 detekt = "1.23.8"
 detekt-sarif = "0.6.0"
@@ -27,14 +27,14 @@ androidx-core = "1.17.0"
 androidx-constraint = "2.2.1"
 androidx-fragment = "1.8.9"
 
-dagger = "2.57.1"
+dagger = "2.57.2"
 
 test-androidxCore = "1.7.0"
 test-androidxRunner = "1.7.0"
 test-googleParams = "1.19"
 test-jsonAssert = "1.5.3"
 test-junit4 = "4.13.2"
-test-mockito = "5.19.0"
+test-mockito = "5.20.0"
 test-paparazzi = "2.0.0-alpha02"
 test-truth = "1.4.5"
 
