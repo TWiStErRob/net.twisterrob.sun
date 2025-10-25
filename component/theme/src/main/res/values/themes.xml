@@ -2,9 +2,9 @@
 
 	<style name="AppTheme" parent="Theme.AppCompat.Light">
 		<!-- Companion to WindowCompat.enableEdgeToEdge(window) -->
-		<item name="android:windowLightStatusBar" tools:taretApi="m">true</item>
+		<item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 		<!-- Companion to WindowCompat.enableEdgeToEdge(window) -->
-		<item name="android:windowLightNavigationBar" tools:taretApi="m">true</item>
+		<item name="android:windowLightNavigationBar" tools:targetApi="m">true</item>
 	</style>
 
 	<style name="AppTheme.ScreenshotTest">
