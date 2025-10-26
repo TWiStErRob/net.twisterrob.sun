@@ -4,7 +4,7 @@ java = "17"
 
 compileSdkVersion = "36"
 minSdkVersion = "21"
-targetSdkVersion = "34"
+targetSdkVersion = "35"
 
 # Compatibility: https://developer.android.com/studio/releases/gradle-plugin#updating-gradle
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
@@ -23,6 +23,7 @@ androidx-activity = "1.11.0"
 androidx-annotations = "1.9.1"
 androidx-appcompat = "1.7.1"
 androidx-card = "1.0.0"
+androidx-core = "1.17.0"
 androidx-constraint = "2.2.1"
 androidx-fragment = "1.8.9"
 
@@ -44,6 +45,7 @@ twisterrob = "0.18"
 android-lintCommon = { module = "com.android.tools:common", version.ref = "lint" }
 
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
+androidx-core = { module = "androidx.core:core", version.ref = "androidx-core" }
 androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidx-annotations" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-card = { module = "androidx.cardview:cardview", version.ref = "androidx-card" }

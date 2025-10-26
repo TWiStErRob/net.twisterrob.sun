@@ -1,6 +1,11 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-	<style name="AppTheme" parent="Theme.AppCompat.Light" />
+	<style name="AppTheme" parent="Theme.AppCompat.Light">
+		<!-- Companion to WindowCompat.enableEdgeToEdge(window) -->
+		<item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+		<!-- Companion to WindowCompat.enableEdgeToEdge(window) -->
+		<item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+	</style>
 
 	<style name="AppTheme.ScreenshotTest">
 		<item name="android:windowActionBar">false</item>
