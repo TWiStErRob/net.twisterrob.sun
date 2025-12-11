@@ -53,7 +53,7 @@ pluginManagement {
 
 plugins {
 	id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-	id("com.gradle.develocity") version "4.2.2"
+	id("com.gradle.develocity") version "4.3"
 	id("net.twisterrob.gradle.plugin.nagging") version "0.18"
 	id("project-settings")
 }
