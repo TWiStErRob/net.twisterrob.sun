@@ -143,13 +143,6 @@
 
     <issue
         id="InvalidPackage"
-        message="Invalid package reference in org.mockito:mockito-core; not included in Android: `java.lang.instrument`. Referenced from `org.mockito.internal.PremainAttach`.">
-        <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/5.21.0/121287b8287464a5a7af2e47d5dbc49ca38a892f/mockito-core-5.21.0.jar"/>
-    </issue>
-
-    <issue
-        id="InvalidPackage"
         message="Invalid package reference in app.cash.paparazzi:paparazzi; not included in Android: `java.awt.geom`. Referenced from `app.cash.paparazzi.internal.apng.ApngVerifier`.">
         <location
             file="/home/runner/.gradle/caches/modules-2/files-2.1/app.cash.paparazzi/paparazzi/2.0.0-alpha02/655961605a30f7aec7e12df60db1c39259e20877/paparazzi-2.0.0-alpha02.jar"/>
