@@ -71,7 +71,7 @@ class ActivityManagerSingletonHack : ExternalResource() {
 
 	companion object {
 
-		@SuppressLint("PrivateApi")
+		@SuppressLint("PrivateApi", "DiscouragedPrivateApi")
 		private val IActivityManagerSingleton: Field = run {
 			try {
 				ActivityManager::class.java

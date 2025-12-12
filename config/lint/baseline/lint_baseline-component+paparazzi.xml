@@ -2,17 +2,6 @@
 <issues format="6" by="lint 8.13.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.13.0)" variant="all" version="8.13.0">
 
     <issue
-        id="DiscouragedPrivateApi"
-        message="Reflective access to IActivityManagerSingleton, which is not part of the public SDK and therefore likely to change in future Android releases"
-        errorLine1="    ActivityManager::class.java"
-        errorLine2="    ^">
-        <location
-            file="src/main/java/net/twisterrob/sun/test/screenshots/ActivityManagerSingletonHack.kt"
-            line="77"
-            column="5"/>
-    </issue>
-
-    <issue
         id="InvalidPackage"
         message="Invalid package reference in library; not included in Android: `javax.xml.stream.util`. Referenced from `com.sun.xml.fastinfoset.stax.events.StAXEventAllocatorBase`.">
         <location
