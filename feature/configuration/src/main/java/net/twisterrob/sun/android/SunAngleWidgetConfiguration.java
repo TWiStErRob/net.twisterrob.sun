@@ -480,6 +480,8 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	/**
 	 * Polyfill for {@link PackageManager#getBackgroundPermissionOptionLabel()}.
 	 */
+	@SuppressLint("ObsoleteSdkInt") // Keep for history until we're min=R.
+	@SuppressWarnings("NonStrictComparisonCanBeEquality")
 	private @NonNull CharSequence getBackgroundLabelCompat() {
 		if (Build.VERSION_CODES.R <= Build.VERSION.SDK_INT) {
 			return getPackageManager().getBackgroundPermissionOptionLabel();
