@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 8.13.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.13.0)" variant="all" version="8.13.0">
-
-    <issue
-        id="DiscouragedPrivateApi"
-        message="Reflective access to IActivityManagerSingleton, which is not part of the public SDK and therefore likely to change in future Android releases"
-        errorLine1="    ActivityManager::class.java"
-        errorLine2="    ^">
-        <location
-            file="src/main/java/net/twisterrob/sun/test/screenshots/ActivityManagerSingletonHack.kt"
-            line="77"
-            column="5"/>
-    </issue>
+<issues format="6" by="lint 8.13.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.13.1)" variant="all" version="8.13.1">
 
     <issue
         id="InvalidPackage"
@@ -150,13 +139,6 @@
         message="Invalid package reference in com.android.tools.layoutlib:layoutlib; not included in Android: `java.awt.event`. Referenced from `com.android.layoutlib.bridge.impl.RenderSessionImpl`.">
         <location
             file="/home/runner/.gradle/caches/modules-2/files-2.1/com.android.tools.layoutlib/layoutlib/15.2.3/667c53f000250fed8e5f2cc46dac7732744fa21c/layoutlib-15.2.3.jar"/>
-    </issue>
-
-    <issue
-        id="InvalidPackage"
-        message="Invalid package reference in org.mockito:mockito-core; not included in Android: `java.lang.instrument`. Referenced from `org.mockito.internal.PremainAttach`.">
-        <location
-            file="/home/runner/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/5.20.0/a32f446f38acf636363c5693db6498047731b9e0/mockito-core-5.20.0.jar"/>
     </issue>
 
     <issue

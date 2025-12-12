@@ -16,7 +16,7 @@
 	<string name="call_to_action_location">No location available</string>
 
 	<string name="call_to_action_settings">Change Settings</string>
-	<string name="call_to_action_location_fix">Fix Location</string>
+	<string name="call_to_action_location_fix">Give Permission</string>
 
 	<string name="widget_description">Display the current position of the Sun, which is known as solar altitude angle, or height of the Sun.</string>
 
