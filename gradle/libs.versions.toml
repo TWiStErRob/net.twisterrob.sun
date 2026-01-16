@@ -27,7 +27,7 @@ androidx-core = "1.17.0"
 androidx-constraint = "2.2.1"
 androidx-fragment = "1.8.9"
 
-dagger = "2.57.2"
+dagger = "2.58"
 
 test-androidxCore = "1.7.0"
 test-androidxRunner = "1.7.0"
