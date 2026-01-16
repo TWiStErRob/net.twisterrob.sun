@@ -10,7 +10,7 @@ targetSdkVersion = "35"
 # Versions: https://maven.google.com/web/index.html#com.android.tools.build:gradle
 agp = "8.13.2"
 agp-cacheFix = "3.0.3"
-lint = "31.13.2"
+lint = "32.0.0"
 
 # Changelog: https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
 kotlin = "2.3.0"
