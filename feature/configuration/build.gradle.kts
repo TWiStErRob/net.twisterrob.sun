@@ -24,4 +24,10 @@ android {
 	buildFeatures {
 		buildConfig = true
 	}
+	testOptions {
+		unitTests.all {
+			// Increase max heap size for Robolectric using many versions.
+			it.maxHeapSize = "1G"
+		}
+	}
 }
