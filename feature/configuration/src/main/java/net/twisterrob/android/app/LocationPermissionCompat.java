@@ -46,7 +46,7 @@ public class LocationPermissionCompat {
 		this.callback = callback;
 		this.foregroundLocationPermissionLauncher = activity.registerForActivityResult(
 				new RequestMultiplePermissions(),
-				new ActivityResultCallback<Map<String, Boolean>>() {
+				new ActivityResultCallback<>() {
 					@Override public void onActivityResult(final Map<String, Boolean> isGranted) {
 						if (interrogator.isAllGranted(isGranted)) {
 							requestBackground();
@@ -71,7 +71,7 @@ public class LocationPermissionCompat {
 		);
 		this.backgroundLocationPermissionLauncher = activity.registerForActivityResult(
 				new RequestMultiplePermissions(),
-				new ActivityResultCallback<Map<String, Boolean>>() {
+				new ActivityResultCallback<>() {
 					@Override public void onActivityResult(Map<String, Boolean> isGranted) {
 						if (interrogator.isAllGranted(isGranted)) {
 							permissionsReady();
