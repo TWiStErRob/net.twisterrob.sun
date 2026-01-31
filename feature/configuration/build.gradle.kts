@@ -17,6 +17,7 @@ dependencies {
 	testImplementation(libs.test.truth)
 	testImplementation(libs.test.mockito)
 	testImplementation(libs.test.paramInjector)
+	testImplementation(libs.test.robolectric)
 }
 
 android {
