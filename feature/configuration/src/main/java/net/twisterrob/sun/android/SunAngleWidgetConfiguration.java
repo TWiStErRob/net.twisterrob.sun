@@ -89,8 +89,11 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private int[] mapping;
 	private Menu menu;
 	private LocationUpdater locationUpdater;
+	@SuppressWarnings("this-escape") // By design, safe, only stores.
 	private final IntentOpener intentOpener = new IntentOpener(this);
+	@SuppressWarnings("this-escape") // By design, safe, only stores.
 	private final PermissionInterrogator interrogator = new PermissionInterrogator(this);
+	@SuppressWarnings("this-escape") // By design, safe, only stores.
 	private final LocationPermissionCompat permissions =
 			new LocationPermissionCompat(this, interrogator, new LocationPermissionCompat.LocationPermissionEvents() {
 				@Override public void done() {
