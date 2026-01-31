@@ -54,6 +54,23 @@ jobs:
       - name: "Set up Gradle."
         uses: gradle/actions/setup-gradle@v5
 
+      - name: "Determine Robolectric version (for caching)."
+        id: robolectric
+        # language=bash
+        run: |
+          version="$(grep --only-matching -P '(?<=^test-robolectric = ").+?(?=")' gradle/libs.versions.toml)"
+          echo "version=${version}" | tee --append "${GITHUB_OUTPUT}"
+
+      - name: "Restore Robolectric runtimes."
+        id: cache-robolectric
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ runner.os }}-robolectric-${{ steps.robolectric.outputs.version }}
+          restore-keys: |
+            ${{ runner.os }}-robolectric-
+          path: |
+            ~/.m2/repository/org/robolectric/android-all-instrumented
+
       - name: "Build & Verify project using Gradle."
         id: gradle
         # language=bash
@@ -73,6 +90,14 @@ jobs:
           detektReportMergeXml
           lintReportMergeSarif
           violationReportHtml
+
+      - name: "Cache Robolectric runtimes."
+        if: ${{ github.ref == 'refs/heads/main' && steps.cache-robolectric.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@v4
+        with:
+          key: ${{ runner.os }}-robolectric-${{ steps.robolectric.outputs.version }}
+          path: |
+            ~/.m2/repository/org/robolectric/android-all-instrumented
 
       - name: "Publish 'Gradle' commit status (with Build Scan URL)."
         if: ${{ (success() || failure()) && steps.gradle != null && steps.gradle.outputs.result-success != null }}
