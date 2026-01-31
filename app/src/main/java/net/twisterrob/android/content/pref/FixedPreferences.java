@@ -58,11 +58,8 @@ public abstract class FixedPreferences implements SharedPreferences {
 	public void registerOnSharedPreferenceChangeListener(final OnSharedPreferenceChangeListener listener) {
 		OnSharedPreferenceChangeListener wrapper = listeners.get(listener);
 		if (wrapper == null) {
-			wrapper = new OnSharedPreferenceChangeListener() {
-				@Override public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+			wrapper = (_, key) ->
 					listener.onSharedPreferenceChanged(FixedPreferences.this, decomposeKey(key));
-				}
-			};
 			listeners.put(listener, wrapper);
 		}
 		prefs.registerOnSharedPreferenceChangeListener(wrapper);

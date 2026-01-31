@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.*;
 import android.view.*;
-import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -95,12 +94,10 @@ public class WidgetScreenshotActivity extends Activity {
 		presets.setSelection(0);
 
 		layout = findViewById(R.id.widget);
-		layout.setOnClickListener(new OnClickListener() {
-			@Override public void onClick(View v) {
-				ViewGroup hostView = (ViewGroup)layout.getChildAt(0);
-				View widgetView = hostView.getChildAt(0);
-				screenshot(widgetView);
-			}
+		layout.setOnClickListener(_ -> {
+			ViewGroup hostView = (ViewGroup)layout.getChildAt(0);
+			View widgetView = hostView.getChildAt(0);
+			screenshot(widgetView);
 		});
 
 		manager = AppWidgetManager.getInstance(getApplicationContext());
