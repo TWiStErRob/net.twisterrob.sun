@@ -28,20 +28,17 @@ import java.lang.reflect.Field
  */
 class ActivityTaskManagerSingletonHack : ExternalResource() {
 
-	private var backup: Any? = null
+	private var backup: IActivityTaskManager? = null
 
 	@Throws(IllegalAccessException::class)
 	override fun before() {
-		backup = STATIC[IActivityTaskManagerSingleton]
-		STATIC[IActivityTaskManagerSingleton] = object : Singleton<IActivityTaskManager>() {
-			override fun create(): IActivityTaskManager =
-				Mockito.mock(IActivityTaskManager::class.java)
-		}
+		backup = IActivityTaskManagerSingleton.mInstance
+		IActivityTaskManagerSingleton.mInstance = Mockito.mock(IActivityTaskManager::class.java)
 	}
 
 	override fun after() {
 		try {
-			STATIC[IActivityTaskManagerSingleton] = backup
+			IActivityTaskManagerSingleton.mInstance = backup
 			backup = null
 		} catch (ex: IllegalAccessException) {
 			@Suppress("NullableToStringCall") // Exactly what I want.
@@ -52,17 +49,25 @@ class ActivityTaskManagerSingletonHack : ExternalResource() {
 	companion object {
 
 		@SuppressLint("DiscouragedPrivateApi")
-		private val IActivityTaskManagerSingleton: Field = run {
-			try {
-				ActivityTaskManager::class.java
-					.getDeclaredField("IActivityTaskManagerSingleton")
-					.apply { isAccessible = true }
-					.apply { clearFinal() }
-			} catch (ex: NoSuchFieldException) {
-				throw IllegalStateException(ex)
-			} catch (ex: IllegalAccessException) {
-				throw IllegalStateException(ex)
+		private val IActivityTaskManagerSingletonField: Field =
+			ActivityTaskManager::class.java
+				.getDeclaredField("IActivityTaskManagerSingleton")
+				.apply { isAccessible = true }
+
+		private val IActivityTaskManagerSingleton: Singleton<IActivityTaskManager>
+			@Suppress("UNCHECKED_CAST", "detekt.CastNullableToNonNullableType")
+			get() = IActivityTaskManagerSingletonField.get(null) as Singleton<IActivityTaskManager>
+
+		private val mInstanceField: Field =
+			Singleton::class.java
+				.getDeclaredField("mInstance")
+				.apply { isAccessible = true }
+
+		private var Singleton<IActivityTaskManager>.mInstance: IActivityTaskManager?
+			@Suppress("detekt.CastToNullableType")
+			get() = mInstanceField.get(this) as IActivityTaskManager?
+			set(value) {
+				mInstanceField.set(this, value)
 			}
-		}
 	}
 }

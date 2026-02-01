@@ -1,47 +1,13 @@
 package net.twisterrob.sun.test.screenshots
 
 import java.lang.reflect.Field
-import java.lang.reflect.Modifier
 
 internal val STATIC: Any? = null
 
 internal operator fun Any?.get(field: Field): Any? =
-	@Suppress("ExplicitCollectionElementAccessMethod") // Helper exists to solve exactly this.
 	field.get(this)
 
 internal operator fun Any?.set(field: Field, value: Any?) {
 	@Suppress("ExplicitCollectionElementAccessMethod") // Helper exists to solve exactly this.
 	field.set(this, value)
 }
-
-@Throws(NoSuchFieldException::class, IllegalAccessException::class)
-internal fun Field.clearFinal() {
-	// Java 8-17 compatible version of: Field::class.java.getDeclaredField("modifiers")
-	// Idea: https://stackoverflow.com/a/69418150/253468
-	this.clearFinalModifier()
-	this.root?.clearFinalModifier()
-//	check(this.isFinal) { "Couldn't clear final flag"}
-}
-
-private val Field.root: Field?
-	get() =
-		Field::class.java
-			.getDeclaredMethod("getRoot")
-			.apply { isAccessible = true }
-			.invoke(this) as Field?
-
-private fun Field.clearFinalModifier() {
-	Field::class.java
-		.getDeclaredFields0(false)
-		.single { it.name == "modifiers" }
-		.apply { isAccessible = true }
-		.setInt(this, this.modifiers and Modifier.FINAL.inv())
-}
-
-private fun Class<*>.getDeclaredFields0(publicOnly: Boolean): Array<Field> =
-	Class::class.java
-		.getDeclaredMethod("getDeclaredFields0", Boolean::class.javaPrimitiveType)
-		.apply { isAccessible = true }
-		.invoke(this, publicOnly)
-		.let { it ?: error("getDeclaredFields0 returned null") }
-		.let { @Suppress("UNCHECKED_CAST") (it as Array<Field>) }
