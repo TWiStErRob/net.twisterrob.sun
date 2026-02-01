@@ -1,6 +1,6 @@
 [versions]
 
-java = "22"
+java = "25"
 
 compileSdkVersion = "36"
 minSdkVersion = "23"
