@@ -17,10 +17,17 @@ dependencies {
 	testImplementation(libs.test.truth)
 	testImplementation(libs.test.mockito)
 	testImplementation(libs.test.paramInjector)
+	testImplementation(libs.test.robolectric)
 }
 
 android {
 	buildFeatures {
 		buildConfig = true
+	}
+	testOptions {
+		unitTests.all {
+			// Increase max heap size for Robolectric using many versions.
+			it.maxHeapSize = "1G"
+		}
 	}
 }
