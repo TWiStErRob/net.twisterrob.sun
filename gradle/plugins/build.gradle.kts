@@ -7,7 +7,7 @@ plugins {
 
 dependencies {
 	// To have access to com.android.utils.SdkUtils.
-	implementation(libs.android.lintCommon)
+	compileOnly(libs.android.lintCommon)
 	implementation(libs.kotlin.detektSarif)
 	implementation(libs.plugins.android.app.asDependency())
 	implementation(libs.plugins.android.cacheFix.asDependency())
