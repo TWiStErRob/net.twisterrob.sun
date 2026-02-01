@@ -3,6 +3,7 @@ package net.twisterrob.android.app;
 import java.util.Map;
 
 import android.Manifest;
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -14,7 +15,6 @@ import androidx.annotation.AnyThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.AppCompatActivity;
 
 import net.twisterrob.android.app.LocationPermissionCompat.LocationPermissionEvents.RationaleContinuation;
 import net.twisterrob.android.app.PermissionInterrogator.LocationState;
@@ -28,8 +28,9 @@ import net.twisterrob.android.app.PermissionInterrogator.LocationState;
  *
  * Usage:
  *  * Create and store an instance in the Activity's constructor or onCreate.
- *  * Call {@link #executeWithPermissions()} from the action or {@link AppCompatActivity#onCreate(Bundle)}.
+ *  * Call {@link #executeWithPermissions()} from the action or {@link Activity#onCreate(Bundle)}.
  */
+@SuppressWarnings("JavadocReference")
 public class LocationPermissionCompat {
 
 	private final @NonNull PermissionInterrogator interrogator;
@@ -46,7 +47,7 @@ public class LocationPermissionCompat {
 		this.callback = callback;
 		this.foregroundLocationPermissionLauncher = activity.registerForActivityResult(
 				new RequestMultiplePermissions(),
-				new ActivityResultCallback<Map<String, Boolean>>() {
+				new ActivityResultCallback<>() {
 					@Override public void onActivityResult(final Map<String, Boolean> isGranted) {
 						if (interrogator.isAllGranted(isGranted)) {
 							requestBackground();
@@ -71,7 +72,7 @@ public class LocationPermissionCompat {
 		);
 		this.backgroundLocationPermissionLauncher = activity.registerForActivityResult(
 				new RequestMultiplePermissions(),
-				new ActivityResultCallback<Map<String, Boolean>>() {
+				new ActivityResultCallback<>() {
 					@Override public void onActivityResult(Map<String, Boolean> isGranted) {
 						if (interrogator.isAllGranted(isGranted)) {
 							permissionsReady();
