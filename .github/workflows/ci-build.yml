@@ -63,7 +63,7 @@ jobs:
 
       - name: "Restore Robolectric runtimes."
         id: cache-robolectric
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ runner.os }}-robolectric-${{ steps.robolectric.outputs.version }}
           restore-keys: |
@@ -93,7 +93,7 @@ jobs:
 
       - name: "Cache Robolectric runtimes."
         if: ${{ github.ref == 'refs/heads/main' && steps.cache-robolectric.outputs.cache-hit != 'true' }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           key: ${{ runner.os }}-robolectric-${{ steps.robolectric.outputs.version }}
           path: |
