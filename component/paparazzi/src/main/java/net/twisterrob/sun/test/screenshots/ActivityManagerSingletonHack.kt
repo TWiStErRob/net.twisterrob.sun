@@ -48,42 +48,40 @@ import java.lang.reflect.Proxy
  */
 class ActivityManagerSingletonHack : ExternalResource() {
 
-	private var backup: Any? = null
+	private var backup: IActivityManager? = null
 
 	@Throws(IllegalAccessException::class)
 	override fun before() {
-		backup = STATIC[IActivityManagerSingleton]
-		STATIC[IActivityManagerSingleton] = object : Singleton<IActivityManager>() {
-			override fun create(): IActivityManager =
-				mockActivityManager()
-		}
+		backup = IActivityManagerSingleton.mInstance
+		IActivityManagerSingleton.mInstance = mockActivityManager()
 	}
 
 	override fun after() {
-		try {
-			STATIC[IActivityManagerSingleton] = backup
-			backup = null
-		} catch (e: IllegalAccessException) {
-			@Suppress("NullableToStringCall") // Exactly what I want.
-			throw IllegalStateException("Cannot restore original state: ${backup}", e)
-		}
+		IActivityManagerSingleton.mInstance = backup
+		backup = null
 	}
 
 	companion object {
 
-		@SuppressLint("PrivateApi", "DiscouragedPrivateApi")
-		private val IActivityManagerSingleton: Field = run {
-			try {
-				ActivityManager::class.java
-					.getDeclaredField("IActivityManagerSingleton")
-					.apply { isAccessible = true }
-					.apply { clearFinal() }
-			} catch (e: NoSuchFieldException) {
-				throw IllegalStateException(e)
-			} catch (e: IllegalAccessException) {
-				throw IllegalStateException(e)
-			}
-		}
+		@SuppressLint("DiscouragedPrivateApi")
+		private val IActivityManagerSingletonField: Field =
+			ActivityManager::class.java
+				.getDeclaredField("IActivityManagerSingleton")
+				.apply { isAccessible = true }
+
+		private val IActivityManagerSingleton: Singleton<IActivityManager>
+			@Suppress("UNCHECKED_CAST", "detekt.CastNullableToNonNullableType")
+			get() = IActivityManagerSingletonField.get(null) as Singleton<IActivityManager>
+
+		private val mInstanceField: Field =
+			Singleton::class.java
+				.getDeclaredField("mInstance")
+				.apply { isAccessible = true }
+
+		private var Singleton<IActivityManager>.mInstance: IActivityManager?
+			@Suppress("detekt.CastToNullableType")
+			get() = mInstanceField.get(this) as IActivityManager?
+			set(value) = mInstanceField.set(this, value)
 	}
 }
 
