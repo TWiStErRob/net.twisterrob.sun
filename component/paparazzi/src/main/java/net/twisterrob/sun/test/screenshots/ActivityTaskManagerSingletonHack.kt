@@ -37,13 +37,8 @@ class ActivityTaskManagerSingletonHack : ExternalResource() {
 	}
 
 	override fun after() {
-		try {
-			IActivityTaskManagerSingleton.mInstance = backup
-			backup = null
-		} catch (ex: IllegalAccessException) {
-			@Suppress("NullableToStringCall") // Exactly what I want.
-			throw IllegalStateException("Cannot restore original state: ${backup}", ex)
-		}
+		IActivityTaskManagerSingleton.mInstance = backup
+		backup = null
 	}
 
 	companion object {
@@ -66,8 +61,6 @@ class ActivityTaskManagerSingletonHack : ExternalResource() {
 		private var Singleton<IActivityTaskManager>.mInstance: IActivityTaskManager?
 			@Suppress("detekt.CastToNullableType")
 			get() = mInstanceField.get(this) as IActivityTaskManager?
-			set(value) {
-				mInstanceField.set(this, value)
-			}
+			set(value) = mInstanceField.set(this, value)
 	}
 }
