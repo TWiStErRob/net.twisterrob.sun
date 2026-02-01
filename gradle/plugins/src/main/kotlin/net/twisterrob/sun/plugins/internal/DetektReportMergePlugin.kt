@@ -1,7 +1,7 @@
 package net.twisterrob.sun.plugins.internal
 
-import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.report.ReportMergeTask
+import dev.detekt.gradle.Detekt
+import dev.detekt.gradle.report.ReportMergeTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.assign
@@ -31,7 +31,7 @@ private fun Project.configureSarif() {
 		tasks.withType<Detekt> {
 			val detektReportingTask = this@withType
 			detektReportMergeTask.mustRunAfter(detektReportingTask)
-			detektReportMergeTask.input.from(detektReportingTask.sarifReportFile)
+			detektReportMergeTask.input.from(detektReportingTask.reports.sarif.outputLocation)
 		}
 	}
 }
@@ -39,7 +39,7 @@ private fun Project.configureSarif() {
 private fun Project.configureXML() {
 	tasks.withType<Detekt>().configureEach {
 		reports {
-			xml.required = true
+			checkstyle.required = true
 		}
 	}
 	rootProject.tasks.maybeRegister<ReportMergeTask>("detektReportMergeXml") {
@@ -50,7 +50,7 @@ private fun Project.configureXML() {
 		tasks.withType<Detekt> {
 			val detektReportingTask = this@withType
 			detektReportMergeTask.mustRunAfter(detektReportingTask)
-			detektReportMergeTask.input.from(detektReportingTask.xmlReportFile)
+			detektReportMergeTask.input.from(detektReportingTask.reports.checkstyle.outputLocation)
 		}
 	}
 }
