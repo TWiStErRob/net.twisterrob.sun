@@ -16,6 +16,7 @@ import android.view.Display
 import com.android.layoutlib.bridge.android.BridgePackageManager
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
+import java.lang.reflect.Field
 
 fun Activity.start(baseContext: Context, intent: Intent? = null) {
 	val application = object : Application() {
@@ -67,18 +68,15 @@ private class SystemServiceContextWrapper(
 
 	companion object {
 
-		val SYSTEM_SERVICE_NAMES: Map<Class<*>, String>
-			get() {
-				@Suppress("LocalVariableName", "VariableNaming")
-				@SuppressLint("BlockedPrivateApi")
-				val SYSTEM_SERVICE_NAMES = SystemServiceRegistry::class.java
-					.getDeclaredField("SYSTEM_SERVICE_NAMES")
-					.apply { isAccessible = true }
+		@SuppressLint("BlockedPrivateApi")
+		private val SYSTEM_SERVICE_NAMES_FIELD: Field =
+			SystemServiceRegistry::class.java
+				.getDeclaredField("SYSTEM_SERVICE_NAMES")
+				.apply { isAccessible = true }
 
-				@Suppress("UNCHECKED_CAST")
-				return (SYSTEM_SERVICE_NAMES.get(null as Any?) ?: error("SYSTEM_SERVICE_NAMES is null"))
-						as Map<Class<*>, String>
-			}
+		val SYSTEM_SERVICE_NAMES: Map<Class<*>, String>
+			@Suppress("UNCHECKED_CAST", "detekt.CastNullableToNonNullableType")
+			get() = SYSTEM_SERVICE_NAMES_FIELD.get(null) as Map<Class<*>, String>
 	}
 }
 
