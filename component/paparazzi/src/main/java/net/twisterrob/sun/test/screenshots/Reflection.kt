@@ -18,15 +18,30 @@ internal operator fun Any?.set(field: Field, value: Any?) {
 internal fun Field.clearFinal() {
 	// Java 8-17 compatible version of: Field::class.java.getDeclaredField("modifiers")
 	// Idea: https://stackoverflow.com/a/69418150/253468
-	@Suppress("UnnecessaryLet") // TODEL https://github.com/detekt/detekt/issues/5701
-	Class::class.java
-		.getDeclaredMethod("getDeclaredFields0", Boolean::class.javaPrimitiveType)
-		.apply { isAccessible = true }
-		.invoke(Field::class.java, false)
-		.let { it ?: error("getDeclaredFields0 returned null") }
-		.let { @Suppress("UNCHECKED_CAST") (it as Array<Field>) }
+	this.clearFinalModifier()
+	this.root?.clearFinalModifier()
+//	check(this.isFinal) { "Couldn't clear final flag"}
+}
+
+private val Field.root: Field?
+	get() =
+		Field::class.java
+			.getDeclaredMethod("getRoot")
+			.apply { isAccessible = true }
+			.invoke(this) as Field?
+
+private fun Field.clearFinalModifier() {
+	Field::class.java
+		.getDeclaredFields0(false)
 		.single { it.name == "modifiers" }
-		// Then clear the final modifier.
 		.apply { isAccessible = true }
 		.setInt(this, this.modifiers and Modifier.FINAL.inv())
 }
+
+private fun Class<*>.getDeclaredFields0(publicOnly: Boolean): Array<Field> =
+	Class::class.java
+		.getDeclaredMethod("getDeclaredFields0", Boolean::class.javaPrimitiveType)
+		.apply { isAccessible = true }
+		.invoke(this, publicOnly)
+		.let { it ?: error("getDeclaredFields0 returned null") }
+		.let { @Suppress("UNCHECKED_CAST") (it as Array<Field>) }
