@@ -37,6 +37,7 @@ test-junit4 = "4.13.2"
 test-mockito = "5.21.0"
 test-paparazzi = "2.0.0-alpha02"
 test-truth = "1.4.5"
+test-robolectric = "4.16.1"
 
 twisterrob = "0.18"
 
@@ -70,6 +71,7 @@ test-mockito = { module = "org.mockito:mockito-core", version.ref = "test-mockit
 test-paparazzi = { module = "app.cash.paparazzi:paparazzi", version.ref = "test-paparazzi" }
 test-paramInjector = { module = "com.google.testparameterinjector:test-parameter-injector", version.ref = "test-googleParams" }
 test-truth = { module = "com.google.truth:truth", version.ref = "test-truth" }
+test-robolectric = { module = "org.robolectric:robolectric", version.ref = "test-robolectric" }
 
 [plugins]
 android-app = { id = "com.android.application", version.ref = "agp" }
