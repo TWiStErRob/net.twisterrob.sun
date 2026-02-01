@@ -18,7 +18,8 @@ internal class JavaVersionPlugin : Plugin<Project> {
 		}
 		project.tasks.withType<Detekt>().configureEach {
 			// Target version of the generated JVM bytecode. It is used for type resolution.
-			jvmTarget = javaVersion.toString()
+			// TODO cannot use jvmTarget = javaVersion.toString() at the moment, because detekt 1.x is outdated.
+			jvmTarget = JavaVersion.VERSION_22.toString()
 		}
 	}
 }
