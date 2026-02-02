@@ -15,6 +15,7 @@ import java.lang.Thread.sleep
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+@Suppress("detekt.MagicNumber")
 class LocationRetrieverTest {
 
 	@get:Rule
