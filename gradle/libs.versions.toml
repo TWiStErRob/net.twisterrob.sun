@@ -35,7 +35,7 @@ test-googleParams = "1.21"
 test-jsonAssert = "1.5.3"
 test-junit4 = "4.13.2"
 test-mockito = "5.21.0"
-test-paparazzi = "2.0.0-alpha02"
+test-paparazzi = "2.0.0-alpha04"
 test-truth = "1.4.5"
 test-robolectric = "4.16.1"
 
