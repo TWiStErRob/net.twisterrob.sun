@@ -4,9 +4,7 @@ import java.util.*;
 
 import android.annotation.SuppressLint;
 import android.app.*;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
-import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -27,7 +25,6 @@ import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
@@ -35,7 +32,6 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import static android.appwidget.AppWidgetManager.*;
 import static android.view.ViewGroup.LayoutParams.*;
@@ -50,7 +46,6 @@ import androidx.annotation.StringRes;
 import androidx.annotation.UiThread;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Consumer;
-import androidx.core.view.ViewCompat;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
@@ -89,8 +84,11 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 	private int[] mapping;
 	private Menu menu;
 	private LocationUpdater locationUpdater;
+	@SuppressWarnings("this-escape") // By design, safe, only stores.
 	private final IntentOpener intentOpener = new IntentOpener(this);
+	@SuppressWarnings("this-escape") // By design, safe, only stores.
 	private final PermissionInterrogator interrogator = new PermissionInterrogator(this);
+	@SuppressWarnings("this-escape") // By design, safe, only stores.
 	private final LocationPermissionCompat permissions =
 			new LocationPermissionCompat(this, interrogator, new LocationPermissionCompat.LocationPermissionEvents() {
 				@Override public void done() {
@@ -239,70 +237,79 @@ public class SunAngleWidgetConfiguration extends WidgetConfigurationActivity {
 				updateCheckableOption(item, !item.isChecked());
 				return true;
 		} else if (id == R.id.action_help) {
-				new AlertDialog.Builder(this)
-						.setIcon(R.drawable.ic_launcher)
-						.setTitle(R.string.config_info_title)
-						.setMessage(getHelpText(R.string.config_info_body))
-						.setPositiveButton(R.string.config_info_close, null)
-						.create()
-						.show()
-				;
-				return true;
+			new AlertDialog.Builder(this)
+					.setIcon(R.drawable.ic_launcher)
+					.setTitle(R.string.config_info_title)
+					.setMessage(getHelpText(R.string.config_info_body))
+					.setPositiveButton(R.string.config_info_close, null)
+					.create()
+					.show()
+			;
+			return true;
 		} else if (id == R.id.action_mock_date) {
-				final Calendar time = currentMockDateTime();
-				DatePickerDialog dialog = new DatePickerDialog(this, new OnDateSetListener() {
-					@Override public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+			final Calendar time = currentMockDateTime();
+			DatePickerDialog dialog = new DatePickerDialog(
+					this,
+					(_, year, monthOfYear, dayOfMonth) -> {
 						time.set(Calendar.YEAR, year);
 						time.set(Calendar.MONTH, monthOfYear);
 						time.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 						getWidgetPreferences().edit().putLong(PREF_MOCK_TIME, time.getTimeInMillis()).apply();
-					}
-				}, time.get(Calendar.YEAR), time.get(Calendar.MONTH), time.get(Calendar.DAY_OF_MONTH));
-				// dialog.setOnCancelListener(): the callback is not called on S4 4.4.2
-				dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getText(android.R.string.cancel),
-						new DialogInterface.OnClickListener() {
-							@Override public void onClick(DialogInterface dialog, int which) {
-								getWidgetPreferences().edit().remove(PREF_MOCK_TIME).apply();
-							}
-						});
-				dialog.show();
-				return true;
+					},
+					time.get(Calendar.YEAR),
+					time.get(Calendar.MONTH),
+					time.get(Calendar.DAY_OF_MONTH)
+			);
+			// dialog.setOnCancelListener(): the callback is not called on S4 4.4.2
+			dialog.setButton(
+					DialogInterface.BUTTON_NEGATIVE,
+					getText(android.R.string.cancel),
+					(_, _) ->
+							getWidgetPreferences().edit().remove(PREF_MOCK_TIME).apply()
+			);
+			dialog.show();
+			return true;
 		} else if (id == R.id.action_mock_time) {
-				final Calendar time = currentMockDateTime();
-				TimePickerDialog dialog = new TimePickerDialog(this, new OnTimeSetListener() {
-					@Override public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+			final Calendar time = currentMockDateTime();
+			TimePickerDialog dialog = new TimePickerDialog(
+					this,
+					(_, hourOfDay, minute) -> {
 						time.set(Calendar.HOUR_OF_DAY, hourOfDay);
 						time.set(Calendar.MINUTE, minute);
 						getWidgetPreferences().edit().putLong(PREF_MOCK_TIME, time.getTimeInMillis()).apply();
-					}
-				}, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), true);
-				dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getText(android.R.string.cancel),
-						new DialogInterface.OnClickListener() {
-							@Override public void onClick(DialogInterface dialog, int which) {
-								getWidgetPreferences().edit().remove(PREF_MOCK_TIME).apply();
-							}
-						});
-				dialog.show();
-				return true;
+					},
+					time.get(Calendar.HOUR_OF_DAY),
+					time.get(Calendar.MINUTE),
+					true
+			);
+			dialog.setButton(
+					DialogInterface.BUTTON_NEGATIVE,
+					getText(android.R.string.cancel),
+					(_, _) ->
+							getWidgetPreferences().edit().remove(PREF_MOCK_TIME).apply()
+			);
+			dialog.show();
+			return true;
 		} else if (id == R.id.action_mock_angle) {
-				final NumberPicker picker = createAnglePicker(getWidgetPreferences().getFloat(PREF_MOCK_ANGLE, 0));
-				new AlertDialog.Builder(this)
-						.setTitle("Edit Angle")
-						.setView(picker)
-						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
+			final NumberPicker picker = createAnglePicker(getWidgetPreferences().getFloat(PREF_MOCK_ANGLE, 0));
+			new AlertDialog.Builder(this)
+					.setTitle("Edit Angle")
+					.setView(picker)
+					.setPositiveButton(
+							android.R.string.ok,
+							(_, _) -> {
 								float value = Float.parseFloat(picker.getDisplayedValues()[picker.getValue()]);
 								getWidgetPreferences().edit().putFloat(PREF_MOCK_ANGLE, value).apply();
 							}
-						})
-						.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-							@Override public void onClick(DialogInterface dialog, int which) {
-								getWidgetPreferences().edit().remove(PREF_MOCK_ANGLE).apply();
-							}
-						})
-						.create()
-						.show();
-				return true;
+					)
+					.setNegativeButton(
+							android.R.string.cancel,
+							(dialog, which) ->
+									getWidgetPreferences().edit().remove(PREF_MOCK_ANGLE).apply()
+					)
+					.create()
+					.show();
+			return true;
 		} else if (id == R.id.action_mock_fill) {
 			int[] appWidgetIds = WidgetHelpers.getAppWidgetIds(this, SunAngleWidgetProvider.class);
 				float[] presets = {90, -90, 0, -3, -9, -15, -6, -12, -18, 180};

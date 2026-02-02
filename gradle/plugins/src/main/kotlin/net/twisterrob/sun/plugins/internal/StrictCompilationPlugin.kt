@@ -30,6 +30,10 @@ internal class StrictCompilationPlugin : Plugin<Project> {
 				// > androidx.annotation.NonNull,
 				// > dagger.Component,android.annotation.TargetApi
 				"-Xlint:-processing",
+				// > build\generated\source\buildConfig\debug\...\BuildConfig.java:1:
+				// > warning: [dangling-doc-comments]
+				// > documentation comment is not attached to any declaration
+				"-Xlint:-dangling-doc-comments",
 				// Fail build when warnings pop up.
 				"-Werror"
 			)

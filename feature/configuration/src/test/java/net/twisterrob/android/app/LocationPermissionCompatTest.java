@@ -13,7 +13,7 @@ import org.robolectric.annotation.Config;
 public class LocationPermissionCompatTest {
 
 	@Test
-	@Config(sdk = {/*14, ..*/ 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35})
+	@Config(sdk = {/*14, ..*/ 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36})
 	public void testForegroundPermissions() {
 		String[] foreground = LocationPermissionCompat.calculateForegroundPermissionsToRequest();
 
@@ -34,7 +34,7 @@ public class LocationPermissionCompatTest {
 	}
 
 	@Test
-	@Config(sdk = {29, 30, 31, 32, 33, 34, 35})
+	@Config(sdk = {29, 30, 31, 32, 33, 34, 35, 36})
 	public void testBackgroundPermissionsSeparately() {
 		String[] background = LocationPermissionCompat.calculateBackgroundPermissionsToRequest();
 		assertThat(background)
