@@ -15,8 +15,7 @@ internal class DetektPlugin : Plugin<Project> {
 			add("detektPlugins", project.libs.kotlin.detektLibraries)
 		}
 		project.detekt {
-			// TODEL https://github.com/detekt/detekt/issues/4926
-			buildUponDefaultConfig = false
+			buildUponDefaultConfig = true
 			allRules = true
 			//debug = true
 			val rootDir = project.isolated.rootProject.projectDirectory

@@ -57,8 +57,8 @@ kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-stdlib8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 
-kotlin-detektSarif = { module = "io.github.detekt.sarif4k:sarif4k", version.ref = "detekt-sarif" }
 kotlin-detektLibraries = { module = "dev.detekt:detekt-rules-libraries", version.ref = "detekt" }
+kotlin-detektSarif = { module = "io.github.detekt.sarif4k:sarif4k", version.ref = "detekt-sarif" }
 
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }

@@ -35,7 +35,8 @@ class LocationRetriever @Inject constructor(
 
 	@AnyThread
 	fun get(timeout: Long = Long.MAX_VALUE, @AnyThread block: (Location?) -> Unit) {
-		val locationManager = context.getSystemService<LocationManager>()!!
+		val locationManager = context.getSystemService<LocationManager>()
+			?: error("Missing LocationManager")
 		locationManager.getLocation(object : LocationUpdate {
 			private var timeoutThread: Thread? = null
 
@@ -143,7 +144,8 @@ class LocationRetriever @Inject constructor(
 }
 
 // REPORT should be internal, but it's a compile error in androidTest, friends/associateWith not set in AGP?
-@Suppress("DEPRECATION") // TODEL https://github.com/TWiStErRob/net.twisterrob.sun/issues/302
+// TODEL https://github.com/TWiStErRob/net.twisterrob.sun/issues/302
+@Suppress("DEPRECATION", "detekt.UnnecessaryFullyQualifiedName")
 fun LocationManager.getBestProvider(): String? {
 	val criteria = android.location.Criteria().apply {
 		accuracy = android.location.Criteria.ACCURACY_COARSE

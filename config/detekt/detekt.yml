@@ -7,23 +7,7 @@ processors:
   # Stats would show up in HTML report, but since that's not mergeable it has little value per module.
   active: false
 
-console-reports:
-  exclude:
-    # Disabled because I don't want to see what kind of reports are generate every time I run detekt.
-    - 'NotificationReport'
-    # Disabled because it's very verbose. 
-    - 'FindingsReport'
-    # Disabled because it's very verbose, even more so than FindingsReport.
-    - 'FileBasedFindingsReport'
-    # Enabled, because this gives enough context to see the problems.
-    #- 'LiteFindingsReport'
-
-
 comments:
-
-  AbsentOrWrongFileLicense:
-    # I don't use licences on top of each file.
-    active: false
 
   DocumentationOverPrivateFunction:
     # Disabled as I don't agree with it, if a function needs docs, it needs docs. Visibility doesn't change that.
@@ -85,10 +69,6 @@ exceptions:
 
 
 libraries:
-  
-  ForbiddenPublicDataClass:
-    # Enforce for production and test code. This negates the excludes in default config.
-    excludes: [ ]
 
   LibraryCodeMustSpecifyReturnType:
     # Enforce for production and test code. This negates the excludes in default config.
@@ -100,8 +80,6 @@ libraries:
     # Disabled, as it flags all public classes.
     # Intent of this check is unclear: how can a library without public exist?
     active: false
-    # Enforce for production and test code. This negates the excludes in default config.
-    excludes: [ ]
 
 
 naming:
@@ -142,8 +120,6 @@ potential-bugs:
       - 'javax.inject.Inject'
 
   UnsafeCallOnNullableType:
-    # Disabled, because sometimes it's ok to just bang something.
-    active: false
     # Enforce for production and test code. This negates the excludes in default config.
     excludes: [ ]
 
@@ -154,9 +130,9 @@ style:
     # I'm a tab guy, I don't pay for space in advance.
     active: false
 
-    #MagicNumber:
+  MagicNumber:
     # Keep original configuration, and exclude tests.
-    #excludes: [ ]
+    excludes: [ ]
 
   MaxLineLength:
     # It's unavoidable to have some long lines when stacktraces or links are added as comments.
@@ -167,7 +143,5 @@ style:
     max: 3
 
   WildcardImport:
-    # Enforce for production and test code. This negates the excludes in default config.
-    excludes: [ ]
     # No exceptions, the defaults in Kotlin have some historical reasons, but they're more confusing than useful.
     excludeImports: [ ]

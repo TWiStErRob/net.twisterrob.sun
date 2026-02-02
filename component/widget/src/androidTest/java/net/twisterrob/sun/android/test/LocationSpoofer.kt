@@ -23,7 +23,8 @@ class LocationSpoofer(
 	private val context: Context
 ) {
 
-	private val locationManager = context.getSystemService<LocationManager>()!!
+	private val locationManager = context.getSystemService<LocationManager>()
+		?: error("Missing LocationManager")
 
 	@Suppress("LateinitUsage")
 	// It expresses the logic well, it'll be set up later in the lifecycle.
@@ -75,16 +76,17 @@ class LocationSpoofer(
 	}
 
 	private fun ensureLocationSetUp() {
-		val ops = context.getSystemService<AppOpsManager>()!!
+		val ops = context.getSystemService<AppOpsManager>()
+			?: error("Missing AppOpsManager")
 		fun AppOpsManager.checkMock(): Int =
-			checkOp(AppOpsManager.OPSTR_MOCK_LOCATION, context.packageName)
+			checkOp(packageName = context.packageName, op = AppOpsManager.OPSTR_MOCK_LOCATION)
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && AppOpsManager.MODE_ALLOWED != ops.checkMock()) {
 			Log.d(TAG, "Setting up ${context.packageName} to be able to do MOCK_LOCATION operations.")
 			InstrumentationRegistry.getInstrumentation().uiAutomation
 				.executeShellCommand("appops set ${context.packageName} android:mock_location allow")
 			Log.d(TAG, "Waiting a second to let the system wake up.")
-			busyWait(5000, 100) { ops.checkMock() == AppOpsManager.MODE_ALLOWED }
+			busyWait(timeout = 5000, poll = 100) { ops.checkMock() == AppOpsManager.MODE_ALLOWED }
 			Log.d(TAG, "Should have MOCK_LOCATION now.")
 			assertEquals(AppOpsManager.MODE_ALLOWED, ops.checkMock())
 		}
@@ -107,7 +109,9 @@ class LocationSpoofer(
 			 * ```
 			 */
 			if (provider != LocationManager.PASSIVE_PROVIDER) {
-				locationManager.addTestProvider(provider, locationManager.getProviderProperties(provider)!!)
+				val properties = locationManager.getProviderProperties(provider)
+					?: error("Properties of ${provider} are currently unknown.")
+				locationManager.addTestProvider(provider, properties)
 				locationManager.setTestProviderEnabled(provider, false)
 			}
 		}
