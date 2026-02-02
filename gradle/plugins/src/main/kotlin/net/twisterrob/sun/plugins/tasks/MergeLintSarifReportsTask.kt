@@ -25,8 +25,8 @@ import java.io.File
 /**
  * Based on Detekt's SARIF merging task.
  *
- * @see io.gitlab.arturbosch.detekt.report.ReportMergeTask
- * @see io.gitlab.arturbosch.detekt.report.SarifReportMerger
+ * See `io.gitlab.arturbosch.detekt.report.ReportMergeTask` in detekt 1.x.
+ * See `io.gitlab.arturbosch.detekt.report.SarifReportMerger` in detekt 1.x.
  */
 @CacheableTask
 public abstract class MergeLintSarifReportsTask : DefaultTask() {

@@ -4,6 +4,7 @@ import net.twisterrob.sun.plugins.isCI
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
+import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.withType
 
 internal class GitHubActionsPlugin : Plugin<Project> {
@@ -12,7 +13,7 @@ internal class GitHubActionsPlugin : Plugin<Project> {
 		project.tasks.withType<Test>().configureEach {
 			ignoreFailures = isCI
 		}
-		project.plugins.withId("io.gitlab.arturbosch.detekt") {
+		project.plugins.withId("dev.detekt") {
 			project.detekt {
 				ignoreFailures = isCI
 			}
