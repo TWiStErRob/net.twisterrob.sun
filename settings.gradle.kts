@@ -48,21 +48,14 @@ pluginManagement {
 				includeGroup("dev.detekt")
 			}
 		}
-		exclusiveContent {
-			forRepository {
-				mavenLocal()
+		maven("https://central.sonatype.com/repository/maven-snapshots/") {
+			name = "Central SNAPSHOTs"
+			content {
+				includeGroup("net.twisterrob.gradle")
+				includeGroupByRegex("""net\.twisterrob\.gradle\.plugin\..*""")
 			}
-			filter {
-				includeVersionByRegex(
-					"""^net\.twisterrob\.gradle$""",
-					".*",
-					"^${Regex.escape("0.19-SNAPSHOT")}$"
-				)
-				includeVersionByRegex(
-					"""^net\.twisterrob\.gradle\.plugin\.[^.]+$""",
-					".*",
-					"^${Regex.escape("0.19-SNAPSHOT")}$"
-				)
+			mavenContent {
+				snapshotsOnly()
 			}
 		}
 	}
