@@ -40,7 +40,7 @@ test-paparazzi = "2.0.0-alpha04"
 test-truth = "1.4.5"
 test-robolectric = "4.16.1"
 
-twisterrob = "0.18"
+twisterrob = "0.19"
 
 [libraries]
 
