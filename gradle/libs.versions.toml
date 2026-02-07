@@ -1,6 +1,7 @@
 [versions]
 
-java = "25"
+java-runtime = "25"
+java-daemon = "21"
 
 compileSdkVersion = "36"
 minSdkVersion = "23"
@@ -39,7 +40,7 @@ test-paparazzi = "2.0.0-alpha04"
 test-truth = "1.4.5"
 test-robolectric = "4.16.1"
 
-twisterrob = "0.18"
+twisterrob = "0.19"
 
 [libraries]
 
