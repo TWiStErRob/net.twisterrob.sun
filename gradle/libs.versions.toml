@@ -1,6 +1,7 @@
 [versions]
 
-java = "25"
+java-runtime = "25"
+java-daemon = "21"
 
 compileSdkVersion = "36"
 minSdkVersion = "23"
