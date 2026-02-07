@@ -6,16 +6,6 @@ dependencyResolutionManagement {
 		google()
 		mavenCentral()
 		gradlePluginPortal()
-		maven("https://central.sonatype.com/repository/maven-snapshots/") {
-			name = "Central SNAPSHOTs"
-			content {
-				includeGroup("net.twisterrob.gradle")
-				includeGroupByRegex("""net\.twisterrob\.gradle\.plugin\..*""")
-			}
-			mavenContent {
-				snapshotsOnly()
-			}
-		}
 	}
 	versionCatalogs {
 		create("libs") {
