@@ -48,6 +48,23 @@ pluginManagement {
 				includeGroup("dev.detekt")
 			}
 		}
+		exclusiveContent {
+			forRepository {
+				mavenLocal()
+			}
+			filter {
+				includeVersionByRegex(
+					"""^net\.twisterrob\.gradle$""",
+					".*",
+					"^${Regex.escape("0.19-SNAPSHOT")}$"
+				)
+				includeVersionByRegex(
+					"""^net\.twisterrob\.gradle\.plugin\.[^.]+$""",
+					".*",
+					"^${Regex.escape("0.19-SNAPSHOT")}$"
+				)
+			}
+		}
 	}
 }
 
