@@ -8,3 +8,7 @@ tasks.register("check") {
 	description = "Delegate task for checking included builds too."
 	dependsOn(gradle.includedBuild("plugins").task(":check"))
 }
+
+tasks.named<UpdateDaemonJvm>("updateDaemonJvm") {
+	languageVersion = libs.versions.java.daemon.map(JavaLanguageVersion::of)
+}
