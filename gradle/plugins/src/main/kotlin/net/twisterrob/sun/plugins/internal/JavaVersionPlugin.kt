@@ -15,7 +15,7 @@ internal class JavaVersionPlugin : Plugin<Project> {
 		val javaVersion = project.libs.versions.javaVersion
 		// Assumes one of org.jetbrains.kotlin.jvm or org.jetbrains.kotlin.android is applied.
 		project.extensions.configure<KotlinProjectExtension>("kotlin") {
-			jvmToolchain(project.libs.versions.java.map(String::toInt).get())
+			jvmToolchain(project.libs.versions.java.runtime.map(String::toInt).get())
 		}
 		project.tasks.withType<Detekt>().configureEach {
 			// Target version of the generated JVM bytecode. It is used for type resolution.
@@ -25,4 +25,4 @@ internal class JavaVersionPlugin : Plugin<Project> {
 }
 
 private val VersionAccessors.javaVersion: JavaVersion
-	get() = JavaVersion.toVersion(this.java.get())
+	get() = JavaVersion.toVersion(this.java.runtime.get())
