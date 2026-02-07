@@ -11,17 +11,17 @@ internal class AndroidPlugin : Plugin<Project> {
 		project.android {
 			namespace = "net.twisterrob.sun.${project.name}"
 			compileSdk = project.libs.versions.compileSdkVersion.get().toInt()
-			defaultConfig {
+			defaultConfig.apply {
 				minSdk = project.libs.versions.minSdkVersion.get().toInt()
 				testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 			}
-			lint {
+			lint.apply {
 				baseline = project.rootProject
 					.file("config/lint/baseline/lint_baseline-${project.slug}.xml")
 				lintConfig = project.rootProject
 					.file("config/lint/lint.xml")
 			}
-			testOptions {
+			testOptions.apply {
 				unitTests {
 					all { task: Test ->
 						// Hide (https://stackoverflow.com/a/79098701/253468)

@@ -38,7 +38,6 @@ public class AndroidAppPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
 		target.plugins.apply("net.twisterrob.gradle.plugin.android-app")
-		target.plugins.apply("org.jetbrains.kotlin.android")
 		commonJavaPlugins(target)
 		commonAndroidPlugins(target)
 	}
@@ -48,7 +47,6 @@ public class AndroidLibraryPlugin : Plugin<Project> {
 
 	override fun apply(target: Project) {
 		target.plugins.apply("net.twisterrob.gradle.plugin.android-library")
-		target.plugins.apply("org.jetbrains.kotlin.android")
 		commonJavaPlugins(target)
 		commonAndroidPlugins(target)
 	}
