@@ -20,11 +20,11 @@ kotlin-ksp = "2.3.6"
 detekt = "2.0.0-alpha.2"
 detekt-sarif = "0.6.0"
 
-androidx-activity = "1.12.4"
+androidx-activity = "1.13.0"
 androidx-annotations = "1.9.1"
 androidx-appcompat = "1.7.1"
 androidx-card = "1.0.0"
-androidx-core = "1.17.0"
+androidx-core = "1.18.0"
 androidx-constraint = "2.2.1"
 androidx-fragment = "1.8.9"
 
