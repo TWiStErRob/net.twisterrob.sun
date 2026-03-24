@@ -52,7 +52,7 @@ jobs:
         run: echo "::add-matcher::.github/problemMatchers.json"
 
       - name: "Set up Gradle."
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
 
       - name: "Determine Robolectric version (for caching)."
         id: robolectric
