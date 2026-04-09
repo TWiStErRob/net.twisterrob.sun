@@ -21,7 +21,7 @@ detekt = "2.0.0-alpha.2"
 detekt-sarif = "0.6.0"
 
 androidx-activity = "1.13.0"
-androidx-annotations = "1.9.1"
+androidx-annotations = "1.10.0"
 androidx-appcompat = "1.7.1"
 androidx-card = "1.0.0"
 androidx-core = "1.18.0"
