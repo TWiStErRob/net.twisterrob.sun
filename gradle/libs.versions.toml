@@ -18,7 +18,7 @@ kotlin = "2.3.20"
 kotlin-ksp = "2.3.6"
 
 detekt = "2.0.0-alpha.2"
-detekt-sarif = "0.6.0"
+detekt-sarif = "0.7.0"
 
 androidx-activity = "1.13.0"
 androidx-annotations = "1.10.0"
