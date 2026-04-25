@@ -17,7 +17,7 @@ lint = "32.0.1"
 kotlin = "2.3.21"
 kotlin-ksp = "2.3.7"
 
-detekt = "2.0.0-alpha.2"
+detekt = "2.0.0-alpha.3"
 detekt-sarif = "0.7.0"
 
 androidx-activity = "1.13.0"
