@@ -1,8 +1,8 @@
 package net.twisterrob.sun.plugins.internal
 
 import com.android.build.api.artifact.Artifacts
+import com.android.build.api.artifact.SingleArtifact
 import net.twisterrob.gradle.android.androidComponents
-import net.twisterrob.gradle.internal.android.unwrapCast
 import net.twisterrob.sun.plugins.tasks.MergeLintSarifReportsTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -45,6 +45,4 @@ private fun wireLintReportMergeSarif(project: Project) {
 
 private val Artifacts.sarifReportFile: Provider<RegularFile>
 	get() =
-		this
-			.unwrapCast<com.android.build.api.artifact.impl.ArtifactsImpl>()
-			.get(com.android.build.gradle.internal.scope.InternalArtifactType.LINT_SARIF_REPORT)
+		get(SingleArtifact.LINT_SARIF_REPORT)
