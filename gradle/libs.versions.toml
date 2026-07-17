@@ -3,7 +3,7 @@
 java-runtime = "25"
 java-daemon = "21"
 
-compileSdkVersion = "36"
+compileSdkVersion = "37"
 minSdkVersion = "23"
 targetSdkVersion = "35"
 
