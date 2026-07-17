@@ -15,4 +15,7 @@ android {
 		applicationId = "net.twisterrob.sun"
 		targetSdk = libs.versions.targetSdkVersion.get().toInt()
 	}
+	lint {
+		disable += "LintBaselineFixed"
+	}
 }

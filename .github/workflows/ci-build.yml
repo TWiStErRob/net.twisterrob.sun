@@ -88,7 +88,8 @@ jobs:
           detektTest
           detektReportMergeSarif
           detektReportMergeXml
-          lintReportMergeSarif
+          :app:createAggregatedLintReportDebug
+          :app:createAggregatedLintReportRelease
           violationReportHtml
 
       - name: "Cache Robolectric runtimes."
@@ -127,7 +128,7 @@ jobs:
           if-no-files-found: error
           path: |
             ${{ github.workspace }}/**/build/reports/lint-results*.*
-            ${{ github.workspace }}/build/reports/lint/merge-*.*
+            ${{ github.workspace }}/app/build/reports/aggregated-lint-results-*.*
             ${{ github.workspace }}/build/reports/violations.*
 
       - name: "Publish 'Android Lint' GitHub Code Scanning analysis."
@@ -135,14 +136,14 @@ jobs:
         if: ${{ success() || failure() }}
         with:
           category: ${{ github.job }}-debug
-          sarif_file: ${{ github.workspace }}/build/reports/lint/merge-debug.sarif
+          sarif_file: ${{ github.workspace }}/app/build/reports/aggregated-lint-results-debug.sarif
 
       - name: "Publish 'Android Lint' GitHub Code Scanning analysis."
         uses: github/codeql-action/upload-sarif@v4
         if: ${{ success() || failure() }}
         with:
           category: ${{ github.job }}-release
-          sarif_file: ${{ github.workspace }}/build/reports/lint/merge-release.sarif
+          sarif_file: ${{ github.workspace }}/app/build/reports/aggregated-lint-results-release.sarif
 
       - name: "Upload 'Unit Test Results' artifact."
         if: ${{ success() || failure() }}

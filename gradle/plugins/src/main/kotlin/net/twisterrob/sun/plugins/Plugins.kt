@@ -1,6 +1,5 @@
 package net.twisterrob.sun.plugins
 
-import net.twisterrob.sun.plugins.internal.AndroidLintSarifMergePlugin
 import net.twisterrob.sun.plugins.internal.AndroidPlugin
 import net.twisterrob.sun.plugins.internal.DetektPlugin
 import net.twisterrob.sun.plugins.internal.DetektReportMergePlugin
@@ -64,5 +63,4 @@ private fun commonAndroidPlugins(target: Project) {
 	// TODO https://github.com/gradle/android-cache-fix-gradle-plugin/issues/215
 	//apply(plugin = "org.gradle.android.cache-fix")
 	target.plugins.apply(AndroidPlugin::class)
-	target.plugins.apply(AndroidLintSarifMergePlugin::class)
 }

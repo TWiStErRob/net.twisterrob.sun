@@ -16,6 +16,7 @@ internal class AndroidPlugin : Plugin<Project> {
 				testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 			}
 			lint.apply {
+				sarifReport = true
 				baseline = project.rootProject
 					.file("config/lint/baseline/lint_baseline-${project.slug}.xml")
 				lintConfig = project.rootProject
