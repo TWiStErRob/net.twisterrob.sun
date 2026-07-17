@@ -11,7 +11,7 @@ public class PaparazziPlugin : Plugin<Project> {
 	override fun apply(target: Project) {
 		target.plugins.apply("app.cash.paparazzi")
 		target.dependencies {
-			"testImplementation"(target.project(":component:paparazzi"))
+			"testImplementation"(target.dependencies.project(":component:paparazzi"))
 		}
 
 		target.tasks.withType<Test>().configureEach {
